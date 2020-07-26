@@ -2,6 +2,7 @@ import 'package:app/UI/MasterData.dart';
 import 'package:app/UI/Sublist.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MasterDataDrawer extends StatelessWidget {
   @override
@@ -12,13 +13,17 @@ class MasterDataDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            child: Text('App name'),
+            child: Text('App name',style: GoogleFonts.exo2(
+
+             ),),
             decoration: BoxDecoration(
               color: Colors.amberAccent,
             ),
           ),
           ListTile(
-            title: Text('Product'),
+            title: Text('Product',style: GoogleFonts.exo2(
+
+          ),),
             trailing:  new Icon(Icons.arrow_forward),
             onTap: () {
               // Update the state of the app.
@@ -30,7 +35,9 @@ class MasterDataDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            title: Text('Sublist'),
+            title: Text('Sublist',style: GoogleFonts.exo2(
+
+            ),),
             trailing:  new Icon(Icons.arrow_forward),
             onTap: () {
               // Update the state of the app.
@@ -42,7 +49,9 @@ class MasterDataDrawer extends StatelessWidget {
             },
           ),
           Divider(),
-          Text("Version 1.0.1"),
+          Text("Version 1.0.1",style: GoogleFonts.exo2(
+
+          ),),
         ],
       ),
     );

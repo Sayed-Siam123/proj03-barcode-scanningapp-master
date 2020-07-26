@@ -1,13 +1,31 @@
 import 'package:app/Bloc/masterData_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MasterDataWidget extends StatelessWidget {
+  String product_name,
+      product_desc,
+      category,
+      sub_category,
+      product_id,
+      unit,
+      manufac,
+      manufacpin,
+      gtin,
+      listprice;
 
-  String product_name, product_desc, category,sub_category, product_id, unit, manufac, manufacpin, gtin, listprice;
-
-  MasterDataWidget({this.product_name, this.product_id, this.category, this.gtin,this.unit,this.listprice,this.manufac,this.manufacpin,
-  this.product_desc,this.sub_category});
+  MasterDataWidget(
+      {this.product_name,
+      this.product_id,
+      this.category,
+      this.gtin,
+      this.unit,
+      this.listprice,
+      this.manufac,
+      this.manufacpin,
+      this.product_desc,
+      this.sub_category});
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +41,11 @@ class MasterDataWidget extends StatelessWidget {
         ],
       ),
       child: ListTile(
+        onTap: (){
+          Navigator.of(context).pushNamed('/details');
+          masterdata_bloc.getId(this.product_id.toString());
+          masterdata_bloc.getsinglemasterdata();
+        },
         leading: CircleAvatar(
           radius: 30,
           backgroundColor: Colors.transparent,
@@ -31,20 +54,35 @@ class MasterDataWidget extends StatelessWidget {
             backgroundColor: Colors.transparent,
           ),
         ),
-        title: Text(this.product_name.toString(),
-            style: TextStyle(
-              fontWeight: FontWeight.w500,
+        title: Text(
+          this.product_name.toString(),
+          style: GoogleFonts.exo2(
+            textStyle: TextStyle(
               fontSize: 20,
-            )),
+              color: Colors.black,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            SizedBox(height:5,),
-            Text("Category: " + this.category.toString()),
-            SizedBox(height:5,),
-            Text("ProductID: " + this.product_id.toString()),
-            SizedBox(height:5,),
-            Text("GTIN: " + this.gtin.toString()),
+            SizedBox(
+              height: 5,
+            ),
+            Text(
+              "Category: " + this.category.toString(),
+              style: GoogleFonts.exo2(),),
+            SizedBox(
+              height: 5,
+            ),
+            Text("ProductID: " + this.product_id.toString(),
+              style: GoogleFonts.exo2(),),
+            SizedBox(
+              height: 5,
+            ),
+            Text("GTIN: " + this.gtin.toString(),
+              style: GoogleFonts.exo2(),),
           ],
         ),
         trailing: IconButton(
@@ -58,12 +96,10 @@ class MasterDataWidget extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: IconButton(
               icon: Icon(
-              Icons.arrow_forward_ios,
-              color: Colors.black,
-            ),
-              onPressed: () {
-
-              },
+                Icons.arrow_forward_ios,
+                color: Colors.black,
+              ),
+              onPressed: () {},
             ),
           ),
         ),

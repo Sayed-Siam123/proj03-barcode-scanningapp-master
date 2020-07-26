@@ -1,26 +1,22 @@
 import 'package:app/Bloc/Sublist_bloc.dart';
 import 'package:app/Bloc/masterData_bloc.dart';
-import 'package:app/Model/RouteArgument.dart';
-import 'package:app/Model/masterdata_model.dart';
-import 'package:app/UI/Home.dart';
 import 'package:app/UI/ProductDetails.dart';
 import 'package:app/UI/ProductEditPage.dart';
 import 'package:app/UI/ProductGeneral.dart';
 import 'package:app/UI/ProductPackaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import 'Home.dart';
 
 class DetailsPage extends StatefulWidget {
-
   @override
   _DetailsPageState createState() => _DetailsPageState();
 }
 
 class _DetailsPageState extends State<DetailsPage>
     with SingleTickerProviderStateMixin {
-
-
   //TODO:: eikhane Product Details ashbe
 
   TabController _tabController;
@@ -32,47 +28,67 @@ class _DetailsPageState extends State<DetailsPage>
     super.initState();
   }
 
-//  void dispose() {
-//    // TODO: implement dispose
-//    masterdata_bloc.dispose();
-//    super.dispose();
-//  }
+  void dispose() {
+    // TODO: implement dispose
+    sublist_bloc.dispose();
+    masterdata_bloc.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Luna Rosato 2019", style: new TextStyle(color: Colors.black54),),
-        backgroundColor: Colors.white,
-        centerTitle: true,
-        elevation: 0.0,
-        bottomOpacity: 00.00,
-        leading: new IconButton(
-          icon: new Icon(Icons.arrow_back, color: Colors.black54,),
-          onPressed: () => Navigator.of(context).pushNamed('/home'),
-        ),
-        actions: <Widget>[
-          new IconButton(
-            icon: new Icon(Icons.edit, color: Colors.black54,),
-            onPressed: () {
-              print("Edit");
-              masterdata_bloc.getsinglemasterdata();
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ProductEditPage(productname: "Paisi",)));
-            }
+    return WillPopScope(
+      onWillPop: (){
+        return Navigator.push(
+            context, MaterialPageRoute(builder: (context) => HomePage()));
+      },
+      child: new Scaffold(
+        appBar: AppBar(
+          title: Text(
+            "Luna Rosato 2019",
+            style: GoogleFonts.exo2(
+              color: Colors.black,
+            ),
           ),
-        ],
-      ),
+          backgroundColor: Colors.white,
+          centerTitle: true,
+          elevation: 0.0,
+          bottomOpacity: 00.00,
+          leading: new IconButton(
+            icon: new Icon(
+              Icons.arrow_back,
+              color: Colors.black54,
+            ),
+            onPressed: () => Navigator.of(context).pushNamed('/home'),
+          ),
+          actions: <Widget>[
+            new IconButton(
+                icon: new Icon(
+                  Icons.edit,
+                  color: Colors.black54,
+                ),
+                onPressed: () {
+                  print("Edit");
+                  masterdata_bloc.getsinglemasterdata();
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ProductEditPage(
+                                productname: "Paisi",
+                              )));
+                }),
+          ],
+        ),
 
-      body: TabBarView(
-              children: [
-                new ProductGeneralPage(),
-                new ProductDetailsPage(),
-                new ProductPackagingPage(),
-              ],
-              controller: _tabController,),
+        body: TabBarView(
+
+          children: [
+            new ProductGeneralPage(),
+            new ProductDetailsPage(),
+            new ProductPackagingPage(),
+          ],
+          controller: _tabController,
+        ),
 //      body: Container(
 //        margin: EdgeInsets.all(10),
 //        child: StreamBuilder<List<SingleMasterDataModel>>(
@@ -93,27 +109,27 @@ class _DetailsPageState extends State<DetailsPage>
 //        ),
 //      ),
 
-      bottomNavigationBar: Container(
-        margin: EdgeInsets.only(bottom: 3),
-        child: TabBar(
-          indicatorWeight: 4,
-          labelStyle: TextStyle(
-            fontWeight: FontWeight.bold,
+        bottomNavigationBar: Container(
+          color: Theme.of(context).backgroundColor,
+          margin: EdgeInsets.only(bottom: 3),
+          child: TabBar(
+            indicatorWeight: 4,
+            labelStyle: GoogleFonts.exo2(
+            color: Colors.black,
+            fontWeight: FontWeight.bold
           ),
-          unselectedLabelColor: Colors.black45,
-          labelColor: Colors.black,
-          tabs: [
-            new Tab(text: "General"),
-            new Tab(
-                text: "Details"
-            ),
-            new Tab(
-                text: "Packaging"
-            )
-          ],
-          controller: _tabController,
-          indicatorColor: Colors.black,
-          indicatorSize: TabBarIndicatorSize.tab,),
+            unselectedLabelColor: Colors.black45,
+            labelColor: Colors.black,
+            tabs: [
+              new Tab(text: "General"),
+              new Tab(text: "Details"),
+              new Tab(text: "Packaging")
+            ],
+            controller: _tabController,
+            indicatorColor: Colors.black,
+            indicatorSize: TabBarIndicatorSize.tab,
+          ),
+        ),
       ),
     );
 //    return PersistentTabView(
@@ -150,7 +166,6 @@ class _DetailsPageState extends State<DetailsPage>
 //      ],
 //      );
   }
-
 
 //  ListView masterdataview(data) {
 //    return ListView.builder(

@@ -3,6 +3,7 @@ import 'package:app/Model/ManufactureModel.dart';
 import 'package:app/Model/MaterialPackModel.dart';
 import 'package:app/Model/SubCategory.dart';
 import 'package:app/Model/GetSuccess_Model.dart';
+import 'package:app/Model/UserLogin_Success_Model.dart';
 import 'package:app/Model/masterdata_model.dart';
 import 'package:app/Model/unit_model.dart';
 
@@ -42,6 +43,8 @@ class Repository {
   Future<sublist_getsuccess_model> createPackagingMaterial(String packagingmaterial) => apiprovider.createPackagingMaterial(packagingmaterial);
   Future<sublist_getsuccess_model> createCategory(String category) => apiprovider.createCategory(category);
   Future<sublist_getsuccess_model> createSubCategory(String categoryid,String subcategory) => apiprovider.createSubCategory(categoryid,subcategory);
+
+  Future<UserLogin_Success_Model> userLogin(String email,String password) => apiprovider.userLogin(email,password);
 
 
   Future<sublist_getsuccess_model> createProductMasterData(String name,String desc,String category,String subcat,String unit,String manufac,

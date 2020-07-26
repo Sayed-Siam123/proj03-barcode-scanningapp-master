@@ -11,6 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AddProductPage extends StatefulWidget {
   @override
@@ -27,7 +28,6 @@ class _AddProductPageState extends State<AddProductPage> {
   TextEditingController gtin = TextEditingController();
   TextEditingController ListPrice = TextEditingController();
 
-
   @override
   void initState() {
     // TODO: implement initState
@@ -41,7 +41,9 @@ class _AddProductPageState extends State<AddProductPage> {
       appBar: AppBar(
         title: Text(
           "Add Product",
-          style: new TextStyle(color: Colors.black54),
+          style: GoogleFonts.exo2(
+            textStyle: TextStyle(),
+          ),
         ),
         backgroundColor: Colors.white,
         centerTitle: true,
@@ -90,15 +92,9 @@ class _AddProductPageState extends State<AddProductPage> {
         ],
       ),
       body: Container(
-        height: MediaQuery
-            .of(context)
-            .size
-            .height - 180,
-        width: MediaQuery
-            .of(context)
-            .size
-            .width - 14,
-        margin: EdgeInsets.only(left: 5,top: 10,right: 5),
+        height: MediaQuery.of(context).size.height - 180,
+        width: MediaQuery.of(context).size.width - 14,
+        margin: EdgeInsets.only(left: 5, top: 10, right: 5),
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
@@ -130,18 +126,19 @@ class _AddProductPageState extends State<AddProductPage> {
 //          SizedBox(height: 12,),
 //          eleventh(),
 
-              FittedBox(
-                fit: BoxFit.fitWidth,
-                alignment: Alignment.center,
-                child: Container(
+              Container(
                   child: Padding(
                     padding: const EdgeInsets.only(left: 30.0, right: 30),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text(
-                          "Product ID:",
-                          style: TextStyle(fontSize: 20),
+                          "Product ID",
+                          style: GoogleFonts.exo2(
+                            textStyle: TextStyle(
+                              fontSize: 20,
+                            ),
+                          ),
                         ),
                         SizedBox(
                           width: 130,
@@ -156,11 +153,12 @@ class _AddProductPageState extends State<AddProductPage> {
 //                            .size
 //                            .width - 284,
                           height: 50,
-                          width: 200,
+                          width: 120,
                           child: StreamBuilder<sublist_getsuccess_model>(
                             stream: masterdata_bloc.MaxIDData,
                             builder: (context,
-                                AsyncSnapshot<sublist_getsuccess_model> snapshot) {
+                                AsyncSnapshot<sublist_getsuccess_model>
+                                    snapshot) {
                               if (snapshot.hasData) {
                                 sublist_getsuccess_model data = snapshot.data;
                                 print("Cat er Data gula:: ");
@@ -168,7 +166,11 @@ class _AddProductPageState extends State<AddProductPage> {
 
                                 return Text(
                                   data.id.toString(),
-                                  style: TextStyle(fontSize: 30),
+                                  style: GoogleFonts.exo2(
+                                    textStyle: TextStyle(
+                                      fontSize: 30,
+                                    ),
+                                  ),
                                 );
                                 //return Text(data[index].categoryName);
 
@@ -178,7 +180,7 @@ class _AddProductPageState extends State<AddProductPage> {
                                 return Text("${snapshot.error}");
                               }
 
-                              return CircularProgressIndicator();
+                              return Center(child: CircularProgressIndicator());
                             },
                           ),
                         ),
@@ -186,25 +188,22 @@ class _AddProductPageState extends State<AddProductPage> {
                     ),
                   ),
                 ),
+
+              SizedBox(
+                height: 15,
               ),
 
               FittedBox(
-                fit: BoxFit.fitWidth,
+                fit: BoxFit.fill,
                 alignment: Alignment.center,
                 child: Container(
                   child: Padding(
                     padding: const EdgeInsets.only(left: 30.0, right: 30),
                     child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(
-                            "Product Name:",
-                            style: TextStyle(fontSize: 20),
-                          ),
-                          SizedBox(
-                            width: 100,
-                          ),
-                          Container(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Container(
+                          decoration: BoxDecoration(),
 //                          height: MediaQuery
 //                              .of(context)
 //                              .size
@@ -212,19 +211,46 @@ class _AddProductPageState extends State<AddProductPage> {
 //                          width: MediaQuery
 //                              .of(context)
 //                              .size
-//                              .width - 284,
-                            height: 50,
-                            width: 200,
-                            child: TextField(
+//                              .width - 244,
+                          height: 50,
+                          width: 370,
+                          child: TextField(
                               controller: ProductName,
                               autocorrect: true,
-                              style: TextStyle(fontSize: 17),
-                              decoration: InputDecoration(hintText: 'Product Name'),
-                            ),
-                          ),
-                        ]),
+                              style: GoogleFonts.exo2(
+                                textStyle: TextStyle(
+                                  fontSize: 20,
+                                ),
+                              ),
+                              decoration: new InputDecoration(
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.blue, width: 5.0),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.black),
+                                  ),
+                                  hintStyle: GoogleFonts.exo2(
+                                    textStyle: TextStyle(
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                  labelStyle: GoogleFonts.exo2(
+                                    textStyle: TextStyle(
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                  hintText: "Enter Product name",
+                                  labelText: "Name")),
+                        )
+                      ],
+                    ),
                   ),
                 ),
+              ),
+
+              SizedBox(
+                height: 10,
               ),
 
               FittedBox(
@@ -236,14 +262,8 @@ class _AddProductPageState extends State<AddProductPage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text(
-                          "Product Description:",
-                          style: TextStyle(fontSize: 20),
-                        ),
-                        SizedBox(
-                          width: 70,
-                        ),
                         Container(
+                          decoration: BoxDecoration(),
 //                          height: MediaQuery
 //                              .of(context)
 //                              .size
@@ -251,15 +271,38 @@ class _AddProductPageState extends State<AddProductPage> {
 //                          width: MediaQuery
 //                              .of(context)
 //                              .size
-//                              .width - 284,
-                            height: 50,
-                            width: 210,
-                            child: TextField(
+//                              .width - 244,
+                          height: 50,
+                          width: 370,
+                          child: TextField(
                               controller: ProductDesc,
                               autocorrect: true,
-                              style: TextStyle(fontSize: 17),
-                              decoration: InputDecoration(hintText: 'Description'),
-                            )),
+                              style: GoogleFonts.exo2(
+                                textStyle: TextStyle(
+                                  fontSize: 20,
+                                ),
+                              ),
+                              decoration: new InputDecoration(
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.blue, width: 5.0),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.black),
+                                  ),
+                                  hintStyle: GoogleFonts.exo2(
+                                    textStyle: TextStyle(
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                  labelStyle: GoogleFonts.exo2(
+                                    textStyle: TextStyle(
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                  hintText: "Enter Product Description",
+                                  labelText: "Description")),
+                        )
                       ],
                     ),
                   ),
@@ -273,17 +316,10 @@ class _AddProductPageState extends State<AddProductPage> {
                 alignment: Alignment.center,
                 child: Container(
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 30.0, right: 30),
+                    padding: EdgeInsets.only(left: 30.0, right: 30),
                     child: Container(
                       child: Row(
                         children: <Widget>[
-                          Text(
-                            "Category:",
-                            style: TextStyle(fontSize: 20),
-                          ),
-                          SizedBox(
-                            width: 100,
-                          ),
                           Container(
 //                        height: MediaQuery
 //                            .of(context)
@@ -293,8 +329,6 @@ class _AddProductPageState extends State<AddProductPage> {
 //                            .of(context)
 //                            .size
 //                            .width - 240,
-                            height: 50,
-                            width: 200,
                             child: AddProductCategoryDropDown(),
                           ),
                         ],
@@ -303,41 +337,8 @@ class _AddProductPageState extends State<AddProductPage> {
                   ),
                 ),
               ),
-
-              FittedBox(
-                fit: BoxFit.fitWidth,
-                alignment: Alignment.center,
-                child: Container(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 30.0, right: 30),
-                    child: Container(
-                      child: Row(
-                        children: <Widget>[
-                          Text(
-                            "Sub Category:",
-                            style: TextStyle(fontSize: 20),
-                          ),
-                          SizedBox(
-                            width: 60,
-                          ),
-                          Container(
-//                          height: MediaQuery
-//                              .of(context)
-//                              .size
-//                              .height - 740,
-//                          width: MediaQuery
-//                              .of(context)
-//                              .size
-//                              .width - 240,
-                            height: 50,
-                            width: 200,
-                            child: AddProductSubCategoryDropDown(),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+              SizedBox(
+                height: 7,
               ),
 
               FittedBox(
@@ -349,13 +350,6 @@ class _AddProductPageState extends State<AddProductPage> {
                     child: Container(
                       child: Row(
                         children: <Widget>[
-                          Text(
-                            "Unit:",
-                            style: TextStyle(fontSize: 20),
-                          ),
-                          SizedBox(
-                            width: 133,
-                          ),
                           Container(
 //                          height: MediaQuery
 //                              .of(context)
@@ -365,8 +359,36 @@ class _AddProductPageState extends State<AddProductPage> {
 //                              .of(context)
 //                              .size
 //                              .width - 240,
-                            height: 50,
-                            width: 200,
+                            child: AddProductSubCategoryDropDown(),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 7,
+              ),
+
+              FittedBox(
+                fit: BoxFit.fitWidth,
+                alignment: Alignment.center,
+                child: Container(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 30.0, right: 30),
+                    child: Container(
+                      child: Row(
+                        children: <Widget>[
+                          Container(
+//                          height: MediaQuery
+//                              .of(context)
+//                              .size
+//                              .height - 740,
+//                          width: MediaQuery
+//                              .of(context)
+//                              .size
+//                              .width - 240,
                             child: AddProductUnitDropDown(),
                           ),
                         ],
@@ -376,23 +398,20 @@ class _AddProductPageState extends State<AddProductPage> {
                 ),
               ),
 
+              SizedBox(
+                height: 7,
+              ),
+
               FittedBox(
                 fit: BoxFit.fitWidth,
                 alignment: Alignment.center,
                 child: Container(
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 30.0,right: 30),
+                    padding: const EdgeInsets.only(left: 30.0, right: 30),
                     child: Container(
                       alignment: Alignment.center,
                       child: Row(
                         children: <Widget>[
-                          Text(
-                            "Manufacturer:",
-                            style: TextStyle(fontSize: 20),
-                          ),
-                          SizedBox(
-                            width: 20,
-                          ),
                           Container(
 //                          height: MediaQuery
 //                              .of(context)
@@ -402,8 +421,6 @@ class _AddProductPageState extends State<AddProductPage> {
 //                              .of(context)
 //                              .size
 //                              .width - 200,
-                            height: 50,
-                            width: 243,
                             child: AddProductManufacturerDropDown(),
                           ),
                         ],
@@ -412,6 +429,278 @@ class _AddProductPageState extends State<AddProductPage> {
                   ),
                 ),
               ),
+              SizedBox(
+                height: 10,
+              ),
+
+//              FittedBox(
+//                fit: BoxFit.fitWidth,
+//                alignment: Alignment.center,
+//                child: Container(
+//                  child: Padding(
+//                    padding: const EdgeInsets.only(left: 30.0, right: 30),
+//                    child: Row(
+//                      children: <Widget>[
+//                        Text(
+//                          "Manufacturer PN:",
+//                          style: TextStyle(fontSize: 20),
+//                        ),
+//                        SizedBox(
+//                          width: 35,
+//                        ),
+//                        Container(
+////                          height: MediaQuery
+////                              .of(context)
+////                              .size
+////                              .height - 740,
+////                          width: MediaQuery
+////                              .of(context)
+////                              .size
+////                              .width - 292,
+//                            height: 50,
+//                            width: 200,
+//                            child: TextField(
+//                              controller: manu_pn,
+//                              autocorrect: true,
+//                              style: TextStyle(fontSize: 17),
+//                              decoration: InputDecoration(hintText: ''),
+//                            )),
+//                        IconButton(
+//                          icon: new Image.asset('assets/images/barcode.png',
+//                              fit: BoxFit.contain),
+//                          tooltip: 'Scan barcode',
+//                          onPressed: barcodeScanning1,
+//                        ),
+//                      ],
+//                    ),
+//                  ),
+//                ),
+//              ),
+
+              Stack(
+                children: <Widget>[
+                  FittedBox(
+                    fit: BoxFit.fitWidth,
+                    alignment: Alignment.center,
+                    child: Container(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 30.0, right: 30),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Container(
+                              decoration: BoxDecoration(),
+//                          height: MediaQuery
+//                              .of(context)
+//                              .size
+//                              .height - 740,
+//                          width: MediaQuery
+//                              .of(context)
+//                              .size
+//                              .width - 244,
+                              height: 50,
+                              width: 370,
+                              child: TextField(
+                                  controller: manu_pn,
+                                  autocorrect: true,
+                                  style: GoogleFonts.exo2(
+                                    textStyle: TextStyle(
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                  decoration: new InputDecoration(
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.blue, width: 5.0),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.black),
+                                      ),
+                                      hintStyle: GoogleFonts.exo2(
+                                        textStyle: TextStyle(
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                      labelStyle: GoogleFonts.exo2(
+                                        textStyle: TextStyle(
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                      hintText:
+                                          "Enter or scan Manufacturer PIN",
+                                      labelText: "Manufacturer PIN",
+                                  suffixIcon: IconButton(
+                                    icon: new Image.asset('assets/images/barcode.png',
+                                        fit: BoxFit.contain),
+                                    tooltip: 'Scan barcode',
+                                    onPressed: barcodeScanning2,
+                                  ),)),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+              SizedBox(
+                height: 10,
+              ),
+
+//              FittedBox(
+//                fit: BoxFit.fitWidth,
+//                alignment: Alignment.center,
+//                child: Container(
+//                  child: Padding(
+//                    padding: const EdgeInsets.only(left: 30.0, right: 30),
+//                    child: Row(
+//                      children: <Widget>[
+//                        Text(
+//                          "GTIN:",
+//                          style: TextStyle(fontSize: 20),
+//                        ),
+//                        SizedBox(
+//                          width: 125,
+//                        ),
+//                        Container(
+////                          height: MediaQuery
+////                              .of(context)
+////                              .size
+////                              .height - 740,
+////                          width: MediaQuery
+////                              .of(context)
+////                              .size
+////                              .width - 290,
+//                            height: 50,
+//                            width: 200,
+//                            child: TextField(
+//                              controller: gtin,
+//                              autocorrect: true,
+//                              style: TextStyle(fontSize: 17),
+//                              decoration: InputDecoration(hintText: ''),
+//                            )),
+//                        IconButton(
+//                          icon: new Image.asset('assets/images/barcode.png',
+//                              fit: BoxFit.contain),
+//                          tooltip: 'Scan barcode',
+//                          onPressed: barcodeScanning2,
+//                        ),
+//                      ],
+//                    ),
+//                  ),
+//                ),
+//              ),
+
+              Stack(
+                children: <Widget>[
+                  FittedBox(
+                    fit: BoxFit.fitWidth,
+                    alignment: Alignment.center,
+                    child: Container(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 30.0, right: 30),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Container(
+                              decoration: BoxDecoration(),
+//                          height: MediaQuery
+//                              .of(context)
+//                              .size
+//                              .height - 740,
+//                          width: MediaQuery
+//                              .of(context)
+//                              .size
+//                              .width - 244,
+                              height: 50,
+                              width: 370,
+                              child: TextField(
+                                  controller: gtin,
+                                  autocorrect: true,
+                                  style: GoogleFonts.exo2(
+                                    textStyle: TextStyle(
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                  decoration: new InputDecoration(
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.blue, width: 5.0),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.black),
+                                      ),
+                                      hintStyle: GoogleFonts.exo2(
+                                        textStyle: TextStyle(
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                      labelStyle: GoogleFonts.exo2(
+                                        textStyle: TextStyle(
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                      hintText: "Enter or scan GTIN",
+                                      labelText: "GTIN",
+                                  suffixIcon: IconButton(
+                                    icon: new Image.asset('assets/images/barcode.png',
+                                        fit: BoxFit.contain),
+                                    tooltip: 'Scan barcode',
+                                    onPressed: barcodeScanning2,
+                                  ),)),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+              SizedBox(
+                height: 10,
+              ),
+
+//              FittedBox(
+//                fit: BoxFit.fitWidth,
+//                alignment: Alignment.center,
+//                child: Container(
+//                  child: Padding(
+//                    padding: const EdgeInsets.only(left: 30.0,right: 50),
+//                    child: Row(
+//                      children: <Widget>[
+//                        Text(
+//                          "ListPrice:",
+//                          style: TextStyle(fontSize: 20),
+//                        ),
+//                        SizedBox(
+//                          width: 100,
+//                        ),
+//                        Container(
+////                          height: MediaQuery
+////                              .of(context)
+////                              .size
+////                              .height - 740,
+////                          width: MediaQuery
+////                              .of(context)
+////                              .size
+////                              .width - 250,
+//                            height: 50,
+//                            width: 240,
+//                            child: TextField(
+//                              controller: ListPrice,
+//                              autocorrect: true,
+//                              style: TextStyle(fontSize: 17),
+//                              decoration: InputDecoration(hintText: ''),
+//                            )),
+//                      ],
+//                    ),
+//                  ),
+//                ),
+//              ),
 
               FittedBox(
                 fit: BoxFit.fitWidth,
@@ -420,15 +709,10 @@ class _AddProductPageState extends State<AddProductPage> {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 30.0, right: 30),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text(
-                          "Manufacturer PN:",
-                          style: TextStyle(fontSize: 20),
-                        ),
-                        SizedBox(
-                          width: 35,
-                        ),
                         Container(
+                          decoration: BoxDecoration(),
 //                          height: MediaQuery
 //                              .of(context)
 //                              .size
@@ -436,103 +720,38 @@ class _AddProductPageState extends State<AddProductPage> {
 //                          width: MediaQuery
 //                              .of(context)
 //                              .size
-//                              .width - 292,
-                            height: 50,
-                            width: 200,
-                            child: TextField(
-                              controller: manu_pn,
-                              autocorrect: true,
-                              style: TextStyle(fontSize: 17),
-                              decoration: InputDecoration(hintText: ''),
-                            )),
-                        IconButton(
-                          icon: new Image.asset('assets/images/barcode.png',
-                              fit: BoxFit.contain),
-                          tooltip: 'Scan barcode',
-                          onPressed: barcodeScanning1,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-
-              FittedBox(
-                fit: BoxFit.fitWidth,
-                alignment: Alignment.center,
-                child: Container(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 30.0, right: 30),
-                    child: Row(
-                      children: <Widget>[
-                        Text(
-                          "GTIN:",
-                          style: TextStyle(fontSize: 20),
-                        ),
-                        SizedBox(
-                          width: 125,
-                        ),
-                        Container(
-//                          height: MediaQuery
-//                              .of(context)
-//                              .size
-//                              .height - 740,
-//                          width: MediaQuery
-//                              .of(context)
-//                              .size
-//                              .width - 290,
-                            height: 50,
-                            width: 200,
-                            child: TextField(
-                              controller: gtin,
-                              autocorrect: true,
-                              style: TextStyle(fontSize: 17),
-                              decoration: InputDecoration(hintText: ''),
-                            )),
-                        IconButton(
-                          icon: new Image.asset('assets/images/barcode.png',
-                              fit: BoxFit.contain),
-                          tooltip: 'Scan barcode',
-                          onPressed: barcodeScanning2,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-
-              FittedBox(
-                fit: BoxFit.fitWidth,
-                alignment: Alignment.center,
-                child: Container(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 30.0,right: 50),
-                    child: Row(
-                      children: <Widget>[
-                        Text(
-                          "ListPrice:",
-                          style: TextStyle(fontSize: 20),
-                        ),
-                        SizedBox(
-                          width: 100,
-                        ),
-                        Container(
-//                          height: MediaQuery
-//                              .of(context)
-//                              .size
-//                              .height - 740,
-//                          width: MediaQuery
-//                              .of(context)
-//                              .size
-//                              .width - 250,
-                            height: 50,
-                            width: 240,
-                            child: TextField(
+//                              .width - 244,
+                          height: 50,
+                          width: 370,
+                          child: TextField(
                               controller: ListPrice,
                               autocorrect: true,
-                              style: TextStyle(fontSize: 17),
-                              decoration: InputDecoration(hintText: ''),
-                            )),
+                              style: GoogleFonts.exo2(
+                                textStyle: TextStyle(
+                                  fontSize: 20,
+                                ),
+                              ),
+                              decoration: new InputDecoration(
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.blue, width: 5.0),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.black),
+                                  ),
+                                  hintStyle: GoogleFonts.exo2(
+                                    textStyle: TextStyle(
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                  labelStyle: GoogleFonts.exo2(
+                                    textStyle: TextStyle(
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                  hintText: "Enter Price",
+                                  labelText: "Price")),
+                        )
                       ],
                     ),
                   ),

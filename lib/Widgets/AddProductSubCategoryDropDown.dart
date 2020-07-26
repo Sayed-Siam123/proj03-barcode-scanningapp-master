@@ -3,6 +3,7 @@ import 'package:app/Model/CatagoryModel.dart';
 import 'package:app/Model/SubCategory.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AddProductSubCategoryDropDown extends StatefulWidget {
 
@@ -14,6 +15,9 @@ class _AddProductSubCategoryDropDownState extends State<AddProductSubCategoryDro
   //List<CategoryModel> _valCategoryName = List();
 
   String _valSubCategoryName="";
+
+  SubCategoryModel subcategorySelect;
+  List<SubCategoryModel> data;
 
   @override
   void initState() {
@@ -29,39 +33,167 @@ class _AddProductSubCategoryDropDownState extends State<AddProductSubCategoryDro
         stream: sublist_bloc.allsubcategory,
         builder: (context, AsyncSnapshot<List<SubCategoryModel>> snapshot) {
           if (snapshot.hasData) {
-            List<SubCategoryModel> data = snapshot.data;
+            data = snapshot.data;
             print("Cat er Data gula:: ");
             print(data.length);
             //return masterdataview(data);
 
-            return Row(
-              mainAxisAlignment:MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                  _valSubCategoryName==""?
-                  Text("Sub Category",style: TextStyle(color: Colors.grey),):Text(_valSubCategoryName),
+//            return Row(
+//              mainAxisAlignment:MainAxisAlignment.spaceBetween,
+//              children: <Widget>[
+//                  _valSubCategoryName==""?
+//                  Text("Sub Category",style: TextStyle(color: Colors.grey),):Text(_valSubCategoryName),
+//
+//                  Container(
+//                    child: DropdownButtonHideUnderline(
+//                      child: DropdownButton(
+//                          items: data.map((value) {
+//                            return DropdownMenuItem(
+//                              child: Text(value.subCategoryName),
+//                              value: value,
+//                            );
+//                          }).toList(),
+//                          onChanged: (value) {
+//                            // _valFriends = value;
+//                            setState(() {
+//                              _valSubCategoryName = value.subCategoryName.toString(); //Untuk memberitahu _valGender bahwa isi nya akan diubah sesuai dengan value yang kita pilih
+//                            });
+//                            print("id is:"+ value.id.toString());
+//                            sublist_bloc.getSubCategoryID(value.id.toString());
+//                          }),
+//                    ),
+//                  ),
+//                ],
+//            );
+                  //return Text(data[index].categoryName);
 
-                  Container(
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton(
-                          items: data.map((value) {
-                            return DropdownMenuItem(
-                              child: Text(value.subCategoryName),
-                              value: value,
-                            );
-                          }).toList(),
-                          onChanged: (value) {
-                            // _valFriends = value;
-                            setState(() {
-                              _valSubCategoryName = value.subCategoryName.toString(); //Untuk memberitahu _valGender bahwa isi nya akan diubah sesuai dengan value yang kita pilih
-                            });
-                            print("id is:"+ value.id.toString());
-                            sublist_bloc.getSubCategoryID(value.id.toString());
-                          }),
+
+            return Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+
+//                      widget.category==null ?
+//                      Text("Category",style: TextStyle(color: Colors.black),):Text(widget.category),
+//
+//                      Container(
+//                        child: DropdownButtonHideUnderline(
+//                          child: DropdownButton(
+//                            //hint: Text("Category"),
+//                              items: data.map((value) {
+//                                return new DropdownMenuItem<CategoryModel>(
+//                                  child: Text(value.categoryName),
+//                                  value: value,
+//
+//                                );
+//                              }).toList(),
+//                              onChanged: (value) {
+//
+//                                print("value ta holo: "+ value.categoryName);
+//                                // _valFriends = value;
+//                                //_valCategoryName = value.categoryName;
+//                                setState(() {
+//                                    //_valCategoryName = value.categoryName;
+//                                  // Untuk memberitahu _valGender bahwa isi nya akan diubah sesuai dengan value yang kita pilih
+//
+//                                  widget.category = value.categoryName;
+//                                  widget.previous_id = value.id.toString();
+//
+//                                });
+////                      print("id is:"+ value.categoryName.toString());
+////                      print("id is:"+ value.id.toString());
+//                                print("CategoryID: "+widget.previous_id);
+//                                sublist_bloc.getCategoryID(widget.previous_id);
+//
+//                              }),
+//                        ),
+//
+//                      ),
+
+                  Text("Sub Category",style: GoogleFonts.exo2(
+                    textStyle: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),),
+
+
+                  SizedBox(width: 60,),
+
+
+                  new Container(
+                    padding:
+                    EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10)),
+
+                    height: 50,
+                    width: 220,
+                    child: new DropdownButton<SubCategoryModel>(
+                      isExpanded: true,
+                      icon: Icon(Icons.arrow_drop_down),
+                      iconSize: 42,
+                      underline: SizedBox(),
+                      style: GoogleFonts.exo2(
+                        textStyle: TextStyle(
+                          fontSize: 20,
+                        ),
+                      ),
+                      value: subcategorySelect,
+                      onChanged: (SubCategoryModel newValue) {
+                        FocusScope.of(context).requestFocus(FocusNode());
+                        setState(() {
+                          subcategorySelect = newValue;
+                        });
+                        print(subcategorySelect.subCategoryName);
+                        sublist_bloc.getSubCategoryID(subcategorySelect.id);
+                      },
+                      elevation: 25,
+                      items: data.map((SubCategoryModel manufac) {
+                        return new DropdownMenuItem<SubCategoryModel>(
+                          value: manufac,
+                          child: new Text(
+                            manufac.subCategoryName,
+                            style: GoogleFonts.exo2(
+                              textStyle: TextStyle(
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                        );
+                      }).toList(),
                     ),
                   ),
+
+
+//
+////                      StatefulBuilder(
+////                        builder: (context, setState) {
+////                          return Container(
+////                            margin: EdgeInsets.all(20),
+////                            child: StreamBuilder<List<SingleMasterDataModel>>(
+////                                stream: masterdata_bloc.singleMasterData,
+////                                builder: (context,
+////                                    AsyncSnapshot<List<SingleMasterDataModel>> snapshot) {
+////                                  if (snapshot.hasData) {
+////                                    List<SingleMasterDataModel> data = snapshot.data;
+////                                    print("Data gula:: ");
+////                                    print(data.length);
+////                                    return masterdataview(data);
+////                                  } else if (snapshot.hasError) {
+////                                    return Text("${snapshot.error}");
+////                                  }
+////
+////                                  return Center(child: CircularProgressIndicator());
+////                                }),
+////                          );
+////                        },
+////                      ),
+//
                 ],
+              ),
             );
-                  //return Text(data[index].categoryName);
+
 
             //TODO:: eikhan theke start hbe
 
@@ -69,7 +201,7 @@ class _AddProductSubCategoryDropDownState extends State<AddProductSubCategoryDro
             return Text("${snapshot.error}");
           }
 
-          return CircularProgressIndicator();
+          return Center(child: CircularProgressIndicator());
         },
       ),
     );

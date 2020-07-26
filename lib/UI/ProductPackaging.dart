@@ -2,6 +2,7 @@ import 'package:app/Bloc/masterData_bloc.dart';
 import 'package:app/Model/masterdata_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ProductPackagingPage extends StatefulWidget {
   @override
@@ -182,21 +183,45 @@ class _ProductPackagingPageState extends State<ProductPackagingPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text("Name:",style: TextStyle(fontSize: 20)),
+                          Text("Name:",style: GoogleFonts.exo2(
+                            color: Colors.black,
+                            fontSize: 16,
+                          ),),
                           SizedBox(height: 6,),
-                          Text("Description:",style: TextStyle(fontSize: 20)),
+                          Text("Description:",style: GoogleFonts.exo2(
+                            color: Colors.black,
+                            fontSize: 16,
+                          ),),
                           SizedBox(height: 6,),
-                          Text("Product ID:",style: TextStyle(fontSize: 20)),
+                          Text("Product ID:",style: GoogleFonts.exo2(
+                            color: Colors.black,
+                            fontSize: 16,
+                          ),),
                           Divider(),
-                          Text("Packaging weight:",style: TextStyle(fontSize: 20)),
+                          Text("Packaging weight:",style: GoogleFonts.exo2(
+                            color: Colors.black,
+                            fontSize: 16,
+                          ),),
                           SizedBox(height: 6,),
-                          Text("Material:",style: TextStyle(fontSize: 20)),
+                          Text("Material:",style: GoogleFonts.exo2(
+                            color: Colors.black,
+                            fontSize: 16,
+                          ),),
                           Divider(),
-                          Text("Length:",style: TextStyle(fontSize: 20)),
+                          Text("Length:",style: GoogleFonts.exo2(
+                            color: Colors.black,
+                            fontSize: 16,
+                          ),),
                           SizedBox(height: 6,),
-                          Text("Width:",style: TextStyle(fontSize: 20)),
+                          Text("Width:",style: GoogleFonts.exo2(
+                            color: Colors.black,
+                            fontSize: 16,
+                          ),),
                           SizedBox(height: 6,),
-                          Text("Height:",style: TextStyle(fontSize: 20)),
+                          Text("Height:",style: GoogleFonts.exo2(
+                            color: Colors.black,
+                            fontSize: 16,
+                          ),),
                         ],
                       ),
                     ),
@@ -210,22 +235,46 @@ class _ProductPackagingPageState extends State<ProductPackagingPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text(data[0].productName,style: TextStyle(fontSize: 20)),
+                            Text(data[0].productName,style: GoogleFonts.exo2(
+                              color: Colors.black,
+                              fontSize: 16,
+                            ),),
                             SizedBox(height: 6,),
-                            Text(data[0].productDescription,style: TextStyle(fontSize: 20)),
+                            Text(data[0].productDescription,style: GoogleFonts.exo2(
+                              color: Colors.black,
+                              fontSize: 16,
+                            ),),
                             SizedBox(height: 6,),
-                            Text(data[0].id,style: TextStyle(fontSize: 20)),
+                            Text(data[0].id,style: GoogleFonts.exo2(
+                              color: Colors.black,
+                              fontSize: 16,
+                            ),),
                             Divider(),
-                            Text("",style: TextStyle(fontSize: 20)),
+                            Text("",style: GoogleFonts.exo2(
+                              color: Colors.black,
+                              fontSize: 16,
+                            ),),
                             SizedBox(height: 6,),
-                            Text(""),
+                            Text("",style: GoogleFonts.exo2(
+                              color: Colors.black,
+                              fontSize: 16,
+                            ),),
                             SizedBox(height: 6,),
                             Divider(),
-                            Text("",style: TextStyle(fontSize: 20)),
+                            Text("",style: GoogleFonts.exo2(
+                              color: Colors.black,
+                              fontSize: 16,
+                            ),),
                             SizedBox(height: 6,),
-                            Text("",style: TextStyle(fontSize: 20)),
+                            Text("",style: GoogleFonts.exo2(
+                              color: Colors.black,
+                              fontSize: 16,
+                            ),),
                             SizedBox(height: 6,),
-                            Text("",style: TextStyle(fontSize: 20)),
+                            Text("",style: GoogleFonts.exo2(
+                              color: Colors.black,
+                              fontSize: 16,
+                            ),),
                           ],
                         ),
                       ),

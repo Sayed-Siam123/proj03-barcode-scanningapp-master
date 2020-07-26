@@ -8,6 +8,7 @@ import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MasterData extends StatefulWidget {
   @override
@@ -117,9 +118,18 @@ class _MasterDataState extends State<MasterData> {
       decoration: InputDecoration(
         hintText: "Search Data...",
         border: InputBorder.none,
-        hintStyle: TextStyle(color: Colors.black38),
+        hintStyle: GoogleFonts.exo2(
+      textStyle: TextStyle(
+      fontSize: 20,
+        color: Colors.black38
       ),
-      style: TextStyle(color: Colors.black, fontSize: 16.0),
+    ),
+      ),
+      style: GoogleFonts.exo2(
+    textStyle: TextStyle(
+    fontSize: 16,
+    color: Colors.black
+    ),),
       onChanged: onSearchTextChanged,
     );
   }
@@ -237,7 +247,11 @@ class _MasterDataState extends State<MasterData> {
   _buildTitle(BuildContext context) {
     return Text(
       "Master data",
-      style: new TextStyle(color: Colors.black54),
+      style: GoogleFonts.exo2(
+      textStyle: TextStyle(
+        fontSize: 20,
+        color: Colors.black
+    ),)
     );
   }
 

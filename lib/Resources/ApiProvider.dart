@@ -5,6 +5,7 @@ import 'package:app/Model/ManufactureModel.dart';
 import 'package:app/Model/MaterialPackModel.dart';
 import 'package:app/Model/SubCategory.dart';
 import 'package:app/Model/GetSuccess_Model.dart';
+import 'package:app/Model/UserLogin_Success_Model.dart';
 import 'package:app/Model/unit_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:app/Model/masterdata_model.dart';
@@ -13,12 +14,22 @@ import 'package:http/http.dart' show Client;
 import 'package:global_configuration/global_configuration.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'SharedPrefer.dart';
+
 
 
 class ApiProvider {
   Client client = Client();
 
-  String deviceID,serverIP,serverPort,serverLog;
+  SessionManager prefs =  SessionManager();
+
+  String deviceID=""
+  ,serverIP=""
+  ,serverPort=""
+  ,serverLog="";
+
+
+  String initial= "http://";
 
   final _url = "http://202.164.212.238:8055/api/products/";
 
@@ -26,21 +37,53 @@ class ApiProvider {
 
   final _updateurl = "http://202.164.212.238:8055/api/SublistPost/";
 
-  final base_url = "http://202.164.212.238:8055/api/";
+  final _base_url = "http://202.164.212.238:8055/api/";
 
-  void getinfo() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String serverip = prefs.getString('_serverip');
-    final String serverport = prefs.getString('_serverport');
+  void getIP() async {
 
-    this.serverIP = serverip;
-    this.serverPort = serverport;
+    Future<String> serverip = prefs.getAuthToken("_serverip");
+    serverip.then((data) {
+
+      print('serverip pabo');
+      print("serverip " + data.toString());
+      this.serverIP = data.toString();
+
+//      Future.delayed(const Duration(milliseconds: 1000), () {
+//
+//      });
+    },onError: (e) {
+      print(e);
+    });
+
+  }
+
+  void getPort() async {
+
+    Future<String> serverport = prefs.getAuthToken("_serverport");
+    serverport.then((data) {
+
+      print("serverport " + data.toString());
+      this.serverPort = data.toString();
+
+
+    },onError: (e) {
+      print(e);
+    });
+
+
   }
 
   Future<List<MasterDataModel>> fetchMasterData() async {
 
+
+    getIP();
+    getPort();
+    await new Future.delayed(const Duration(milliseconds: 1000));
+    //1sec delay
+
+    //then it will get data
     print("fetch from apiprovider");
-    final response = await client.get(_url);
+    final response = await client.get(initial+serverIP+":"+serverPort+"/api/products/");
 
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);
@@ -74,7 +117,11 @@ class ApiProvider {
 
   Future<List<SingleMasterDataModel>> fetchsinglemasterdata(id) async{
 
-    final response = await client.get(_url+id);
+    getIP();
+    getPort();
+    await new Future.delayed(const Duration(milliseconds: 1000));
+
+    final response = await client.get(initial+serverIP+":"+serverPort+"/api/products/"+id);
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
@@ -94,9 +141,14 @@ class ApiProvider {
   }
 
   Future<List<UnitModel>> getUnitData() async{
-    String url = "http://202.164.212.238:8055/api/Units";
+
+    getIP();
+    getPort();
+    await new Future.delayed(const Duration(milliseconds: 1000));
+
+
     print("fetch from apiprovider");
-    final response = await client.get(url);
+    final response = await client.get(initial+serverIP+":"+serverPort+"/api/Units");
 
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);
@@ -128,9 +180,14 @@ class ApiProvider {
   }
 
   Future<List<CategoryModel>> getCatagoryData() async{
-    String url = "http://202.164.212.238:8055/api/Category";
+
+    getIP();
+    getPort();
+    await new Future.delayed(const Duration(milliseconds: 1000));
+
+
     print("fetch from apiprovider");
-    final response = await client.get(url);
+    final response = await client.get(initial+serverIP+":"+serverPort+"/api/Category");
 
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);
@@ -163,9 +220,14 @@ class ApiProvider {
 
 
   Future<List<SubCategoryModel>> getSubCategoryData() async{
-    String url = "http://202.164.212.238:8055/api/SubCategory";
+
+    getIP();
+    getPort();
+    await new Future.delayed(const Duration(milliseconds: 1000));
+
+
     print("fetch from apiprovider");
-    final response = await client.get(url);
+    final response = await client.get(initial+serverIP+":"+serverPort+"/api/SubCategory");
 
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);
@@ -198,9 +260,14 @@ class ApiProvider {
 
 
   Future<List<MaterialPackModel>> getMaterialPackData() async{
-    String url = "http://202.164.212.238:8055/api/Material";
+
+    getIP();
+    getPort();
+    await new Future.delayed(const Duration(milliseconds: 1000));
+
+
     print("fetch from apiprovider");
-    final response = await client.get(url);
+    final response = await client.get(initial+serverIP+":"+serverPort+"/api/Material");
 
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);
@@ -232,9 +299,14 @@ class ApiProvider {
   }
 
   Future<List<ManufactureModel>> getmanufacData() async{
-    String url = "http://202.164.212.238:8055/api/Manufacturer";
+
+    getIP();
+    getPort();
+    await new Future.delayed(const Duration(milliseconds: 1000));
+
+
     print("fetch from apiprovider");
-    final response = await client.get(url);
+    final response = await client.get(initial+serverIP+":"+serverPort+"/api/Manufacturer");
 
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);
@@ -263,14 +335,66 @@ class ApiProvider {
     else {
       throw Exception('Failed to load jobs from API');
     }
-  } //ALL GET
+  }//ALL GET
+
+
+  //UserLogin START
+
+
+
+  Future<UserLogin_Success_Model> userLogin(email,password) async{
+
+    getIP();
+    getPort();
+    await new Future.delayed(const Duration(milliseconds: 1000));
+
+    print(email+"   "+password);
+
+    final response = await client.get(initial+serverIP+":"+serverPort+"/api/Users/"+email+"/"+password);
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+
+
+      debugPrint("From User Class:: "+json.decode(response.body).toString());
+      return UserLogin_Success_Model.fromJson(json.decode(response.body));
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load album');
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  //UserLogin END
+
 
 
   //TODO:: Create
 
   Future<sublist_getsuccess_model> createUnit(unit,unitshort) async{
 
-    final response = await client.get(_createurl+"UnitUpdate"+"/"+"0"+"/"+unit+"/"+unitshort );
+    getIP();
+    getPort();
+    await new Future.delayed(const Duration(milliseconds: 1000));
+
+    final response = await client.get(initial+serverIP+":"+serverPort+"/api/SublistPost/"+"UnitUpdate"+"/"+"0"+"/"+unit+"/"+unitshort );
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
@@ -289,7 +413,12 @@ class ApiProvider {
 
   Future<sublist_getsuccess_model> createPackagingMaterial(packagingmaterial) async{
 
-    final response = await client.get(_createurl+"MaterialUpdate"+"/"+"0"+"/"+packagingmaterial );
+
+    getIP();
+    getPort();
+    await new Future.delayed(const Duration(milliseconds: 1000));
+
+    final response = await client.get(initial+serverIP+":"+serverPort+"/api/SublistPost/"+"MaterialUpdate"+"/"+"0"+"/"+packagingmaterial );
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
@@ -308,7 +437,11 @@ class ApiProvider {
 
   Future<sublist_getsuccess_model> createManufacturer(manufacturer) async{
 
-    final response = await client.get(_createurl+"ManufacturerUpdate"+"/"+"0"+"/"+manufacturer );
+    getIP();
+    getPort();
+    await new Future.delayed(const Duration(milliseconds: 1000));
+
+    final response = await client.get(initial+serverIP+":"+serverPort+"/api/SublistPost/"+"ManufacturerUpdate"+"/"+"0"+"/"+manufacturer);
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
@@ -326,7 +459,11 @@ class ApiProvider {
 
   Future<sublist_getsuccess_model> createCategory(category) async{
 
-    final response = await client.get(_createurl+"CategoryUpdate"+"/"+"0"+"/"+category );
+    getIP();
+    getPort();
+    await new Future.delayed(const Duration(milliseconds: 1000));
+
+    final response = await client.get(initial+serverIP+":"+serverPort+"/api/SublistPost/"+"CategoryUpdate"+"/"+"0"+"/"+category );
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
@@ -345,7 +482,11 @@ class ApiProvider {
 
   Future<sublist_getsuccess_model> createSubCategory(categoryid,subcategory) async{
 
-    final response = await client.get(_createurl+"SubCategoryUpdate"+"/"+"0"+"/"+categoryid+"/"+subcategory);
+    getIP();
+    getPort();
+    await new Future.delayed(const Duration(milliseconds: 1000));
+
+    final response = await client.get(initial+serverIP+":"+serverPort+"/api/SublistPost/"+"SubCategoryUpdate"+"/"+"0"+"/"+categoryid+"/"+subcategory);
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
@@ -364,7 +505,11 @@ class ApiProvider {
 
   Future<sublist_getsuccess_model> getMaxIDData() async{
 
-    final response = await client.get(base_url+"ProductUpdate"+"/"+"GetMaxid");
+    getIP();
+    getPort();
+    await new Future.delayed(const Duration(milliseconds: 1000));
+
+    final response = await client.get(initial+serverIP+":"+serverPort+"/api/"+"ProductUpdate"+"/"+"GetMaxid");
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
@@ -382,7 +527,11 @@ class ApiProvider {
 
   Future<sublist_getsuccess_model> createProductMasterData(name, desc, category, subcat, unit, manufac, manu_pn, gtin, listprice) async{
 
-    final response = await client.get(base_url+"ProductUpdate/SubmitData"+"/"+"0"+"/"+name+"/"+desc+"/"+manufac+"/"+category+"/"+subcat+"/"+unit+"/"+manu_pn+"/"+gtin+"/"+listprice);
+    getIP();
+    getPort();
+    await new Future.delayed(const Duration(milliseconds: 1000));
+
+    final response = await client.get(initial+serverIP+":"+serverPort+"/api/"+"ProductUpdate/SubmitData"+"/"+"0"+"/"+name+"/"+desc+"/"+manufac+"/"+category+"/"+subcat+"/"+unit+"/"+manu_pn+"/"+gtin+"/"+listprice);
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
@@ -400,7 +549,11 @@ class ApiProvider {
 
   Future<sublist_getsuccess_model> updateProductMasterData(id,name, desc, category, subcat, unit, manufac, manu_pn, gtin, listprice) async{
 
-    final response = await client.get(base_url+"ProductUpdate/SubmitData"+"/"+id+"/"+name+"/"+desc+"/"+manufac+"/"+category+"/"+subcat+"/"+unit+"/"+manu_pn+"/"+gtin+"/"+listprice);
+    getIP();
+    getPort();
+    await new Future.delayed(const Duration(milliseconds: 1000));
+
+    final response = await client.get(initial+serverIP+":"+serverPort+"/api/"+"ProductUpdate/SubmitData"+"/"+id+"/"+name+"/"+desc+"/"+manufac+"/"+category+"/"+subcat+"/"+unit+"/"+manu_pn+"/"+gtin+"/"+listprice);
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
@@ -415,6 +568,20 @@ class ApiProvider {
       throw Exception('Failed to load album');
     }
   }
+
+
+  void putShared(String key, String val) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(key, val);
+  }
+
+  Future getShared(String key) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String val = prefs.getString(key);
+    return val;
+  }
+
+
 }
 
   //print(GlobalConfiguration().getString("key1"));

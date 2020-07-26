@@ -1,7 +1,6 @@
-import 'package:beauty_textfield/beauty_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ConnectionSettingsPage extends StatefulWidget {
@@ -10,15 +9,14 @@ class ConnectionSettingsPage extends StatefulWidget {
 }
 
 class _ConnectionSettingsPageState extends State<ConnectionSettingsPage> {
+  String deviceid, server_ip, server_log, server_port;
 
-  String deviceId,
-      serverip,
-      serverlog,
-      serverport = "";
-
+  TextEditingController device_id = new TextEditingController();
+  TextEditingController serverip = new TextEditingController();
+  TextEditingController serverlog = new TextEditingController();
+  TextEditingController serverport = new TextEditingController();
 
   String data = "";
-
 
   String _deviceid = "_deviceid";
   String _serverip = "_serverip";
@@ -42,7 +40,6 @@ class _ConnectionSettingsPageState extends State<ConnectionSettingsPage> {
 //    setData();
   }
 
-
 //  Future<bool> saveData() async {
 //    SharedPreferences preferences = await SharedPreferences.getInstance();
 //    return await preferences.setString(_deviceid, deviceId.toString());
@@ -61,14 +58,15 @@ class _ConnectionSettingsPageState extends State<ConnectionSettingsPage> {
 //    });
 //  }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: Text(
             "Connection Settings",
-            style: new TextStyle(color: Colors.black54),
+            style: GoogleFonts.exo2(
+              textStyle: TextStyle(color: Theme.of(context).accentColor),
+            ),
           ),
           backgroundColor: Colors.white,
           centerTitle: true,
@@ -84,177 +82,451 @@ class _ConnectionSettingsPageState extends State<ConnectionSettingsPage> {
             },
           ),
         ),
-        body: Container(child: LayoutBuilder(
-            builder: (BuildContext context,
-                BoxConstraints viewportConstraints) {
-              return SingleChildScrollView(
-                child: Column(
-                  children: [
-                    //  Flexible(
-                    Container(
-                      width: 500.00,
-                      padding: EdgeInsets.all(10.0),
-                      child: Text(
-                        "Change your settings",
-                        style: TextStyle(color: Colors.black54, fontSize: 16),
-                      ),
+        body: Container(child: LayoutBuilder(builder:
+            (BuildContext context, BoxConstraints viewportConstraints) {
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                //  Flexible(
+                Container(
+                  width: MediaQuery.of(context).size.width - 30,
+                  padding: EdgeInsets.only(left: 15.0, top: 10, bottom: 10),
+                  child: Text(
+                    "Change Your Settings",
+                    style: GoogleFonts.exo2(
+                      textStyle: TextStyle(
+                          fontSize: 20, color: Theme.of(context).accentColor),
                     ),
-                    Container(
-                        padding: EdgeInsets.all(10.0),
-                        child: Card(
-                          child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                ExpansionTile(
-                                  backgroundColor: Colors.black,
-                                  leading: Icon(Icons.link),
-                                  title: Text('Connection settings'),
-                                  trailing: IconButton(
-                                      icon: Icon(Icons.arrow_drop_down_circle),
-                                      onPressed: null),
-                                  children: <Widget>[
+                  ),
+                ),
+                Container(
+                    padding:
+                        EdgeInsets.all(MediaQuery.of(context).size.width - 410),
+                    child: Card(
+                      child: Column(mainAxisSize: MainAxisSize.min, children: <
+                          Widget>[
+                        ExpansionTile(
+                          backgroundColor: Colors.white,
+                          leading: Icon(Icons.link),
+                          title: Text(
+                            'Connection settings',
+                            style: GoogleFonts.exo2(
+                              textStyle: TextStyle(
+                                fontSize: 18,
+                              ),
+                            ),
+                          ),
+                          trailing: IconButton(
+                              icon: Icon(Icons.arrow_drop_down_circle),
+                              onPressed: null),
+                          children: <Widget>[
+                            FutureBuilder(
+                                future: getShared(_deviceid),
+                                initialData: false,
+                                builder: (context, snapshot) {
+//                                          return BeautyTextfield(
+//                                            width: double.maxFinite,
+//                                            height: 50.00,
+//                                            duration: Duration(milliseconds: 300),
+//                                            inputType: TextInputType.text,
+//                                            prefixIcon: Icon(
+//                                                Icons.perm_device_information),
+//                                            placeholder: snapshot.data==null?"Device ID":snapshot.data.toString(),
+//                                            onTap: () {
+//                                              print('Click1');
+//                                            },
+//                                            onSubmitted: (data) {
+//                                              //print(data);
+//
+//                                              setState(() {
+//                                                this.deviceId = data;
+//                                                putShared(_deviceid, this.deviceId);
+//                                                print(this.deviceId);
+//                                              });
+//                                            },
+//                                          );
 
-                                    FutureBuilder(
-                                        future: getShared(_deviceid),
-                                        initialData: false,
-                                        builder: (context, snapshot) {
-
-
-                                          return BeautyTextfield(
-                                            width: double.maxFinite,
-                                            height: 50.00,
-                                            duration: Duration(milliseconds: 300),
-                                            inputType: TextInputType.text,
+                                  return Container(
+                                    height: 58,
+                                    width:
+                                        MediaQuery.of(context).size.width - 87,
+                                    alignment: Alignment.center,
+                                    margin: const EdgeInsets.only(
+                                        top: 20, left: 13, right: 10),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.5),
+                                          spreadRadius: 2,
+                                          blurRadius: 5,
+                                          offset: Offset(0, 3),
+                                        ),
+                                      ],
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(left: 8.0),
+                                      child: TextField(
+                                          controller: device_id,
+                                          autocorrect: true,
+                                          style: GoogleFonts.exo2(
+                                            textStyle: TextStyle(
+                                              fontSize: 20,
+                                            ),
+                                          ),
+                                          decoration: new InputDecoration(
+                                            border: InputBorder.none,
+                                            focusedBorder: InputBorder.none,
+                                            enabledBorder: InputBorder.none,
+                                            errorBorder: InputBorder.none,
+                                            disabledBorder: InputBorder.none,
+                                            hintStyle: GoogleFonts.exo2(
+                                              textStyle: TextStyle(
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                            labelStyle: GoogleFonts.exo2(
+                                              textStyle: TextStyle(
+                                                fontSize: 16,
+                                              ),
+                                            ),
                                             prefixIcon: Icon(
                                                 Icons.perm_device_information),
-                                            placeholder: snapshot.data==null?"Device ID":snapshot.data.toString(),
-                                            onTap: () {
-                                              print('Click1');
-                                            },
-                                            onSubmitted: (data) {
-                                              //print(data);
-
-                                              setState(() {
-                                                this.deviceId = data;
-                                                putShared(_deviceid, this.deviceId);
-                                                print(this.deviceId);
-                                              });
-                                            },
-                                          );
-
-
+                                            hintText: snapshot.data == null
+                                                ? "Device ID"
+                                                : snapshot.data.toString(),
+                                          )),
+                                    ),
+                                  );
 
 //                                          return Text(
 //                                            snapshot.data.toString()
 //                                          );
-                                        }),
+                                }),
+                            FutureBuilder(
+                                future: getShared(_serverip),
+                                initialData: false,
+                                builder: (context, snapshot) {
+//                                          return BeautyTextfield(
+//                                            width: double.maxFinite,
+//                                            height: 50.00,
+//                                            duration: Duration(milliseconds: 300),
+//                                            inputType: TextInputType.text,
+//                                            prefixIcon: Icon(
+//                                                Icons.perm_device_information),
+//                                            placeholder: snapshot.data==null?"Server -IP/Name":snapshot.data.toString(),
+//                                            onTap: () {
+//                                              print('Click1');
+//                                            },
+//                                            onSubmitted: (data) {
+//                                              //print(data);
+//
+//                                              setState(() {
+//                                                this.serverip = data;
+//                                                putShared(_serverip, this.serverip);
+//                                                print(this.serverip);
+//                                              });
+//                                            },
+//                                          );
 
-
-                                    FutureBuilder(
-                                        future: getShared(_serverip),
-                                        initialData: false,
-                                        builder: (context, snapshot) {
-
-
-                                          return BeautyTextfield(
-                                            width: double.maxFinite,
-                                            height: 50.00,
-                                            duration: Duration(milliseconds: 300),
-                                            inputType: TextInputType.text,
-                                            prefixIcon: Icon(
-                                                Icons.perm_device_information),
-                                            placeholder: snapshot.data==null?"Server -IP/Name":snapshot.data.toString(),
-                                            onTap: () {
-                                              print('Click1');
-                                            },
-                                            onSubmitted: (data) {
-                                              //print(data);
-
-                                              setState(() {
-                                                this.serverip = data;
-                                                putShared(_serverip, this.serverip);
-                                                print(this.serverip);
-                                              });
-                                            },
-                                          );
-
-
+                                  return Container(
+                                    height: 58,
+                                    width:
+                                        MediaQuery.of(context).size.width - 87,
+                                    alignment: Alignment.center,
+                                    margin: const EdgeInsets.only(
+                                        top: 10, left: 13, right: 10),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.5),
+                                          spreadRadius: 2,
+                                          blurRadius: 5,
+                                          offset: Offset(0, 3),
+                                        ),
+                                      ],
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(left: 8.0),
+                                      child: TextField(
+                                          controller: serverip,
+                                          autocorrect: true,
+                                          style: GoogleFonts.exo2(
+                                            textStyle: TextStyle(
+                                              fontSize: 20,
+                                            ),
+                                          ),
+                                          decoration: new InputDecoration(
+                                            prefixIcon:
+                                                Icon(Icons.confirmation_number),
+                                            border: InputBorder.none,
+                                            focusedBorder: InputBorder.none,
+                                            enabledBorder: InputBorder.none,
+                                            errorBorder: InputBorder.none,
+                                            disabledBorder: InputBorder.none,
+                                            hintStyle: GoogleFonts.exo2(
+                                              textStyle: TextStyle(
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                            labelStyle: GoogleFonts.exo2(
+                                              textStyle: TextStyle(
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                            hintText: snapshot.data == null
+                                                ? "Server -IP/Name"
+                                                : snapshot.data.toString(),
+                                          )),
+                                    ),
+                                  );
 
 //                                          return Text(
 //                                            snapshot.data.toString()
 //                                          );
-                                        }),
+                                }),
+                            FutureBuilder(
+                                future: getShared(_serverport),
+                                initialData: false,
+                                builder: (context, snapshot) {
+                                  return Container(
+                                    height: 58,
+                                    width:
+                                        MediaQuery.of(context).size.width - 87,
+                                    alignment: Alignment.center,
+                                    margin: const EdgeInsets.only(
+                                        top: 10, left: 13, right: 10),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.5),
+                                          spreadRadius: 2,
+                                          blurRadius: 5,
+                                          offset: Offset(0, 3),
+                                        ),
+                                      ],
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(left: 8.0),
+                                      child: TextField(
+                                          controller: serverport,
+                                          autocorrect: true,
+                                          style: GoogleFonts.exo2(
+                                            textStyle: TextStyle(
+                                              fontSize: 20,
+                                            ),
+                                          ),
+                                          decoration: new InputDecoration(
+                                            prefixIcon:
+                                                Icon(Icons.label_important),
+                                            border: InputBorder.none,
+                                            focusedBorder: InputBorder.none,
+                                            enabledBorder: InputBorder.none,
+                                            errorBorder: InputBorder.none,
+                                            disabledBorder: InputBorder.none,
+                                            hintStyle: GoogleFonts.exo2(
+                                              textStyle: TextStyle(
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                            labelStyle: GoogleFonts.exo2(
+                                              textStyle: TextStyle(
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                            hintText: snapshot.data == null
+                                                ? "Server port"
+                                                : snapshot.data.toString(),
+                                          )),
+                                    ),
+                                  );
 
-                                    FutureBuilder(
-                                        future: getShared(_serverport),
-                                        initialData: false,
-                                        builder: (context, snapshot) {
-
-
-                                          return BeautyTextfield(
-                                            width: double.maxFinite,
-                                            height: 50.00,
-                                            duration: Duration(milliseconds: 300),
-                                            inputType: TextInputType.text,
-                                            prefixIcon: Icon(
-                                                Icons.perm_device_information),
-                                            placeholder: snapshot.data==null?"Server port":snapshot.data.toString(),
-                                            onTap: () {
-                                              print('Click1');
-                                            },
-                                            onSubmitted: (data) {
-                                              //print(data);
-
-                                              setState(() {
-                                                this.serverport = data;
-                                                putShared(_serverport, this.serverport);
-                                                print(this.serverport);
-                                              });
-                                            },
-                                          );
-
-
+//                                          return BeautyTextfield(
+//                                            width: double.maxFinite,
+//                                            height: 50.00,
+//                                            duration: Duration(milliseconds: 300),
+//                                            inputType: TextInputType.text,
+//                                            prefixIcon: Icon(
+//                                                Icons.perm_device_information),
+//                                            placeholder: snapshot.data==null?"Server port":snapshot.data.toString(),
+//                                            onTap: () {
+//                                              print('Click1');
+//                                            },
+//                                            onSubmitted: (data) {
+//                                              //print(data);
+//
+//                                              setState(() {
+//                                                this.serverport = data;
+//                                                putShared(_serverport, this.serverport);
+//                                                print(this.serverport);
+//                                              });
+//                                            },
+//                                          );
 
 //                                          return Text(
 //                                            snapshot.data.toString()
 //                                          );
-                                        }),
+                                }),
+                            FutureBuilder(
+                                future: getShared(_serverlog),
+                                initialData: false,
+                                builder: (context, snapshot) {
+//                                          return BeautyTextfield(
+//                                            width: double.maxFinite,
+//                                            height: 50.00,
+//                                            duration: Duration(milliseconds: 300),
+//                                            inputType: TextInputType.text,
+//                                            prefixIcon: Icon(
+//                                                Icons.perm_device_information),
+//                                            placeholder: snapshot.data==null?"Server Log":snapshot.data.toString(),
+//                                            onTap: () {
+//                                              print('Click1');
+//                                            },
+//                                            onSubmitted: (data) {
+//                                              //print(data);
+//
+//                                              setState(() {
+//                                                this.serverlog = data;
+//                                                putShared(_serverlog, this.serverlog);
+//                                                print(this.serverlog);
+//                                              });
+//                                            },
+//                                          );
 
-                                    FutureBuilder(
-                                        future: getShared(_serverlog),
-                                        initialData: false,
-                                        builder: (context, snapshot) {
-                                          return BeautyTextfield(
-                                            width: double.maxFinite,
-                                            height: 50.00,
-                                            duration: Duration(milliseconds: 300),
-                                            inputType: TextInputType.text,
-                                            prefixIcon: Icon(
-                                                Icons.perm_device_information),
-                                            placeholder: snapshot.data==null?"Server Log":snapshot.data.toString(),
-                                            onTap: () {
-                                              print('Click1');
-                                            },
-                                            onSubmitted: (data) {
-                                              //print(data);
-
-                                              setState(() {
-                                                this.serverlog = data;
-                                                putShared(_serverlog, this.serverlog);
-                                                print(this.serverlog);
-                                              });
-                                            },
-                                          );
-
-
+                                  return Container(
+                                    height: 58,
+                                    width:
+                                        MediaQuery.of(context).size.width - 87,
+                                    alignment: Alignment.center,
+                                    margin: const EdgeInsets.only(
+                                        top: 10, left: 13, right: 10),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.5),
+                                          spreadRadius: 2,
+                                          blurRadius: 5,
+                                          offset: Offset(0, 3),
+                                        ),
+                                      ],
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(left: 8.0),
+                                      child: TextField(
+                                          controller: serverlog,
+                                          autocorrect: true,
+                                          style: GoogleFonts.exo2(
+                                            textStyle: TextStyle(
+                                              fontSize: 20,
+                                            ),
+                                          ),
+                                          decoration: new InputDecoration(
+                                            prefixIcon: Icon(Icons.launch),
+                                            border: InputBorder.none,
+                                            focusedBorder: InputBorder.none,
+                                            enabledBorder: InputBorder.none,
+                                            errorBorder: InputBorder.none,
+                                            disabledBorder: InputBorder.none,
+                                            hintStyle: GoogleFonts.exo2(
+                                              textStyle: TextStyle(
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                            labelStyle: GoogleFonts.exo2(
+                                              textStyle: TextStyle(
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                            hintText: snapshot.data == null
+                                                ? "Server Log"
+                                                : snapshot.data.toString(),
+                                          )),
+                                    ),
+                                  );
 
 //                                          return Text(
 //                                            snapshot.data.toString()
 //                                          );
-                                        }),
-
-                                  ],
+                                }),
+                            SizedBox(
+                              height: 30,
+                            ),
+                            Container(
+                              height: 40,
+                              width: MediaQuery.of(context).size.width-90,
+                              child: RaisedButton(
+                                child: Text(
+                                  "SAVE",
+                                  style: GoogleFonts.exo2(
+                                    textStyle: TextStyle(
+                                      fontSize: 18,
+                                    ),
+                                  ),
                                 ),
+                                color: Theme.of(context).buttonColor,
+                                textColor: Colors.white,
+                                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                onPressed: () {
+                                  //print(device_id.text);
+
+                                  if (device_id.text.isNotEmpty) {
+                                    print(device_id.text);
+
+                                    setState(() {
+                                      deviceid = device_id.text;
+                                    });
+
+                                    putShared(
+                                        _deviceid, device_id.text.toString());
+                                    device_id.text = "";
+                                  }
+
+                                  if (serverip.text.isNotEmpty) {
+                                    print(serverip.text);
+                                    setState(() {
+                                      server_ip = serverip.text;
+                                    });
+                                    putShared(
+                                        _serverip, serverip.text.toString());
+                                    serverip.text = "";
+                                  }
+
+                                  if (serverport.text.isNotEmpty) {
+                                    print(serverport.text);
+                                    setState(() {
+                                      server_port = serverport.text;
+                                    });
+                                    putShared(_serverport,
+                                        serverport.text.toString());
+                                    serverport.text = "";
+                                  }
+
+                                  if (serverlog.text.isNotEmpty) {
+                                    print(serverlog.text);
+
+                                    setState(() {
+                                      server_log = serverlog.text;
+                                    });
+
+                                    putShared(
+                                        _serverlog, serverlog.text.toString());
+                                    serverlog.text = "";
+                                  }
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                          ],
+                        ),
 //                                Row(
 //                                  mainAxisAlignment: MainAxisAlignment.end,
 //                                  children: <Widget>[
@@ -271,25 +543,16 @@ class _ConnectionSettingsPageState extends State<ConnectionSettingsPage> {
 //////                                          );
 ////                                        }),
 //
-////                                    SizedBox(width: 5,),
 ////
 //
 //                                  ],
 //                                ),
-                              ]
-                          ),
-                        )
-
-                    ),
-
-                  ],
-
-                ),
-              );
-            }
-        )
-        )
-    );
+                      ]),
+                    )),
+              ],
+            ),
+          );
+        })));
   }
 
   void putShared(String key, String val) async {

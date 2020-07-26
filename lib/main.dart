@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:app/ColorLibrary/HexColor.dart';
 import 'package:app/Model/RouteArgument.dart';
 import 'package:app/UI/Home.dart';
 import 'package:app/UI/MasterData.dart';
@@ -34,11 +35,27 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
+
+  Color _background = new HexColor("#F2F2F3");
+  Color _font = new HexColor("#4F4F4F");
+  Color _floatbuttoncolor = new HexColor("#828282");
+
+
+
+
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
       debugShowCheckedModeBanner: false,
+
+
+      theme: ThemeData(
+        backgroundColor: _background,
+        accentColor: _font,
+        buttonColor: _floatbuttoncolor,
+      ),
 
 
       routes: <String, WidgetBuilder>{

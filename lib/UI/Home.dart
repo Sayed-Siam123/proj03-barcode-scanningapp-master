@@ -7,6 +7,7 @@ import 'package:app/Widgets/SystemSettings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -39,13 +40,23 @@ class _HomePageState extends State<HomePage> {
           padding: EdgeInsets.zero,
           children: <Widget>[
             DrawerHeader(
-              child: Text('App name'),
+              child: Text('App name',style: GoogleFonts.exo2(
+                textStyle: TextStyle(
+                  fontSize: 18,
+                  color: Colors.black,
+                ),
+              ),),
               decoration: BoxDecoration(
                 color: Colors.amberAccent,
               ),
             ),
             ListTile(
-              title: Text('System setting'),
+              title: Text('System setting',style: GoogleFonts.exo2(
+                textStyle: TextStyle(
+                  fontSize: 20,
+                  color: Colors.black,
+                ),
+              ),),
               trailing: new Icon(Icons.arrow_forward),
               onTap: () {
                 // Update the state of the app.
@@ -57,7 +68,12 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             ListTile(
-              title: Text('Master data'),
+              title: Text('Master data',style: GoogleFonts.exo2(
+                textStyle: TextStyle(
+                  fontSize: 20,
+                  color: Colors.black,
+                ),
+              ),),
               trailing: new Icon(Icons.arrow_forward),
               onTap: () {
                 // Update the state of the app.
@@ -69,14 +85,24 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             Divider(),
-            Text("Version 1.0.1"),
+            Text("Version 1.0.1",style: GoogleFonts.exo2(
+              textStyle: TextStyle(
+                fontSize: 20,
+                color: Colors.black,
+              ),
+            ),),
           ],
         ),
 
       ),
 
       appBar: AppBar(
-        title: Text("Home", style: new TextStyle(color: Colors.black54),),
+        title: Text("Home", style: GoogleFonts.exo2(
+          textStyle: TextStyle(
+            fontSize: 20,
+            color: Colors.black54,
+          ),
+        ),),
         backgroundColor: Colors.white,
         centerTitle: true,
         elevation: 5.0,
@@ -101,17 +127,37 @@ class _HomePageState extends State<HomePage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Confirm'),
-          content: Text('Do you want to exit the App'),
+          title: Text('Confirm',style: GoogleFonts.exo2(
+            textStyle: TextStyle(
+              fontSize: 20,
+              color: Colors.black,
+            ),
+          ),),
+          content: Text('Do you want to exit the App',style: GoogleFonts.exo2(
+            textStyle: TextStyle(
+              fontSize: 20,
+              color: Colors.black,
+            ),
+          ),),
           actions: <Widget>[
             FlatButton(
-              child: Text('No'),
+              child: Text('No',style: GoogleFonts.exo2(
+                textStyle: TextStyle(
+                  fontSize: 20,
+                  color: Colors.blue,
+                ),
+              ),),
               onPressed: () {
                 Navigator.of(context).pop(false); //Will not exit the App
               },
             ),
             FlatButton(
-              child: Text('Yes'),
+              child: Text('Yes',style: GoogleFonts.exo2(
+                textStyle: TextStyle(
+                  fontSize: 20,
+                  color: Colors.blue,
+                ),
+              ),),
               onPressed: () {
                 //Navigator.of(context).pop(true); // Will exit the App
                 SystemNavigator.pop();

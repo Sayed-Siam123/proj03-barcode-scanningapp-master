@@ -1,5 +1,8 @@
 import 'dart:convert';
 
+import 'package:app/Bloc/user_bloc.dart';
+import 'package:app/Model/GetSuccess_Model.dart';
+import 'package:app/Model/UserLogin_Success_Model.dart';
 import 'package:app/UI/Home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,150 +18,11 @@ class LoginWidget extends StatefulWidget {
 class _LoginWidgetState extends State<LoginWidget> {
   @override
 
-  bool visible = false ;
-  String fontname_lato= "Lato";
-  String fontname_popins= "Popins";
+  bool loginPress = false ;
 
   // Getting value from TextField widget.
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-
-  Future userLogin() async{
-//
-//    String deviceId,
-//        serverip,
-//        serverlog,
-//        serverport = "";
-//
-//
-//    String data = "";
-//
-//
-//    String _deviceid = "_deviceid";
-//    String _serverip = "_serverip";
-//    String _serverport = "_serverport";
-//    String _serverlog = "_serverlog";
-//
-//    // Showing CircularProgressIndicator.
-//    setState(() {
-//      visible = true ;
-//    });
-//
-//    // Getting value from Controller
-//    String email = emailController.text;
-//    String password = passwordController.text;
-//
-//
-//    // ignore: missing_return
-//
-//
-//    );
-//
-//
-//
-//    // SERVER LOGIN API URL
-//    //var url = 'https://flutter-examples.000webhostapp.com/login_user.php';
-//    var url = 'http://202.164.212.238:8055/api/Users/'+email+'/'+password;
-//
-//    // Store all data with Param Name.
-////    var data = {'email': email, 'password' : password};
-////
-////    // Starting Web API Call.
-//
-//    final response = await http.get(url);
-//    if (response.statusCode == 200) {
-//      print(json.decode(response.body));
-//
-//      if(json.decode(response.body)==true){
-//
-//      }
-//
-//      else{
-//        print("Ashe nai");
-//      }
-//
-//    } else {
-//      throw Exception('Failed to load masterdata from API');
-//    }
-//    // Getting Server response into variable.
-//    //var message = jsonDecode(response.body);
-//
-//
-//    void putShared(String key, String val) async {
-//      SharedPreferences prefs = await SharedPreferences.getInstance();
-//      prefs.setString(key, val);
-//    }
-//
-//    Future getShared(String key) async {
-//      SharedPreferences prefs = await SharedPreferences.getInstance();
-//      String val = prefs.getString(key);
-//      return val;
-//    }
-
-
-//
-//    // SERVER LOGIN API URL
-//    //var url = 'https://flutter-examples.000webhostapp.com/login_user.php';
-//    var url = 'http://localhost:8080/flutterlogin/login_user.php';
-//
-//    // Store all data with Param Name.
-//    var data = {'email': email, 'password' : password};
-//
-//    // Starting Web API Call.
-//
-//    var response = await http.post(url, body: json.encode(data));
-//
-//    // Getting Server response into variable.
-//    var message = jsonDecode(response.body);
-//
-//    // If the Response Message is Matched.
-//    if(message == 'Login Matched')
-//    {
-//
-//      // Hiding the CircularProgressIndicator.
-//      setState(() {
-//        visible = false;
-//      });
-//
-//      // Navigate to Profile Screen & Sending Email to Next Screen.
-//      Navigator.push(
-//          context,
-//          MaterialPageRoute(builder: (context) => HomePage())
-//      );
-//    }else{
-//
-//      // If Email or Password did not Matched.
-//      // Hiding the CircularProgressIndicator.
-//
-//      //Bypass login  -----------development purpose only
-//      Navigator.push(
-//          context,
-//          MaterialPageRoute(builder: (context) => HomePage())
-//      );
-//
-//      setState(() {
-//        visible = false;
-//      });
-//
-//      // Showing Alert Dialog with Response JSON Message.
-//      showDialog(
-//        context: context,
-//        builder: (BuildContext context) {
-//          return AlertDialog(
-//            title: new Text(message),
-//            actions: <Widget>[
-//              FlatButton(
-//                child: new Text("OK"),
-//                onPressed: () {
-//                  Navigator.of(context).pop();
-//                },
-//              ),
-//            ],
-//          );
-//        },
-//      );}
-//
-  }
 
 
 
@@ -170,14 +34,12 @@ class _LoginWidgetState extends State<LoginWidget> {
               children: <Widget>[
 
                 Padding(
-                    padding: const EdgeInsets.all(30.0),
+                    padding: EdgeInsets.all(10),
                     child: Text('Sign in',
 
-                      style: GoogleFonts.lato(
-                        textStyle: TextStyle(color: Colors.black54,
-                            letterSpacing: .5,
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold),
+                      style: GoogleFonts.exo2(
+                        fontSize: 35,
+                        textStyle: TextStyle(color: Theme.of(context).accentColor),
                       ),
 
 
@@ -185,67 +47,197 @@ class _LoginWidgetState extends State<LoginWidget> {
                 ),
 
                 Container(
-                  width: 400.00,
+                  padding: EdgeInsets.all(10),
+                  child: new Text("Please fill out the below fields to login",
+                    style: GoogleFonts.exo2(
+                      fontSize: 17,
+                      textStyle: TextStyle(color: Theme.of(context).accentColor),
+                    ),),
+
+                ),
+
+
+                SizedBox(
+                  height: 70,
+                ),
+
+
+                Container(
+                  height: 58,
+                  width:
+                  MediaQuery.of(context).size.width - 70,
                   alignment: Alignment.center,
-                  padding: EdgeInsets.all(10.00),
-                  child: new Text("Please fill out the below fields to login"),
-
-                ),
-
-                Divider(),
-
-                Container(
-                    width: 280,
-                    padding: EdgeInsets.all(10.0),
-                    child: TextField(
-                      autocorrect: true,
-                      controller: emailController,
-                      decoration: InputDecoration(
-                          hintText: 'Enter Your Email Here'),
-                    )
-                ),
-
-                Container(
-                    width: 280,
-                    padding: EdgeInsets.all(10.0),
-                    child: TextField(
-                      autocorrect: true,
-                      obscureText: true,
-                      controller: passwordController,
-                      decoration: InputDecoration(
-                          hintText: 'Enter Your Password Here'),
-                    )
-                ),
-                FlatButton(
-
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0),
-                        side: BorderSide(color: Colors.black)
-                    ),
+                  margin: const EdgeInsets.only(
+                      top: 20, left: 13, right: 10),
+                  decoration: BoxDecoration(
                     color: Colors.white,
-                    textColor: Colors.black54,
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: TextField(
+                      controller: emailController,
+                        autocorrect: true,
+                        style: GoogleFonts.exo2(
+                          textStyle: TextStyle(
+                            fontSize: 20,
+                          ),
+                        ),
+                        decoration: new InputDecoration(
+                          border: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          errorBorder: InputBorder.none,
+                          disabledBorder: InputBorder.none,
+                          hintStyle: GoogleFonts.exo2(
+                            textStyle: TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                          labelStyle: GoogleFonts.exo2(
+                            textStyle: TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                          prefixIcon: Icon(
+                              Icons.account_circle),
+                          hintText: "Enter Your User ID Here",
+                        )),
+                  ),
+                ),
 
-                    onPressed: () {
 
-                      print(emailController.text);
-                      print(passwordController.text);
 
-                      //userLogin();
+                Container(
+                  height: 58,
+                  width:
+                  MediaQuery.of(context).size.width - 70,
+                  alignment: Alignment.center,
+                  margin: const EdgeInsets.only(
+                      top: 20, left: 13, right: 10),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: TextField(
+                      controller: passwordController,
+                        autocorrect: true,
+                        style: GoogleFonts.exo2(
+                          textStyle: TextStyle(
+                            fontSize: 20,
+                          ),
+                        ),
+                        obscureText: true,
+                        decoration: new InputDecoration(
+                          border: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          errorBorder: InputBorder.none,
+                          disabledBorder: InputBorder.none,
+                          hintStyle: GoogleFonts.exo2(
+                            textStyle: TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                          labelStyle: GoogleFonts.exo2(
+                            textStyle: TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                          prefixIcon: Icon(
+                              Icons.lock),
+                          hintText: "Enter Your password Here",
+                        )),
+                  ),
+                ),
+
+                 SizedBox(height: 40,),
+
+                Container(
+                  height: 50,
+                  width: MediaQuery.of(context).size.width-80,
+                  child: FlatButton(
+
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                      ),
+                      color: Colors.green,
+                      textColor: Colors.white,
+
+                      onPressed: () {
+
+//                        print(emailController.text);
+//                        print(passwordController.text);
+//
+//                        userbloc.getemail(emailController.text);
+//                        userbloc.getpass(passwordController.text);
+//
+//                        userbloc.userlogin();
+//
+//
+//                        setState(() {
+//                          loginPress = true;
+//                        });
+//
+//                        print(loginPress);
 
                       Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => HomePage()),
-                        );
-                    },
+                          MaterialPageRoute(builder: (context) => HomePage()),);
+                      },
 
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      "Login".toUpperCase(),
-                      style: TextStyle(
-                        fontSize: 14.0,
-                      ),
-                    )
+                      child: Text(
+                        "Login".toUpperCase(),
+                        style: GoogleFonts.exo2(
+                          fontSize: 17,
+                          textStyle: TextStyle(color: Colors.white),
+                        ),
+                      )
+                  ),
                 ),
+
+//                loginPress ? Container(
+//                  child: Container(
+//                      child: Container(
+//                        margin: EdgeInsets.all(10),
+//                        child: StreamBuilder<UserLogin_Success_Model>(
+//                          stream: userbloc.LoginSuccessData,
+//                          builder: (context, AsyncSnapshot<UserLogin_Success_Model> snapshot) {
+//                            if (snapshot.hasData) {
+//                              UserLogin_Success_Model data = snapshot.data;
+//                              print("User Data: ");
+//                              print(data.message.toString());
+//                              //print(data.length);
+//                        //      return masterdataview(data);
+//
+//                            } else if (snapshot.hasError) {
+//                              return Text("${snapshot.error}");
+//                            }
+//
+//                            return CircularProgressIndicator();
+//                          },
+//                        ),
+//                      ),
+//                  ),
+//                ) : Text("sakjsak"),
 
               ]
           ),
