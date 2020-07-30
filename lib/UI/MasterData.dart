@@ -5,6 +5,7 @@ import 'package:app/UI/Home.dart';
 import 'package:app/Widgets/MastarDataDrawer.dart';
 import 'package:app/Widgets/MastarDataWidget.dart';
 import 'package:barcode_scan/barcode_scan.dart';
+import 'package:barcode_scan/platform_wrapper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -258,14 +259,14 @@ class _MasterDataState extends State<MasterData> {
   //scan barcode asynchronously
   Future barcodeScanning() async {
     try {
-      barcode = (await BarcodeScanner.scan());
+      barcode = (await BarcodeScanner.scan()) as String;
       print(barcode);
       setState(() {
         this.barcode = barcode;
         onSearchTextChanged(this.barcode);
       });
     } on PlatformException catch (e) {
-      if (e.code == BarcodeScanner.CameraAccessDenied) {
+      if (e.code == BarcodeScanner.cameraAccessDenied) {
         setState(() {
           this.barcode = 'No camera permission!';
         });

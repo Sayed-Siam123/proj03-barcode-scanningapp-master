@@ -245,7 +245,7 @@ class _BarcodeInfoState extends State<BarcodeInfo> {
 
   Future barcodeScanning() async {
     try {
-      barcode = (await BarcodeScanner.scan());
+      barcode = (await BarcodeScanner.scan()) as String;
       print(barcode);
       setState(() {
         this.barcode = barcode;
@@ -254,7 +254,7 @@ class _BarcodeInfoState extends State<BarcodeInfo> {
         onSearchTextChanged(this.barcode);
       });
     } on PlatformException catch (e) {
-      if (e.code == BarcodeScanner.CameraAccessDenied) {
+      if (e.code == BarcodeScanner.cameraAccessDenied) {
         setState(() {
           this.barcode = 'No camera permission!';
         });

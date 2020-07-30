@@ -20,7 +20,7 @@ class _ProductPackagingPageState extends State<ProductPackagingPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(20),
+      color: Theme.of(context).backgroundColor,
       child: StreamBuilder<List<SingleMasterDataModel>>(
           stream: masterdata_bloc.singleMasterData,
           builder: (context, AsyncSnapshot<List<SingleMasterDataModel>> snapshot) {
@@ -172,114 +172,141 @@ class _ProductPackagingPageState extends State<ProductPackagingPage> {
           return Container(
             child: Column(
               children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(left: 10),
-                      width: 150,
-                      height: 250,
-                      color: Colors.transparent,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text("Name:",style: GoogleFonts.exo2(
-                            color: Colors.black,
-                            fontSize: 16,
-                          ),),
-                          SizedBox(height: 6,),
-                          Text("Description:",style: GoogleFonts.exo2(
-                            color: Colors.black,
-                            fontSize: 16,
-                          ),),
-                          SizedBox(height: 6,),
-                          Text("Product ID:",style: GoogleFonts.exo2(
-                            color: Colors.black,
-                            fontSize: 16,
-                          ),),
-                          Divider(),
-                          Text("Packaging weight:",style: GoogleFonts.exo2(
-                            color: Colors.black,
-                            fontSize: 16,
-                          ),),
-                          SizedBox(height: 6,),
-                          Text("Material:",style: GoogleFonts.exo2(
-                            color: Colors.black,
-                            fontSize: 16,
-                          ),),
-                          Divider(),
-                          Text("Length:",style: GoogleFonts.exo2(
-                            color: Colors.black,
-                            fontSize: 16,
-                          ),),
-                          SizedBox(height: 6,),
-                          Text("Width:",style: GoogleFonts.exo2(
-                            color: Colors.black,
-                            fontSize: 16,
-                          ),),
-                          SizedBox(height: 6,),
-                          Text("Height:",style: GoogleFonts.exo2(
-                            color: Colors.black,
-                            fontSize: 16,
-                          ),),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.all(10),
-                      child: Container(
-                        margin: EdgeInsets.only(right: 50),
+                Container(
+                  margin: EdgeInsets.only(top: 52),
+                  color: Colors.white,
+                  height: 300,
+                  width: MediaQuery.of(context).size.width-60,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.only(left: 10),
                         width: 150,
                         height: 250,
                         color: Colors.transparent,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text(data[0].productName,style: GoogleFonts.exo2(
+                            Text("Name:",style: GoogleFonts.exo2(
                               color: Colors.black,
+                              fontWeight: FontWeight.w600,
                               fontSize: 16,
                             ),),
                             SizedBox(height: 6,),
-                            Text(data[0].productDescription,style: GoogleFonts.exo2(
+                            Text("Description:",style: GoogleFonts.exo2(
                               color: Colors.black,
+                              fontWeight: FontWeight.w600,
                               fontSize: 16,
                             ),),
                             SizedBox(height: 6,),
-                            Text(data[0].id,style: GoogleFonts.exo2(
+                            Text("Product ID:",style: GoogleFonts.exo2(
                               color: Colors.black,
+                              fontWeight: FontWeight.w600,
                               fontSize: 16,
                             ),),
-                            Divider(),
-                            Text("",style: GoogleFonts.exo2(
+                            SizedBox(height: 20,),
+                            Text("Packaging weight:",style: GoogleFonts.exo2(
                               color: Colors.black,
-                              fontSize: 16,
-                            ),),
-                            SizedBox(height: 6,),
-                            Text("",style: GoogleFonts.exo2(
-                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
                               fontSize: 16,
                             ),),
                             SizedBox(height: 6,),
-                            Divider(),
-                            Text("",style: GoogleFonts.exo2(
+                            Text("Material:",style: GoogleFonts.exo2(
                               color: Colors.black,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                            ),),
+                            SizedBox(height: 20,),
+                            Text("Length:",style: GoogleFonts.exo2(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
                               fontSize: 16,
                             ),),
                             SizedBox(height: 6,),
-                            Text("",style: GoogleFonts.exo2(
+                            Text("Width:",style: GoogleFonts.exo2(
                               color: Colors.black,
+                              fontWeight: FontWeight.w600,
                               fontSize: 16,
                             ),),
                             SizedBox(height: 6,),
-                            Text("",style: GoogleFonts.exo2(
+                            Text("Height:",style: GoogleFonts.exo2(
                               color: Colors.black,
+                              fontWeight: FontWeight.w600,
                               fontSize: 16,
                             ),),
                           ],
                         ),
                       ),
-                    )
-                  ],
+
+                      SizedBox(
+                        width: 30,
+                      ),
+
+
+                      Container(
+                        margin: EdgeInsets.all(10),
+                        child: Container(
+                          margin: EdgeInsets.only(right: 0),
+                          width: 100,
+                          height: 250,
+                          color: Colors.transparent,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(data[0].productName,style: GoogleFonts.exo2(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
+                              ),),
+                              SizedBox(height: 6,),
+                              Text(data[0].productDescription,style: GoogleFonts.exo2(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
+                              ),),
+                              SizedBox(height: 6,),
+                              Text(data[0].id,style: GoogleFonts.exo2(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
+                              ),),
+                              SizedBox(height: 20,),
+                              Text("",style: GoogleFonts.exo2(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
+                              ),),
+                              SizedBox(height: 6,),
+                              Text("",style: GoogleFonts.exo2(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
+                              ),),
+                              SizedBox(height: 20,),
+                              Text("",style: GoogleFonts.exo2(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
+                              ),),
+                              SizedBox(height: 6,),
+                              Text("",style: GoogleFonts.exo2(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
+                              ),),
+                              SizedBox(height: 6,),
+                              Text("",style: GoogleFonts.exo2(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
+                              ),),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
                 SizedBox(
                   height: 10,

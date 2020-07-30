@@ -6,12 +6,13 @@ import 'package:app/Widgets/AddProductCategoryDropDown.dart';
 import 'package:app/Widgets/AddProductManufacturerDropDown.dart';
 import 'package:app/Widgets/AddProductSubCategoryDropDown.dart';
 import 'package:app/Widgets/AddProductUnitDropDown.dart';
-import 'package:barcode_scan/barcode_scan.dart';
+import 'package:barcode_scan/platform_wrapper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:barcode_scan/barcode_scan.dart';
 
 class AddProductPage extends StatefulWidget {
   @override
@@ -975,14 +976,14 @@ class _AddProductPageState extends State<AddProductPage> {
 
   Future barcodeScanning1() async {
     try {
-      barcode1 = (await BarcodeScanner.scan());
+      barcode1 = (await BarcodeScanner.scan()) as String;
       print(barcode1);
       setState(() {
         this.barcode1 = barcode1;
         manu_pn.text = barcode1;
       });
     } on PlatformException catch (e) {
-      if (e.code == BarcodeScanner.CameraAccessDenied) {
+      if (e.code == BarcodeScanner.cameraAccessDenied) {
         setState(() {
           this.barcode1 = 'No camera permission!';
         });
@@ -998,14 +999,14 @@ class _AddProductPageState extends State<AddProductPage> {
 
   Future barcodeScanning2() async {
     try {
-      barcode2 = (await BarcodeScanner.scan());
+      barcode2 = (await BarcodeScanner.scan()) as String;
       print(barcode2);
       setState(() {
         this.barcode2 = barcode2;
         gtin.text = barcode2;
       });
     } on PlatformException catch (e) {
-      if (e.code == BarcodeScanner.CameraAccessDenied) {
+      if (e.code == BarcodeScanner.cameraAccessDenied) {
         setState(() {
           this.barcode2 = 'No camera permission!';
         });

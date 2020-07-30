@@ -20,7 +20,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(20),
+      color: Theme.of(context).backgroundColor,
       child: StreamBuilder<List<SingleMasterDataModel>>(
           stream: masterdata_bloc.singleMasterData,
           builder:
@@ -175,201 +175,235 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
         itemCount: data.length,
         itemBuilder: (BuildContext context, int index) {
           return Container(
+            margin: EdgeInsets.only(top:50),
             child: Column(
               children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(left: 10),
-                      width: 150,
-                      height: 210,
-                      color: Colors.transparent,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text("Name:",style: GoogleFonts.exo2(
-                            color: Colors.black,
-                            fontSize: 16,
-                          ),),
-                          SizedBox(height: 6,),
-                          Text("Description:",style: GoogleFonts.exo2(
-                            color: Colors.black,
-                            fontSize: 16,
-                          ),),
-                          SizedBox(height: 6,),
-                          Text("Product ID:",style: GoogleFonts.exo2(
-                            color: Colors.black,
-                            fontSize: 16,
-                          ),),
-                          Divider(),
-                          Text("Reference No:",style: GoogleFonts.exo2(
-                            color: Colors.black,
-                            fontSize: 16,
-                          ),),
-                          SizedBox(height: 6,),
-                          Text("Product Weight:",style: GoogleFonts.exo2(
-                            color: Colors.black,
-                            fontSize: 16,
-                          ),),
-                          SizedBox(height: 6,),
-                          Text("Packaging unit:",style: GoogleFonts.exo2(
-                            color: Colors.black,
-                            fontSize: 16,
-                          ),),
-                          SizedBox(height: 6,),
-                          Text("Note:",style: GoogleFonts.exo2(
-                            color: Colors.black,
-                            fontSize: 16,
-                          ),),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.all(10),
-                      child: Container(
-                        margin: EdgeInsets.only(right: 2),
+                Container(
+                  width: MediaQuery.of(context).size.width-50,
+                  height: 300,
+                  color: Colors.white,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.only(left: 20,top: 18),
                         width: 150,
                         height: 210,
-                        color: Colors.transparent,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            Text(data[0].productName,style: GoogleFonts.exo2(
+                            Text("Name:",style: GoogleFonts.exo2(
                               color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),),
+                            SizedBox(height: 6,),
+                            Text("Description:",style: GoogleFonts.exo2(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),),
+                            SizedBox(height: 6,),
+                            Text("Product ID:",style: GoogleFonts.exo2(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),),
+                            SizedBox(
+                              height: 6,
+                            ),
+                            Text("Reference No:",style: GoogleFonts.exo2(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
                               fontSize: 16,
                             ),),
                             SizedBox(height: 6,),
-                            Text(data[0].productDescription,style: GoogleFonts.exo2(
+                            Text("Product Weight:",style: GoogleFonts.exo2(
                               color: Colors.black,
+                              fontWeight: FontWeight.w600,
                               fontSize: 16,
                             ),),
                             SizedBox(height: 6,),
-                            Text(data[0].id,style: GoogleFonts.exo2(
+                            Text("Packaging unit:",style: GoogleFonts.exo2(
                               color: Colors.black,
-                              fontSize: 16,
-                            ),),
-                            Divider(),
-                            Text("",style: GoogleFonts.exo2(
-                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
                               fontSize: 16,
                             ),),
                             SizedBox(height: 6,),
-                            Text("",style: GoogleFonts.exo2(
+                            Text("Note:",style: GoogleFonts.exo2(
                               color: Colors.black,
-                              fontSize: 16,
-                            ),),
-                            SizedBox(height: 6,),
-                            Text("",style: GoogleFonts.exo2(
-                              color: Colors.black,
-                              fontSize: 16,
-                            ),),
-                            SizedBox(height: 6,),
-                            Text("",style: GoogleFonts.exo2(
-                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
                               fontSize: 16,
                             ),),
                           ],
                         ),
                       ),
-                    )
-                  ],
+
+                      SizedBox(width: 40,),
+
+                      Container(
+                        margin: EdgeInsets.only(top: 20),
+                          width: 150,
+                          height: 210,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(data[0].productName,style: GoogleFonts.exo2(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
+                              ),),
+                              SizedBox(height: 6,),
+                              Text(data[0].productDescription,style: GoogleFonts.exo2(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
+                              ),),
+                              SizedBox(height: 6,),
+                              Text(data[0].id,style: GoogleFonts.exo2(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
+                              ),),
+                              SizedBox(
+                                height: 6,
+                              ),
+                              Text("",style: GoogleFonts.exo2(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
+                              ),),
+                              SizedBox(height: 6,),
+                              Text("",style: GoogleFonts.exo2(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
+                              ),),
+                              SizedBox(height: 6,),
+                              Text("",style: GoogleFonts.exo2(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
+                              ),),
+                              SizedBox(height: 6,),
+                              Text("",style: GoogleFonts.exo2(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
+                              ),),
+                            ],
+                          ),
+                        ),
+                    ],
+                  ),
                 ),
+
                 SizedBox(
                   height: 10,
                 ),
-                Divider(),
-                SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(left: 10),
-                      width: 150,
-                      height: 180,
-                      color: Colors.transparent,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text("Transfer to App",style: GoogleFonts.exo2(
-                            color: Colors.black,
-                            fontSize: 16,
-                          ),),
-                          SizedBox(height: 6,),
-                          Text("Orderable via APP:",style: GoogleFonts.exo2(
-                            color: Colors.black,
-                            fontSize: 16,
-                          ),),
-                          SizedBox(height: 6,),
-                          Text("Created by:",style: GoogleFonts.exo2(
-                            color: Colors.black,
-                            fontSize: 16,
-                          ),),
-                          SizedBox(height: 6,),
-                          Text("Created on:",style: GoogleFonts.exo2(
-                            color: Colors.black,
-                            fontSize: 16,
-                          ),),
-                          SizedBox(height: 6,),
-                          Text("Edited by:",style: GoogleFonts.exo2(
-                            color: Colors.black,
-                            fontSize: 16,
-                          ),),
-                          SizedBox(height: 6,),
-                          Text("Edited on:",style: GoogleFonts.exo2(
-                            color: Colors.black,
-                            fontSize: 16,
-                          ),),
-                        ],
+
+                Container(
+                  color: Colors.white,
+                  width: MediaQuery.of(context).size.width-50,
+                  height: 200,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.only(left: 20),
+                        width: 150,
+                        height: 180,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text("Transfer to App",style: GoogleFonts.exo2(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                            ),),
+                            SizedBox(height: 6,),
+                            Text("Orderable via APP:",style: GoogleFonts.exo2(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                            ),),
+                            SizedBox(height: 6,),
+                            Text("Created by:",style: GoogleFonts.exo2(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                            ),),
+                            SizedBox(height: 6,),
+                            Text("Created on:",style: GoogleFonts.exo2(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                            ),),
+                            SizedBox(height: 6,),
+                            Text("Edited by:",style: GoogleFonts.exo2(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                            ),),
+                            SizedBox(height: 6,),
+                            Text("Edited on:",style: GoogleFonts.exo2(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                            ),),
+                          ],
+                        ),
                       ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(right: 2),
-                      width: 150,
-                      height: 180,
-                      color: Colors.transparent,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text("",style: GoogleFonts.exo2(
-                            color: Colors.black,
-                            fontSize: 16,
-                          ),),
-                          SizedBox(height: 6,),
-                          Text("",style: GoogleFonts.exo2(
-                            color: Colors.black,
-                            fontSize: 16,
-                          ),),
-                          SizedBox(height: 6,),
-                          Text("",style: GoogleFonts.exo2(
-                            color: Colors.black,
-                            fontSize: 16,
-                          ),),
-                          SizedBox(height: 6,),
-                          Text("",style: GoogleFonts.exo2(
-                            color: Colors.black,
-                            fontSize: 16,
-                          ),),
-                          SizedBox(height: 6,),
-                          Text("",style: GoogleFonts.exo2(
-                            color: Colors.black,
-                            fontSize: 16,
-                          ),),
-                          SizedBox(height: 6,),
-                          Text("",style: GoogleFonts.exo2(
-                            color: Colors.black,
-                            fontSize: 16,
-                          ),),
-                        ],
+
+                      SizedBox(width: 30,),
+
+                      Container(
+                        margin: EdgeInsets.only(right: 2),
+                        width: 140,
+                        height: 180,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text("",style: GoogleFonts.exo2(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                            ),),
+                            SizedBox(height: 6,),
+                            Text("",style: GoogleFonts.exo2(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                            ),),
+                            SizedBox(height: 6,),
+                            Text("",style: GoogleFonts.exo2(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                            ),),
+                            SizedBox(height: 6,),
+                            Text("",style: GoogleFonts.exo2(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                            ),),
+                            SizedBox(height: 6,),
+                            Text("",style: GoogleFonts.exo2(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                            ),),
+                            SizedBox(height: 6,),
+                            Text("",style: GoogleFonts.exo2(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                            ),),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ],
             ),

@@ -442,14 +442,14 @@ class _ProductGeneralPageState extends State<ProductGeneralPage> {
                               SizedBox(
                                 height: 6,
                               ),
-                              Text(
-                                "Picture:",
-                                style: GoogleFonts.exo2(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
+//                              Text(
+//                                "Picture:",
+//                                style: GoogleFonts.exo2(
+//                                  color: Colors.black,
+//                                  fontSize: 16,
+//                                  fontWeight: FontWeight.w600,
+//                                ),
+//                              ),
                             ],
                           ),
                         ),

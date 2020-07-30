@@ -758,14 +758,14 @@ class _ProductEditPageState extends State<ProductEditPage> {
 
   Future barcodeScanning1() async {
     try {
-      barcode1 = (await BarcodeScanner.scan());
+      barcode1 = (await BarcodeScanner.scan()) as String;
       print(barcode1);
       setState(() {
         this.barcode1 = barcode1;
         manu_pn.text = barcode1;
       });
     } on PlatformException catch (e) {
-      if (e.code == BarcodeScanner.CameraAccessDenied) {
+      if (e.code == BarcodeScanner.cameraAccessDenied) {
         setState(() {
           this.barcode1 = 'No camera permission!';
         });
@@ -781,14 +781,14 @@ class _ProductEditPageState extends State<ProductEditPage> {
 
   Future barcodeScanning2() async {
     try {
-      barcode2 = (await BarcodeScanner.scan());
+      barcode2 = (await BarcodeScanner.scan()) as String;
       print(barcode2);
       setState(() {
         this.barcode2 = barcode2;
         gtin.text = barcode2;
       });
     } on PlatformException catch (e) {
-      if (e.code == BarcodeScanner.CameraAccessDenied) {
+      if (e.code == BarcodeScanner.cameraAccessDenied) {
         setState(() {
           this.barcode2 = 'No camera permission!';
         });

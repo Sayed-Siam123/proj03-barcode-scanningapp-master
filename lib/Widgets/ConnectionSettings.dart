@@ -100,8 +100,7 @@ class _ConnectionSettingsPageState extends State<ConnectionSettingsPage> {
                   ),
                 ),
                 Container(
-                    padding:
-                        EdgeInsets.all(MediaQuery.of(context).size.width - 410),
+                    padding: EdgeInsets.all(15),
                     child: Card(
                       child: Column(mainAxisSize: MainAxisSize.min, children: <
                           Widget>[
@@ -155,7 +154,8 @@ class _ConnectionSettingsPageState extends State<ConnectionSettingsPage> {
                                         top: 20, left: 13, right: 10),
                                     decoration: BoxDecoration(
                                       color: Colors.white,
-                                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(10)),
                                       boxShadow: [
                                         BoxShadow(
                                           color: Colors.grey.withOpacity(0.5),
@@ -239,7 +239,8 @@ class _ConnectionSettingsPageState extends State<ConnectionSettingsPage> {
                                         top: 10, left: 13, right: 10),
                                     decoration: BoxDecoration(
                                       color: Colors.white,
-                                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(10)),
                                       boxShadow: [
                                         BoxShadow(
                                           color: Colors.grey.withOpacity(0.5),
@@ -301,7 +302,8 @@ class _ConnectionSettingsPageState extends State<ConnectionSettingsPage> {
                                         top: 10, left: 13, right: 10),
                                     decoration: BoxDecoration(
                                       color: Colors.white,
-                                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(10)),
                                       boxShadow: [
                                         BoxShadow(
                                           color: Colors.grey.withOpacity(0.5),
@@ -407,7 +409,8 @@ class _ConnectionSettingsPageState extends State<ConnectionSettingsPage> {
                                         top: 10, left: 13, right: 10),
                                     decoration: BoxDecoration(
                                       color: Colors.white,
-                                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(10)),
                                       boxShadow: [
                                         BoxShadow(
                                           color: Colors.grey.withOpacity(0.5),
@@ -460,8 +463,11 @@ class _ConnectionSettingsPageState extends State<ConnectionSettingsPage> {
                             ),
                             Container(
                               height: 40,
-                              width: MediaQuery.of(context).size.width-90,
+                              width: MediaQuery.of(context).size.width - 90,
                               child: RaisedButton(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(18.0),
+                                ),
                                 child: Text(
                                   "SAVE",
                                   style: GoogleFonts.exo2(
@@ -470,7 +476,7 @@ class _ConnectionSettingsPageState extends State<ConnectionSettingsPage> {
                                     ),
                                   ),
                                 ),
-                                color: Theme.of(context).buttonColor,
+                                color: Colors.green,
                                 textColor: Colors.white,
                                 padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                                 onPressed: () {

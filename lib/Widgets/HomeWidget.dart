@@ -1,4 +1,5 @@
 import 'package:app/UI/BarcodeInfo.dart';
+import 'package:app/UI/Deliveries.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -73,8 +74,8 @@ class _HomeWidgetState extends State<HomeWidget> {
                   Image.asset('assets/images/delivery.png', fit: BoxFit.cover),
             ),
                 onTap: (){
-//                  Navigator.push(
-//                      context, MaterialPageRoute(builder: (context) => MyApp()));
+                  Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => DeliveriesPage()));
                 }
            )
           ),
