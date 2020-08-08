@@ -10,6 +10,7 @@ import 'package:app/UI/Details.dart';
 import 'package:app/UI/Settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_stetho/flutter_stetho.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
@@ -27,6 +28,7 @@ import 'package:global_configuration/global_configuration.dart';
 
 
 Future<void> main() async {
+  Stetho.initialize();
   WidgetsFlutterBinding.ensureInitialized();
   await GlobalConfiguration().loadFromAsset("config");
   print("base_url: ${GlobalConfiguration().getString('base_url')}");

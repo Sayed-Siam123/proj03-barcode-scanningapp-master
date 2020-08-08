@@ -47,8 +47,8 @@ class _ProductEditPageState extends State<ProductEditPage> {
 
   CategoryModel CategoryPass;
 
-  String barcode1 = "";
-  String barcode2 = "";
+  ScanResult barcode1;
+  ScanResult barcode2;
 
   TextEditingController ProductName = new TextEditingController();
   TextEditingController ProductDesc = new TextEditingController();
@@ -758,47 +758,47 @@ class _ProductEditPageState extends State<ProductEditPage> {
 
   Future barcodeScanning1() async {
     try {
-      barcode1 = (await BarcodeScanner.scan()) as String;
+      barcode1 = await BarcodeScanner.scan();
       print(barcode1);
       setState(() {
         this.barcode1 = barcode1;
-        manu_pn.text = barcode1;
+        manu_pn.text = barcode1.rawContent.toString();
       });
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.cameraAccessDenied) {
         setState(() {
-          this.barcode1 = 'No camera permission!';
+          this.barcode1 = 'No camera permission!' as ScanResult;
         });
       } else {
-        setState(() => this.barcode1 = 'Unknown error: $e');
+        setState(() => this.barcode1 = 'Unknown error: $e' as ScanResult);
       }
     } on FormatException {
-      setState(() => this.barcode1 = 'Nothing captured.');
+      setState(() => this.barcode1 = 'Nothing captured.' as ScanResult);
     } catch (e) {
-      setState(() => this.barcode1 = 'Unknown error: $e');
+      setState(() => this.barcode1 = 'Unknown error: $e' as ScanResult);
     }
   }
 
   Future barcodeScanning2() async {
     try {
-      barcode2 = (await BarcodeScanner.scan()) as String;
+      barcode2 = await BarcodeScanner.scan();
       print(barcode2);
       setState(() {
         this.barcode2 = barcode2;
-        gtin.text = barcode2;
+        gtin.text = barcode2.rawContent.toString();
       });
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.cameraAccessDenied) {
         setState(() {
-          this.barcode2 = 'No camera permission!';
+          this.barcode2 = 'No camera permission!' as ScanResult;
         });
       } else {
-        setState(() => this.barcode2 = 'Unknown error: $e');
+        setState(() => this.barcode2 = 'Unknown error: $e' as ScanResult);
       }
     } on FormatException {
-      setState(() => this.barcode2 = 'Nothing captured.');
+      setState(() => this.barcode2 = 'Nothing captured.' as ScanResult);
     } catch (e) {
-      setState(() => this.barcode2 = 'Unknown error: $e');
+      setState(() => this.barcode2 = 'Unknown error: $e' as ScanResult);
     }
   }
 
