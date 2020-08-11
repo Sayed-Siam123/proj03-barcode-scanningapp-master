@@ -173,18 +173,17 @@ class _ProductPackagingPageState extends State<ProductPackagingPage> {
             child: Column(
               children: <Widget>[
                 Container(
-                  margin: EdgeInsets.only(top: 52),
+                  margin: EdgeInsets.only(top: 8),
                   color: Colors.white,
-                  height: 300,
-                  width: MediaQuery.of(context).size.width-60,
+                  height: 800,
+                  width: MediaQuery.of(context).size.width-20,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       Container(
-                        margin: EdgeInsets.only(left: 10),
+                        margin: EdgeInsets.only(left: 50),
                         width: 150,
-                        height: 250,
-                        color: Colors.transparent,
+                        height: 750,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
@@ -240,7 +239,7 @@ class _ProductPackagingPageState extends State<ProductPackagingPage> {
                       ),
 
                       SizedBox(
-                        width: 30,
+                        width: 50,
                       ),
 
 
@@ -249,7 +248,7 @@ class _ProductPackagingPageState extends State<ProductPackagingPage> {
                         child: Container(
                           margin: EdgeInsets.only(right: 0),
                           width: 100,
-                          height: 250,
+                          height: 750,
                           color: Colors.transparent,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,

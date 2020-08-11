@@ -69,8 +69,9 @@ class _AddProductSubCategoryDropDownState extends State<AddProductSubCategoryDro
 
 
             return Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
 
 //                      widget.category==null ?
@@ -117,18 +118,24 @@ class _AddProductSubCategoryDropDownState extends State<AddProductSubCategoryDro
                   ),),
 
 
-                  SizedBox(width: 60,),
+                  SizedBox(height: 5,),
 
 
                   new Container(
-                    padding:
-                    EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(10)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.3),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
+                    ),
 
                     height: 50,
-                    width: 220,
+                    width: MediaQuery.of(context).size.width-40,
                     child: new DropdownButton<SubCategoryModel>(
                       isExpanded: true,
                       icon: Icon(Icons.arrow_drop_down),
@@ -152,11 +159,14 @@ class _AddProductSubCategoryDropDownState extends State<AddProductSubCategoryDro
                       items: data.map((SubCategoryModel manufac) {
                         return new DropdownMenuItem<SubCategoryModel>(
                           value: manufac,
-                          child: new Text(
-                            manufac.subCategoryName,
-                            style: GoogleFonts.exo2(
-                              textStyle: TextStyle(
-                                color: Colors.black,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 3.0),
+                            child: new Text(
+                              manufac.subCategoryName,
+                              style: GoogleFonts.exo2(
+                                textStyle: TextStyle(
+                                  color: Colors.black54,
+                                ),
                               ),
                             ),
                           ),

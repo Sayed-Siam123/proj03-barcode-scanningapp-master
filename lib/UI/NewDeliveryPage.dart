@@ -165,18 +165,22 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
           children: <Widget>[
 
             Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.only(left:15.0),
-                  child: Text("Please Enter GTIN or Product ID"),
+                  padding: const EdgeInsets.only(left:5.0),
+                  child: Text("Please Enter GTIN or ProductID to add",style: GoogleFonts.exo2(
+                    textStyle: TextStyle(
+                        fontSize: 20,
+                        color: Theme.of(context).accentColor,
+                      fontWeight: FontWeight.w500
+                    ),
+                  ),),
                 ),
-
-                SizedBox(width: 40,),
 
                 Container(
                   margin: EdgeInsets.only(
-                    left: 100,
+                    left: 0,
                     top: 10,
                   ),
                   height: 60,
@@ -467,47 +471,112 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
                         key: _resetKey1,
                         autovalidate: _resetValidate1,
                         child: Container(
-                          height: 120,
+                          height: 150,
                           width: width - 100,
                           child: new Column(
                             children: <Widget>[
-                              new Container(
-                                child: new TextFormField(
-                                  autofocus: false,
-                                  style: GoogleFonts.exo2(
-                                    textStyle: TextStyle(
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                  decoration: new InputDecoration(
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.blue, width: 3.0),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Colors.black),
-                                    ),
-                                    hintStyle: GoogleFonts.exo2(
-                                      textStyle: TextStyle(
+//                              new Container(
+//                                child: new TextFormField(
+//                                  autofocus: false,
+//                                  style: GoogleFonts.exo2(
+//                                    textStyle: TextStyle(
+//                                      fontSize: 20,
+//                                    ),
+//                                  ),
+//                                  decoration: new InputDecoration(
+//                                    focusedBorder: OutlineInputBorder(
+//                                      borderSide: BorderSide(
+//                                          color: Colors.blue, width: 3.0),
+//                                    ),
+//                                    enabledBorder: OutlineInputBorder(
+//                                      borderSide:
+//                                          BorderSide(color: Colors.black),
+//                                    ),
+//                                    hintStyle: GoogleFonts.exo2(
+//                                      textStyle: TextStyle(
+//                                        fontSize: 20,
+//                                      ),
+//                                    ),
+//                                    labelStyle: GoogleFonts.exo2(
+//                                      textStyle: TextStyle(
+//                                        fontSize: 20,
+//
+//                                      ),
+//                                    ),
+//                                    labelText: 'Note',
+//                                    hintText: 'Enter Your Note Here (Optional)',
+//                                    errorText:
+//                                        _validate1 == false ? errortext1 : null,
+//                                  ),
+//                                  controller: _inputcontrol1,
+//                                  maxLines: null,
+//                                  keyboardType: TextInputType.multiline,
+//                                  // ignore: missing_return
+//                                ),
+//                              ),
+                              Container(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 16,bottom: 10),
+                                      child: Text("Note",style: GoogleFonts.exo2(
                                         fontSize: 20,
-                                      ),
+                                      ),),
                                     ),
-                                    labelStyle: GoogleFonts.exo2(
-                                      textStyle: TextStyle(
-                                        fontSize: 20,
+                                    Container(
+                                      height: 90,
+                                      width: MediaQuery.of(context).size.width - 80,
+                                      alignment: Alignment.center,
+                                      margin: const EdgeInsets.only(top: 0, left: 13, right: 10),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
 
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.3),
+                                            spreadRadius: 2,
+                                            blurRadius: 5,
+                                            offset: Offset(0, 3),
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                    labelText: 'Note',
-                                    hintText: 'Enter Your Note Here (Optional)',
-                                    errorText:
-                                        _validate1 == false ? errortext1 : null,
-                                  ),
-                                  controller: _inputcontrol1,
-                                  maxLines: null,
-                                  keyboardType: TextInputType.multiline,
-                                  // ignore: missing_return
+                                      child: Container(
+                                          margin: const EdgeInsets.only(left: 8.0,bottom: 0),
+                                          child: TextField(
+                                            textAlign: TextAlign.start,
+                                              controller: _inputcontrol1,
+                                              autocorrect: true,
+                                              style: GoogleFonts.exo2(
+                                                textStyle: TextStyle(
+                                                  fontSize: 20,
+                                                ),
+                                              ),
+                                              decoration: new InputDecoration(
+                                                border: InputBorder.none,
+                                                focusedBorder: InputBorder.none,
+                                                enabledBorder: InputBorder.none,
+                                                errorBorder: InputBorder.none,
+                                                disabledBorder: InputBorder.none,
+                                                hintStyle: GoogleFonts.exo2(
+                                                  textStyle: TextStyle(
+                                                    fontSize: 16,
+                                                  ),
+                                                ),
+                                                labelStyle: GoogleFonts.exo2(
+                                                  textStyle: TextStyle(
+                                                    fontSize: 16,
+                                                  ),
+                                                ),
+                                                hintText: "Enter Note (OPTIONAL)",
+                                              ),
+                                            keyboardType: TextInputType.multiline,
+                                            maxLines: null,
+                                          ),
+                                        ),
+                                      ),
+                                  ],
                                 ),
                               ),
                             ],
@@ -569,49 +638,118 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
                       width: width - 100,
                       child: new Column(
                         children: <Widget>[
-                          new Container(
-                            child: new TextFormField(
-                              autofocus: false,
-                              style: GoogleFonts.exo2(
-                                textStyle: TextStyle(
-                                  fontSize: 20,
-                                ),
-                              ),
-                              decoration: new InputDecoration(
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.blue, width: 3.0),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide:
-                                  BorderSide(color: Colors.black),
-                                ),
-                                hintStyle: GoogleFonts.exo2(
-                                  textStyle: TextStyle(
+//                          new Container(
+//                            child: new TextFormField(
+//                              autofocus: false,
+//                              style: GoogleFonts.exo2(
+//                                textStyle: TextStyle(
+//                                  fontSize: 20,
+//                                ),
+//                              ),
+//                              decoration: new InputDecoration(
+//                                focusedBorder: OutlineInputBorder(
+//                                  borderSide: BorderSide(
+//                                      color: Colors.blue, width: 3.0),
+//                                ),
+//                                enabledBorder: OutlineInputBorder(
+//                                  borderSide:
+//                                  BorderSide(color: Colors.black),
+//                                ),
+//                                hintStyle: GoogleFonts.exo2(
+//                                  textStyle: TextStyle(
+//                                    fontSize: 20,
+//                                  ),
+//                                ),
+//                                labelStyle: GoogleFonts.exo2(
+//                                  textStyle: TextStyle(
+//                                    fontSize: 20,
+//
+//                                  ),
+//                                ),
+//                                suffixIcon: IconButton(
+//                                  icon: new Image.asset('assets/images/barcode.png',
+//                                      fit: BoxFit.contain),
+//                                  tooltip: 'Scan barcode',
+//                                  onPressed: barcodeScanning2,
+//                                ),
+//                                labelText: 'Handling Unit',
+//                                hintText: 'Enter Your Unit Barcode Here (Optional)',
+//                                errorText:
+//                                _validate1 == false ? errortext1 : null,
+//                              ),
+//                              controller: _inputcontrol2,
+//                              maxLines: null,
+//                              keyboardType: TextInputType.multiline,
+//                              // ignore: missing_return
+//                            ),
+//                          ),
+                          Container(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.only(left: 16,bottom: 10),
+                                  child: Text("Handling Unit",style: GoogleFonts.exo2(
                                     fontSize: 20,
-                                  ),
+                                  ),),
                                 ),
-                                labelStyle: GoogleFonts.exo2(
-                                  textStyle: TextStyle(
-                                    fontSize: 20,
+                                Container(
+                                  height: 60,
+                                  alignment: Alignment.center,
+                                  margin: const EdgeInsets.only(top: 0, left: 13, right: 10),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
 
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.3),
+                                        spreadRadius: 2,
+                                        blurRadius: 5,
+                                        offset: Offset(0, 3),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Container(
+                                    margin: const EdgeInsets.only(left: 8.0,bottom: 0),
+                                    child: TextField(
+                                      textAlign: TextAlign.start,
+                                      controller: _inputcontrol2,
+                                      autocorrect: true,
+                                      style: GoogleFonts.exo2(
+                                        textStyle: TextStyle(
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                      decoration: new InputDecoration(
+                                        border: InputBorder.none,
+                                        focusedBorder: InputBorder.none,
+                                        enabledBorder: InputBorder.none,
+                                        errorBorder: InputBorder.none,
+                                        disabledBorder: InputBorder.none,
+                                        hintStyle: GoogleFonts.exo2(
+                                          textStyle: TextStyle(
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        labelStyle: GoogleFonts.exo2(
+                                          textStyle: TextStyle(
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        hintText: "Enter Handling Unit (OPTIONAL)",
+                                        suffixIcon: IconButton(
+                                          icon: new Image.asset(
+                                                  'assets/images/barcode.png',
+                                                  fit: BoxFit.contain),
+                                              tooltip: 'Scan barcode',
+                                              onPressed: barcodeScanning2,
+                                            ),
+                                          ),
+                                    ),
                                   ),
                                 ),
-                                suffixIcon: IconButton(
-                                  icon: new Image.asset('assets/images/barcode.png',
-                                      fit: BoxFit.contain),
-                                  tooltip: 'Scan barcode',
-                                  onPressed: barcodeScanning2,
-                                ),
-                                labelText: 'Handling Unit',
-                                hintText: 'Enter Your Unit Barcode Here (Optional)',
-                                errorText:
-                                _validate1 == false ? errortext1 : null,
-                              ),
-                              controller: _inputcontrol2,
-                              maxLines: null,
-                              keyboardType: TextInputType.multiline,
-                              // ignore: missing_return
+                              ],
                             ),
                           ),
                         ],

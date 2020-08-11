@@ -427,6 +427,7 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
 
         doc.addPage(
           pw.Page(
+            pageFormat: PdfPageFormat.a5,
             build: (pw.Context context) =>
                 pw.Center(
                     child: pw.Container(

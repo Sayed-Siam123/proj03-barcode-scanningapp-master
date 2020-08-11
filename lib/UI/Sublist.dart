@@ -2,6 +2,7 @@ import 'package:app/UI/MasterData.dart';
 import 'package:app/Widgets/SublistView.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'Home.dart';
 
@@ -21,7 +22,12 @@ class _SublistPageState extends State<SublistPage> {
 
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Sublist", style: new TextStyle(color: Colors.black54),),
+          title: Text("Sublist",
+            style: GoogleFonts.exo2(
+            textStyle: TextStyle(
+            color: Colors.black54,
+          ),
+        ),),
           backgroundColor: Colors.white,
           centerTitle: true,
           elevation: 0.0,

@@ -1,5 +1,6 @@
 import 'package:app/UI/BarcodeInfo.dart';
 import 'package:app/UI/Deliveries.dart';
+import 'package:app/UI/PickupDelivery.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -42,43 +43,43 @@ class _HomeWidgetState extends State<HomeWidget> {
                   Image.asset('assets/images/barcode.png', fit: BoxFit.cover),
             ),
             onTap: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => BarcodeInfo()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => BarcodeInfo()));
             },
           )),
           new Card(
               child: ListTile(
-            title: new Text(
-              'Deliveries',
-              style: GoogleFonts.exo2(
-                textStyle: TextStyle(
-                  fontSize: 20,
-                  color: Colors.black,
-                ),
-              ),
-            ),
-            isThreeLine: false,
-            subtitle: new Text(
-              'Create or modifiy a delivery',
-              style: GoogleFonts.exo2(),
-            ),
-            trailing: new Icon(Icons.arrow_forward),
-            leading: ConstrainedBox(
-              constraints: BoxConstraints(
-                minWidth: 45,
-                minHeight: 45,
-                maxWidth: 45,
-                maxHeight: 45,
-              ),
-              child:
-                  Image.asset('assets/images/delivery.png', fit: BoxFit.cover),
-            ),
-                onTap: (){
-                  Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => DeliveriesPage()));
-                }
-           )
-          ),
+                  title: new Text(
+                    'Deliveries',
+                    style: GoogleFonts.exo2(
+                      textStyle: TextStyle(
+                        fontSize: 20,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                  isThreeLine: false,
+                  subtitle: new Text(
+                    'Create or modifiy a delivery',
+                    style: GoogleFonts.exo2(),
+                  ),
+                  trailing: new Icon(Icons.arrow_forward),
+                  leading: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minWidth: 45,
+                      minHeight: 45,
+                      maxWidth: 45,
+                      maxHeight: 45,
+                    ),
+                    child: Image.asset('assets/images/delivery.png',
+                        fit: BoxFit.cover),
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DeliveriesPage()));
+                  })),
           new Card(
               child: ListTile(
             title: new Text(
@@ -102,6 +103,10 @@ class _HomeWidgetState extends State<HomeWidget> {
               ),
               child: Image.asset('assets/images/pickup.png', fit: BoxFit.cover),
             ),
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => PickupDelivery()));
+            },
           )),
         ],
       ),

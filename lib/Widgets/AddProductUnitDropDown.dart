@@ -38,7 +38,8 @@ class _AddProductUnitDropDownState extends State<AddProductUnitDropDown> {
             //return masterdataview(data);
 
             return Container(
-              child: Row(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
 
@@ -86,18 +87,24 @@ class _AddProductUnitDropDownState extends State<AddProductUnitDropDown> {
                   ),),
 
 
-                  SizedBox(width: 120,),
+                  SizedBox(height: 5,),
 
 
                   new Container(
-                    padding:
-                    EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(10)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.3),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
+                    ),
 
                     height: 50,
-                    width: 205,
+                    width: MediaQuery.of(context).size.width-40,
                     child: new DropdownButton<UnitModel>(
                       isExpanded: true,
                       icon: Icon(Icons.arrow_drop_down),
@@ -121,11 +128,15 @@ class _AddProductUnitDropDownState extends State<AddProductUnitDropDown> {
                       items: data.map((UnitModel category) {
                         return new DropdownMenuItem<UnitModel>(
                           value: category,
-                          child: new Text(
-                            category.unitName,
-                            style: GoogleFonts.exo2(
-                              textStyle: TextStyle(
-                                fontSize: 20,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left:3.0),
+                            child: new Text(
+                              category.unitName,
+                              style: GoogleFonts.exo2(
+                                textStyle: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.black54,
+                                ),
                               ),
                             ),
                           ),

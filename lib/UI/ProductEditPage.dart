@@ -196,12 +196,11 @@ class _ProductEditPageState extends State<ProductEditPage> {
         ],
       ),
       body: Container(
-        margin: EdgeInsets.only(left: 5, top: 25, right: 5),
+
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
               Container(
-                margin: EdgeInsets.all(20),
                 child: StreamBuilder<List<SingleMasterDataModel>>(
                     stream: masterdata_bloc.singleMasterData,
                     builder: (context,

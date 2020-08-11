@@ -14,7 +14,7 @@ class MasterDataDrawer extends StatelessWidget {
         children: <Widget>[
           DrawerHeader(
             child: Text('App name',style: GoogleFonts.exo2(
-
+                fontSize: 20,
              ),),
             decoration: BoxDecoration(
               color: Colors.amberAccent,
@@ -22,8 +22,11 @@ class MasterDataDrawer extends StatelessWidget {
           ),
           ListTile(
             title: Text('Product',style: GoogleFonts.exo2(
-
-          ),),
+              textStyle: TextStyle(
+                fontSize: 20,
+                color: Colors.black,
+              ),
+            ),),
             trailing:  new Icon(Icons.arrow_forward),
             onTap: () {
               // Update the state of the app.
@@ -36,7 +39,10 @@ class MasterDataDrawer extends StatelessWidget {
           ),
           ListTile(
             title: Text('Sublist',style: GoogleFonts.exo2(
-
+              textStyle: TextStyle(
+                fontSize: 20,
+                color: Colors.black,
+              ),
             ),),
             trailing:  new Icon(Icons.arrow_forward),
             onTap: () {
@@ -50,7 +56,10 @@ class MasterDataDrawer extends StatelessWidget {
           ),
           Divider(),
           Text("Version 1.0.1",style: GoogleFonts.exo2(
-
+            textStyle: TextStyle(
+              fontSize: 20,
+              color: Colors.black,
+            ),
           ),),
         ],
       ),

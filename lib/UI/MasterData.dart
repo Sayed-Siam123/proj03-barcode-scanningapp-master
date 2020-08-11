@@ -70,7 +70,7 @@ class _MasterDataState extends State<MasterData> {
           centerTitle: true,
         ),
         body: Container(
-          margin: EdgeInsets.all(10),
+          color: Theme.of(context).backgroundColor,
           child: StreamBuilder<List<MasterDataModel>>(
             stream: masterdata_bloc.allMasterData,
             builder: (context, AsyncSnapshot<List<MasterDataModel>> snapshot) {
@@ -300,7 +300,7 @@ class _MasterDataState extends State<MasterData> {
                         product_id: _newData[index].id,
                       ),
                       SizedBox(
-                        height: 6,
+                        height: 0,
                       )
                     ],
                   );
@@ -324,7 +324,7 @@ class _MasterDataState extends State<MasterData> {
                         product_id: data[index].id,
                       ),
                       SizedBox(
-                        height: 6,
+                        height: 0,
                       )
                     ],
                   );

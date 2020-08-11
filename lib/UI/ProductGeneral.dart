@@ -183,9 +183,9 @@ class _ProductGeneralPageState extends State<ProductGeneralPage> {
                   Stack(
                     children: <Widget>[
                       Container(
-                        margin: EdgeInsets.only(left: 20,top: 130),
+                        margin: EdgeInsets.only(left: 10,top: 130),
                         height: 300,
-                        width: MediaQuery.of(context).size.width - 40,
+                        width: MediaQuery.of(context).size.width - 20,
                         decoration: BoxDecoration(
                           color: Colors.white,
                         ),
@@ -193,7 +193,7 @@ class _ProductGeneralPageState extends State<ProductGeneralPage> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
                             Container(
-                              margin: EdgeInsets.only(left: 25, top: 100),
+                              margin: EdgeInsets.only(left: 50, top: 100),
                               width: 110,
                               height: 150,
                               child: Container(
@@ -369,7 +369,7 @@ class _ProductGeneralPageState extends State<ProductGeneralPage> {
                             borderRadius: BorderRadius.circular(12.0),
                             child: Image.asset(
                               'assets/images/wine.jpg',
-                              width: MediaQuery.of(context).size.width - 280,
+                              width: 150,
                               height: 200.0,
                               fit: BoxFit.fill,
                             ),
@@ -383,8 +383,8 @@ class _ProductGeneralPageState extends State<ProductGeneralPage> {
                   ),
                   Container(
                     margin: EdgeInsets.only(top: 0),
-                    height: 150,
-                    width: MediaQuery.of(context).size.width - 40,
+                    height: 250,
+                    width: MediaQuery.of(context).size.width - 20,
                     decoration: BoxDecoration(
                       color: Colors.white,
                     ),
@@ -392,7 +392,7 @@ class _ProductGeneralPageState extends State<ProductGeneralPage> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         Container(
-                          margin: EdgeInsets.only(left: 25,top: 10),
+                          margin: EdgeInsets.only(left: 50,top: 10),
                           width: 150,
                           height: 180,
                           child: Column(

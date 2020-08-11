@@ -4,6 +4,7 @@ import 'package:app/Model/MaterialPackModel.dart';
 import 'package:app/Model/unit_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MaterialPackList extends StatefulWidget {
   @override
@@ -25,7 +26,7 @@ class _MaterialPackListState extends State<MaterialPackList> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(10),
+      color: Theme.of(context).backgroundColor,
       child: StreamBuilder<List<MaterialPackModel>>(
         stream: sublist_bloc.allmaterialpack,
         builder: (context, AsyncSnapshot<List<MaterialPackModel>> snapshot) {
@@ -39,7 +40,7 @@ class _MaterialPackListState extends State<MaterialPackList> {
             return Text("${snapshot.error}");
           }
 
-          return CircularProgressIndicator();
+          return Center(child: CircularProgressIndicator());
         },
       ),
     );
@@ -63,44 +64,47 @@ class _MaterialPackListState extends State<MaterialPackList> {
 //                product_id: data[index].id,
 //              ),
 
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(5)),
-                    boxShadow: [
-                      BoxShadow(
-                          blurRadius: 2.0,
-                          //spreadRadius: 3.0,
-                          color: Colors.grey.shade400),
-                    ],
-                  ),
-                  child: ListTile(
-                    onTap: (){
-                      //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ManufacViewPage()));
-                    },
-                    title: Text(data[index].materialName.toString(),
-                        style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 15,
-                        )),
 
-                    trailing: IconButton(
-                      onPressed: () {
-                        //Navigator.of(context).pushNamed('/details');
+                Container(
+                  margin: EdgeInsets.only(left: 6,right: 6,top: 1),
+                  child: Card(
+                    child: Container(
+                      margin: EdgeInsets.only(left: 6,right: 6,top: 1),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                      ),
+                      child: ListTile(
+                        onTap: (){
+                          //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ManufacViewPage()));
+                        },
+                        title: Text(data[index].materialName.toString(),
+                            style: GoogleFonts.exo2(
+                              textStyle: TextStyle(
+                                fontSize: 17,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w400,
+                              ),)),
+
+                        trailing: IconButton(
+                          onPressed: () {
+                            //Navigator.of(context).pushNamed('/details');
 //                      Navigator.pushReplacement(
 //                          context, MaterialPageRoute(builder: (context) => ManufacViewPage()));
-                        //TODO:: eikhane
-                      },
-                      icon: Icon(
-                        Icons.arrow_forward_ios,
-                        color: Colors.black,
+                            //TODO:: eikhane
+                          },
+                          icon: Icon(
+                            Icons.arrow_forward_ios,
+                            color: Colors.black,
+                          ),
+                        ),
                       ),
                     ),
                   ),
                 ),
 
 
-                SizedBox(height: 6,)
+                SizedBox(height: 1,)
 
               ],
             );

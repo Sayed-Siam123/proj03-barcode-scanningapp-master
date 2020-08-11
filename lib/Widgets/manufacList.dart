@@ -2,6 +2,7 @@ import 'package:app/Bloc/Sublist_bloc.dart';
 import 'package:app/Model/ManufactureModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ManufacList extends StatefulWidget {
   @override
@@ -21,7 +22,7 @@ class _ManufacListState extends State<ManufacList> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(10),
+      color: Theme.of(context).backgroundColor,
       child: StreamBuilder<List<ManufactureModel>>(
         stream: sublist_bloc.allmanufac,
         builder: (context, AsyncSnapshot<List<ManufactureModel>> snapshot) {
@@ -34,7 +35,7 @@ class _ManufacListState extends State<ManufacList> {
             return Text("${snapshot.error}");
           }
 
-          return CircularProgressIndicator();
+          return Center(child: CircularProgressIndicator());
         },
       ),
     );
@@ -59,42 +60,44 @@ class _ManufacListState extends State<ManufacList> {
 //              ),
 
                 Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(5)),
-                    boxShadow: [
-                      BoxShadow(
-                          blurRadius: 2.0,
-                          //spreadRadius: 3.0,
-                          color: Colors.grey.shade400),
-                    ],
-                  ),
-                  child: ListTile(
-                    onTap: () {
-                      //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ManufacViewPage()));
-                    },
-                    title: Text(data[index].manufacturerName.toString(),
-                        style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 15,
-                        )),
-                    trailing: IconButton(
-                      onPressed: () {
-                        //Navigator.of(context).pushNamed('/details');
+                  margin: EdgeInsets.only(left: 6,right: 6,top: 1),
+                  child: Card(
+                    child: Container(
+                      margin: EdgeInsets.only(left: 6,right: 6,top: 1),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                      ),
+                      child: ListTile(
+                        onTap: () {
+                          //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ManufacViewPage()));
+                        },
+                        title: Text(data[index].manufacturerName.toString(),
+                            style: GoogleFonts.exo2(
+                              textStyle: TextStyle(
+                                fontSize: 17,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w400,
+                              ),)),
+                        trailing: IconButton(
+                          onPressed: () {
+                            //Navigator.of(context).pushNamed('/details');
 //                      Navigator.pushReplacement(
 //                          context, MaterialPageRoute(builder: (context) => ManufacViewPage()));
-                        //TODO:: eikhane
-                      },
-                      icon: Icon(
-                        Icons.arrow_forward_ios,
-                        color: Colors.black,
+                            //TODO:: eikhane
+                          },
+                          icon: Icon(
+                            Icons.arrow_forward_ios,
+                            color: Colors.black,
+                          ),
+                        ),
                       ),
                     ),
                   ),
                 ),
 
                 SizedBox(
-                  height: 6,
+                  height: 1,
                 )
               ],
             );

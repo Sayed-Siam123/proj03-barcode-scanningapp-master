@@ -89,7 +89,8 @@ class _AddProductManufacturerDropDownState extends State<AddProductManufacturerD
 //    );
 
             return Container(
-              child: Row(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
 
@@ -137,18 +138,24 @@ class _AddProductManufacturerDropDownState extends State<AddProductManufacturerD
                   ),),
 
 
-                  SizedBox(width: 50,),
+                  SizedBox(height: 5,),
 
 
                   new Container(
-                    padding:
-                    EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(10)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.3),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
+                    ),
 
                     height: 50,
-                    width: 210,
+                    width: MediaQuery.of(context).size.width-40,
                     child: new DropdownButton<ManufactureModel>(
                       isExpanded: true,
                       icon: Icon(Icons.arrow_drop_down),
@@ -172,11 +179,14 @@ class _AddProductManufacturerDropDownState extends State<AddProductManufacturerD
                       items: data.map((ManufactureModel manufac) {
                         return new DropdownMenuItem<ManufactureModel>(
                           value: manufac,
-                          child: new Text(
-                            manufac.manufacturerName,
-                            style: GoogleFonts.exo2(
-                              textStyle: TextStyle(
-                                color: Colors.black,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 3.0),
+                            child: new Text(
+                              manufac.manufacturerName,
+                              style: GoogleFonts.exo2(
+                                textStyle: TextStyle(
+                                  color: Colors.black54,
+                                ),
                               ),
                             ),
                           ),
