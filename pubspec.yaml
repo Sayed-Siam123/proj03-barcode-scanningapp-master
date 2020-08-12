@@ -15,6 +15,7 @@ dependencies:
   barcode_scan: any
   barcode: ^1.16.1
   flushbar: ^1.10.4
+  flutter_custom_dialog: ^1.0.20
   direct_select_flutter: ^1.0.6
   printing: ^3.5.0
   pdf: ^1.10.0
