@@ -328,16 +328,17 @@ class _AddProductPageState extends State<AddProductPage> {
                     Padding(
                       padding: EdgeInsets.only(left: 13,bottom: 3),
                       child: Text("Product Name",style: GoogleFonts.exo2(
-                        fontSize: 20,
+                        fontSize: 16,
                       ),),
                     ),
                     Container(
-                      height: 58,
+                      height: 50,
                       width: MediaQuery.of(context).size.width-40,
                       alignment: Alignment.center,
                       margin: const EdgeInsets.only(top: 0, left: 13, right: 10),
                       decoration: BoxDecoration(
                         color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.grey.withOpacity(0.3),
@@ -354,7 +355,7 @@ class _AddProductPageState extends State<AddProductPage> {
                             autocorrect: true,
                             style: GoogleFonts.exo2(
                               textStyle: TextStyle(
-                                fontSize: 20,
+                                fontSize: 16,
                               ),
                             ),
                             decoration: new InputDecoration(
@@ -363,17 +364,18 @@ class _AddProductPageState extends State<AddProductPage> {
                               enabledBorder: InputBorder.none,
                               errorBorder: InputBorder.none,
                               disabledBorder: InputBorder.none,
+                             // borderRadius: BorderRadius.circular(10),
                               hintStyle: GoogleFonts.exo2(
                                 textStyle: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 14,
                                 ),
                               ),
                               labelStyle: GoogleFonts.exo2(
                                 textStyle: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 14,
                                 ),
                               ),
-                              hintText: "Enter Product Name",
+                              hintText: "Product Name",
                             )),
                       ),
                     ),
@@ -382,7 +384,7 @@ class _AddProductPageState extends State<AddProductPage> {
               ),
 
               SizedBox(
-                height: 10,
+                height: 1,
               ),
 
               Container(
@@ -394,16 +396,17 @@ class _AddProductPageState extends State<AddProductPage> {
                     Padding(
                       padding: EdgeInsets.only(left: 13,bottom: 3),
                       child: Text("Description",style: GoogleFonts.exo2(
-                        fontSize: 20,
+                        fontSize: 16,
                       ),),
                     ),
                     Container(
-                      height: 58,
+                      height: 50,
                       width: MediaQuery.of(context).size.width-40,
                       alignment: Alignment.center,
                       margin: const EdgeInsets.only(top: 0, left: 13, right: 10),
                       decoration: BoxDecoration(
                         color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.grey.withOpacity(0.3),
@@ -420,7 +423,7 @@ class _AddProductPageState extends State<AddProductPage> {
                             autocorrect: true,
                             style: GoogleFonts.exo2(
                               textStyle: TextStyle(
-                                fontSize: 20,
+                                fontSize: 16,
                               ),
                             ),
                             decoration: new InputDecoration(
@@ -431,15 +434,15 @@ class _AddProductPageState extends State<AddProductPage> {
                               disabledBorder: InputBorder.none,
                               hintStyle: GoogleFonts.exo2(
                                 textStyle: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 14,
                                 ),
                               ),
                               labelStyle: GoogleFonts.exo2(
                                 textStyle: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 14,
                                 ),
                               ),
-                              hintText: "Enter Product Description",
+                              hintText: "Product Description",
                             )),
                       ),
                     ),
@@ -447,12 +450,13 @@ class _AddProductPageState extends State<AddProductPage> {
                 ),
               ),
 
-               SizedBox(height: 15,),
-
+               SizedBox(height: 5,),
+//Drop down===========================================================================================
                Container(
-                 height: 400,
+                 height: 280,
                  width: double.infinity,
                  color: Colors.white,
+                 alignment: AlignmentDirectional(0.0, 0.0),
                  child: Column(
                    children: <Widget>[
                      Container(
@@ -559,7 +563,7 @@ class _AddProductPageState extends State<AddProductPage> {
 
 
               SizedBox(
-                height: 22,
+                height: 15,
               ),
 
 //              FittedBox(
@@ -614,21 +618,23 @@ class _AddProductPageState extends State<AddProductPage> {
                   children: <Widget>[
                     Padding(
                       padding: EdgeInsets.only(left: 13,bottom: 3),
-                      child: Text("Manufacturer TN",style: GoogleFonts.exo2(
-                        fontSize: 20,
+                      child: Text("Manufacturer PN",style: GoogleFonts.exo2(
+                        fontSize: 16,
                       ),),
                     ),
                     Container(
-                      height: 58,
+                      height: 50,
                       width: MediaQuery.of(context).size.width-40,
                       alignment: Alignment.center,
                       margin: const EdgeInsets.only(top: 0, left: 13, right: 10),
                       decoration: BoxDecoration(
                         color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+
                         boxShadow: [
                           BoxShadow(
                             color: Colors.grey.withOpacity(0.3),
-                            spreadRadius: 2,
+                            spreadRadius: 1,
                             blurRadius: 5,
                             offset: Offset(0, 3),
                           ),
@@ -641,7 +647,7 @@ class _AddProductPageState extends State<AddProductPage> {
                             autocorrect: true,
                             style: GoogleFonts.exo2(
                               textStyle: TextStyle(
-                                fontSize: 20,
+                                fontSize: 14,
                               ),
                             ),
                             decoration: new InputDecoration(
@@ -658,15 +664,15 @@ class _AddProductPageState extends State<AddProductPage> {
                               disabledBorder: InputBorder.none,
                               hintStyle: GoogleFonts.exo2(
                                 textStyle: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 14,
                                 ),
                               ),
                               labelStyle: GoogleFonts.exo2(
                                 textStyle: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 14,
                                 ),
                               ),
-                              hintText: "Enter Manufacturer TN",
+                              hintText: "Enter Manufacturer PN",
                             )),
                       ),
                     ),
@@ -675,7 +681,7 @@ class _AddProductPageState extends State<AddProductPage> {
               ),
 
               SizedBox(
-                height: 10,
+                height: 5,
               ),
 
 //              FittedBox(
@@ -731,16 +737,17 @@ class _AddProductPageState extends State<AddProductPage> {
                     Padding(
                       padding: EdgeInsets.only(left: 13,bottom: 3),
                       child: Text("GTIN",style: GoogleFonts.exo2(
-                        fontSize: 20,
+                        fontSize: 16,
                       ),),
                     ),
                     Container(
-                      height: 58,
+                      height: 50,
                       width: MediaQuery.of(context).size.width-40,
                       alignment: Alignment.center,
                       margin: const EdgeInsets.only(top: 0, left: 13, right: 10),
                       decoration: BoxDecoration(
                         color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.grey.withOpacity(0.3),
@@ -757,7 +764,7 @@ class _AddProductPageState extends State<AddProductPage> {
                             autocorrect: true,
                             style: GoogleFonts.exo2(
                               textStyle: TextStyle(
-                                fontSize: 20,
+                                fontSize: 14,
                               ),
                             ),
                             decoration: new InputDecoration(
@@ -774,12 +781,12 @@ class _AddProductPageState extends State<AddProductPage> {
                               disabledBorder: InputBorder.none,
                               hintStyle: GoogleFonts.exo2(
                                 textStyle: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 14,
                                 ),
                               ),
                               labelStyle: GoogleFonts.exo2(
                                 textStyle: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 14,
                                 ),
                               ),
                               hintText: "Enter GTIN",
@@ -791,7 +798,7 @@ class _AddProductPageState extends State<AddProductPage> {
               ),
 
               SizedBox(
-                height: 10,
+                height: 5,
               ),
 
               Container(
@@ -803,16 +810,17 @@ class _AddProductPageState extends State<AddProductPage> {
                     Padding(
                       padding: EdgeInsets.only(left: 13,bottom: 3),
                       child: Text("Price",style: GoogleFonts.exo2(
-                        fontSize: 20,
+                        fontSize: 16,
                       ),),
                     ),
                     Container(
-                      height: 58,
+                      height: 50,
                       width: MediaQuery.of(context).size.width-40,
                       alignment: Alignment.center,
                       margin: const EdgeInsets.only(top: 0, left: 13, right: 10),
                       decoration: BoxDecoration(
                         color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.grey.withOpacity(0.3),
@@ -829,7 +837,7 @@ class _AddProductPageState extends State<AddProductPage> {
                             autocorrect: true,
                             style: GoogleFonts.exo2(
                               textStyle: TextStyle(
-                                fontSize: 20,
+                                fontSize: 14,
                               ),
                             ),
                             decoration: new InputDecoration(
@@ -840,12 +848,12 @@ class _AddProductPageState extends State<AddProductPage> {
                               disabledBorder: InputBorder.none,
                               hintStyle: GoogleFonts.exo2(
                                 textStyle: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 14,
                                 ),
                               ),
                               labelStyle: GoogleFonts.exo2(
                                 textStyle: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 14,
                                 ),
                               ),
                               hintText: "Enter Price",

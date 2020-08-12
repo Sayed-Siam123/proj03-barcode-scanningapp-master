@@ -82,7 +82,7 @@ class _AddProductUnitDropDownState extends State<AddProductUnitDropDown> {
 
                   Text("Unit",style: GoogleFonts.exo2(
                     textStyle: TextStyle(
-                      fontSize: 20,
+                      fontSize: 16,
                     ),
                   ),),
 
@@ -93,6 +93,7 @@ class _AddProductUnitDropDownState extends State<AddProductUnitDropDown> {
                   new Container(
                     decoration: BoxDecoration(
                         color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.grey.withOpacity(0.3),
@@ -111,7 +112,7 @@ class _AddProductUnitDropDownState extends State<AddProductUnitDropDown> {
                       iconSize: 42,
                       style: GoogleFonts.exo2(
                         textStyle: TextStyle(
-                          fontSize: 20,
+                          fontSize: 14,
                         ),
                       ),
                       underline: SizedBox(),
@@ -134,7 +135,7 @@ class _AddProductUnitDropDownState extends State<AddProductUnitDropDown> {
                               category.unitName,
                               style: GoogleFonts.exo2(
                                 textStyle: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 14,
                                   color: Colors.black54,
                                 ),
                               ),

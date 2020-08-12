@@ -113,7 +113,7 @@ class _AddProductSubCategoryDropDownState extends State<AddProductSubCategoryDro
 
                   Text("Sub Category",style: GoogleFonts.exo2(
                     textStyle: TextStyle(
-                      fontSize: 20,
+                      fontSize: 16,
                     ),
                   ),),
 
@@ -124,6 +124,7 @@ class _AddProductSubCategoryDropDownState extends State<AddProductSubCategoryDro
                   new Container(
                     decoration: BoxDecoration(
                         color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.grey.withOpacity(0.3),
@@ -143,7 +144,7 @@ class _AddProductSubCategoryDropDownState extends State<AddProductSubCategoryDro
                       underline: SizedBox(),
                       style: GoogleFonts.exo2(
                         textStyle: TextStyle(
-                          fontSize: 20,
+                          fontSize: 14,
                         ),
                       ),
                       value: subcategorySelect,

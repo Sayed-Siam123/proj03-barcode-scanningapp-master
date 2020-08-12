@@ -137,7 +137,7 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
         title: Text(
           "New Delivery",
           style: GoogleFonts.exo2(
-            textStyle: TextStyle(fontSize: 20, color: Colors.black),
+            textStyle: TextStyle(fontSize: 20, color: Colors.black54),
           ),
         ),
         backgroundColor: Colors.white,
@@ -165,13 +165,15 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
           children: <Widget>[
 
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.only(left:5.0),
-                  child: Text("Please Enter GTIN or ProductID to add",style: GoogleFonts.exo2(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text("Please Input product ID or GTIN to \n add for the delivery \n or you can tap on scan button for quick adding",style: GoogleFonts.exo2(
                     textStyle: TextStyle(
-                        fontSize: 20,
+                        fontSize: 12,
                         color: Theme.of(context).accentColor,
                       fontWeight: FontWeight.w500
                     ),
@@ -183,24 +185,25 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
                     left: 0,
                     top: 10,
                   ),
-                  height: 60,
+                  height: 50,
                   decoration: BoxDecoration(
-                    shape: BoxShape.circle,
+                    shape: BoxShape.rectangle,
                     color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.grey.withOpacity(0.5),
                         spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: Offset(0, 3),
+                        blurRadius: 13,
+                        offset: Offset(3, 3),
                       ),
                     ],
                   ),
-                  width: 60,
+                  width: 50,
                   child: Center(
                       child: Text(
                         count.toString(),
-                        style: GoogleFonts.exo2(textStyle: TextStyle(fontSize: 50)),
+                        style: GoogleFonts.exo2(textStyle: TextStyle(fontSize: 26)),
                       )),
                 ),
               ],
@@ -216,13 +219,14 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
                   margin: const EdgeInsets.only(top: 10, left: 13, right: 10),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(5)),
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
                     boxShadow: [
                       BoxShadow(
+                       // borderRadius: BorderRadius.circular(10),
                         color: Colors.grey.withOpacity(0.5),
                         spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: Offset(0, 3),
+                        blurRadius: 13,
+                        offset: Offset(1, 1),
                       ),
                     ],
                   ),
@@ -267,10 +271,11 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
                       color: Theme.of(context).buttonColor,
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 2,
-                          blurRadius: 5,
-                          offset: Offset(0, 3),
+                          color: Colors.white60,
+
+                          spreadRadius: 1,
+                          blurRadius: 1,
+                          offset: Offset(1,1 ),
                         ),
                       ],
                     ),
@@ -280,7 +285,7 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
                       child: Container(
                         child: IconButton(
                           icon: new Image.asset(
-                            'assets/images/qr-code.png',
+                            'assets/images/barcode.png',
                             fit: BoxFit.contain,
                             color: Colors.white,
                           ),

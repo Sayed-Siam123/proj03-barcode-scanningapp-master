@@ -85,7 +85,7 @@ class _AddProductCategoryDropDownState
                     "Category",
                     style: GoogleFonts.exo2(
                       textStyle: TextStyle(
-                        fontSize: 20,
+                        fontSize: 16,
                       ),
                     ),
                   ),
@@ -97,6 +97,7 @@ class _AddProductCategoryDropDownState
                   new Container(
                     decoration: BoxDecoration(
                       color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.grey.withOpacity(0.3),
@@ -114,7 +115,7 @@ class _AddProductCategoryDropDownState
                       iconSize: 42,
                       style: GoogleFonts.exo2(
                         textStyle: TextStyle(
-                          fontSize: 20,
+                          fontSize: 14,
                         ),
                       ),
                       underline: SizedBox(),

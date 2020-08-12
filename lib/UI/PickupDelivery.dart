@@ -117,7 +117,7 @@ class _PickupDeliveryState extends State<PickupDelivery> {
         title: Text(
           "Pickup Delivery",
           style: GoogleFonts.exo2(
-            textStyle: TextStyle(fontSize: 20, color: Colors.black),
+            textStyle: TextStyle(fontSize: 20, color: Colors.black54),
           ),
         ),
         backgroundColor: Colors.white,
@@ -130,38 +130,39 @@ class _PickupDeliveryState extends State<PickupDelivery> {
         child: Column(
           children: <Widget>[
             Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.only(left:15.0),
-                  child: Text("Please Enter GTIN or Product ID"),
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text("Please Input product ID or GTIN to \n add for the delivery \n or you can tap on scan button for quick adding"),
                 ),
 
                 SizedBox(width: 40,),
 
                 Container(
                   margin: EdgeInsets.only(
-                    left: 100,
+                    left: 0,
                     top: 10,
                   ),
-                  height: 60,
+                  height: 50,
                   decoration: BoxDecoration(
-                    shape: BoxShape.circle,
+                    shape: BoxShape.rectangle,
                     color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.grey.withOpacity(0.5),
                         spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: Offset(0, 3),
+                        blurRadius: 13,
+                        offset: Offset(3, 3),
                       ),
                     ],
                   ),
-                  width: 60,
+                  width: 50,
                   child: Center(
                       child: Text(
                         "33",
-                        style: GoogleFonts.exo2(textStyle: TextStyle(fontSize: 25)),
+                        style: GoogleFonts.exo2(textStyle: TextStyle(fontSize: 26)),
                       )),
                 ),
               ],
@@ -171,7 +172,7 @@ class _PickupDeliveryState extends State<PickupDelivery> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 Container(
-                  height: 58,
+                  height: 50,
                   width: MediaQuery.of(context).size.width - 87,
                   alignment: Alignment.center,
                   margin: const EdgeInsets.only(top: 10, left: 13, right: 10),
@@ -182,8 +183,8 @@ class _PickupDeliveryState extends State<PickupDelivery> {
                       BoxShadow(
                         color: Colors.grey.withOpacity(0.5),
                         spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: Offset(0, 3),
+                        blurRadius: 13,
+                        offset: Offset(1, 1),
                       ),
                     ],
                   ),
@@ -241,7 +242,7 @@ class _PickupDeliveryState extends State<PickupDelivery> {
                       child: Container(
                         child: IconButton(
                           icon: new Image.asset(
-                            'assets/images/qr-code.png',
+                            'assets/images/barcode.png',
                             fit: BoxFit.contain,
                             color: Colors.white,
                           ),
