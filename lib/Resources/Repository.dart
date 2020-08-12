@@ -1,4 +1,5 @@
 import 'package:app/Model/CatagoryModel.dart';
+import 'package:app/Model/DeliveriesListModel.dart';
 import 'package:app/Model/GetSuccess_Model.dart';
 import 'package:app/Model/ManufactureModel.dart';
 import 'package:app/Model/MaterialPackModel.dart';
@@ -107,16 +108,10 @@ class Repository {
   Future updateProduct(NewDeliveryModel product) => dbprovider.updateProduct(product);
 
 
-
-
-
-
-
-
-
-
-
-
 //TODO:: END
+
+  Future<List<DeliveriesListModel>> fetchDelivereisData() => apiprovider.fetchDelivereisData();
+
+
 
 }

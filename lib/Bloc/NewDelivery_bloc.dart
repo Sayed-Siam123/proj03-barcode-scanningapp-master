@@ -1,3 +1,4 @@
+import 'package:app/Model/DeliveriesListModel.dart';
 import 'package:app/Model/NewDeliveryModel.dart';
 import 'package:app/Resources/Repository.dart';
 import 'package:rxdart/rxdart.dart';
@@ -13,10 +14,15 @@ class NewDelivery_bloc{
 
   final _allproductdataFetcher = PublishSubject<List<NewDeliveryModel>>();
 
+  final _alldeliverydataFetcher = PublishSubject<List<DeliveriesListModel>>(); // eikhane notun model boshbe
+
 
   Stream<List<NewDeliveryModel>> get allProductData => _productdataFetcher.stream;
 
   Stream<List<NewDeliveryModel>> get allProductData1 => _allproductdataFetcher.stream;
+
+  Stream<List<DeliveriesListModel>> get allDelivereiesData => _alldeliverydataFetcher.stream;
+
 
   Function(String) get getselecteditemBarcode => selectedItembarcode.sink.add;
   Function(String) get getselecteditemProductName => selectedItemproductname.sink.add;
@@ -58,6 +64,11 @@ class NewDelivery_bloc{
     await _repository.deleteAllProductsTable();
   }
 
+  getAllDeliveryList() async{
+    List<DeliveriesListModel> delivereisdata = await _repository.fetchDelivereisData();
+    _alldeliverydataFetcher.sink.add(delivereisdata);
+  }
+
 
 
   void dispose() async{
@@ -74,6 +85,9 @@ class NewDelivery_bloc{
 
     await _allproductdataFetcher.drain();
     _allproductdataFetcher.close();
+
+    await _alldeliverydataFetcher.drain();
+    _alldeliverydataFetcher.close();
 
   }
 

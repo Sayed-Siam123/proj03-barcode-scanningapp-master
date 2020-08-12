@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:app/Model/CatagoryModel.dart';
+import 'package:app/Model/DeliveriesListModel.dart';
 import 'package:app/Model/ManufactureModel.dart';
 import 'package:app/Model/MaterialPackModel.dart';
 import 'package:app/Model/SubCategory.dart';
@@ -581,6 +582,26 @@ class ApiProvider {
     return val;
   }
 
+  Future<List<DeliveriesListModel>> fetchDelivereisData() async{
+    print("fetch from apiprovider");
+    final response = await client.get(_url);
+
+    if (response.statusCode == 200) {
+      List jsonResponse = json.decode(response.body);
+      //List<dynamic> values = new List<dynamic>();
+
+      //values = json.decode(response.body);
+
+      debugPrint("From Get Class:: "+jsonResponse.toString());
+      return jsonResponse.map((delivereiesListdata) => new DeliveriesListModel.fromJson(delivereiesListdata)).toList();
+  }
+
+    else {
+      throw Exception('Failed to load jobs from API');
+    }
+
+
+  }
 
 }
 
