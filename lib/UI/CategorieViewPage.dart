@@ -87,55 +87,7 @@ class _CategorieViewPageState extends State<CategorieViewPage> {
       ),
     );
   }
-
-//  _showDialog() async {
-//    await showDialog<String>(
-//        context: context,
-//        builder: (_) => new AlertDialog(
-//          shape: RoundedRectangleBorder(
-//              borderRadius:
-//              BorderRadius.all(
-//                  Radius.circular(10.0))),
-//          content: Builder(
-//            builder: (context) {
-//              // Get available height and width of the build area of this widget. Make a choice depending on the size.
-//              var height = MediaQuery.of(context).size.height;
-//              var width = MediaQuery.of(context).size.width;
-//
-//              return Container(
-//                height: height - 710,
-//                width: width - 200,
-//                child: new Column(
-//                  children: <Widget>[
-//                    new Expanded(
-//                      child: new TextField(
-//                        autofocus: true,
-//                        decoration: new InputDecoration(
-//                            labelText: 'Category', hintText: 'eg. Wines'),
-//                      ),
-//                    ),
-//                  ],
-//                ),
-//              );
-//            },
-//          ),
-//          actions: <Widget>[
-//            new FlatButton(
-//                child: const Text('CANCEL'),
-//                onPressed: () {
-//                  Navigator.pop(context);
-//                }),
-//            new FlatButton(
-//                child: const Text('ADD'),
-//                onPressed: () {
-////                Navigator.pop(context);
-//                })
-//          ],
-//        )
-//    );
-//  }
-//}
-
+  
   _showDialog() async {
     await showDialog<String>(
         context: context,
