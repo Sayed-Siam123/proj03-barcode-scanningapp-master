@@ -1,6 +1,8 @@
 import 'package:app/Bloc/Sublist_bloc.dart';
+import 'package:app/Widgets/CategoryDropDown.dart';
 import 'package:app/Widgets/SubCategoryList.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:direct_select_flutter/direct_select_container.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -194,19 +196,20 @@ class _SubCatPageViewState extends State<SubCatPageView> {
 //  }
 
   _showDialog() async {
-//    await showDialog<String>(
-//        context: context,
-//        builder: (_) => StatefulBuilder(
-//              builder: (context, setState) {
-//                return new AlertDialog(
-//                  shape: RoundedRectangleBorder(
-//                      borderRadius: BorderRadius.all(Radius.circular(10.0))),
-//                  content: Builder(
-//                    builder: (context) {
-//                      // Get available height and width of the build area of this widget. Make a choice depending on the size.
-//                      var height = MediaQuery.of(context).size.height;
-//                      var width = MediaQuery.of(context).size.width;
-//
+    await showDialog<String>(
+        context: context,
+        builder: (_) => StatefulBuilder(
+              builder: (context, setState) {
+                return DirectSelectContainer(
+                  child: new AlertDialog(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                    content: Builder(
+                      builder: (context) {
+                        // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                        var height = MediaQuery.of(context).size.height;
+                        var width = MediaQuery.of(context).size.width;
+
 //                      return Container(
 //                        height: height - 600,
 //                        width: width - 200,
@@ -232,124 +235,129 @@ class _SubCatPageViewState extends State<SubCatPageView> {
 //                          ],
 //                        ),
 //                      );
-//                    },
-//                  ),
-//                  actions: <Widget>[
-//                    new FlatButton(
-//                        child: const Text('CANCEL'),
-//                        onPressed: () {
-//                          _inputcontrol1.text = "";
-//                          //_inputcontrol2.text = "";
-//                          Navigator.pop(context);
-//                        }),
-//                    new FlatButton(
-//                        child: const Text('ADD'),
-//                        onPressed: () {
-////                Navigator.pop(context);
-//
-//                          if (_inputcontrol1.text.isEmpty &&
-//                              _inputcontrol1.text == "") {
-//                            print("KHali");
-//
-//                            setState(() {
-//                              _validate1 = false;
-//                            });
-//                            //TODO:: Toast hobe ekta
-//                          }
-//
-////                  else if (_inputcontrol2.text.isEmpty &&
-////                      _inputcontrol2.text == "") {
-////                    print("eitao KHali");
-////                    //TODO:: Toast hobe ekta
-////                  }
-//
-//                          else {
-//                            setState(() {
-//                              _validate1 = true;
-//                            });
-//
-//                            print("Vora");
-//
-//                            print(_inputcontrol1.text);
-//                            //print(_inputcontrol2.text);
-//
-//                            sublist_bloc.getsub_category(_inputcontrol1.text);
-//                            sublist_bloc.createsubcategory();
-//
-//                            _inputcontrol1.text = "";
-//                            //_inputcontrol2.text = "";
-//
-//                            Fluttertoast.showToast(
-//                                msg: "Sub Category Added!",
-//                                toastLength: Toast.LENGTH_SHORT,
-//                                gravity: ToastGravity.BOTTOM,
-//                                timeInSecForIosWeb: 1,
-//                                backgroundColor: Colors.green,
-//                                textColor: Colors.white,
-//                                fontSize: 16.0);
-//
-//                            Navigator.pop(context);
-//                            sublist_bloc.dispose();
-//                            sublist_bloc.fetchAllSubCatagoryData();
-//                          }
-//
-////                      setState(() {
-////                        _inputcontrol2.text.isEmpty || _inputcontrol2.text == '' ? _validate = true : _validate = false;
-////                      });
-//                        })
-//                  ],
-//                );
-//              },
-//            ));
 
-    AwesomeDialog(
-      context: context,
-      headerAnimationLoop: false,
-      dialogType: DialogType.SUCCES,
-      animType: AnimType.TOPSLIDE,
-      body: Form(
-        key: _resetKey,
-        autovalidate: _resetValidate,
-        child: Container(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-            child: TextFormField(
-              autofocus: true,
-              decoration: new InputDecoration(
-                labelText: 'Sub Category',
-                hintText: 'eg. Rose Wine',
-                labelStyle: GoogleFonts.exo2(
-                  textStyle: TextStyle(
-                    fontSize: 20,
-                  ),
-                ),
-                hintStyle: GoogleFonts.exo2(
-                  textStyle: TextStyle(
-                    fontSize: 20,
-                  ),
-                ),
-                errorText: _validate1 == false ? errortext1 : null,
-              ),
-              controller: _inputcontrol1,
-              // ignore: missing_return
-            ),
-          ),
-        ),
-      ),
-      btnCancelOnPress: () {
-        _inputcontrol1.text = "";
-        //_inputcontrol2.text = "";
-        //Navigator.pop(context);
-      },
-      btnOkOnPress: () {
-        if (_inputcontrol1.text.isEmpty && _inputcontrol1.text == "") {
-          print("KHali");
+                        return Container(
+                          height: height * 0.3,
+                          width: 400,
+                          child: new Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              Text(
+                                "NEW SUB CATEGORY",
+                                style: GoogleFonts.exo2(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black54,
+                                ),
+                              ),
+                              Divider(
+                                thickness: 1,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
 
-          setState(() {
-            _validate1 = false;
-          });
-          //TODO:: Toast hobe ekta
-        }
+                              CategoryDropDown(),
+
+                              SizedBox(
+                                height: 15,
+                              ),
+
+                              Container(
+                                child: Column(
+                                  children: <Widget>[
+                                    new Text(
+                                      "Sub Category",
+                                      style: GoogleFonts.exo2(
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 2,
+                                    ),
+                                    new TextField(
+                                      autofocus: true,
+                                      style: GoogleFonts.exo2(
+                                        fontSize: 14,
+                                      ),
+                                      decoration: new InputDecoration(
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(10)),
+                                        ),
+                                        hintText: 'Rose Wine',
+                                        hintStyle: GoogleFonts.exo2(
+                                          fontSize: 14,
+                                        ),
+                                        errorStyle: GoogleFonts.exo2(
+                                          fontSize: 14,
+                                        ),
+                                        errorText: _validate1 == false
+                                            ? errortext1
+                                            : null,
+                                      ),
+                                      controller: _inputcontrol1,
+                                      // ignore: missing_return
+                                    ),
+                                  ],
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                ),
+//                            child: new TextField(
+//                                autofocus: true,
+//                                decoration: new InputDecoration(
+//                                  border: OutlineInputBorder(),
+//                                  labelText: 'Unit',
+//                                  hintText: 'Pieces',
+//                                  errorText: _validate1==false ? errortext1 : null,
+//                                ),
+//                                controller: _inputcontrol1,
+//                                // ignore: missing_return
+//                              ),
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                            ],
+                          ),
+                        );
+
+                      },
+                    ),
+                    actions: <Widget>[
+                      new FlatButton(
+                          child: Text(
+                            'CANCEL',
+                            style: GoogleFonts.exo2(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black,
+                            ),
+                          ),
+                          onPressed: () {
+                            _inputcontrol1.text = "";
+                            //_inputcontrol2.text = "";
+                            Navigator.pop(context);
+                          }),
+                      new FlatButton(
+                          child: Text(
+                            'ADD',
+                            style: GoogleFonts.exo2(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          onPressed: () {
+//                Navigator.pop(context);
+
+                            if (_inputcontrol1.text.isEmpty &&
+                                _inputcontrol1.text == "") {
+                              print("KHali");
+
+                              setState(() {
+                                _validate1 = false;
+                              });
+                              //TODO:: Toast hobe ekta
+                            }
 
 //                  else if (_inputcontrol2.text.isEmpty &&
 //                      _inputcontrol2.text == "") {
@@ -357,39 +365,134 @@ class _SubCatPageViewState extends State<SubCatPageView> {
 //                    //TODO:: Toast hobe ekta
 //                  }
 
-        else {
-          setState(() {
-            _validate1 = true;
-          });
+                            else {
+                              setState(() {
+                                _validate1 = true;
+                              });
 
-          print("Vora");
+                              print("Vora");
 
-          print(_inputcontrol1.text);
-          //print(_inputcontrol2.text);
+                              print(_inputcontrol1.text);
+                              //print(_inputcontrol2.text);
 
-          sublist_bloc.getsub_category(_inputcontrol1.text);
-          sublist_bloc.createsubcategory();
+                              sublist_bloc.getsub_category(_inputcontrol1.text);
+                              sublist_bloc.createsubcategory();
 
-          _inputcontrol1.text = "";
-          //_inputcontrol2.text = "";
+                              _inputcontrol1.text = "";
+                              //_inputcontrol2.text = "";
 
-          Scaffold.of(context).showSnackBar(SnackBar(
-            content: Text(
-              'Successfully Added',
-              style: GoogleFonts.exo2(
-                textStyle: TextStyle(
-                  fontSize: 16,
-                ),
-              ),
-            ),
-            duration: Duration(seconds: 2),
-          ));
+                              Fluttertoast.showToast(
+                                  msg: "Sub Category Added!",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: Colors.green,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0);
 
-          sublist_bloc.dispose();
-          sublist_bloc.fetchAllSubCatagoryData();
-        }
-      },
-    )..show();
+                              Navigator.pop(context);
+                              sublist_bloc.dispose();
+                              sublist_bloc.fetchAllSubCatagoryData();
+                            }
+
+//                      setState(() {
+//                        _inputcontrol2.text.isEmpty || _inputcontrol2.text == '' ? _validate = true : _validate = false;
+//                      });
+                          })
+                    ],
+                  ),
+                );
+              },
+            ));
+
+//    AwesomeDialog(
+//      context: context,
+//      headerAnimationLoop: false,
+//      dialogType: DialogType.SUCCES,
+//      animType: AnimType.TOPSLIDE,
+//      body: Form(
+//        key: _resetKey,
+//        autovalidate: _resetValidate,
+//        child: Container(
+//          child: Padding(
+//            padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+//            child: TextFormField(
+//              autofocus: true,
+//              decoration: new InputDecoration(
+//                labelText: 'Sub Category',
+//                hintText: 'eg. Rose Wine',
+//                labelStyle: GoogleFonts.exo2(
+//                  textStyle: TextStyle(
+//                    fontSize: 20,
+//                  ),
+//                ),
+//                hintStyle: GoogleFonts.exo2(
+//                  textStyle: TextStyle(
+//                    fontSize: 20,
+//                  ),
+//                ),
+//                errorText: _validate1 == false ? errortext1 : null,
+//              ),
+//              controller: _inputcontrol1,
+//              // ignore: missing_return
+//            ),
+//          ),
+//        ),
+//      ),
+//      btnCancelOnPress: () {
+//        _inputcontrol1.text = "";
+//        //_inputcontrol2.text = "";
+//        //Navigator.pop(context);
+//      },
+//      btnOkOnPress: () {
+//        if (_inputcontrol1.text.isEmpty && _inputcontrol1.text == "") {
+//          print("KHali");
+//
+//          setState(() {
+//            _validate1 = false;
+//          });
+//          //TODO:: Toast hobe ekta
+//        }
+//
+////                  else if (_inputcontrol2.text.isEmpty &&
+////                      _inputcontrol2.text == "") {
+////                    print("eitao KHali");
+////                    //TODO:: Toast hobe ekta
+////                  }
+//
+//        else {
+//          setState(() {
+//            _validate1 = true;
+//          });
+//
+//          print("Vora");
+//
+//          print(_inputcontrol1.text);
+//          //print(_inputcontrol2.text);
+//
+//          sublist_bloc.getsub_category(_inputcontrol1.text);
+//          sublist_bloc.createsubcategory();
+//
+//          _inputcontrol1.text = "";
+//          //_inputcontrol2.text = "";
+//
+//          Scaffold.of(context).showSnackBar(SnackBar(
+//            content: Text(
+//              'Successfully Added',
+//              style: GoogleFonts.exo2(
+//                textStyle: TextStyle(
+//                  fontSize: 16,
+//                ),
+//              ),
+//            ),
+//            duration: Duration(seconds: 2),
+//          ));
+//
+//          sublist_bloc.dispose();
+//          sublist_bloc.fetchAllSubCatagoryData();
+//        }
+//      },
+//    )..show();
   }
 
   String validateinput1(String value) {

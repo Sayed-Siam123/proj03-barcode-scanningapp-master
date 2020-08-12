@@ -140,157 +140,126 @@ class _PackageMaterialPageState extends State<PackageMaterialPage> {
 //  }
 
   _showDialog() async {
-//    await showDialog<String>(
-//        context: context,
-//        builder: (_) =>
-//
-//        StatefulBuilder(
-//          builder: (context, setState) {
-//            return new AlertDialog(
-//              shape: RoundedRectangleBorder(
-//                  borderRadius: BorderRadius.all(Radius.circular(10.0))),
-//              content: Builder(
-//                builder: (context) {
-//                  // Get available height and width of the build area of this widget. Make a choice depending on the size.
-//                  var height = MediaQuery.of(context).size.height;
-//                  var width = MediaQuery.of(context).size.width;
-//
-//                  return Container(
-//                      height: height - 700,
-//                      width: width - 200,
-//                      child: new Column(
-//                        children: <Widget>[
-//                          new Expanded(
-//                            child: new TextFormField(
-//                              autofocus: true,
-//                              validator: validateinput1,
-//                              decoration: new InputDecoration(
-//                                  labelText: 'Packaging Material', hintText: 'eg. Plastic',
-//                                errorText: _validate1 == false ? errortext1 :null,
+    await showDialog<String>(
+        context: context,
+        builder: (_) =>
+
+        StatefulBuilder(
+          builder: (context, setState) {
+            return new AlertDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10.0))),
+              content: Builder(
+                builder: (context) {
+                  // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                  var height = MediaQuery.of(context).size.height;
+                  var width = MediaQuery.of(context).size.width;
+
+                  return Container(
+                    height: height * 0.2,
+                    width: 400,
+                    child: new Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Text(
+                          "NEW PACKEGING MATERIAL",
+                          style: GoogleFonts.exo2(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black54,
+                          ),
+                        ),
+                        Divider(
+                          thickness: 1,
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Container(
+                          child: Column(
+                            children: <Widget>[
+                              new Text(
+                                "Packaing Material",
+                                style: GoogleFonts.exo2(
+                                  fontSize: 16,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 2,
+                              ),
+                              new TextField(
+                                autofocus: true,
+                                style: GoogleFonts.exo2(
+                                  fontSize: 14,
+                                ),
+                                decoration: new InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(10)),
+                                  ),
+                                  hintText: 'Plastic',
+                                  hintStyle: GoogleFonts.exo2(
+                                    fontSize: 14,
+                                  ),
+                                  errorStyle: GoogleFonts.exo2(
+                                    fontSize: 14,
+                                  ),
+                                  errorText: _validate1 == false
+                                      ? errortext1
+                                      : null,
+                                ),
+                                controller: _inputcontrol1,
+                                // ignore: missing_return
+                              ),
+                            ],
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                          ),
+//                            child: new TextField(
+//                                autofocus: true,
+//                                decoration: new InputDecoration(
+//                                  border: OutlineInputBorder(),
+//                                  labelText: 'Unit',
+//                                  hintText: 'Pieces',
+//                                  errorText: _validate1==false ? errortext1 : null,
+//                                ),
+//                                controller: _inputcontrol1,
+//                                // ignore: missing_return
 //                              ),
-//                              controller: _inputcontrol1,
-//                              // ignore: missing_return
-//                            ),
-//                          ),
-//                        ],
-//                      ),
-//                    );
-//                },
-//              ),
-//              actions: <Widget>[
-//                new FlatButton(
-//                    child: const Text('CANCEL'),
-//                    onPressed: () {
-//                      _inputcontrol1.text = "";
-//                      //_inputcontrol2.text = "";
-//                      Navigator.pop(context);
-//                    }),
-//                new FlatButton(
-//                    child: const Text('ADD'),
-//                    onPressed: () {
-////                Navigator.pop(context);
-//
-//                      if (_inputcontrol1.text.isEmpty &&
-//                          _inputcontrol1.text == "") {
-//                        print("KHali");
-//
-//                        setState(() {
-//                          _validate1 = false;
-//                        });
-//
-//                        //TODO:: Toast hobe ekta
-//                      }
-//
-////                  else if (_inputcontrol2.text.isEmpty &&
-////                      _inputcontrol2.text == "") {
-////                    print("eitao KHali");
-////                    //TODO:: Toast hobe ekta
-////                  }
-//
-//                      else {
-//
-//
-//                        setState(() {
-//                          _validate1 = true;
-//                        });
-//
-//                        print("Vora");
-//
-//                        print(_inputcontrol1.text);
-//                        //print(_inputcontrol2.text);
-//
-//                        sublist_bloc.getpackaging_material(_inputcontrol1.text);
-//                        sublist_bloc.createpackagingmaterial();
-//
-//                        _inputcontrol1.text = "";
-//                        //_inputcontrol2.text = "";
-//
-//                        Fluttertoast.showToast(
-//                            msg: "Package Material Added!",
-//                            toastLength: Toast.LENGTH_SHORT,
-//                            gravity: ToastGravity.BOTTOM,
-//                            timeInSecForIosWeb: 1,
-//                            backgroundColor: Colors.green,
-//                            textColor: Colors.white,
-//                            fontSize: 16.0);
-//
-//
-//                        Navigator.pop(context);
-//                        sublist_bloc.dispose();
-//                        sublist_bloc.fetchAllMateralPackData();
-//
-//
-//                      }
-//
-////                      setState(() {
-////                        _inputcontrol2.text.isEmpty || _inputcontrol2.text == '' ? _validate = true : _validate = false;
-////                      });
-//                    })
-//              ],
-//            );
-//          },
-//        ));
-
-    AwesomeDialog(
-      context: context,
-      headerAnimationLoop: false,
-
-      dialogType: DialogType.SUCCES,
-      animType: AnimType.TOPSLIDE,
-      body: Form(
-        key: _resetKey,
-        autovalidate: _resetValidate,
-        child: Container(
-          child: Padding(
-            padding: const EdgeInsets.only(left:8.0,right: 8.0),
-            child: TextFormField(
-              autofocus: true,
-              decoration: new InputDecoration(
-                labelText: 'Packaging Material', hintText: 'eg. Plastic',
-                labelStyle: GoogleFonts.exo2(
-                  textStyle: TextStyle(
-                    fontSize: 20,
-                  ),
-                ),
-                hintStyle: GoogleFonts.exo2(
-                  textStyle: TextStyle(
-                    fontSize: 20,
-                  ),
-                ),
-                errorText: _validate1 == false ? errortext1 : null,
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
-              controller: _inputcontrol1,
-              // ignore: missing_return
-            ),
-          ),
-        ),
-      ),
-      btnCancelOnPress: () {
-        _inputcontrol1.text = "";
-        //_inputcontrol2.text = "";
-        //Navigator.pop(context);
-      },
-      btnOkOnPress: () {
+              actions: <Widget>[
+                new FlatButton(
+                    child: Text(
+                      'CANCEL',
+                      style: GoogleFonts.exo2(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                      ),
+                    ),
+                    onPressed: () {
+                      _inputcontrol1.text = "";
+                      //_inputcontrol2.text = "";
+                      Navigator.pop(context);
+                    }),
+                new FlatButton(
+                    child: Text(
+                      'ADD',
+                      style: GoogleFonts.exo2(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    onPressed: () {
+//                Navigator.pop(context);
+
                       if (_inputcontrol1.text.isEmpty &&
                           _inputcontrol1.text == "") {
                         print("KHali");
@@ -326,26 +295,127 @@ class _PackageMaterialPageState extends State<PackageMaterialPage> {
                         _inputcontrol1.text = "";
                         //_inputcontrol2.text = "";
 
-                        Scaffold.of(context).showSnackBar(SnackBar(
-                          content: Text(
-                            'Successfully Added',
-                            style: GoogleFonts.exo2(
-                              textStyle: TextStyle(
-                                fontSize: 16,
-                              ),
-                            ),
-                          ),
-                          duration: Duration(seconds: 2),
-                        ));
+                        Fluttertoast.showToast(
+                            msg: "Package Material Added!",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.green,
+                            textColor: Colors.white,
+                            fontSize: 16.0);
 
 
+                        Navigator.pop(context);
                         sublist_bloc.dispose();
                         sublist_bloc.fetchAllMateralPackData();
 
 
                       }
-      },
-    )..show();
+
+//                      setState(() {
+//                        _inputcontrol2.text.isEmpty || _inputcontrol2.text == '' ? _validate = true : _validate = false;
+//                      });
+                    })
+              ],
+            );
+          },
+        ));
+
+//    AwesomeDialog(
+//      context: context,
+//      headerAnimationLoop: false,
+//
+//      dialogType: DialogType.SUCCES,
+//      animType: AnimType.TOPSLIDE,
+//      body: Form(
+//        key: _resetKey,
+//        autovalidate: _resetValidate,
+//        child: Container(
+//          child: Padding(
+//            padding: const EdgeInsets.only(left:8.0,right: 8.0),
+//            child: TextFormField(
+//              autofocus: true,
+//              decoration: new InputDecoration(
+//                labelText: 'Packaging Material', hintText: 'eg. Plastic',
+//                labelStyle: GoogleFonts.exo2(
+//                  textStyle: TextStyle(
+//                    fontSize: 20,
+//                  ),
+//                ),
+//                hintStyle: GoogleFonts.exo2(
+//                  textStyle: TextStyle(
+//                    fontSize: 20,
+//                  ),
+//                ),
+//                errorText: _validate1 == false ? errortext1 : null,
+//              ),
+//              controller: _inputcontrol1,
+//              // ignore: missing_return
+//            ),
+//          ),
+//        ),
+//      ),
+//      btnCancelOnPress: () {
+//        _inputcontrol1.text = "";
+//        //_inputcontrol2.text = "";
+//        //Navigator.pop(context);
+//      },
+//      btnOkOnPress: () {
+//                      if (_inputcontrol1.text.isEmpty &&
+//                          _inputcontrol1.text == "") {
+//                        print("KHali");
+//
+//                        setState(() {
+//                          _validate1 = false;
+//                        });
+//
+//                        //TODO:: Toast hobe ekta
+//                      }
+//
+////                  else if (_inputcontrol2.text.isEmpty &&
+////                      _inputcontrol2.text == "") {
+////                    print("eitao KHali");
+////                    //TODO:: Toast hobe ekta
+////                  }
+//
+//                      else {
+//
+//
+//                        setState(() {
+//                          _validate1 = true;
+//                        });
+//
+//                        print("Vora");
+//
+//                        print(_inputcontrol1.text);
+//                        //print(_inputcontrol2.text);
+//
+//                        sublist_bloc.getpackaging_material(_inputcontrol1.text);
+//                        sublist_bloc.createpackagingmaterial();
+//
+//                        _inputcontrol1.text = "";
+//                        //_inputcontrol2.text = "";
+//
+//                        Scaffold.of(context).showSnackBar(SnackBar(
+//                          content: Text(
+//                            'Successfully Added',
+//                            style: GoogleFonts.exo2(
+//                              textStyle: TextStyle(
+//                                fontSize: 16,
+//                              ),
+//                            ),
+//                          ),
+//                          duration: Duration(seconds: 2),
+//                        ));
+//
+//
+//                        sublist_bloc.dispose();
+//                        sublist_bloc.fetchAllMateralPackData();
+//
+//
+//                      }
+//      },
+//    )..show();
 
 
 
