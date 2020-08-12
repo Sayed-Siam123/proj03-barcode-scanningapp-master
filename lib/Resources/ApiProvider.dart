@@ -32,7 +32,7 @@ class ApiProvider {
 
   String initial= "http://";
 
-  final _url = "https://json-server-restapi.herokuapp.com/delivereslist/";
+  final _url = "https://json-server-restapi.herokuapp.com/";
 
   final _createurl = "http://202.164.212.238:8055/api/SublistPost/";
 
@@ -584,7 +584,7 @@ class ApiProvider {
 
   Future<List<DeliveriesListModel>> fetchDelivereisData() async{
     print("fetch from apiprovider");
-    final response = await client.get(_url);
+    final response = await client.get(_url+"delivereslist/");
 
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);
@@ -595,6 +595,27 @@ class ApiProvider {
       debugPrint("From Get Class:: "+jsonResponse.toString());
       return jsonResponse.map((delivereiesListdata) => new DeliveriesListModel.fromJson(delivereiesListdata)).toList();
   }
+
+    else {
+      throw Exception('Failed to load jobs from API');
+    }
+
+
+  }
+
+  Future<List<PickupListModel>> fetchPickupData() async{
+    print("fetch from apiprovider");
+    final response = await client.get(_url+"pickuplist/");
+
+    if (response.statusCode == 200) {
+      List jsonResponse = json.decode(response.body);
+      //List<dynamic> values = new List<dynamic>();
+
+      //values = json.decode(response.body);
+
+      debugPrint("From Get Class:: "+jsonResponse.toString());
+      return jsonResponse.map((pickupListdata) => new PickupListModel.fromJson(pickupListdata)).toList();
+    }
 
     else {
       throw Exception('Failed to load jobs from API');

@@ -87,7 +87,7 @@ class _CategorieViewPageState extends State<CategorieViewPage> {
       ),
     );
   }
-  
+
   _showDialog() async {
     await showDialog<String>(
         context: context,

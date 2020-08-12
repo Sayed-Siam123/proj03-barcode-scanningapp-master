@@ -21,3 +21,28 @@ class DeliveriesListModel {
     );
   }
 }
+
+
+class PickupListModel {
+
+  int id;
+  String deliveryId,
+      position,
+      quantity,
+      huTypeID;
+
+
+  PickupListModel({this.position, this.id, this.deliveryId, this.quantity,this.huTypeID});
+
+
+  factory PickupListModel.fromJson(Map<String, dynamic> json) {
+    return PickupListModel(
+      id: json['id'],
+      deliveryId: json['deliveryId'],
+      position: json['position'],
+      quantity: json['quantity'],
+      huTypeID: json['huTypeID'],
+
+    );
+  }
+}

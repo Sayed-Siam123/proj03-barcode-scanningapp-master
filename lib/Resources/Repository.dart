@@ -112,6 +112,8 @@ class Repository {
 
   Future<List<DeliveriesListModel>> fetchDelivereisData() => apiprovider.fetchDelivereisData();
 
+  Future<List<PickupListModel>> fetchPickupData() => apiprovider.fetchPickupData();
+
 
 
 }

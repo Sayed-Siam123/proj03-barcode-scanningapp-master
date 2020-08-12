@@ -14,7 +14,7 @@ class NewDelivery_bloc{
 
   final _allproductdataFetcher = PublishSubject<List<NewDeliveryModel>>();
 
-  final _alldeliverydataFetcher = PublishSubject<List<DeliveriesListModel>>(); // eikhane notun model boshbe
+  final _alldeliverydataFetcher = PublishSubject<List<DeliveriesListModel>>();
 
 
   Stream<List<NewDeliveryModel>> get allProductData => _productdataFetcher.stream;

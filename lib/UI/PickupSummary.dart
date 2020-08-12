@@ -1,4 +1,5 @@
 import 'package:app/Bloc/NewDelivery_bloc.dart';
+import 'package:app/Bloc/PickupDelivey_bloc.dart';
 import 'package:app/Model/DeliveriesListModel.dart';
 import 'package:app/UI/Home.dart';
 import 'package:app/UI/NewDeliveryPage.dart';
@@ -6,16 +7,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class DeliveriesPage extends StatefulWidget {
+class PickupSummary extends StatefulWidget {
   @override
-  _DeliveriesPageState createState() => _DeliveriesPageState();
+  _PickupSummaryState createState() => _PickupSummaryState();
 }
 
-class _DeliveriesPageState extends State<DeliveriesPage> {
+class _PickupSummaryState extends State<PickupSummary> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   String finalDate = '';
-  List<DeliveriesListModel> fetcheddata = [];
+  List<PickupListModel> fetcheddata = [];
 
 
   @override
@@ -24,14 +25,14 @@ class _DeliveriesPageState extends State<DeliveriesPage> {
     super.initState();
     getCurrentDate();
     print(finalDate);
-    ndelivery_bloc.getAllDeliveryList();
+    pdelivery_bloc.getAllPickupList();
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    ndelivery_bloc.dispose();
+    pdelivery_bloc.dispose();
   }
 
   @override
@@ -50,7 +51,7 @@ class _DeliveriesPageState extends State<DeliveriesPage> {
           },
         ),
         title: Text(
-          "Deliveries",
+          "Direct Pick up - Summary",
           style: GoogleFonts.exo2(
             textStyle: TextStyle(fontSize: 20, color: Colors.black54),
           ),
@@ -70,10 +71,10 @@ class _DeliveriesPageState extends State<DeliveriesPage> {
           color: Theme
               .of(context)
               .backgroundColor,
-          child: StreamBuilder<List<DeliveriesListModel>>(
-            stream: ndelivery_bloc.allDelivereiesData,
+          child: StreamBuilder<List<PickupListModel>>(
+            stream: pdelivery_bloc.allPickupData,
             builder: (context,
-                AsyncSnapshot<List<DeliveriesListModel>> snapshot) {
+                AsyncSnapshot<List<PickupListModel>> snapshot) {
               if (snapshot.hasData) {
                 fetcheddata = snapshot.data;
                 //_newData = fetcheddata;
@@ -130,17 +131,10 @@ class _DeliveriesPageState extends State<DeliveriesPage> {
                       onTap: () {
                         print("Asche");
                       },
-                      leading: Container(
-                        width: 40,
-                        decoration: BoxDecoration(
-                          color: finalDate == data[index].date.toString() ? Colors.green : Colors.red,
-                          shape: BoxShape.circle,
-                        ),
-                      ),
                       title: Text(data[index].deliveryId.toString(), style: GoogleFonts.exo2(
                         fontSize: 20,
                       ),),
-                      subtitle: Text(data[index].date.toString(), style: GoogleFonts.exo2(
+                      subtitle: Text(data[index].huTypeID.toString(), style: GoogleFonts.exo2(
 
                       ),),
                       trailing: Container(

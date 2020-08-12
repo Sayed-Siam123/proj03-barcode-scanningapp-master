@@ -2,6 +2,7 @@ import 'package:app/Model/NewDeliveryModel.dart';
 import 'package:app/Model/PickupDeliveryModel.dart';
 import 'package:app/Resources/database_helper.dart';
 import 'package:app/UI/Home.dart';
+import 'package:app/UI/PickupSummary.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -123,6 +124,22 @@ class _PickupDeliveryState extends State<PickupDelivery> {
         backgroundColor: Colors.white,
         elevation: 1.0,
         centerTitle: true,
+      ),
+
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: IconButton(
+          icon: Icon(
+            Icons.done,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            print("akjsaks");
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => PickupSummary()));
+          },
+        ),
+        backgroundColor: Colors.green,
       ),
 
       body: Container(
@@ -333,7 +350,7 @@ class _PickupDeliveryState extends State<PickupDelivery> {
 //                    },
 //                  ),
 
-                child: Text("jshajsahs"),
+                child: Center(child: Text("No data")),
                 ),
               ),
             ),
