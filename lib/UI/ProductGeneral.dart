@@ -34,138 +34,7 @@ class _ProductGeneralPageState extends State<ProductGeneralPage> {
             }
 
             return Center(child: CircularProgressIndicator());
-          }
-
-//      margin: EdgeInsets.only(top: 10),
-//      child: Column(
-//        children: <Widget>[
-////          first(),
-////          SizedBox(height: 12,),
-////          second(),
-////          SizedBox(height: 12,),
-////          third(),
-////          SizedBox(height: 12,),
-////          fourth(),
-////          SizedBox(height: 12,),
-////          fifth(),
-////          SizedBox(height: 12,),
-////          sixth(),
-////          SizedBox(height: 8,),
-////          Padding(
-////            padding:EdgeInsets.symmetric(horizontal: 0.0),
-////            child:Container(
-////              height:.5,
-////              width:MediaQuery.of(context).size.width*1.0,
-////              color:Colors.black,),),
-////          seventh(),
-////          SizedBox(height: 12,),
-////          eighth(),
-////          SizedBox(height: 12,),
-////          nineth(),
-////          SizedBox(height: 12,),
-////          tenth(),
-////          SizedBox(height: 12,),
-////          eleventh(),
-//
-//          Row(
-//            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//            children: <Widget>[
-//              Container(
-//                margin: EdgeInsets.only(left: 10),
-//                width: 150,
-//                height: 180,
-//                color: Colors.transparent,
-//                child: Column(
-//                  crossAxisAlignment: CrossAxisAlignment.start,
-//                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                  children: <Widget>[
-//                    Text("Product Name:"),
-//                    Text("Product Description:"),
-//                    Text("Product ID:"),
-//                    Divider(),
-//                    Text("Categorie:"),
-//                    Text("Sub Categorie:"),
-//                    Text("Unit:"),
-//                  ],
-//                ),
-//              ),
-//              Container(
-//                margin: EdgeInsets.all(10),
-//                child: Container(
-//                        margin: EdgeInsets.only(right: 2),
-//                        width: 150,
-//                        height: 180,
-//                        color: Colors.transparent,
-//                        child: Column(
-//                          crossAxisAlignment: CrossAxisAlignment.start,
-//                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                          children: <Widget>[
-//                            Text("Plywood"),
-//                            Text("A touch of white peach"),
-//                            Text("P10001"),
-//                            Divider(),
-//                            Text("Wines"),
-//                            Text("Rose Wine"),
-//                            Text("pcs."),
-//                          ],
-//                        ),
-//                      ),
-//
-//
-//              )
-//            ],
-//          ),
-//          SizedBox(
-//            height: 10,
-//          ),
-//
-//          Divider(),
-//
-//          SizedBox(
-//            height: 10,
-//          ),
-//          Row(
-//            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//            children: <Widget>[
-//              Container(
-//                margin: EdgeInsets.only(left: 10),
-//                width: 150,
-//                height: 180,
-//                color: Colors.transparent,
-//                child: Column(
-//                  crossAxisAlignment: CrossAxisAlignment.start,
-//                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                  children: <Widget>[
-//                    Text("Manufacturer:"),
-//                    Text("Manufacturer PN:"),
-//                    Text("GTIN:"),
-//                    Text("Listprice:"),
-//                    Text("Picture:"),
-//                  ],
-//                ),
-//              ),
-//              Container(
-//                margin: EdgeInsets.only(right: 2),
-//                width: 150,
-//                height: 180,
-//                color: Colors.transparent,
-//                child: Column(
-//                  crossAxisAlignment: CrossAxisAlignment.start,
-//                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                  children: <Widget>[
-//                    Text("Weingut Wehweck G"),
-//                    Text("161430"),
-//                    Text("9900002564474"),
-//                    Text("14,90 EUR"),
-//                    Text(""),
-//                  ],
-//                ),
-//              ),
-//            ],
-//          ),
-//        ],
-//      ),
-          ),
+          }),
     );
   }
 
@@ -190,11 +59,11 @@ class _ProductGeneralPageState extends State<ProductGeneralPage> {
                           color: Colors.white,
                         ),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: <Widget>[
                             Container(
-                              margin: EdgeInsets.only(left: 50, top: 100),
-                              width: 110,
+                              margin: EdgeInsets.only(left: 70, top: 100),
+                              width: 100,
                               height: 150,
                               child: Container(
                                 child: Column(
@@ -273,13 +142,13 @@ class _ProductGeneralPageState extends State<ProductGeneralPage> {
                               ),
                             ),
                             SizedBox(
-                              width: 80,
+                              width: 0,
                             ),
                             Container(
                               margin: EdgeInsets.all(10),
                               child: Container(
                                 margin: EdgeInsets.only(right: 0, top: 100),
-                                width: 110,
+                                width: 150,
                                 height: 150,
                                 child: Container(
                                   child: Column(
@@ -389,10 +258,10 @@ class _ProductGeneralPageState extends State<ProductGeneralPage> {
                       color: Colors.white,
                     ),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
                         Container(
-                          margin: EdgeInsets.only(left: 50,top: 10),
+                          margin: EdgeInsets.only(left: 80,top: 10),
                           width: 150,
                           height: 180,
                           child: Column(
@@ -455,12 +324,12 @@ class _ProductGeneralPageState extends State<ProductGeneralPage> {
                         ),
 
                         SizedBox(
-                          width: 50,
+                          width: 00,
                         ),
 
                         Container(
                           margin: EdgeInsets.only(right: 0,top: 10),
-                          width: MediaQuery.of(context).size.width - 300,
+                          width: 170,
                           height: 180,
                           color: Colors.transparent,
                           child: Column(

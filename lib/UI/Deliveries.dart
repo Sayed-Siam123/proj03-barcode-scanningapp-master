@@ -13,6 +13,12 @@ class _DeliveriesPageState extends State<DeliveriesPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -30,7 +36,7 @@ class _DeliveriesPageState extends State<DeliveriesPage> {
         title: Text(
           "Deliveries",
           style: GoogleFonts.exo2(
-            textStyle: TextStyle(fontSize: 20, color: Colors.black),
+            textStyle: TextStyle(fontSize: 20, color: Colors.black54),
           ),
         ),
         backgroundColor: Colors.white,

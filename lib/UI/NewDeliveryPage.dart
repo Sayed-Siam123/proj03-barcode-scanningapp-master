@@ -166,12 +166,10 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
 
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Text("Please Input product ID or GTIN to \n add for the delivery \n or you can tap on scan button for quick adding",style: GoogleFonts.exo2(
+                  padding: const EdgeInsets.all(13.0),
+                  child: Text(" Please Input product ID or GTIN to \n add for the delivery \n or you can tap on scan button for quick adding",style: GoogleFonts.exo2(
                     textStyle: TextStyle(
                         fontSize: 12,
                         color: Theme.of(context).accentColor,
@@ -184,6 +182,7 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
                   margin: EdgeInsets.only(
                     left: 0,
                     top: 10,
+                    right: 10,
                   ),
                   height: 50,
                   decoration: BoxDecoration(
@@ -222,7 +221,6 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                     boxShadow: [
                       BoxShadow(
-                       // borderRadius: BorderRadius.circular(10),
                         color: Colors.grey.withOpacity(0.5),
                         spreadRadius: 2,
                         blurRadius: 13,
@@ -269,10 +267,10 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
                   child: Container(
                     decoration: BoxDecoration(
                       color: Theme.of(context).buttonColor,
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.white60,
-
                           spreadRadius: 1,
                           blurRadius: 1,
                           offset: Offset(1,1 ),

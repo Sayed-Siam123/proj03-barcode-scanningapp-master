@@ -31,7 +31,7 @@ class ApiProvider {
 
   String initial= "http://";
 
-  final _url = "http://202.164.212.238:8055/api/products/";
+  final _url = "https://json-server-restapi.herokuapp.com/delivereslist/";
 
   final _createurl = "http://202.164.212.238:8055/api/SublistPost/";
 

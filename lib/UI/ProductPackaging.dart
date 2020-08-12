@@ -34,133 +34,7 @@ class _ProductPackagingPageState extends State<ProductPackagingPage> {
             }
 
             return Center(child: CircularProgressIndicator());
-          }
-
-//  @override
-//  Widget build(BuildContext context) {
-//    return Container(
-//      margin: EdgeInsets.only(top: 10),
-//      child: Column(
-//        children: <Widget>[
-////          first(),
-////          SizedBox(height: 12,),
-////          second(),
-////          SizedBox(height: 12,),
-////          third(),
-////          SizedBox(height: 12,),
-////          fourth(),
-////          SizedBox(height: 12,),
-////          fifth(),
-////          SizedBox(height: 12,),
-////          sixth(),
-////          SizedBox(height: 8,),
-////          Padding(
-////            padding:EdgeInsets.symmetric(horizontal: 0.0),
-////            child:Container(
-////              height:.5,
-////              width:MediaQuery.of(context).size.width*1.0,
-////              color:Colors.black,),),
-////          seventh(),
-////          SizedBox(height: 12,),
-////          eighth(),
-////          SizedBox(height: 12,),
-////          nineth(),
-////          SizedBox(height: 12,),
-////          tenth(),
-////          SizedBox(height: 12,),
-////          eleventh(),
-//
-//          Row(
-//            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//            children: <Widget>[
-//              Container(
-//                margin: EdgeInsets.only(left: 10),
-//                width: 150,
-//                height: 140,
-//                color: Colors.transparent,
-//                child: Column(
-//                  crossAxisAlignment: CrossAxisAlignment.start,
-//                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                  children: <Widget>[
-//                    Text("Product Name:"),
-//                    Text("Product Description:"),
-//                    Text("Product ID:"),
-//                    Text("Packaging weight:"),
-//                    Text("Material:"),
-//                  ],
-//                ),
-//              ),
-//              Container(
-//                margin: EdgeInsets.only(right: 2),
-//                width: 150,
-//                height: 140,
-//                color: Colors.transparent,
-//                child: Column(
-//                  crossAxisAlignment: CrossAxisAlignment.start,
-//                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                  children: <Widget>[
-//                    Text("Luna Rosato 2019"),
-//                    Text("A touch of white peach"),
-//                    Text("P10001"),
-//                    Text("250 g"),
-//                    Text("Glass"),
-//                  ],
-//                ),
-//              ),
-//            ],
-//          ),
-//          SizedBox(height: 10,),
-//          Padding(
-//            padding:EdgeInsets.symmetric(horizontal: 0.0),
-//            child:Container(
-//              height:.5,
-//              width:MediaQuery.of(context).size.width*1.0,
-//              color:Colors.black,),),
-//
-//          SizedBox(height: 10,),
-//          Row(
-//            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//            children: <Widget>[
-//              Container(
-//                margin: EdgeInsets.only(left: 10),
-//                width: 150,
-//                height: 80,
-//                color: Colors.transparent,
-//                child: Column(
-//                  crossAxisAlignment: CrossAxisAlignment.start,
-//                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                  children: <Widget>[
-//                    Text("Length:"),
-//                    Text("Width:"),
-//                    Text("Height:"),
-//
-//                  ],
-//                ),
-//              ),
-//              Container(
-//                margin: EdgeInsets.only(right: 2),
-//                width: 150,
-//                height: 80,
-//                color: Colors.transparent,
-//                child: Column(
-//                  crossAxisAlignment: CrossAxisAlignment.start,
-//                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                  children: <Widget>[
-//                    Text("10 cm"),
-//                    Text("5 cm"),
-//                    Text("1.5 cm"),
-//
-//                  ],
-//                ),
-//              ),
-//            ],
-//          ),
-//        ],
-//      ),
-//    );
-//  }
-//}
-          ),
+          }),
     );
   }
 
@@ -178,10 +52,10 @@ class _ProductPackagingPageState extends State<ProductPackagingPage> {
                   height: 800,
                   width: MediaQuery.of(context).size.width-20,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
                       Container(
-                        margin: EdgeInsets.only(left: 50),
+                        margin: EdgeInsets.only(left: 70),
                         width: 150,
                         height: 750,
                         child: Column(
@@ -239,17 +113,15 @@ class _ProductPackagingPageState extends State<ProductPackagingPage> {
                       ),
 
                       SizedBox(
-                        width: 50,
+                        width: 0,
                       ),
 
 
                       Container(
-                        margin: EdgeInsets.all(10),
                         child: Container(
                           margin: EdgeInsets.only(right: 0),
-                          width: 100,
+                          width: 170,
                           height: 750,
-                          color: Colors.transparent,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[

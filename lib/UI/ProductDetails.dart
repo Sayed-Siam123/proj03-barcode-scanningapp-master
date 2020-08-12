@@ -183,10 +183,10 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                   height: 300,
                   color: Colors.white,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
                       Container(
-                        margin: EdgeInsets.only(left: 50,top: 0),
+                        margin: EdgeInsets.only(left: 70,top: 0),
                         width: 150,
                         height: 260,
                         child: Column(
@@ -239,11 +239,11 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         ),
                       ),
 
-                      SizedBox(width: 40,),
+                      SizedBox(width: 0,),
 
                       Container(
                         margin: EdgeInsets.only(top: 0),
-                          width: 150,
+                          width: 170,
                           height: 260,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -307,10 +307,10 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                   width: MediaQuery.of(context).size.width-20,
                   height: 400,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
                       Container(
-                        margin: EdgeInsets.only(left: 50),
+                        margin: EdgeInsets.only(left: 70),
                         width: 150,
                         height: 340,
                         child: Column(
@@ -355,12 +355,12 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         ),
                       ),
 
-                      SizedBox(width: 30,),
+                      SizedBox(width: 0,),
 
                       Container(
                         margin: EdgeInsets.only(right: 2),
-                        width: 140,
-                        height: 180,
+                        width: 170,
+                        height: 340,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[

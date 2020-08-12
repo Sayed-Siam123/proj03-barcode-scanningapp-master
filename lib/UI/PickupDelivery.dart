@@ -134,7 +134,13 @@ class _PickupDeliveryState extends State<PickupDelivery> {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.all(10.0),
-                  child: Text("Please Input product ID or GTIN to \n add for the delivery \n or you can tap on scan button for quick adding"),
+                  child: Text(" Please Input product ID or GTIN to \n add for the delivery \n or you can tap on scan button for quick adding",style: GoogleFonts.exo2(
+                  textStyle: TextStyle(
+                      fontSize: 12,
+                      color: Theme.of(context).accentColor,
+                      fontWeight: FontWeight.w500
+                  ),
+                ),),
                 ),
 
                 SizedBox(width: 40,),
@@ -143,6 +149,7 @@ class _PickupDeliveryState extends State<PickupDelivery> {
                   margin: EdgeInsets.only(
                     left: 0,
                     top: 10,
+                    right: 8,
                   ),
                   height: 50,
                   decoration: BoxDecoration(
@@ -162,7 +169,7 @@ class _PickupDeliveryState extends State<PickupDelivery> {
                   child: Center(
                       child: Text(
                         "33",
-                        style: GoogleFonts.exo2(textStyle: TextStyle(fontSize: 26)),
+                        style: GoogleFonts.exo2(textStyle: TextStyle(fontSize: 25)),
                       )),
                 ),
               ],
@@ -172,7 +179,7 @@ class _PickupDeliveryState extends State<PickupDelivery> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 Container(
-                  height: 50,
+                  height: 58,
                   width: MediaQuery.of(context).size.width - 87,
                   alignment: Alignment.center,
                   margin: const EdgeInsets.only(top: 10, left: 13, right: 10),
@@ -183,8 +190,8 @@ class _PickupDeliveryState extends State<PickupDelivery> {
                       BoxShadow(
                         color: Colors.grey.withOpacity(0.5),
                         spreadRadius: 2,
-                        blurRadius: 13,
-                        offset: Offset(1, 1),
+                        blurRadius: 5,
+                        offset: Offset(0, 3),
                       ),
                     ],
                   ),
@@ -227,12 +234,13 @@ class _PickupDeliveryState extends State<PickupDelivery> {
                   child: Container(
                     decoration: BoxDecoration(
                       color: Theme.of(context).buttonColor,
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.grey.withOpacity(0.5),
                           spreadRadius: 2,
-                          blurRadius: 5,
-                          offset: Offset(0, 3),
+                          blurRadius: 13,
+                          offset: Offset(1, 1),
                         ),
                       ],
                     ),
