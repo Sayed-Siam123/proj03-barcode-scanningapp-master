@@ -210,32 +210,6 @@ class _SubCatPageViewState extends State<SubCatPageView> {
                         var height = MediaQuery.of(context).size.height;
                         var width = MediaQuery.of(context).size.width;
 
-//                      return Container(
-//                        height: height - 600,
-//                        width: width - 200,
-//                        child: new Column(
-//                          children: <Widget>[
-//                            CategoryDropDown(),
-//                            SizedBox(
-//                              height: 15,
-//                            ),
-//                            new Expanded(
-//                              child: new TextField(
-//                                autofocus: true,
-//                                decoration: new InputDecoration(
-//                                  labelText: 'Sub Category',
-//                                  hintText: 'eg. Rose Wine',
-//                                  errorText:
-//                                      _validate1 == false ? errortext1 : null,
-//                                ),
-//                                controller: _inputcontrol1,
-//                                // ignore: missing_return
-//                              ),
-//                            ),
-//                          ],
-//                        ),
-//                      );
-
                         return Container(
                           height: height * 0.3,
                           width: 400,
@@ -245,7 +219,7 @@ class _SubCatPageViewState extends State<SubCatPageView> {
                               Text(
                                 "NEW SUB CATEGORY",
                                 style: GoogleFonts.exo2(
-                                  fontSize: 20,
+                                  fontSize: 18,
                                   fontWeight: FontWeight.w600,
                                   color: Colors.black54,
                                 ),
@@ -302,17 +276,6 @@ class _SubCatPageViewState extends State<SubCatPageView> {
                                   ],
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                 ),
-//                            child: new TextField(
-//                                autofocus: true,
-//                                decoration: new InputDecoration(
-//                                  border: OutlineInputBorder(),
-//                                  labelText: 'Unit',
-//                                  hintText: 'Pieces',
-//                                  errorText: _validate1==false ? errortext1 : null,
-//                                ),
-//                                controller: _inputcontrol1,
-//                                // ignore: missing_return
-//                              ),
                               ),
                               SizedBox(
                                 height: 5,
@@ -502,34 +465,4 @@ class _SubCatPageViewState extends State<SubCatPageView> {
       return null;
     }
   }
-
-//  Widget masterdataview(data) {
-//    ListView.builder(
-//        scrollDirection: Axis.vertical,
-//        itemCount: data.length,
-//        itemBuilder: (BuildContext context, int index) {
-//          //return Text(data[index].categoryName);
-//          return StatefulBuilder(
-//              builder: (BuildContext context, StateSetter setState) {
-//            return DropdownButton(
-//                hint: Text("Select The Gender"),
-//                value: _valCategoryName,
-//                items: data[index].categoryName.map((value) {
-//                  return DropdownMenuItem(
-//                    child: Text(value),
-//                    value: value,
-//                  );
-//                }).toList(),
-//                onChanged: (value) {
-//                  // _valFriends = value;
-//                  setState(() {
-//                    _valCategoryName =
-//                        value; //Untuk memberitahu _valGender bahwa isi nya akan diubah sesuai dengan value yang kita pilih
-//                  });
-//                  print(_valCategoryName);
-//                  sublist_bloc.getcategory_id(data[index].id);
-//                });
-//          });
-//        });
-//  }
 }

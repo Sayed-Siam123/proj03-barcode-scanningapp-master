@@ -164,7 +164,7 @@ class _PackageMaterialPageState extends State<PackageMaterialPage> {
                         Text(
                           "NEW PACKEGING MATERIAL",
                           style: GoogleFonts.exo2(
-                            fontSize: 20,
+                            fontSize: 18,
                             fontWeight: FontWeight.w600,
                             color: Colors.black54,
                           ),
@@ -214,17 +214,6 @@ class _PackageMaterialPageState extends State<PackageMaterialPage> {
                             ],
                             crossAxisAlignment: CrossAxisAlignment.start,
                           ),
-//                            child: new TextField(
-//                                autofocus: true,
-//                                decoration: new InputDecoration(
-//                                  border: OutlineInputBorder(),
-//                                  labelText: 'Unit',
-//                                  hintText: 'Pieces',
-//                                  errorText: _validate1==false ? errortext1 : null,
-//                                ),
-//                                controller: _inputcontrol1,
-//                                // ignore: missing_return
-//                              ),
                         ),
                         SizedBox(
                           height: 5,
@@ -270,13 +259,6 @@ class _PackageMaterialPageState extends State<PackageMaterialPage> {
 
                         //TODO:: Toast hobe ekta
                       }
-
-//                  else if (_inputcontrol2.text.isEmpty &&
-//                      _inputcontrol2.text == "") {
-//                    print("eitao KHali");
-//                    //TODO:: Toast hobe ekta
-//                  }
-
                       else {
 
 
@@ -311,10 +293,6 @@ class _PackageMaterialPageState extends State<PackageMaterialPage> {
 
 
                       }
-
-//                      setState(() {
-//                        _inputcontrol2.text.isEmpty || _inputcontrol2.text == '' ? _validate = true : _validate = false;
-//                      });
                     })
               ],
             );

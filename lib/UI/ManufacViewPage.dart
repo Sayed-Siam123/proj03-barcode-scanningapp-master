@@ -83,52 +83,7 @@ class _ManufacViewPageState extends State<ManufacViewPage> {
     );
   }
 
-//  _showDialog() async {
-//    await showDialog<String>(
-//        context: context,
-//        builder: (_) => new AlertDialog(
-//          shape: RoundedRectangleBorder(
-//              borderRadius:
-//              BorderRadius.all(
-//                  Radius.circular(10.0))),
-//          content: Builder(
-//            builder: (context) {
-//              // Get available height and width of the build area of this widget. Make a choice depending on the size.
-//              var height = MediaQuery.of(context).size.height;
-//              var width = MediaQuery.of(context).size.width;
-//
-//              return Container(
-//                height: height - 710,
-//                width: width - 200,
-//                child: new Column(
-//                  children: <Widget>[
-//                    new Expanded(
-//                      child: new TextField(
-//                        autofocus: true,
-//                        decoration: new InputDecoration(
-//                            labelText: 'Manufacture', hintText: 'eg. Marco Real'),
-//                      ),
-//                    ),
-//                  ],
-//                ),
-//              );
-//            },
-//          ),
-//          actions: <Widget>[
-//            new FlatButton(
-//                child: const Text('CANCEL'),
-//                onPressed: () {
-//                  Navigator.pop(context);
-//                }),
-//            new FlatButton(
-//                child: const Text('ADD'),
-//                onPressed: () {
-////                Navigator.pop(context);
-//                })
-//          ],
-//        )
-//    );
-//  }
+
   _showDialog() async {
     await showDialog<String>(
         context: context,
@@ -152,7 +107,7 @@ class _ManufacViewPageState extends State<ManufacViewPage> {
                             Text(
                               "NEW MANUFACTURER",
                               style: GoogleFonts.exo2(
-                                fontSize: 20,
+                                fontSize: 18,
                                 fontWeight: FontWeight.w600,
                                 color: Colors.black54,
                               ),
@@ -202,17 +157,6 @@ class _ManufacViewPageState extends State<ManufacViewPage> {
                                 ],
                                 crossAxisAlignment: CrossAxisAlignment.start,
                               ),
-//                            child: new TextField(
-//                                autofocus: true,
-//                                decoration: new InputDecoration(
-//                                  border: OutlineInputBorder(),
-//                                  labelText: 'Unit',
-//                                  hintText: 'Pieces',
-//                                  errorText: _validate1==false ? errortext1 : null,
-//                                ),
-//                                controller: _inputcontrol1,
-//                                // ignore: missing_return
-//                              ),
                             ),
                             SizedBox(
                               height: 5,
@@ -258,12 +202,6 @@ class _ManufacViewPageState extends State<ManufacViewPage> {
 
                             //TODO:: Toast hobe ekta
                           }
-
-//                  else if (_inputcontrol2.text.isEmpty &&
-//                      _inputcontrol2.text == "") {
-//                    print("eitao KHali");
-//                    //TODO:: Toast hobe ekta
-//                  }
 
                           else {
                             setState(() {

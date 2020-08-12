@@ -101,7 +101,7 @@ class _UnitPageViewState extends State<UnitPageView> {
                     children: <Widget>[
 
                       Text("NEW UNIT",style: GoogleFonts.exo2(
-                        fontSize: 20,
+                        fontSize: 18,
                         fontWeight: FontWeight.w600,
                         color: Colors.black54,
                       ),),
@@ -146,17 +146,6 @@ class _UnitPageViewState extends State<UnitPageView> {
                           ],
                           crossAxisAlignment: CrossAxisAlignment.start,
                         ),
-//                            child: new TextField(
-//                                autofocus: true,
-//                                decoration: new InputDecoration(
-//                                  border: OutlineInputBorder(),
-//                                  labelText: 'Unit',
-//                                  hintText: 'Pieces',
-//                                  errorText: _validate1==false ? errortext1 : null,
-//                                ),
-//                                controller: _inputcontrol1,
-//                                // ignore: missing_return
-//                              ),
                       ),
                       SizedBox(
                         height: 5,
@@ -192,13 +181,6 @@ class _UnitPageViewState extends State<UnitPageView> {
                           ],
                           crossAxisAlignment: CrossAxisAlignment.start,
                         ),
-//                            child: new TextField(
-//                                autofocus: true,
-//                                decoration: new InputDecoration(
-//                                  border: OutlineInputBorder(),
-//                                    labelText: 'Code', hintText: 'pcs.',errorText: _validate2==false ? errortext2 : null,),
-//                                controller: _inputcontrol2,
-//                              ),
                       ),
                     ],
                   ),
