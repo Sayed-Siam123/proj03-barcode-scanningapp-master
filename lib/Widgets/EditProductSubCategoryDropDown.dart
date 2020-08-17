@@ -1,5 +1,8 @@
 import 'package:app/Bloc/Sublist_bloc.dart';
+import 'package:app/Model/ManufactureModel.dart';
 import 'package:app/Model/SubCategory.dart';
+import 'package:direct_select_flutter/direct_select_item.dart';
+import 'package:direct_select_flutter/direct_select_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -257,128 +260,208 @@ class _EditProductSubCategoryDropDownState
 //      ),
 //    );
 
+//            return Container(
+//              //color: Colors.red,
+//              child: Column(
+//                crossAxisAlignment: CrossAxisAlignment.start,
+//                children: <Widget>[
+//                  Padding(
+//                    padding: const EdgeInsets.only(top: 5.0),
+//                    child: Text(
+//                      "Sub Category",
+//                      style: GoogleFonts.exo2(
+//                        textStyle: TextStyle(
+//                          fontSize: 18,
+//                          color: Colors.black,
+//                        ),
+//                      ),
+//                    ),
+//                  ),
+//                  Padding(
+//                    padding: const EdgeInsets.only(top: 3.0),
+//                    child: Container(
+//                      height: 50,
+//                      width: 370,
+//                      decoration: BoxDecoration(
+//                          border: Border.all(),
+//                          borderRadius: BorderRadius.circular(5)),
+//                      child: Row(
+//                        children: <Widget>[
+//                          Stack(
+//                            children: <Widget>[
+//                              Container(
+//                                child: SizedBox(
+//                                    height: 70,
+//                                    width: 140,
+//                                    child: Container(
+//                                      padding: const EdgeInsets.only(
+//                                          left: 6, bottom: 3),
+//                                      child: TextField(
+//                                        enabled: false,
+//                                        style: GoogleFonts.exo2(
+//                                          textStyle: TextStyle(
+//                                            fontSize: 18,
+//                                            color: Colors.black,
+//                                          ),
+//                                        ),
+//                                        controller: _subcatController,
+//                                        decoration: InputDecoration(
+//                                          hintText: widget.subcat,
+//                                          hintStyle:
+//                                              TextStyle(color: Colors.black),
+//                                          border: InputBorder.none,
+//                                          focusedBorder: InputBorder.none,
+//                                          enabledBorder: InputBorder.none,
+//                                          errorBorder: InputBorder.none,
+//                                          disabledBorder: InputBorder.none,
+//                                        ),
+//                                      ),
+//                                    )),
+//                              ),
+//                              Container(
+//                                padding: EdgeInsets.only(left: 166, top: 3),
+//                                child: SizedBox(
+//                                  height: 70,
+//                                  width: 200,
+//                                  child: Container(
+//                                    child: DropdownButtonHideUnderline(
+//                                      child: DropdownButton(
+//                                          isExpanded: true,
+//                                          icon: Icon(
+//                                            Icons.arrow_drop_down,
+//                                            size: 24,
+//                                          ),
+//                                          //hint: Text("Category"),
+//                                          items: data.map((value) {
+//                                            return new DropdownMenuItem<
+//                                                SubCategoryModel>(
+//                                              child:
+//                                                  Text(value.subCategoryName,style: GoogleFonts.exo2(
+//                                                    textStyle: TextStyle(
+//                                                      fontSize: 18,
+//                                                      color: Colors.black,
+//                                                    ),
+//                                                  ),),
+//                                              value: value,
+//                                            );
+//                                          }).toList(),
+//                                          onChanged: (value) {
+//                                            print("value ta holo: " +
+//                                                value.subCategoryName);
+//                                            // _valFriends = value;
+//                                            //_valCategoryName = value.categoryName;
+//
+//                                            FocusScope.of(context)
+//                                                .requestFocus(FocusNode());
+//                                            setState(() {
+//                                              //_valCategoryName = value.categoryName;
+//                                              // Untuk memberitahu _valGender bahwa isi nya akan diubah sesuai dengan value yang kita pilih
+//
+//                                              _subcatController.text = value
+//                                                  .subCategoryName
+//                                                  .toString();
+//                                              _valSubCategoryName =
+//                                                  value.id.toString();
+//                                            });
+////                      print("id is:"+ value.categoryName.toString());
+////                      print("id is:"+ value.id.toString());
+//                                            print("subcatID: " +
+//                                                widget.previous_id);
+//
+//                                            sublist_bloc.getSubCategoryID(
+//                                                _valSubCategoryName);
+////                                    sublist_bloc.getCategoryID(widget.previous_id);
+//                                          }),
+//                                    ),
+//                                  ),
+//                                ),
+//                              ),
+//                            ],
+//                          ),
+//                        ],
+//                      ),
+//                    ),
+//                  ),
+//                ],
+//              ),
+//            );
+
+
             return Container(
-              //color: Colors.red,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(top: 5.0),
-                    child: Text(
-                      "Sub Category",
-                      style: GoogleFonts.exo2(
-                        textStyle: TextStyle(
-                          fontSize: 18,
-                          color: Colors.black,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        alignment: AlignmentDirectional.centerStart,
+                        margin: EdgeInsets.only(left: 0),
+                        child: Text(
+                          "Sub Category",
+                          style: GoogleFonts.exo2(
+                            textStyle: TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 3.0),
-                    child: Container(
-                      height: 50,
-                      width: 370,
-                      decoration: BoxDecoration(
-                          border: Border.all(),
-                          borderRadius: BorderRadius.circular(5)),
-                      child: Row(
-                        children: <Widget>[
-                          Stack(
-                            children: <Widget>[
-                              Container(
-                                child: SizedBox(
-                                    height: 70,
-                                    width: 140,
-                                    child: Container(
-                                      padding: const EdgeInsets.only(
-                                          left: 6, bottom: 3),
-                                      child: TextField(
-                                        enabled: false,
-                                        style: GoogleFonts.exo2(
-                                          textStyle: TextStyle(
-                                            fontSize: 18,
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                        controller: _subcatController,
-                                        decoration: InputDecoration(
-                                          hintText: widget.subcat,
-                                          hintStyle:
-                                              TextStyle(color: Colors.black),
-                                          border: InputBorder.none,
-                                          focusedBorder: InputBorder.none,
-                                          enabledBorder: InputBorder.none,
-                                          errorBorder: InputBorder.none,
-                                          disabledBorder: InputBorder.none,
-                                        ),
+
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                        child: Container(
+                          decoration: _getShadowDecoration(),
+                          child: Card(
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Flexible(
+                                    fit: FlexFit.loose,
+                                    child: SizedBox(
+                                      width: MediaQuery.of(context).size.width-60,
+                                      height: 50,
+                                      child: DirectSelectList<SubCategoryModel>(
+                                        onUserTappedListener: () {
+                                          Scaffold.of(context).showSnackBar(SnackBar(
+                                            content: Text(
+                                              'Hold and drag the item',
+                                              style: GoogleFonts.exo2(
+                                                textStyle: TextStyle(
+                                                  fontSize: 16,
+                                                ),
+                                              ),
+                                            ),
+                                            duration: Duration(seconds: 2),
+                                          ));
+                                        },
+                                        values: data,
+                                        itemBuilder: (SubCategoryModel category) =>
+                                            getDropDownMenuItem(category),
+                                        focusedItemDecoration: _getDslDecoration(),
+                                        onItemSelectedListener: (value, selectedIndex, context) {
+                                          FocusScope.of(context).requestFocus(FocusNode());
+                                          subcategorySelect = value;
+
+//                                          print(categorySelect.categoryName.toString());
+//                                          print("ID HOITESE: " + categorySelect.id);
+//                                          sublist_bloc.getCategoryID(categorySelect.id);
+
+
+                                        },
                                       ),
-                                    )),
-                              ),
-                              Container(
-                                padding: EdgeInsets.only(left: 166, top: 3),
-                                child: SizedBox(
-                                  height: 70,
-                                  width: 200,
-                                  child: Container(
-                                    child: DropdownButtonHideUnderline(
-                                      child: DropdownButton(
-                                          isExpanded: true,
-                                          icon: Icon(
-                                            Icons.arrow_drop_down,
-                                            size: 24,
-                                          ),
-                                          //hint: Text("Category"),
-                                          items: data.map((value) {
-                                            return new DropdownMenuItem<
-                                                SubCategoryModel>(
-                                              child:
-                                                  Text(value.subCategoryName,style: GoogleFonts.exo2(
-                                                    textStyle: TextStyle(
-                                                      fontSize: 18,
-                                                      color: Colors.black,
-                                                    ),
-                                                  ),),
-                                              value: value,
-                                            );
-                                          }).toList(),
-                                          onChanged: (value) {
-                                            print("value ta holo: " +
-                                                value.subCategoryName);
-                                            // _valFriends = value;
-                                            //_valCategoryName = value.categoryName;
-
-                                            FocusScope.of(context)
-                                                .requestFocus(FocusNode());
-                                            setState(() {
-                                              //_valCategoryName = value.categoryName;
-                                              // Untuk memberitahu _valGender bahwa isi nya akan diubah sesuai dengan value yang kita pilih
-
-                                              _subcatController.text = value
-                                                  .subCategoryName
-                                                  .toString();
-                                              _valSubCategoryName =
-                                                  value.id.toString();
-                                            });
-//                      print("id is:"+ value.categoryName.toString());
-//                      print("id is:"+ value.id.toString());
-                                            print("subcatID: " +
-                                                widget.previous_id);
-
-                                            sublist_bloc.getSubCategoryID(
-                                                _valSubCategoryName);
-//                                    sublist_bloc.getCategoryID(widget.previous_id);
-                                          }),
                                     ),
                                   ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
+                                  Padding(
+                                    padding: EdgeInsets.only(right: 8),
+                                    child: _getDropdownIcon(),
+                                  )
+                                ],
+                              )),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
+
                 ],
               ),
             );
@@ -590,6 +673,52 @@ class _EditProductSubCategoryDropDownState
           return Center(child: CircularProgressIndicator());
         },
       ),
+    );
+  }
+
+  DirectSelectItem<SubCategoryModel> getDropDownMenuItem(SubCategoryModel value) {
+    return DirectSelectItem<SubCategoryModel>(
+        itemHeight: 56,
+        value: value,
+        itemBuilder: (context, value) {
+          return Padding(
+            padding: const EdgeInsets.only(left: 5.0),
+            child: Text(value.subCategoryName,
+              style: GoogleFonts.exo2(
+                textStyle: TextStyle(
+                  fontSize: 14,
+                ),
+              ),),
+          );
+        });
+  }
+
+  _getDslDecoration() {
+    return BoxDecoration(
+      border: BorderDirectional(
+        bottom: BorderSide(width: 1, color: Colors.black12),
+        top: BorderSide(width: 1, color: Colors.black12),
+      ),
+    );
+  }
+
+  BoxDecoration _getShadowDecoration() {
+    return BoxDecoration(
+      boxShadow: <BoxShadow>[
+        new BoxShadow(
+          color: Colors.black.withOpacity(0.06),
+          spreadRadius: 4,
+          offset: new Offset(1, 1),
+          blurRadius: 15.0,
+        ),
+      ],
+    );
+  }
+
+  Icon _getDropdownIcon() {
+    return Icon(
+      Icons.unfold_more,
+      color: Colors.grey.shade700,
     );
   }
 }

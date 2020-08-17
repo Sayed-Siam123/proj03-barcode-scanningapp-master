@@ -1,5 +1,6 @@
 import 'package:app/Bloc/Sublist_bloc.dart';
 import 'package:app/Bloc/masterData_bloc.dart';
+import 'package:app/UI/MasterData.dart';
 import 'package:app/UI/ProductDetails.dart';
 import 'package:app/UI/ProductEditPage.dart';
 import 'package:app/UI/ProductGeneral.dart';
@@ -11,6 +12,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'Home.dart';
 
 class DetailsPage extends StatefulWidget {
+
+  String product_name;
+
+  DetailsPage({this.product_name});
+
   @override
   _DetailsPageState createState() => _DetailsPageState();
 }
@@ -40,12 +46,12 @@ class _DetailsPageState extends State<DetailsPage>
     return WillPopScope(
       onWillPop: (){
         return Navigator.push(
-            context, MaterialPageRoute(builder: (context) => HomePage()));
+            context, MaterialPageRoute(builder: (context) => MasterData()));
       },
       child: new Scaffold(
         appBar: AppBar(
           title: Text(
-            "Luna Rosato 2019",
+            widget.product_name,
             style: GoogleFonts.exo2(
               color: Colors.black,
             ),
@@ -59,7 +65,8 @@ class _DetailsPageState extends State<DetailsPage>
               Icons.arrow_back,
               color: Colors.black54,
             ),
-            onPressed: () => Navigator.of(context).pushNamed('/home'),
+            onPressed: () => Navigator.push(
+                context, MaterialPageRoute(builder: (context) => MasterData())),
           ),
           actions: <Widget>[
             new IconButton(

@@ -15,6 +15,7 @@ class MasterData_Bloc{
 
 
   final _id = BehaviorSubject<String>();
+  final _productname = BehaviorSubject<String>();
 
 
   final _ProductName = BehaviorSubject<String>();
@@ -43,6 +44,7 @@ class MasterData_Bloc{
 
 
   Function(String) get getId => _id.sink.add;
+  Function(String) get get_product_name => _productname.sink.add;
 
 
   Stream<List<MasterDataModel>> get allMasterData => _masterdataFetcher.stream;
@@ -98,6 +100,7 @@ class MasterData_Bloc{
     _Manufacturer_Pn.drain();
     _Gtin.drain();
     _ListPrice.drain();
+    _productname.drain();
 
 
     await _masterdataFetcher.drain();

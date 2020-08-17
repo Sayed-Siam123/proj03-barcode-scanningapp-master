@@ -46,8 +46,9 @@ class Repository {
   Future<sublist_getsuccess_model> createUnit(String unit, String unitshort) =>
       apiprovider.createUnit(unit, unitshort);
 
-  Future<sublist_getsuccess_model> createManufacturer(String manufacturer) =>
-      apiprovider.createManufacturer(manufacturer);
+  Future<sublist_getsuccess_model> createManufacturer(String manufacturer) => apiprovider.createManufacturer(manufacturer);
+
+  Future<sublist_getsuccess_model> updateManufacturer(String id,String manufacturer) => apiprovider.updateManufacturer(id,manufacturer);
 
   Future<sublist_getsuccess_model> createPackagingMaterial(
           String packagingmaterial) =>

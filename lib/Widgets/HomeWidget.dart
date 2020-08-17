@@ -40,7 +40,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                 maxHeight: 45,
               ),
               child:
-                  Image.asset('assets/images/barcode.png', fit: BoxFit.cover),
+                  Image.asset('assets/images/barcode-info.jpeg', fit: BoxFit.cover),
             ),
             onTap: () {
               Navigator.push(context,
@@ -71,7 +71,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                       maxWidth: 45,
                       maxHeight: 45,
                     ),
-                    child: Image.asset('assets/images/delivery.png',
+                    child: Image.asset('assets/images/Delivery-icon.jpeg',
                         fit: BoxFit.cover),
                   ),
                   onTap: () {
@@ -101,7 +101,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                 maxWidth: 45,
                 maxHeight: 45,
               ),
-              child: Image.asset('assets/images/pickup.png', fit: BoxFit.cover),
+              child: Image.asset('assets/images/pickup.jpeg', fit: BoxFit.cover),
             ),
             onTap: () {
               Navigator.push(context,

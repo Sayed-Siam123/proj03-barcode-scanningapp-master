@@ -42,7 +42,7 @@ class ApiProvider {
 
   void getIP() async {
 
-    Future<String> serverip = prefs.getAuthToken("_serverip");
+    Future<String> serverip = prefs.getData("_serverip");
     serverip.then((data) {
 
       print('serverip pabo');
@@ -60,7 +60,7 @@ class ApiProvider {
 
   void getPort() async {
 
-    Future<String> serverport = prefs.getAuthToken("_serverport");
+    Future<String> serverport = prefs.getData("_serverport");
     serverport.then((data) {
 
       print("serverport " + data.toString());
@@ -457,6 +457,30 @@ class ApiProvider {
       throw Exception('Failed to load album');
     }
   }
+
+
+  Future<sublist_getsuccess_model> updateManufacturer(id,manufacturer) async{
+
+    getIP();
+    getPort();
+    await new Future.delayed(const Duration(milliseconds: 1000));
+
+    final response = await client.get(initial+serverIP+":"+serverPort+"/api/SublistPost/"+"ManufacturerUpdate"+"/"+id+"/"+manufacturer);
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+
+
+      debugPrint("From singleGet Class:: "+json.decode(response.body).toString());
+      return sublist_getsuccess_model.fromJson(json.decode(response.body));
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load album');
+    }
+  }
+
 
   Future<sublist_getsuccess_model> createCategory(category) async{
 

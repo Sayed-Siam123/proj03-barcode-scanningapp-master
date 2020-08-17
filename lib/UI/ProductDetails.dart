@@ -3,6 +3,7 @@ import 'package:app/Model/masterdata_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:responsive_grid/responsive_grid.dart';
 
 class ProductDetailsPage extends StatefulWidget {
   @override
@@ -10,6 +11,9 @@ class ProductDetailsPage extends StatefulWidget {
 }
 
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
+  bool transfertoApp = false;
+  bool orderableviaAPP = false;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -20,7 +24,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Theme.of(context).backgroundColor,
+      color: Theme
+          .of(context)
+          .backgroundColor,
       child: StreamBuilder<List<SingleMasterDataModel>>(
           stream: masterdata_bloc.singleMasterData,
           builder:
@@ -165,7 +171,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
 //        ],
 //      ),
 //    );
-          ),
+      ),
     );
   }
 
@@ -175,126 +181,182 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
         itemCount: data.length,
         itemBuilder: (BuildContext context, int index) {
           return Container(
-            margin: EdgeInsets.only(top:10),
+            margin: EdgeInsets.only(top: 10),
             child: Column(
               children: <Widget>[
                 Container(
-                  width: MediaQuery.of(context).size.width-20,
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width - 20,
                   height: 300,
                   color: Colors.white,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.only(left: 70,top: 0),
-                        width: 150,
-                        height: 260,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text("Name:",style: GoogleFonts.exo2(
-                              color: Colors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                            ),),
-                            SizedBox(height: 6,),
-                            Text("Description:",style: GoogleFonts.exo2(
-                              color: Colors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                            ),),
-                            SizedBox(height: 6,),
-                            Text("Product ID:",style: GoogleFonts.exo2(
-                              color: Colors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                            ),),
-                            SizedBox(
-                              height: 6,
-                            ),
-                            Text("Reference No:",style: GoogleFonts.exo2(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16,
-                            ),),
-                            SizedBox(height: 6,),
-                            Text("Product Weight:",style: GoogleFonts.exo2(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16,
-                            ),),
-                            SizedBox(height: 6,),
-                            Text("Packaging unit:",style: GoogleFonts.exo2(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16,
-                            ),),
-                            SizedBox(height: 6,),
-                            Text("Note:",style: GoogleFonts.exo2(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16,
-                            ),),
-                          ],
-                        ),
-                      ),
-
-                      SizedBox(width: 0,),
-
-                      Container(
-                        margin: EdgeInsets.only(top: 0),
-                          width: 170,
-                          height: 260,
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    child: ResponsiveGridRow(
+                      children: [
+                        ResponsiveGridCol(
+                          xs: 5,
+                          md: 3,
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Text(data[0].productName,style: GoogleFonts.exo2(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16,
-                              ),),
-                              SizedBox(height: 6,),
-                              Text(data[0].productDescription,style: GoogleFonts.exo2(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16,
-                              ),),
-                              SizedBox(height: 6,),
-                              Text(data[0].id,style: GoogleFonts.exo2(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16,
-                              ),),
-                              SizedBox(
-                                height: 6,
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text("Product Name:",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),),
                               ),
-                              Text("",style: GoogleFonts.exo2(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16,
-                              ),),
-                              SizedBox(height: 6,),
-                              Text("",style: GoogleFonts.exo2(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16,
-                              ),),
-                              SizedBox(height: 6,),
-                              Text("",style: GoogleFonts.exo2(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16,
-                              ),),
-                              SizedBox(height: 6,),
-                              Text("",style: GoogleFonts.exo2(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16,
-                              ),),
+
+                              SizedBox(height: 5,),
+
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text("Description:",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),),
+                              ),
+
+                              SizedBox(height: 5,),
+
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text("Product ID:",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),),
+                              ),
+
+                              SizedBox(height: 5,),
+
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text("Reference No:",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),),
+                              ),
+
+                              SizedBox(height: 5,),
+
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text("Product Unit:",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),),
+                              ),
+
+                              SizedBox(height: 5,),
+
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text("Product Weight:",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),),
+                              ),
+
+                              SizedBox(height: 5,),
+
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text("Note:",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),),
+                              ),
+
                             ],
                           ),
                         ),
-                    ],
+
+                        ResponsiveGridCol(
+                          xs: 6,
+                          md: 3,
+                          child: Column(
+                            children: <Widget>[
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text(data[0].productName,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),),
+                              ),
+
+                              SizedBox(height: 5,),
+
+
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text(data[0].productDescription,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),),
+                              ),
+
+                              SizedBox(height: 5,),
+
+
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text(data[0].id,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),),
+                              ),
+
+                              SizedBox(height: 5,),
+
+
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text("ss",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),),
+                              ),
+
+                              SizedBox(height: 5,),
+
+
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text("ss",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),),
+                              ),
+
+                              SizedBox(height: 5,),
+
+
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text("ss",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),),
+                              ),
+
+                              SizedBox(height: 5,),
+
+
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text("ss",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),),
+                              ),
+
+                            ],
+
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
 
@@ -303,108 +365,173 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 ),
 
                 Container(
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width - 20,
+                  height: 300,
                   color: Colors.white,
-                  width: MediaQuery.of(context).size.width-20,
-                  height: 400,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.only(left: 70),
-                        width: 150,
-                        height: 340,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text("Transfer to App",style: GoogleFonts.exo2(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16,
-                            ),),
-                            SizedBox(height: 6,),
-                            Text("Orderable via APP:",style: GoogleFonts.exo2(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16,
-                            ),),
-                            SizedBox(height: 6,),
-                            Text("Created by:",style: GoogleFonts.exo2(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16,
-                            ),),
-                            SizedBox(height: 6,),
-                            Text("Created on:",style: GoogleFonts.exo2(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16,
-                            ),),
-                            SizedBox(height: 6,),
-                            Text("Edited by:",style: GoogleFonts.exo2(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16,
-                            ),),
-                            SizedBox(height: 6,),
-                            Text("Edited on:",style: GoogleFonts.exo2(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16,
-                            ),),
-                          ],
-                        ),
-                      ),
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    child: ResponsiveGridRow(
+                      children: [
+                        ResponsiveGridCol(
+                          xs: 5,
+                          md: 3,
+                          child: Column(
+                            children: <Widget>[
+                              SizedBox(height: 10,),
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text("Transfer to App:",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),),
+                              ),
 
-                      SizedBox(width: 0,),
+                              SizedBox(height: 40,),
 
-                      Container(
-                        margin: EdgeInsets.only(right: 2),
-                        width: 170,
-                        height: 340,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text("",style: GoogleFonts.exo2(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16,
-                            ),),
-                            SizedBox(height: 6,),
-                            Text("",style: GoogleFonts.exo2(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16,
-                            ),),
-                            SizedBox(height: 6,),
-                            Text("",style: GoogleFonts.exo2(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16,
-                            ),),
-                            SizedBox(height: 6,),
-                            Text("",style: GoogleFonts.exo2(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16,
-                            ),),
-                            SizedBox(height: 6,),
-                            Text("",style: GoogleFonts.exo2(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16,
-                            ),),
-                            SizedBox(height: 6,),
-                            Text("",style: GoogleFonts.exo2(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16,
-                            ),),
-                          ],
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text("Order via App:",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),),
+                              ),
+
+                              SizedBox(height: 18,),
+
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text("Created by:",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),),
+                              ),
+
+                              SizedBox(height: 5,),
+
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text("Created on:",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),),
+                              ),
+
+                              SizedBox(height: 5,),
+
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text("Edited by:",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),),
+                              ),
+
+                              SizedBox(height: 5,),
+
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text("Edited on:",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),),
+                              ),
+
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
+
+                        ResponsiveGridCol(
+                          xs: 6,
+                          md: 3,
+                          child: Column(
+                            children: <Widget>[
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                child: Switch(
+                                  value: transfertoApp,
+                                  onChanged: (value){
+                                    setState(() {
+                                      transfertoApp=value;
+                                      print(transfertoApp);
+                                    });
+                                  },
+                                  activeTrackColor: Colors.lightBlueAccent,
+                                  activeColor: Colors.blue,
+                                ),
+                              ),
+
+                              SizedBox(height: 3,),
+
+
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                child: Switch(
+                                  value: orderableviaAPP,
+                                  onChanged: (value){
+                                    setState(() {
+                                      orderableviaAPP=value;
+                                      print(orderableviaAPP);
+                                    });
+                                  },
+                                  activeTrackColor: Colors.lightBlueAccent,
+                                  activeColor: Colors.blue,
+                                ),
+                              ),
+
+                              SizedBox(height: 3,),
+
+
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text(data[0].id,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),)
+                              ),
+
+                              SizedBox(height: 5,),
+
+
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text("ss",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),),
+                              ),
+
+                              SizedBox(height: 5,),
+
+
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text("ss",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),),
+                              ),
+
+                              SizedBox(height: 5,),
+
+
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text("ss",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),),
+                              ),
+
+                            ],
+
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),)
               ],
             ),
           );

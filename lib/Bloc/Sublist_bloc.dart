@@ -208,11 +208,20 @@ class sublist_Bloc {
 
   createmanufacturer() async {
     print("data:: " + _manufacturer.value + " " + _manufacturer.value);
-    sublist_getsuccess_model success =
-        await _repository.createManufacturer(_manufacturer.value);
+    sublist_getsuccess_model success = await _repository.createManufacturer(_manufacturer.value);
     //_repository.createPost(_name.value, _posts.value);
     _manufacSuccessFetcher.sink.add(success);
   }
+
+
+  updatemanufacturer() async {
+    print("data:: " + _manufacturer.value + " " + _manufacturer.value);
+    sublist_getsuccess_model success = await _repository.updateManufacturer(_Manufacturer.value,_manufacturer.value);
+    //_repository.createPost(_name.value, _posts.value);
+    _manufacSuccessFetcher.sink.add(success);
+  }
+
+
 
   createpackagingmaterial() async {
     print("data:: " +

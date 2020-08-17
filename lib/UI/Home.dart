@@ -97,12 +97,27 @@ class _HomePageState extends State<HomePage> {
       ),
 
       appBar: AppBar(
-        title: Text("Home", style: GoogleFonts.exo2(
-          textStyle: TextStyle(
-            fontSize: 20,
-            color: Colors.black54,
-          ),
-        ),),
+//        title: Text("Home", style: GoogleFonts.exo2(
+//          textStyle: TextStyle(
+//            fontSize: 20,
+//            color: Colors.black54,
+//          ),
+//        ),),
+
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/images/logo.jpeg',
+              fit: BoxFit.contain,
+              height: 32,
+            ),
+            Container(
+                padding: const EdgeInsets.all(15.0), child: Text('Home'))
+          ],
+
+        ),
+
         backgroundColor: Colors.white,
         centerTitle: true,
         elevation: 5.0,

@@ -29,14 +29,17 @@ class _LoginPageState extends State<LoginPage> {
         appBar: AppBar(
           title: new Text('L O G I N',
             style: GoogleFonts.exo2(
-              textStyle: TextStyle(color: Theme.of(context).accentColor),
+              textStyle: TextStyle(color: Theme
+                  .of(context)
+                  .accentColor),
             ),),
           leading: new IconButton(
             icon: new Icon(Icons.settings, color: Colors.black54,),
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ConnectionSettingsPage()),
+                MaterialPageRoute(
+                    builder: (context) => ConnectionSettingsPage()),
               );
             },
 
@@ -45,7 +48,14 @@ class _LoginPageState extends State<LoginPage> {
           actions: [
             new IconButton(
                 icon: new Icon(Icons.language, color: Colors.black54,),
-                onPressed: null),
+                onPressed: () {
+                  print("hahas");
+
+                  _showDialog();
+
+                }
+
+            ),
             new IconButton(
                 icon: new Icon(Icons.exit_to_app, color: Colors.black54,),
                 onPressed: () {
@@ -70,6 +80,116 @@ class _LoginPageState extends State<LoginPage> {
 
             child: LoginWidget()
         )
+
+    );
+  }
+
+  _showDialog() async {
+    await showDialog<String>(
+        context: context,
+        builder: (_) =>
+
+            StatefulBuilder(
+              builder: (context, setState) {
+                return new AlertDialog(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                  content: Builder(
+                    builder: (context) {
+                      // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                      var height = MediaQuery
+                          .of(context)
+                          .size
+                          .height;
+                      var width = MediaQuery
+                          .of(context)
+                          .size
+                          .width;
+
+                      return Container(
+                        height: height * 0.3,
+                        width: 400,
+                        child: new Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            Text(
+                              "CHOOSE LANGUAGE",
+                              style: GoogleFonts.exo2(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black54,
+                              ),
+                            ),
+                            Divider(
+                              thickness: 1,
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Container(
+                              child: Column(
+                                children: <Widget>[
+                                  Card(
+                                    child: ListTile(
+                                      title: Text("English",
+                                        style: GoogleFonts.exo2(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.black54,
+                                        ),),
+                                      leading: Image.asset('assets/images/en.png'),
+                                      onTap:(){
+                                        print("English Lang");
+                                      },
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 2,
+                                  ),
+                                  Card(
+                                    child: ListTile(
+                                      title: Text("German",
+                                        style: GoogleFonts.exo2(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.black54,
+                                        ),),
+                                      leading: Image.asset('assets/images/de.png'),
+                                      onTap:(){
+                                        print("German Lang");
+                                      },
+                                    ),
+                                  ),
+                                ],
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                  actions: <Widget>[
+                    new FlatButton(
+                        child: Text(
+                          'CANCEL',
+                          style: GoogleFonts.exo2(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                          ),
+                        ),
+                        onPressed: () {
+                          //_inputcontrol2.text = "";
+                          Navigator.pop(context);
+                        }),
+                  ],
+                );
+              },
+            )
 
     );
   }

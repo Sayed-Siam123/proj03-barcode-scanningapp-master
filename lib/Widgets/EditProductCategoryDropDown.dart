@@ -2,6 +2,8 @@ import 'package:app/Bloc/Sublist_bloc.dart';
 import 'package:app/Bloc/masterData_bloc.dart';
 import 'package:app/Handler/HandlerModel.dart';
 import 'package:app/Model/CatagoryModel.dart';
+import 'package:direct_select_flutter/direct_select_item.dart';
+import 'package:direct_select_flutter/direct_select_list.dart';
 import 'package:dropdown_formfield/dropdown_formfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -61,136 +63,217 @@ class _EditProductCategoryDropDownState
             print(data.length);
             //eturn masterdataview(data);
 
+
             return Container(
-              //color: Colors.red,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(top: 5.0),
-                    child: Text(
-                      "Category",
-                      style: GoogleFonts.exo2(
-                        textStyle: TextStyle(
-                          fontSize: 20,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        alignment: AlignmentDirectional.centerStart,
+                        margin: EdgeInsets.only(left: 0),
+                        child: Text(
+                          "Category",
+                          style: GoogleFonts.exo2(
+                            textStyle: TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 3.0),
-                    child: Container(
-                      height: 50,
-                      width: 380,
-                      decoration: BoxDecoration(
-                          border: Border.all(),
-                          borderRadius: BorderRadius.circular(5)),
-                      child: Row(
-                        children: <Widget>[
-                          Stack(
-                            children: <Widget>[
-                              Container(
-                                child: SizedBox(
-                                    height: 70,
-                                    width: 140,
-                                    child: Container(
-                                      margin: EdgeInsets.only(top: 0, left: 7),
-                                        child: TextField(
-                                          enabled: false,
-                                          style: GoogleFonts.exo2(
-                                            textStyle: TextStyle(
-                                              fontSize: 20,
-                                            ),
-                                          ),
-                                          textAlign: TextAlign.justify,
-                                          controller: _categoryController,
-                                          decoration: InputDecoration(
-                                            hintText: widget.category,
-                                            hintStyle: GoogleFonts.exo2(
-                                              textStyle: TextStyle(
-                                                fontSize: 20,
-                                                color: Colors.black
-                                              ),
-                                            ),
-                                            border: InputBorder.none,
-                                            focusedBorder: InputBorder.none,
-                                            enabledBorder: InputBorder.none,
-                                            errorBorder: InputBorder.none,
-                                            disabledBorder: InputBorder.none,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                              ),
-                              Container(
-                                padding: EdgeInsets.only(left: 144, top: 3),
-                                child: SizedBox(
-                                  height: 70,
-                                  width: 232,
-                                  child: Container(
-                                    height: 70,
-                                    width: 234,
-                                    decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    child: DropdownButtonHideUnderline(
-                                      child: DropdownButton(
-                                          underline: SizedBox(),
-                                          isExpanded: true,
-                                          icon: Icon(
-                                            Icons.arrow_drop_down,
-                                            size: 24,
-                                          ),
-                                          //hint: Text("Category"),
-                                          items: data.map((value) {
-                                            return new DropdownMenuItem<
-                                                CategoryModel>(
-                                              child: Text(value.categoryName,style: GoogleFonts.exo2(
+
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                        child: Container(
+                          decoration: _getShadowDecoration(),
+                          child: Card(
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Flexible(
+                                    fit: FlexFit.loose,
+                                    child: SizedBox(
+                                      width: MediaQuery.of(context).size.width-60,
+                                      height: 50,
+                                      child: DirectSelectList<CategoryModel>(
+                                        onUserTappedListener: () {
+                                          Scaffold.of(context).showSnackBar(SnackBar(
+                                            content: Text(
+                                              'Hold and drag the item',
+                                              style: GoogleFonts.exo2(
                                                 textStyle: TextStyle(
-                                                  fontSize: 20,
+                                                  fontSize: 16,
                                                 ),
                                               ),
                                             ),
-                                              value: value,
-                                            );
-                                          }).toList(),
-                                          onChanged: (value) {
-                                            print("value ta holo: " +
-                                                value.categoryName);
-                                            // _valFriends = value;
-                                            //_valCategoryName = value.categoryName;
-                                            FocusScope.of(context)
-                                                .requestFocus(FocusNode());
+                                            duration: Duration(seconds: 2),
+                                          ));
+                                        },
+                                        values: data,
+                                        itemBuilder: (CategoryModel category) =>
+                                            getDropDownMenuItem(category),
+                                        focusedItemDecoration: _getDslDecoration(),
+                                        onItemSelectedListener: (value, selectedIndex, context) {
+                                          FocusScope.of(context).requestFocus(FocusNode());
+                                          categorySelect = value;
 
-                                            setState(() {
-                                              //_valCategoryName = value.categoryName;
-                                              // Untuk memberitahu _valGender bahwa isi nya akan diubah sesuai dengan value yang kita pilih
+//                                          print(categorySelect.categoryName.toString());
+//                                          print("ID HOITESE: " + categorySelect.id);
+//                                          sublist_bloc.getCategoryID(categorySelect.id);
 
-                                              _categoryController.text =
-                                                  value.categoryName.toString();
-                                              _valCategoryID =
-                                                  value.id.toString();
-                                            });
-//                      print("id is:"+ value.categoryName.toString());
-//                      print("id is:"+ value.id.toString());
-                                            print("CategoryID: " +
-                                                widget.previous_id);
-                                            sublist_bloc.getCategoryID(
-                                                _valCategoryID.toString());
-                                          }),
+
+                                        },
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
+                                  Padding(
+                                    padding: EdgeInsets.only(right: 8),
+                                    child: _getDropdownIcon(),
+                                  )
+                                ],
+                              )),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
+
                 ],
               ),
             );
+
+
+//            return Container(
+//              //color: Colors.red,
+//              child: Column(
+//                crossAxisAlignment: CrossAxisAlignment.start,
+//                children: <Widget>[
+//                  Padding(
+//                    padding: const EdgeInsets.only(top: 5.0),
+//                    child: Text(
+//                      "Category",
+//                      style: GoogleFonts.exo2(
+//                        textStyle: TextStyle(
+//                          fontSize: 20,
+//                        ),
+//                      ),
+//                    ),
+//                  ),
+//                  Padding(
+//                    padding: const EdgeInsets.only(top: 3.0),
+//                    child: Container(
+//                      height: 50,
+//                      width: 380,
+//                      decoration: BoxDecoration(
+//                          border: Border.all(),
+//                          borderRadius: BorderRadius.circular(5)),
+//                      child: Row(
+//                        children: <Widget>[
+//                          Stack(
+//                            children: <Widget>[
+//                              Container(
+//                                child: SizedBox(
+//                                    height: 70,
+//                                    width: 140,
+//                                    child: Container(
+//                                      margin: EdgeInsets.only(top: 0, left: 7),
+//                                        child: TextField(
+//                                          enabled: false,
+//                                          style: GoogleFonts.exo2(
+//                                            textStyle: TextStyle(
+//                                              fontSize: 20,
+//                                            ),
+//                                          ),
+//                                          textAlign: TextAlign.justify,
+//                                          controller: _categoryController,
+//                                          decoration: InputDecoration(
+//                                            hintText: widget.category,
+//                                            hintStyle: GoogleFonts.exo2(
+//                                              textStyle: TextStyle(
+//                                                fontSize: 20,
+//                                                color: Colors.black
+//                                              ),
+//                                            ),
+//                                            border: InputBorder.none,
+//                                            focusedBorder: InputBorder.none,
+//                                            enabledBorder: InputBorder.none,
+//                                            errorBorder: InputBorder.none,
+//                                            disabledBorder: InputBorder.none,
+//                                          ),
+//                                        ),
+//                                      ),
+//                                    ),
+//                              ),
+//                              Container(
+//                                padding: EdgeInsets.only(left: 144, top: 3),
+//                                child: SizedBox(
+//                                  height: 70,
+//                                  width: 232,
+//                                  child: Container(
+//                                    height: 70,
+//                                    width: 234,
+//                                    decoration: BoxDecoration(
+//                                        borderRadius:
+//                                            BorderRadius.circular(10)),
+//                                    child: DropdownButtonHideUnderline(
+//                                      child: DropdownButton(
+//                                          underline: SizedBox(),
+//                                          isExpanded: true,
+//                                          icon: Icon(
+//                                            Icons.arrow_drop_down,
+//                                            size: 24,
+//                                          ),
+//                                          //hint: Text("Category"),
+//                                          items: data.map((value) {
+//                                            return new DropdownMenuItem<
+//                                                CategoryModel>(
+//                                              child: Text(value.categoryName,style: GoogleFonts.exo2(
+//                                                textStyle: TextStyle(
+//                                                  fontSize: 20,
+//                                                ),
+//                                              ),
+//                                            ),
+//                                              value: value,
+//                                            );
+//                                          }).toList(),
+//                                          onChanged: (value) {
+//                                            print("value ta holo: " +
+//                                                value.categoryName);
+//                                            // _valFriends = value;
+//                                            //_valCategoryName = value.categoryName;
+//                                            FocusScope.of(context)
+//                                                .requestFocus(FocusNode());
+//
+//                                            setState(() {
+//                                              //_valCategoryName = value.categoryName;
+//                                              // Untuk memberitahu _valGender bahwa isi nya akan diubah sesuai dengan value yang kita pilih
+//
+//                                              _categoryController.text =
+//                                                  value.categoryName.toString();
+//                                              _valCategoryID =
+//                                                  value.id.toString();
+//                                            });
+////                      print("id is:"+ value.categoryName.toString());
+////                      print("id is:"+ value.id.toString());
+//                                            print("CategoryID: " +
+//                                                widget.previous_id);
+//                                            sublist_bloc.getCategoryID(
+//                                                _valCategoryID.toString());
+//                                          }),
+//                                    ),
+//                                  ),
+//                                ),
+//                              ),
+//                            ],
+//                          ),
+//                        ],
+//                      ),
+//                    ),
+//                  ),
+//                ],
+//              ),
+//            );
 
 //            return Container(
 //              child: Row(
@@ -404,47 +487,95 @@ class _EditProductCategoryDropDownState
 
   //TODO:: eikhan theke kaj shuru hbe
 
-  Widget masterdataview(data) {
-    return DropDownFormField();
-    return ListView.builder(
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        itemCount: data.length,
-        // ignore: missing_return
-        itemBuilder: (BuildContext context, int index) {
-//          return Text(data[index].productName);
-          //_valCategoryID = data[index].categoryName.toString();
-//            productName.text = data[index].productDescription;
+//  Widget masterdataview(data) {
+//    return DropDownFormField();
+//    return ListView.builder(
+//        scrollDirection: Axis.vertical,
+//        shrinkWrap: true,
+//        itemCount: data.length,
+//        // ignore: missing_return
+//        itemBuilder: (BuildContext context, int index) {
+////          return Text(data[index].productName);
+//          //_valCategoryID = data[index].categoryName.toString();
+////            productName.text = data[index].productDescription;
+//
+//          return Container(
+//            padding: EdgeInsets.all(0),
+//            child: DropDownFormField(
+//              titleText: 'Category',
+//              hintText: 'Please choose one',
+//              value: _myActivity,
+//              onSaved: (value) {
+//                setState(() {
+//                  _myActivity = value;
+//                });
+//              },
+//              onChanged: (value) {
+//                setState(() {
+//                  _myActivity = value;
+//                });
+//                print(value);
+//              },
+//              dataSource: [
+//                {
+//                  "display": data[index].categoryName,
+//                  "value": data[index].id,
+//                },
+//              ],
+//              textField: 'display',
+//              valueField: 'value',
+//            ),
+//          );
+//        });
+//  }
 
-          return Container(
-            padding: EdgeInsets.all(0),
-            child: DropDownFormField(
-              titleText: 'Category',
-              hintText: 'Please choose one',
-              value: _myActivity,
-              onSaved: (value) {
-                setState(() {
-                  _myActivity = value;
-                });
-              },
-              onChanged: (value) {
-                setState(() {
-                  _myActivity = value;
-                });
-                print(value);
-              },
-              dataSource: [
-                {
-                  "display": data[index].categoryName,
-                  "value": data[index].id,
-                },
-              ],
-              textField: 'display',
-              valueField: 'value',
-            ),
+
+  DirectSelectItem<CategoryModel> getDropDownMenuItem(CategoryModel value) {
+    return DirectSelectItem<CategoryModel>(
+        itemHeight: 56,
+        value: value,
+        itemBuilder: (context, value) {
+          return Padding(
+            padding: const EdgeInsets.only(left: 5.0),
+            child: Text(value.categoryName,
+              style: GoogleFonts.exo2(
+                textStyle: TextStyle(
+                  fontSize: 14,
+                ),
+              ),),
           );
         });
   }
+
+  _getDslDecoration() {
+    return BoxDecoration(
+      border: BorderDirectional(
+        bottom: BorderSide(width: 1, color: Colors.black12),
+        top: BorderSide(width: 1, color: Colors.black12),
+      ),
+    );
+  }
+
+  BoxDecoration _getShadowDecoration() {
+    return BoxDecoration(
+      boxShadow: <BoxShadow>[
+        new BoxShadow(
+          color: Colors.black.withOpacity(0.06),
+          spreadRadius: 4,
+          offset: new Offset(1, 1),
+          blurRadius: 15.0,
+        ),
+      ],
+    );
+  }
+
+  Icon _getDropdownIcon() {
+    return Icon(
+      Icons.unfold_more,
+      color: Colors.grey.shade700,
+    );
+  }
+
 
 //  Widget _dropDownBox(data){
 //    return Container(

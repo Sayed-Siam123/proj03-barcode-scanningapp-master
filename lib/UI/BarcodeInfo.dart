@@ -2,13 +2,14 @@ import 'package:app/Bloc/Sublist_bloc.dart';
 import 'package:app/Bloc/masterData_bloc.dart';
 import 'package:app/Model/masterdata_model.dart';
 import 'package:app/Widgets/MastarDataWidget.dart';
-import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:barcode_scan/platform_wrapper.dart';
+import 'Details.dart';
 import 'Home.dart';
+import 'package:barcode_scan/barcode_scan.dart';
 
 class BarcodeInfo extends StatefulWidget {
   @override
@@ -27,7 +28,7 @@ class _BarcodeInfoState extends State<BarcodeInfo> {
   List<MasterDataModel> _fetcheddata = [];
 
   //Barcode scan implement
-  String barcode = "";
+  ScanResult barcode;
 
   //String _scanBarcode = 'Unknown';
 
@@ -59,7 +60,10 @@ class _BarcodeInfoState extends State<BarcodeInfo> {
               Icons.arrow_back,
               color: Colors.black54,
             ),
-            onPressed: () {},
+            onPressed: () {
+              return Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => HomePage()));
+            },
           ),
           title: Text(
             "Barcode Information",
@@ -229,6 +233,7 @@ class _BarcodeInfoState extends State<BarcodeInfo> {
                           product_name: _newData[index].productName,
                           category: _newData[index].categoryName,
                           product_id: _newData[index].id,
+                          productPicture: _newData[index].productPicture,
                         ),
                         SizedBox(
                           height: 6,
@@ -245,26 +250,25 @@ class _BarcodeInfoState extends State<BarcodeInfo> {
 
   Future barcodeScanning() async {
     try {
-      barcode = (await BarcodeScanner.scan()) as String;
-      print(barcode);
+      barcode = await BarcodeScanner.scan();
+      print(barcode.rawContent.toString());
       setState(() {
         this.barcode = barcode;
-        //_searchQueryController.text = this.barcode;
-        //_searchQueryController.value= this.barcode as TextEditingValue;
-        onSearchTextChanged(this.barcode);
+        _searchQueryController.text = barcode.rawContent.toString();
+        onSearchTextChanged(barcode.rawContent.toString());
       });
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.cameraAccessDenied) {
         setState(() {
-          this.barcode = 'No camera permission!';
+          this.barcode = 'No camera permission!' as ScanResult;
         });
       } else {
-        setState(() => this.barcode = 'Unknown error: $e');
+        setState(() => this.barcode = 'Unknown error: $e' as ScanResult);
       }
     } on FormatException {
-      setState(() => this.barcode = 'Nothing captured.');
+      setState(() => this.barcode = 'Nothing captured.' as ScanResult);
     } catch (e) {
-      setState(() => this.barcode = 'Unknown error: $e');
+      setState(() => this.barcode = 'Unknown error: $e' as ScanResult);
     }
   }
 
@@ -285,14 +289,16 @@ class _BarcodeInfoState extends State<BarcodeInfo> {
       {
 
         //print(_newData[0].id.toString());
-        Navigator.of(context).pushNamed('/details');
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => DetailsPage(product_name: _newData[0].productName.toString())));
         masterdata_bloc.getId(_newData[0].id.toString());
         masterdata_bloc.getsinglemasterdata();
     }
 
-    else if(_newData[0].gtin.toString()==barcode){
+    else if(_newData[0].gtin.toString()==barcode.rawContent.toString()){
         print("Barcode paisi");
-        Navigator.of(context).pushNamed('/details');
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => DetailsPage(product_name: _newData[0].productName.toString())));
         masterdata_bloc.getId(_newData[0].id.toString());
         masterdata_bloc.getsinglemasterdata();
     }

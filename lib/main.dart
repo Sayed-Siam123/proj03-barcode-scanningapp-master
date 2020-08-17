@@ -57,6 +57,7 @@ class MyApp extends StatelessWidget {
         backgroundColor: _background,
         accentColor: _font,
         buttonColor: _floatbuttoncolor,
+        fontFamily: 'Exo2',
       ),
 
 

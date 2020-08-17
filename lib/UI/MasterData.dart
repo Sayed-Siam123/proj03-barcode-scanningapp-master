@@ -29,7 +29,7 @@ class _MasterDataState extends State<MasterData> {
   List<MasterDataModel> fetcheddata = [];
 
   //Barcode scan implement
-  String barcode = "";
+  ScanResult barcode;
 
   //String _scanBarcode = 'Unknown';
 
@@ -259,24 +259,25 @@ class _MasterDataState extends State<MasterData> {
   //scan barcode asynchronously
   Future barcodeScanning() async {
     try {
-      barcode = (await BarcodeScanner.scan()) as String;
-      print(barcode);
+      barcode = await BarcodeScanner.scan();
+      print(barcode.rawContent.toString());
       setState(() {
         this.barcode = barcode;
-        onSearchTextChanged(this.barcode);
+        _searchQueryController.text = barcode.rawContent.toString();
+        onSearchTextChanged(barcode.rawContent.toString());
       });
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.cameraAccessDenied) {
         setState(() {
-          this.barcode = 'No camera permission!';
+          this.barcode = 'No camera permission!' as ScanResult;
         });
       } else {
-        setState(() => this.barcode = 'Unknown error: $e');
+        setState(() => this.barcode = 'Unknown error: $e' as ScanResult);
       }
     } on FormatException {
-      setState(() => this.barcode = 'Nothing captured.');
+      setState(() => this.barcode = 'Nothing captured.' as ScanResult);
     } catch (e) {
-      setState(() => this.barcode = 'Unknown error: $e');
+      setState(() => this.barcode = 'Unknown error: $e' as ScanResult);
     }
   }
 
@@ -298,6 +299,7 @@ class _MasterDataState extends State<MasterData> {
                         product_name: _newData[index].productName,
                         category: _newData[index].categoryName,
                         product_id: _newData[index].id,
+                        productPicture: _newData[index].productPicture,
                       ),
                       SizedBox(
                         height: 0,
@@ -322,6 +324,7 @@ class _MasterDataState extends State<MasterData> {
                         product_name: data[index].productName,
                         category: data[index].categoryName,
                         product_id: data[index].id,
+                        productPicture: data[index].productPicture,
                       ),
                       SizedBox(
                         height: 0,
@@ -331,4 +334,4 @@ class _MasterDataState extends State<MasterData> {
                 }),
           );
   }
-}
+ }

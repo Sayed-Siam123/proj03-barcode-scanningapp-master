@@ -95,12 +95,10 @@ class _PickupSummaryState extends State<PickupSummary> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           print("jabs");
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => NewDeliveryPage()));
           // Add your onPressed code here!
         },
         child: Icon(
-          Icons.add,
+          Icons.done,
           size: 50,
         ),
         backgroundColor: Colors.green,

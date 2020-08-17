@@ -1,4 +1,5 @@
 import 'package:app/Bloc/masterData_bloc.dart';
+import 'package:app/UI/Details.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -13,12 +14,14 @@ class MasterDataWidget extends StatelessWidget {
       manufac,
       manufacpin,
       gtin,
-      listprice;
+      listprice,
+      productPicture;
 
   MasterDataWidget(
       {this.product_name,
       this.product_id,
       this.category,
+      this.productPicture,
       this.gtin,
       this.unit,
       this.listprice,
@@ -34,7 +37,8 @@ class MasterDataWidget extends StatelessWidget {
       child: Card(
         child: ListTile(
           onTap: (){
-            Navigator.of(context).pushNamed('/details');
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => DetailsPage(product_name: this.product_name.toString(),)));
             masterdata_bloc.getId(this.product_id.toString());
             masterdata_bloc.getsinglemasterdata();
           },
@@ -42,7 +46,10 @@ class MasterDataWidget extends StatelessWidget {
             radius: 30,
             backgroundColor: Colors.transparent,
             child: CircleAvatar(
-              backgroundImage: AssetImage('assets/images/Cart.png'),
+              //backgroundImage: AssetImage('assets/images/Cart.png'),
+              backgroundImage: NetworkImage(
+                'http://202.164.212.238:8054'+this.productPicture.toString(),
+              ),
               backgroundColor: Colors.transparent,
             ),
           ),

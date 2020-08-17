@@ -153,8 +153,19 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
             fit: BoxFit.fill,
           ),
           onPressed: () {
-            print("akjsaks");
-            _showNoteDialog(context);
+
+            if(product == null){
+              print("akjsaks");
+              print(_scaffoldKey.toString());
+//              _scaffoldKey.currentState.showSnackBar(
+//                  SnackBar(
+//                    content: Text('Assign a GlobalKey to the Scaffold'),
+//                    duration: Duration(seconds: 3),
+//                  ));
+            }
+            else{
+              _showNoteDialog(context);
+            }
           },
         ),
         backgroundColor: Colors.green,
@@ -356,9 +367,8 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
                           builder: (context, setState) {
                             return StreamBuilder(
                                 stream: ndelivery_bloc.allProductData,
-                                builder: (BuildContext context,
-                                    AsyncSnapshot<List<NewDeliveryModel>>
-                                        snapshot) {
+                                builder: (BuildContext context, AsyncSnapshot<List<NewDeliveryModel>>snapshot) {
+
                                   return newproductdata(snapshot);
                                 });
                           },
@@ -374,6 +384,7 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
 
   Widget newproductdata(AsyncSnapshot<List<NewDeliveryModel>> snapshot) {
     if (snapshot.hasData) {
+
       return Container(
         color: Theme.of(context).backgroundColor,
         child: ListView.builder(
@@ -611,6 +622,7 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
 
                           _inputcontrol1.text = "";
 
+                          Navigator.pop(context);
                           _showHandlingUnitDialog(context);
                         })
                   ],
