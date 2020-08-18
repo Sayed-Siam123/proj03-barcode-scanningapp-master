@@ -11,6 +11,7 @@ String colProd_name = 'product_name';
 String colProd_barcode = 'barcode';
 String colProd_quantity = 'quantity';
 String colProd_note = 'note';
+String colProd_id = 'product_id';
 String colProd_handling_unit = 'handling_unit';
 
 
@@ -44,6 +45,6 @@ class DatabaseProvider {
 
   void initDB(Database database, int version) async {
     await database.execute('CREATE TABLE $productTABLE($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colProd_name TEXT, '
-        '$colProd_barcode TEXT, $colProd_quantity INTEGER, $colProd_handling_unit TEXT, $colProd_note TEXT)');
+        '$colProd_barcode TEXT, $colProd_quantity INTEGER, $colProd_handling_unit TEXT, $colProd_note TEXT,$colProd_id TEXT)');
   }
 }

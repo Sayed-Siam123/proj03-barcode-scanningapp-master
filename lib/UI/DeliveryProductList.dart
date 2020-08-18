@@ -15,7 +15,9 @@ class DeliveryProductList extends StatefulWidget {
 
 class _DeliveryProductListState extends State<DeliveryProductList> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  NewDeliveryModel _product;
+  List<NewDeliveryModel> _product;
+
+  bool status = false;
 
   int _quantity = 0;
 
@@ -71,40 +73,113 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
       ),
       floatingActionButton: Container(
         height: 110,
-        width: MediaQuery
-            .of(context)
-            .size
-            .width - 30,
+        width: MediaQuery.of(context).size.width - 30,
         child: Stack(
           children: <Widget>[
-            Align(
-              alignment: Alignment.bottomLeft,
-              child: FloatingActionButton(
-                heroTag: null,
-                backgroundColor: Colors.green,
-                onPressed: () async {
-                  _printDocument();
-                },
-                child: Icon(
-                  Icons.print,
-                  color: Colors.white,
-                  size: 30,
-                ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: FloatingActionButton(
-                heroTag: null,
-                backgroundColor: Colors.green,
-                onPressed: () {},
-                child: Icon(
-                  Icons.done,
-                  color: Colors.white,
-                  size: 30,
-                ),
-              ),
-            ),
+            status == false
+                ? Align(
+                    alignment: Alignment.bottomLeft,
+                    child: FloatingActionButton(
+                      heroTag: null,
+                      backgroundColor: Colors.grey.shade700,
+                      onPressed: () async {
+                        print("Inactive");
+                      },
+                      child: Icon(
+                        Icons.print,
+                        color: Colors.white,
+                        size: 30,
+                      ),
+                    ),
+                  )
+                : Align(
+                    alignment: Alignment.bottomLeft,
+                    child: FloatingActionButton(
+                      heroTag: null,
+                      backgroundColor: Colors.green,
+                      onPressed: () async {
+                        _printDocument();
+                      },
+                      child: Icon(
+                        Icons.print,
+                        color: Colors.white,
+                        size: 30,
+                      ),
+                    ),
+                  ),
+            status == false
+                ? Align(
+                    alignment: Alignment.bottomRight,
+                    child: FloatingActionButton(
+                      heroTag: null,
+                      backgroundColor: Colors.green,
+                      onPressed: () {
+                        print("dsdsd");
+                        //print(_product.length.toString());
+
+                        String str = '';
+
+                        print(_product.last.noteText);
+                        for (int i = 0; i < _product.length - 1; i++) {
+                          _product[i].HandlingUnit = _product.last.handlingUnit;
+                          _product[i].Note = _product.last.noteText;
+                        }
+
+                        for (int i = 0; i < _product.length; i++) {
+                          str += "1" +
+                              "," +
+                              _product[i].handlingUnit +
+                              "," +
+                              _product[i].productID.toString() +
+                              "," +
+                              _product[i].quantity.toString() +
+                              "," +
+                              _product[i].noteText.toString() +
+                              "\$";
+
+//                    str += "1" + ", " + "1" + ", " +
+//                        "TP1000015" + ", " +
+//                        _product[i].quantity.toString() + ", " +
+//                        _product[i].noteText.toString() + " \$ ";
+                        }
+
+                        //print(str);
+                        ndelivery_bloc.deleteTable();
+
+                        ndelivery_bloc.createDeliverypost(str);
+                        ndelivery_bloc.getAllDeliveryList();
+//                  ndelivery_bloc.deleteTable();
+
+                        setState(() {
+                          status = true;
+                        });
+                      },
+                      child: Icon(
+                        Icons.done,
+                        color: Colors.white,
+                        size: 30,
+                      ),
+                    ),
+                  )
+                : Align(
+                    alignment: Alignment.bottomRight,
+                    child: FloatingActionButton(
+                      heroTag: null,
+                      backgroundColor: Colors.green,
+                      onPressed: () {
+                        print("dsdsd");
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => DeliveriesPage()));
+                      },
+                      child: Icon(
+                        Icons.arrow_back,
+                        color: Colors.white,
+                        size: 30,
+                      ),
+                    ),
+                  ),
           ],
         ),
       ),
@@ -114,9 +189,7 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
               MaterialPageRoute(builder: (context) => DeliveriesPage()));
         },
         child: Container(
-          color: Theme
-              .of(context)
-              .backgroundColor,
+          color: Theme.of(context).backgroundColor,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
@@ -124,10 +197,7 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
                 child: Container(
                   margin: EdgeInsets.only(top: 5),
                   height: 240,
-                  width: MediaQuery
-                      .of(context)
-                      .size
-                      .width - 20,
+                  width: MediaQuery.of(context).size.width - 20,
                   color: Colors.white,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -193,10 +263,10 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
                                   width: 70,
                                   child: Center(
                                       child: Text(
-                                        "4",
-                                        style: GoogleFonts.exo2(
-                                            textStyle: TextStyle(fontSize: 30)),
-                                      )),
+                                    "4",
+                                    style: GoogleFonts.exo2(
+                                        textStyle: TextStyle(fontSize: 30)),
+                                  )),
                                 ),
                                 SizedBox(
                                   height: 10,
@@ -232,6 +302,8 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
                                 fontWeight: FontWeight.w600,
                                 fontSize: 15,
                               ),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
                             ),
                             SizedBox(
                               height: 40,
@@ -267,10 +339,10 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
                                   width: 70,
                                   child: Center(
                                       child: Text(
-                                        "17",
-                                        style: GoogleFonts.exo2(
-                                            textStyle: TextStyle(fontSize: 30)),
-                                      )),
+                                    "17",
+                                    style: GoogleFonts.exo2(
+                                        textStyle: TextStyle(fontSize: 30)),
+                                  )),
                                 ),
                                 SizedBox(
                                   height: 10,
@@ -291,10 +363,7 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
                 child: Center(
                   child: Container(
                     height: 420,
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width - 20,
+                    width: MediaQuery.of(context).size.width - 20,
                     color: Colors.white,
                     child: StreamBuilder(
                         stream: ndelivery_bloc.allProductData1,
@@ -315,15 +384,13 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
   Widget newproductdata(AsyncSnapshot<List<NewDeliveryModel>> snapshot) {
     if (snapshot.hasData) {
       return Container(
-        color: Theme
-            .of(context)
-            .backgroundColor,
+        color: Theme.of(context).backgroundColor,
         child: ListView.builder(
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
           itemCount: snapshot.data.length,
           itemBuilder: (context, index) {
-            _product = snapshot.data[index];
+            _product = snapshot.data;
             quantityofitems.add(snapshot.data[index].quantity);
             return Container(
               margin: EdgeInsets.only(top: 5),
@@ -365,6 +432,15 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
                             setState(() {
                               if (quantityofitems[index] != 1) {
                                 quantityofitems[index]--;
+                                print(quantityofitems[index].toString());
+                                //ndelivery_bloc.updateProduct(_product[index]);
+                                _product[index].Quantity =
+                                    quantityofitems[index];
+                                print("After increment Total quantity: " +
+                                    _product[index].quantity.toString() +
+                                    "of id" +
+                                    _product[index].id.toString());
+                                ndelivery_bloc.updateProduct(_product[index]);
                               }
                             });
                           },
@@ -381,15 +457,20 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
                           quantityofitems[index].toString(),
                           style: GoogleFonts.exo2(
                             fontSize: 18,
-                            color: Theme
-                                .of(context)
-                                .accentColor,
+                            color: Theme.of(context).accentColor,
                           ),
                         ),
                         MaterialButton(
                           onPressed: () {
                             setState(() {
                               quantityofitems[index]++;
+                              print(quantityofitems[index].toString());
+                              _product[index].Quantity = quantityofitems[index];
+                              print("After increment Total quantity: " +
+                                  _product[index].quantity.toString() +
+                                  "of id" +
+                                  _product[index].id.toString());
+                              ndelivery_bloc.updateProduct(_product[index]);
                             });
                           },
                           color: Colors.white,
@@ -428,83 +509,82 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
         doc.addPage(
           pw.Page(
             pageFormat: PdfPageFormat.a5,
-            build: (pw.Context context) =>
-                pw.Center(
-                    child: pw.Container(
-                      height: 140,
-                      width: 190,
-                      decoration: pw.BoxDecoration(
-                          shape: pw.BoxShape.rectangle,
-                          border: pw.BoxBorder(
-                            color: PdfColor.fromHex("#000000"),
-                            top: true,
-                            bottom: true,
-                            left: true,
-                            right: true,
-                          )),
-                      child: pw.Column(
-                          mainAxisAlignment: pw.MainAxisAlignment.start,
-                          children: <pw.Widget>[
-                            pw.Align(
-                                alignment: pw.Alignment.center,
-                                child: pw.Container(
-                                    child: pw.BarcodeWidget(
-                                      height: 70,
-                                      width: 170,
-                                      data: "TP 1000015",
-                                      barcode: pw.Barcode.code128(),
-                                    ))),
-                            pw.SizedBox(height: 10),
-
-                            pw.Align(
-                                child: pw.Row(
-
-                                  mainAxisAlignment: pw.MainAxisAlignment.center,
-                                    children: <pw.Widget>[
-                                      pw.Column(
-                                          crossAxisAlignment: pw.CrossAxisAlignment.start,
-                                          mainAxisAlignment: pw.MainAxisAlignment.spaceEvenly,
-                                          children: <pw.Widget>[
-                                            pw.Text("Date",style: pw.TextStyle(
-                                              font: pw.Font.helveticaBold(),
-                                              fontSize: 15,
-                                            )),
-                                            pw.Text("Store",style: pw.TextStyle(
-                                              font: pw.Font.helveticaBold(),
-                                              fontSize: 15,
-                                            )),
-                                            pw.Text("POS/QTY",style: pw.TextStyle(
-                                              font: pw.Font.helveticaBold(),
-                                              fontSize: 15,
-                                            )),
-                                          ]
-                                      ),
-
-                                      pw.SizedBox(width: 30),
-                                      pw.Column(
-                                        crossAxisAlignment: pw.CrossAxisAlignment.start,
-                                        mainAxisAlignment: pw.MainAxisAlignment.spaceEvenly,
-                                          children: <pw.Widget>[
-                                            pw.Text("26.05.2020",style: pw.TextStyle(
-                                              font: pw.Font.helveticaBold(),
-                                              fontSize: 15,
-                                            )),
-                                            pw.Text("Store 1",style: pw.TextStyle(
-                                              font: pw.Font.helveticaBold(),
-                                              fontSize: 15,
-                                            )),
-                                            pw.Text("4/201",style: pw.TextStyle(
-                                                font: pw.Font.helveticaBold(),
-                                              fontSize: 15,
-                                            )),
-                                          ]
-                                      ),
-
-
-                                    ])
-                            )
-                          ]),
-                    )),
+            build: (pw.Context context) => pw.Center(
+                child: pw.Container(
+              height: 140,
+              width: 190,
+              decoration: pw.BoxDecoration(
+                  shape: pw.BoxShape.rectangle,
+                  border: pw.BoxBorder(
+                    color: PdfColor.fromHex("#000000"),
+                    top: true,
+                    bottom: true,
+                    left: true,
+                    right: true,
+                  )),
+              child: pw.Column(
+                  mainAxisAlignment: pw.MainAxisAlignment.start,
+                  children: <pw.Widget>[
+                    pw.Align(
+                        alignment: pw.Alignment.center,
+                        child: pw.Container(
+                            child: pw.BarcodeWidget(
+                          height: 70,
+                          width: 170,
+                          data: "TP 1000015",
+                          barcode: pw.Barcode.code128(),
+                        ))),
+                    pw.SizedBox(height: 10),
+                    pw.Align(
+                        child: pw.Row(
+                            mainAxisAlignment: pw.MainAxisAlignment.center,
+                            children: <pw.Widget>[
+                          pw.Column(
+                              crossAxisAlignment: pw.CrossAxisAlignment.start,
+                              mainAxisAlignment:
+                                  pw.MainAxisAlignment.spaceEvenly,
+                              children: <pw.Widget>[
+                                pw.Text("Date",
+                                    style: pw.TextStyle(
+                                      font: pw.Font.helveticaBold(),
+                                      fontSize: 15,
+                                    )),
+                                pw.Text("Store",
+                                    style: pw.TextStyle(
+                                      font: pw.Font.helveticaBold(),
+                                      fontSize: 15,
+                                    )),
+                                pw.Text("POS/QTY",
+                                    style: pw.TextStyle(
+                                      font: pw.Font.helveticaBold(),
+                                      fontSize: 15,
+                                    )),
+                              ]),
+                          pw.SizedBox(width: 30),
+                          pw.Column(
+                              crossAxisAlignment: pw.CrossAxisAlignment.start,
+                              mainAxisAlignment:
+                                  pw.MainAxisAlignment.spaceEvenly,
+                              children: <pw.Widget>[
+                                pw.Text("26.05.2020",
+                                    style: pw.TextStyle(
+                                      font: pw.Font.helveticaBold(),
+                                      fontSize: 15,
+                                    )),
+                                pw.Text("Store 1",
+                                    style: pw.TextStyle(
+                                      font: pw.Font.helveticaBold(),
+                                      fontSize: 15,
+                                    )),
+                                pw.Text("4/201",
+                                    style: pw.TextStyle(
+                                      font: pw.Font.helveticaBold(),
+                                      fontSize: 15,
+                                    )),
+                              ]),
+                        ]))
+                  ]),
+            )),
           ),
         );
 

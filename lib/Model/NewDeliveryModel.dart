@@ -5,10 +5,11 @@ class NewDeliveryModel {
   int quantity_;
   String handling_unit = null;
   String note = null;
+  String product_id_;
 
-  NewDeliveryModel({this.barcode_, this.product_name_,this.quantity_,this.handling_unit,this.note});
+  NewDeliveryModel({this.barcode_, this.product_name_,this.product_id_,this.quantity_,this.handling_unit,this.note});
 
-  NewDeliveryModel.withID({this.id_, this.product_name_, this.barcode_,this.quantity_,this.handling_unit,this.note});
+  NewDeliveryModel.withID({this.id_, this.product_name_,this.product_id_, this.barcode_,this.quantity_,this.handling_unit,this.note});
 
 
   int get id => this.id_;
@@ -22,6 +23,8 @@ class NewDeliveryModel {
   String get handlingUnit => this.handling_unit;
 
   String get noteText => this.note;
+
+  String get productID => this.product_id_;
 
 
   set productName(String name) {
@@ -44,6 +47,10 @@ class NewDeliveryModel {
     this.note = note;
   }
 
+  set ProductID(String id) {
+    this.product_id_ = id;
+  }
+
 
   // ignore: missing_return
   Map<String, dynamic> toMap() => {
@@ -53,6 +60,7 @@ class NewDeliveryModel {
     "quantity" : this.quantity_,
     "handling_unit" : this.handling_unit,
     "note" : this.note,
+    "product_id" : this.product_id_,
 
   };
 
@@ -64,6 +72,7 @@ class NewDeliveryModel {
       quantity_ : data['quantity'],
       handling_unit: data['handling_unit'],
       note: data['note'],
+      product_id_: data['product_id']
 
   );
 

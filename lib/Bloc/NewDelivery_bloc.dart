@@ -69,6 +69,12 @@ class NewDelivery_bloc{
     _alldeliverydataFetcher.sink.add(delivereisdata);
   }
 
+  createDeliverypost(String data) async{
+    print(data);
+    await _repository.createDeliverypost(data);
+    deleteTable();
+  }
+
 
 
   void dispose() async{

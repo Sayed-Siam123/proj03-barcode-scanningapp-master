@@ -133,14 +133,16 @@ class _DeliveriesPageState extends State<DeliveriesPage> {
                       leading: Container(
                         width: 40,
                         decoration: BoxDecoration(
-                          color: finalDate == data[index].date.toString() ? Colors.green : Colors.red,
+                          //color: Colors.red,
+                          // ignore: unrelated_type_equality_checks
+                          color: finalDate == data[index].commissionedOn.toString() ? Colors.green : Colors.red, //TODO:DATE SET KORA LAGBE
                           shape: BoxShape.circle,
                         ),
                       ),
-                      title: Text(data[index].deliveryId.toString(), style: GoogleFonts.exo2(
+                      title: Text(data[index].deliveryCode.toString(), style: GoogleFonts.exo2(
                         fontSize: 20,
                       ),),
-                      subtitle: Text(data[index].date.toString(), style: GoogleFonts.exo2(
+                      subtitle: Text(data[index].commissionedOn.toString(), style: GoogleFonts.exo2(
 
                       ),),
                       trailing: Container(
@@ -159,7 +161,7 @@ class _DeliveriesPageState extends State<DeliveriesPage> {
                                       .accentColor,
                                 ),
                               ),
-                              Text(data[index].position.toString()+"/"+data[index].quantity.toString(),
+                              Text("8"+"/"+data[index].quantity.toString(),
                                 style: GoogleFonts.exo2(
                                   fontSize: 15,
                                   color: Theme
@@ -186,7 +188,7 @@ class _DeliveriesPageState extends State<DeliveriesPage> {
 
     var dateParse = DateTime.parse(date);
 
-    var formattedDate = "${dateParse.day}-${dateParse.month}-${dateParse.year}";
+    var formattedDate = "${dateParse.day}/${dateParse.month}/${dateParse.year} ${dateParse.hour}:${dateParse.minute}:${dateParse.second}";
 
     setState(() {
       finalDate = formattedDate.toString();

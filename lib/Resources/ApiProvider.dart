@@ -607,8 +607,13 @@ class ApiProvider {
   }
 
   Future<List<DeliveriesListModel>> fetchDelivereisData() async{
+
+    getIP();
+    getPort();
+    await new Future.delayed(const Duration(milliseconds: 1000));
+
     print("fetch from apiprovider");
-    final response = await client.get(_url+"delivereslist/");
+    final response = await client.get(initial+serverIP+":"+serverPort+"/api/delivery/");
 
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);
@@ -646,6 +651,26 @@ class ApiProvider {
     }
 
 
+  }
+
+  createDeliverypost(String data) async{
+    getIP();
+    getPort();
+    await new Future.delayed(const Duration(milliseconds: 1000));
+
+    final response = await client.get(initial+serverIP+":"+serverPort+"/api/CreateDelivery/SubmitData/"+data );
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+
+
+      debugPrint("From create:: "+json.decode(response.body).toString());
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load album');
+    }
   }
 
 }

@@ -1,5 +1,10 @@
+import 'dart:convert';
+
 import 'package:app/Bloc/NewDelivery_bloc.dart';
+import 'package:app/Bloc/masterData_bloc.dart';
 import 'package:app/Model/NewDeliveryModel.dart';
+import 'package:app/Model/masterdata_model.dart';
+import 'package:app/Resources/SharedPrefer.dart';
 import 'package:app/Resources/database_helper.dart';
 import 'package:app/UI/Deliveries.dart';
 import 'package:barcode_scan/barcode_scan.dart';
@@ -8,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:http/http.dart' show Client;
 
 import 'DeliveryProductList.dart';
 
@@ -29,6 +35,19 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
   var controller;
   bool qr_request = false;
 
+
+  SessionManager prefs =  SessionManager();
+
+  String deviceID=""
+  ,serverIP=""
+  ,serverPort=""
+  ,serverLog="";
+
+
+  String initial= "http://";
+
+
+
   TextEditingController _searchQueryController = new TextEditingController();
 
   List<String> product_names = <String>[];
@@ -44,6 +63,10 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
 
   NewDeliveryModel newdelivery;
   NewDeliveryModel product;
+
+
+  List<MasterDataModel> _newData = [];
+  List<MasterDataModel> _fetcheddata = [];
 
   DatabaseHelper databaseHelper = DatabaseHelper();
   List<NewDeliveryModel> deliveryList;
@@ -67,41 +90,7 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
 
   final DismissDirection _dismissDirection = DismissDirection.horizontal;
 
-
-  void _onQRViewCreated(QRViewController controller) {
-    this.controller = controller;
-    controller.scannedDataStream.listen((scanData) {
-      setState(() {
-        qrText = scanData;
-        _searchQueryController.text = qrText;
-
-//        ndelivery_bloc.getselecteditemProductName("ProductsNameHere");
-//        ndelivery_bloc.getselecteditemBarcode(_searchQueryController.text.toString());
-//        ndelivery_bloc.getselecteditemQuantity(1);
-
-        newdelivery = NewDeliveryModel(
-          barcode_: _searchQueryController.text.toString(),
-          product_name_: "Product",
-          quantity_: 1,
-        );
-      });
-
-//      newdelivery.productName = qrText;
-//      newdelivery.Barcode = qrText;
-//      newdelivery.Quantity = 1;
-
-      setState(() {
-        controller.dispose();
-        qr_request = false;
-        count++;
-        print(newdelivery.barcode.toString());
-        //print(newdelivery.productName.toString());
-        ndelivery_bloc.insertProduct(newdelivery);
-        ndelivery_bloc.dispose();
-        ndelivery_bloc.getProduct();
-      });
-    });
-  }
+  Client client = Client();
 
   @override
   void initState() {
@@ -114,8 +103,52 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
 //
 //    updateListView();
 
+    getIP();
+    getPort();
     ndelivery_bloc.getProduct();
     //ndelivery_bloc.deleteTable();
+    masterdata_bloc.fetchAllMasterData();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    masterdata_bloc.dispose();
+  }
+
+  void getIP() async {
+
+    Future<String> serverip = prefs.getData("_serverip");
+    serverip.then((data) {
+
+      print('serverip pabo');
+      print("serverip " + data.toString());
+      this.serverIP = data.toString();
+
+//      Future.delayed(const Duration(milliseconds: 1000), () {
+//
+//      });
+    },onError: (e) {
+      print(e);
+    });
+
+  }
+
+  void getPort() async {
+
+    Future<String> serverport = prefs.getData("_serverport");
+    serverport.then((data) {
+
+      print("serverport " + data.toString());
+      this.serverPort = data.toString();
+
+
+    },onError: (e) {
+      print(e);
+    });
+
+
   }
 
   @override
@@ -153,8 +186,7 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
             fit: BoxFit.fill,
           ),
           onPressed: () {
-
-            if(product == null){
+            if (product == null) {
               print("akjsaks");
               print(_scaffoldKey.toString());
 //              _scaffoldKey.currentState.showSnackBar(
@@ -163,7 +195,7 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
 //                    duration: Duration(seconds: 3),
 //                  ));
             }
-            else{
+            else {
               _showNoteDialog(context);
             }
           },
@@ -171,7 +203,9 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
         backgroundColor: Colors.green,
       ),
       body: Container(
-        color: Theme.of(context).backgroundColor,
+        color: Theme
+            .of(context)
+            .backgroundColor,
         child: Column(
           children: <Widget>[
 
@@ -180,13 +214,17 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.all(13.0),
-                  child: Text(" Please Input product ID or GTIN to \n add for the delivery \n or you can tap on scan button for quick adding",style: GoogleFonts.exo2(
-                    textStyle: TextStyle(
-                        fontSize: 12,
-                        color: Theme.of(context).accentColor,
-                      fontWeight: FontWeight.w500
-                    ),
-                  ),),
+                  child: Text(
+                    " Please Input product ID or GTIN to \n add for the delivery \n or you can tap on scan button for quick adding",
+                    style: GoogleFonts.exo2(
+                      textStyle: TextStyle(
+                          fontSize: 12,
+                          color: Theme
+                              .of(context)
+                              .accentColor,
+                          fontWeight: FontWeight.w500
+                      ),
+                    ),),
                 ),
 
                 Container(
@@ -213,7 +251,8 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
                   child: Center(
                       child: Text(
                         count.toString(),
-                        style: GoogleFonts.exo2(textStyle: TextStyle(fontSize: 26)),
+                        style: GoogleFonts.exo2(
+                            textStyle: TextStyle(fontSize: 26)),
                       )),
                 ),
               ],
@@ -224,7 +263,10 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
               children: <Widget>[
                 Container(
                   height: 58,
-                  width: MediaQuery.of(context).size.width - 87,
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width - 87,
                   alignment: Alignment.center,
                   margin: const EdgeInsets.only(top: 10, left: 13, right: 10),
                   decoration: BoxDecoration(
@@ -243,6 +285,7 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
                     padding: const EdgeInsets.only(left: 8.0),
                     child: TextField(
                         controller: _searchQueryController,
+                        onChanged: onSearchTextChanged,
                         autocorrect: true,
                         style: GoogleFonts.exo2(
                           textStyle: TextStyle(
@@ -277,14 +320,16 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
                   padding: const EdgeInsets.only(top: 10.0),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Theme.of(context).buttonColor,
+                      color: Theme
+                          .of(context)
+                          .buttonColor,
                       borderRadius: BorderRadius.all(Radius.circular(5)),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.white60,
                           spreadRadius: 1,
                           blurRadius: 1,
-                          offset: Offset(1,1 ),
+                          offset: Offset(1, 1),
                         ),
                       ],
                     ),
@@ -317,44 +362,57 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
             ),
             qr_request
                 ? Padding(
-                    padding: EdgeInsets.only(top: 100.0),
-                    child: Container(
-                      width: MediaQuery.of(context).size.width - 60,
-                      height: 300,
-                      child: qrText.isEmpty
-                          ? QRView(
-                              key: qrKey,
-                              onQRViewCreated: _onQRViewCreated,
-                              overlay: QrScannerOverlayShape(
-                                borderColor: Colors.green,
-                                borderRadius: 10,
-                                borderLength: 30,
-                                borderWidth: 10,
-                                cutOutSize: 300,
-                              ),
-                            )
-                          : Container(),
-                    ),
-                  )
+              padding: EdgeInsets.only(top: 100.0),
+              child: Container(
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width - 60,
+                height: 300,
+                child: qrText.isEmpty
+                    ? QRView(
+                  key: qrKey,
+                  onQRViewCreated: _onQRViewCreated,
+                  overlay: QrScannerOverlayShape(
+                    borderColor: Colors.green,
+                    borderRadius: 10,
+                    borderLength: 30,
+                    borderWidth: 10,
+                    cutOutSize: 300,
+                  ),
+                )
+                    : Container(),
+              ),
+            )
                 : WillPopScope(
-                    // ignore: missing_return
-                    onWillPop: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => DeliveriesPage()));
-                      ndelivery_bloc.deleteTable();
-                    },
-                    child: SingleChildScrollView(
-                      child: Container(
+              // ignore: missing_return
+              onWillPop: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => DeliveriesPage()));
+                ndelivery_bloc.deleteTable();
+              },
+              child: SingleChildScrollView(
+                child: Container(
+
+                  child: Column(
+                    children: <Widget>[
+                      Container(
                         height: 110,
-                        width: MediaQuery.of(context).size.width - 30,
+                        width: MediaQuery
+                            .of(context)
+                            .size
+                            .width - 30,
                         margin: EdgeInsets.only(top: 10),
                         decoration: BoxDecoration(
-                          color: Theme.of(context).backgroundColor,
+                          color: Theme
+                              .of(context)
+                              .backgroundColor,
                           boxShadow: [
                             BoxShadow(
-                              color: Theme.of(context)
+                              color: Theme
+                                  .of(context)
                                   .backgroundColor
                                   .withOpacity(0.5),
                               spreadRadius: 2,
@@ -367,15 +425,66 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
                           builder: (context, setState) {
                             return StreamBuilder(
                                 stream: ndelivery_bloc.allProductData,
-                                builder: (BuildContext context, AsyncSnapshot<List<NewDeliveryModel>>snapshot) {
-
+                                builder: (BuildContext context, AsyncSnapshot<
+                                    List<NewDeliveryModel>>snapshot) {
                                   return newproductdata(snapshot);
                                 });
                           },
                         ),
                       ),
-                    ),
+
+                      SizedBox(height: 20,),
+
+                      Container(
+                        height: 110,
+                        width: MediaQuery
+                            .of(context)
+                            .size
+                            .width - 30,
+                        margin: EdgeInsets.only(top: 10),
+                        decoration: BoxDecoration(
+                          color: Theme
+                              .of(context)
+                              .backgroundColor,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Theme
+                                  .of(context)
+                                  .backgroundColor
+                                  .withOpacity(0.5),
+                              spreadRadius: 2,
+                              blurRadius: 5,
+                              //TODO:: eikhane master data load khabe!
+                              offset: Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: StreamBuilder<List<MasterDataModel>>(
+                          stream: masterdata_bloc.allMasterData,
+                          builder: (context,
+                              AsyncSnapshot<List<MasterDataModel>> snapshot) {
+                            if (snapshot.hasData) {
+                              _fetcheddata = snapshot.data;
+                              //_newData = fetcheddata;
+                              print("Data eikhane:: ");
+
+                              print(_fetcheddata.length);
+                            }
+
+                            else if (snapshot.hasError) {
+                              return Text("${snapshot.error}");
+                            }
+
+                            return Center(child: Text(""));
+                            //return masterdataview(_fetcheddata); //it should be changed
+                          },
+                        ),
+                      ),
+                    ],
                   ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -384,9 +493,10 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
 
   Widget newproductdata(AsyncSnapshot<List<NewDeliveryModel>> snapshot) {
     if (snapshot.hasData) {
-
       return Container(
-        color: Theme.of(context).backgroundColor,
+        color: Theme
+            .of(context)
+            .backgroundColor,
         child: ListView.builder(
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
@@ -471,7 +581,8 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
   void _showNoteDialog(BuildContext context) async {
     await showDialog<String>(
         context: context,
-        builder: (_) => StatefulBuilder(
+        builder: (_) =>
+            StatefulBuilder(
               builder: (context, setState) {
                 return new AlertDialog(
                   shape: RoundedRectangleBorder(
@@ -479,7 +590,10 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
                   content: Builder(
                     builder: (context) {
                       // Get available height and width of the build area of this widget. Make a choice depending on the size.
-                      var width = MediaQuery.of(context).size.width;
+                      var width = MediaQuery
+                          .of(context)
+                          .size
+                          .width;
 
                       return Form(
                         key: _resetKey1,
@@ -534,16 +648,22 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: <Widget>[
                                     Padding(
-                                      padding: EdgeInsets.only(left: 16,bottom: 10),
-                                      child: Text("Note",style: GoogleFonts.exo2(
+                                      padding: EdgeInsets.only(
+                                          left: 16, bottom: 10),
+                                      child: Text(
+                                        "Note", style: GoogleFonts.exo2(
                                         fontSize: 20,
                                       ),),
                                     ),
                                     Container(
                                       height: 90,
-                                      width: MediaQuery.of(context).size.width - 80,
+                                      width: MediaQuery
+                                          .of(context)
+                                          .size
+                                          .width - 80,
                                       alignment: Alignment.center,
-                                      margin: const EdgeInsets.only(top: 0, left: 13, right: 10),
+                                      margin: const EdgeInsets.only(
+                                          top: 0, left: 13, right: 10),
                                       decoration: BoxDecoration(
                                         color: Colors.white,
 
@@ -557,39 +677,40 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
                                         ],
                                       ),
                                       child: Container(
-                                          margin: const EdgeInsets.only(left: 8.0,bottom: 0),
-                                          child: TextField(
-                                            textAlign: TextAlign.start,
-                                              controller: _inputcontrol1,
-                                              autocorrect: true,
-                                              style: GoogleFonts.exo2(
-                                                textStyle: TextStyle(
-                                                  fontSize: 20,
-                                                ),
-                                              ),
-                                              decoration: new InputDecoration(
-                                                border: InputBorder.none,
-                                                focusedBorder: InputBorder.none,
-                                                enabledBorder: InputBorder.none,
-                                                errorBorder: InputBorder.none,
-                                                disabledBorder: InputBorder.none,
-                                                hintStyle: GoogleFonts.exo2(
-                                                  textStyle: TextStyle(
-                                                    fontSize: 16,
-                                                  ),
-                                                ),
-                                                labelStyle: GoogleFonts.exo2(
-                                                  textStyle: TextStyle(
-                                                    fontSize: 16,
-                                                  ),
-                                                ),
-                                                hintText: "Enter Note (OPTIONAL)",
-                                              ),
-                                            keyboardType: TextInputType.multiline,
-                                            maxLines: null,
+                                        margin: const EdgeInsets.only(
+                                            left: 8.0, bottom: 0),
+                                        child: TextField(
+                                          textAlign: TextAlign.start,
+                                          controller: _inputcontrol1,
+                                          autocorrect: true,
+                                          style: GoogleFonts.exo2(
+                                            textStyle: TextStyle(
+                                              fontSize: 20,
+                                            ),
                                           ),
+                                          decoration: new InputDecoration(
+                                            border: InputBorder.none,
+                                            focusedBorder: InputBorder.none,
+                                            enabledBorder: InputBorder.none,
+                                            errorBorder: InputBorder.none,
+                                            disabledBorder: InputBorder.none,
+                                            hintStyle: GoogleFonts.exo2(
+                                              textStyle: TextStyle(
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                            labelStyle: GoogleFonts.exo2(
+                                              textStyle: TextStyle(
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                            hintText: "Enter Note (OPTIONAL)",
+                                          ),
+                                          keyboardType: TextInputType.multiline,
+                                          maxLines: null,
                                         ),
                                       ),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -635,24 +756,28 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
   void _showHandlingUnitDialog(BuildContext context) async {
     await showDialog<String>(
         context: context,
-        builder: (_) => StatefulBuilder(
-          builder: (context, setState) {
-            return new AlertDialog(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10.0))),
-              content: Builder(
-                builder: (context) {
-                  // Get available height and width of the build area of this widget. Make a choice depending on the size.
-                  var width = MediaQuery.of(context).size.width;
+        builder: (_) =>
+            StatefulBuilder(
+              builder: (context, setState) {
+                return new AlertDialog(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                  content: Builder(
+                    builder: (context) {
+                      // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                      var width = MediaQuery
+                          .of(context)
+                          .size
+                          .width;
 
-                  return Form(
-                    key: _resetKey2,
-                    autovalidate: _resetValidate2,
-                    child: Container(
-                      height: 120,
-                      width: width - 100,
-                      child: new Column(
-                        children: <Widget>[
+                      return Form(
+                        key: _resetKey2,
+                        autovalidate: _resetValidate2,
+                        child: Container(
+                          height: 120,
+                          width: width - 100,
+                          child: new Column(
+                            children: <Widget>[
 //                          new Container(
 //                            child: new TextFormField(
 //                              autofocus: false,
@@ -698,116 +823,156 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
 //                              // ignore: missing_return
 //                            ),
 //                          ),
-                          Container(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                Padding(
-                                  padding: EdgeInsets.only(left: 16,bottom: 10),
-                                  child: Text("Handling Unit",style: GoogleFonts.exo2(
-                                    fontSize: 20,
-                                  ),),
-                                ),
-                                Container(
-                                  height: 60,
-                                  alignment: Alignment.center,
-                                  margin: const EdgeInsets.only(top: 0, left: 13, right: 10),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.3),
-                                        spreadRadius: 2,
-                                        blurRadius: 5,
-                                        offset: Offset(0, 3),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Container(
-                                    margin: const EdgeInsets.only(left: 8.0,bottom: 0),
-                                    child: TextField(
-                                      textAlign: TextAlign.start,
-                                      controller: _inputcontrol2,
-                                      autocorrect: true,
-                                      style: GoogleFonts.exo2(
-                                        textStyle: TextStyle(
+                              Container(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                          left: 16, bottom: 10),
+                                      child: Text("Handling Unit",
+                                        style: GoogleFonts.exo2(
                                           fontSize: 20,
-                                        ),
+                                        ),),
+                                    ),
+                                    Container(
+                                      height: 60,
+                                      alignment: Alignment.center,
+                                      margin: const EdgeInsets.only(
+                                          top: 0, left: 13, right: 10),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.3),
+                                            spreadRadius: 2,
+                                            blurRadius: 5,
+                                            offset: Offset(0, 3),
+                                          ),
+                                        ],
                                       ),
-                                      decoration: new InputDecoration(
-                                        border: InputBorder.none,
-                                        focusedBorder: InputBorder.none,
-                                        enabledBorder: InputBorder.none,
-                                        errorBorder: InputBorder.none,
-                                        disabledBorder: InputBorder.none,
-                                        hintStyle: GoogleFonts.exo2(
-                                          textStyle: TextStyle(
-                                            fontSize: 16,
+                                      child: Container(
+                                        margin: const EdgeInsets.only(
+                                            left: 8.0, bottom: 0),
+                                        child: TextField(
+                                          textAlign: TextAlign.start,
+                                          controller: _inputcontrol2,
+                                          autocorrect: true,
+                                          style: GoogleFonts.exo2(
+                                            textStyle: TextStyle(
+                                              fontSize: 20,
+                                            ),
                                           ),
-                                        ),
-                                        labelStyle: GoogleFonts.exo2(
-                                          textStyle: TextStyle(
-                                            fontSize: 16,
-                                          ),
-                                        ),
-                                        hintText: "Enter Handling Unit (OPTIONAL)",
-                                        suffixIcon: IconButton(
-                                          icon: new Image.asset(
+                                          decoration: new InputDecoration(
+                                            border: InputBorder.none,
+                                            focusedBorder: InputBorder.none,
+                                            enabledBorder: InputBorder.none,
+                                            errorBorder: InputBorder.none,
+                                            disabledBorder: InputBorder.none,
+                                            hintStyle: GoogleFonts.exo2(
+                                              textStyle: TextStyle(
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                            labelStyle: GoogleFonts.exo2(
+                                              textStyle: TextStyle(
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                            hintText: "Enter Handling Unit (OPTIONAL)",
+                                            suffixIcon: IconButton(
+                                              icon: new Image.asset(
                                                   'assets/images/barcode.png',
                                                   fit: BoxFit.contain),
                                               tooltip: 'Scan barcode',
                                               onPressed: barcodeScanning2,
                                             ),
                                           ),
+                                        ),
+                                      ),
                                     ),
-                                  ),
+                                  ],
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-              actions: <Widget>[
-                new FlatButton(
-                    child: const Text('Skip'),
-                    onPressed: () {
-                      Navigator.pop(context);
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => DeliveryProductList()));
+                        ),
+                      );
+                    },
+                  ),
+                  actions: <Widget>[
+                    new FlatButton(
+                        child: const Text('Skip'),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.push(context,
+                              MaterialPageRoute(
+                                  builder: (context) => DeliveryProductList()));
 
-                      print("Skip hbe arekta Dialog khulbe");
-                    }),
-                new FlatButton(
-                    child: const Text('Add'),
-                    onPressed: () {
-                      print("Add hobe");
+                          print("Skip hbe arekta Dialog khulbe");
+                        }),
+                    new FlatButton(
+                        child: const Text('Add'),
+                        onPressed: () async {
+                          print("Add hobe");
 
-                      product.handling_unit = _inputcontrol2.text;
+                          final response = await client.get(
+                              '$initial$serverIP:$serverPort/api/hunit/'+_inputcontrol2.text);
 
-                      print(product.handling_unit.toString());
-                      print(product.note.toString());
-                      print(product.id.toString());
+                          if (response.statusCode == 200) {
+                            List jsonResponse = json.decode(response.body);
 
-                      ndelivery_bloc.updateProduct(product);
+                            debugPrint(
+                                "From Get Class:: " + jsonResponse.toString());          //TODO:: NEED THAT FOR LOGIN ALSO
 
-                      ndelivery_bloc.dispose();
+                            if (jsonResponse.toString() == "[]") {
+                              print("NULL VALUE");
+                              product.handling_unit = "0";
 
-                      _inputcontrol2.text = "";
+                              print(product.handling_unit.toString());
 
-                      Navigator.pop(context);
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => DeliveryProductList()));
-                    })
-              ],
-            );
-          },
-        ));
+                              ndelivery_bloc.updateProduct(product);
+
+                              ndelivery_bloc.dispose();
+
+                              _inputcontrol2.text = "";
+
+                              Navigator.pop(context);
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) =>
+                                      DeliveryProductList()));
+                            }
+
+                            else {
+                              print("VALUE EXIST");
+                              product.handling_unit = _inputcontrol2.text;
+
+                              print(product.handling_unit.toString());
+
+                              ndelivery_bloc.updateProduct(product);
+
+                              ndelivery_bloc.dispose();
+
+                              _inputcontrol2.text = "";
+
+                              Navigator.pop(context);
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          DeliveryProductList()));
+                            }
+                          }
+                          else {
+                            throw Exception('Failed to load jobs from API');
+                          }
+                        })
+                  ],
+                );
+              },
+            ));
   }
 
 
@@ -832,6 +997,98 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
     } catch (e) {
       setState(() => this.barcode2 = 'Unknown error: $e' as ScanResult);
     }
+  }
+
+
+  onSearchTextChanged(String text) async {
+    _newData.clear();
+    if (text.isEmpty) {
+      setState(() {});
+      return;
+    }
+
+    _fetcheddata.forEach((userDetail) {
+      if (userDetail.gtin.toLowerCase().contains(text.toLowerCase()))
+        _newData.add(userDetail);
+    });
+
+    if (_newData[0].gtin.toString() == _searchQueryController.text) {
+      print("LIkheo paisi");
+
+      newdelivery = NewDeliveryModel(
+        barcode_: _searchQueryController.text.toString(),
+        product_name_: _newData[0].productName.toString(),
+        quantity_: 1,
+        product_id_: _newData[0].id.toString(),
+      );
+
+      ndelivery_bloc.insertProduct(newdelivery);
+      ndelivery_bloc.dispose();
+      ndelivery_bloc.getProduct();
+
+      //print(_newData[0].id.toString());
+    }
+
+    else if (_newData[0].gtin.toString() == qrText.toString()) {
+      print("Barcode paisi");
+
+      newdelivery = NewDeliveryModel(
+        barcode_: _searchQueryController.text.toString(),
+        product_name_: _newData[0].productName.toString(),
+        quantity_: 1,
+        product_id_: _newData[0].id.toString(),
+      );
+
+      ndelivery_bloc.insertProduct(newdelivery);
+      ndelivery_bloc.dispose();
+      ndelivery_bloc.getProduct();
+    }
+
+//    print(_newData[0].productName.toString());
+//    print("ID is::::: "+_newData[0].id.toString());
+
+//    Navigator.of(context).pushNamed('/details');
+//    masterdata_bloc.getId(_newData[0].productId.toString());
+//    masterdata_bloc.getsinglemasterdata();
+
+    setState(() {});
+  }
+
+  void _onQRViewCreated(QRViewController controller) {
+    this.controller = controller;
+    controller.scannedDataStream.listen((scanData) {
+      setState(() {
+        qrText = scanData;
+        _searchQueryController.text = qrText;
+
+        onSearchTextChanged(qrText.toString());
+
+//        ndelivery_bloc.getselecteditemProductName("ProductsNameHere");
+//        ndelivery_bloc.getselecteditemBarcode(_searchQueryController.text.toString());
+//        ndelivery_bloc.getselecteditemQuantity(1);
+
+//        newdelivery = NewDeliveryModel(
+//          barcode_: _searchQueryController.text.toString(),
+//          product_name_: "Product",
+//          quantity_: 1,
+//        );
+      });
+
+//      newdelivery.productName = qrText;
+//      newdelivery.Barcode = qrText;
+//      newdelivery.Quantity = 1;
+
+      setState(() {
+        controller.dispose();
+        qr_request = false;
+        count++;
+//        print(newdelivery.barcode.toString());
+//        //print(newdelivery.productName.toString());
+//        ndelivery_bloc.insertProduct(newdelivery);
+//        ndelivery_bloc.dispose();
+//        ndelivery_bloc.getProduct();
+      });
+    });
   }
 
 

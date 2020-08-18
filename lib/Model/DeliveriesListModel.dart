@@ -1,22 +1,19 @@
 class DeliveriesListModel {
 
-  int id;
-  String deliveryId,
-      position,
-      quantity,
-      date;
+  String id;
+  String deliveryCode,
+      quantity,commissionedOn;
 
 
-  DeliveriesListModel({this.position, this.id, this.deliveryId, this.quantity,this.date});
+  DeliveriesListModel({this.id, this.deliveryCode, this.quantity,this.commissionedOn});
 
 
   factory DeliveriesListModel.fromJson(Map<String, dynamic> json) {
     return DeliveriesListModel(
       id: json['id'],
-      deliveryId: json['deliveryId'],
-      position: json['position'],
+      deliveryCode: json['deliveryCode'],
       quantity: json['quantity'],
-      date: json['date'],
+      commissionedOn: json['commissionedOn'],
 
     );
   }
