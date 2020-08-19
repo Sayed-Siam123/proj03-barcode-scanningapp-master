@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:app/Model/CatagoryModel.dart';
 import 'package:app/Model/DeliveriesListModel.dart';
+import 'package:app/Model/GetDeliveryResponse_Model.dart';
 import 'package:app/Model/ManufactureModel.dart';
 import 'package:app/Model/MaterialPackModel.dart';
 import 'package:app/Model/SubCategory.dart';
@@ -653,7 +654,7 @@ class ApiProvider {
 
   }
 
-  createDeliverypost(String data) async{
+  Future<getdeliverysuccess_model> createDeliverypost(String data) async{
     getIP();
     getPort();
     await new Future.delayed(const Duration(milliseconds: 1000));
@@ -666,6 +667,7 @@ class ApiProvider {
 
 
       debugPrint("From create:: "+json.decode(response.body).toString());
+      return getdeliverysuccess_model.fromJson(json.decode(response.body));
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.

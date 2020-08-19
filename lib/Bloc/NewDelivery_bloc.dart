@@ -1,4 +1,5 @@
 import 'package:app/Model/DeliveriesListModel.dart';
+import 'package:app/Model/GetDeliveryResponse_Model.dart';
 import 'package:app/Model/NewDeliveryModel.dart';
 import 'package:app/Resources/Repository.dart';
 import 'package:rxdart/rxdart.dart';
@@ -16,6 +17,8 @@ class NewDelivery_bloc{
 
   final _alldeliverydataFetcher = PublishSubject<List<DeliveriesListModel>>();
 
+  final _deliverypostdataFetcher = PublishSubject<getdeliverysuccess_model>();
+
 
   Stream<List<NewDeliveryModel>> get allProductData => _productdataFetcher.stream;
 
@@ -23,6 +26,7 @@ class NewDelivery_bloc{
 
   Stream<List<DeliveriesListModel>> get allDelivereiesData => _alldeliverydataFetcher.stream;
 
+  Stream<getdeliverysuccess_model> get deliveypostdata => _deliverypostdataFetcher.stream;
 
   Function(String) get getselecteditemBarcode => selectedItembarcode.sink.add;
   Function(String) get getselecteditemProductName => selectedItemproductname.sink.add;
@@ -71,7 +75,8 @@ class NewDelivery_bloc{
 
   createDeliverypost(String data) async{
     print(data);
-    await _repository.createDeliverypost(data);
+    getdeliverysuccess_model postdata = await _repository.createDeliverypost(data);
+    _deliverypostdataFetcher.sink.add(postdata);
     deleteTable();
   }
 

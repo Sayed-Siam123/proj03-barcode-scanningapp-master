@@ -1081,7 +1081,7 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
       setState(() {
         controller.dispose();
         qr_request = false;
-        count++;
+        //count++;
 //        print(newdelivery.barcode.toString());
 //        //print(newdelivery.productName.toString());
 //        ndelivery_bloc.insertProduct(newdelivery);

@@ -1,4 +1,5 @@
 import 'package:app/Bloc/NewDelivery_bloc.dart';
+import 'package:app/Model/GetDeliveryResponse_Model.dart';
 import 'package:app/Model/NewDeliveryModel.dart';
 import 'package:app/UI/Deliveries.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,6 +23,8 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
   int _quantity = 0;
 
   List quantityofitems = List<int>();
+
+  getdeliverysuccess_model fetched_data;
 
   void _incrament() {
     setState(() {
@@ -369,12 +372,35 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
                     height: 420,
                     width: MediaQuery.of(context).size.width - 20,
                     color: Colors.white,
-                    child: StreamBuilder(
-                        stream: ndelivery_bloc.allProductData1,
-                        builder: (BuildContext context,
-                            AsyncSnapshot<List<NewDeliveryModel>> snapshot) {
-                          return newproductdata(snapshot);
-                        }),
+                    child: status == false
+                        ? StreamBuilder(
+                            stream: ndelivery_bloc.allProductData1,
+                            builder: (BuildContext context,
+                                AsyncSnapshot<List<NewDeliveryModel>>
+                                    snapshot) {
+                              return newproductdata(snapshot);
+                            })
+                        : StreamBuilder<getdeliverysuccess_model>(
+                      stream: ndelivery_bloc.deliveypostdata,
+                      builder: (context, AsyncSnapshot<getdeliverysuccess_model> snapshot) {
+                        if (snapshot.hasData) {
+                          fetched_data = snapshot.data;
+                          //_newData = fetcheddata;
+                          print("Data gula:: ");
+
+                          //TODO::eikhan theke kaj shuru hbe ashar por
+                          //TODO::fetched data new datay copy hoise
+                          //TODO::normally ja fetch hoye ashbe oitai new data list e dhuke jabe
+                          //TODO::filter amake oi newlist theke kora lagbe search korar jonne
+
+                          print(fetched_data.message);
+                        } else if (snapshot.hasError) {
+                          return Text("${snapshot.error}");
+                        }
+
+                        return Center(child: Text(""));
+                      },
+                    ),
                   ),
                 ),
               ),
@@ -535,7 +561,7 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
                             child: pw.BarcodeWidget(
                           height: 70,
                           width: 170,
-                          data: "TP 1000015",
+                          data: fetched_data.id == null? "TP0000": fetched_data.id,
                           barcode: pw.Barcode.code128(),
                         ))),
                     pw.SizedBox(height: 10),
