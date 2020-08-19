@@ -168,6 +168,10 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
                       backgroundColor: Colors.green,
                       onPressed: () {
                         print("dsdsd");
+
+                        ndelivery_bloc.deleteTable();
+                        ndelivery_bloc.getAllDeliveryList();
+
                         Navigator.push(
                             context,
                             MaterialPageRoute(
