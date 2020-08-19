@@ -1021,7 +1021,7 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
         quantity_: 1,
         product_id_: _newData[0].id.toString(),
       );
-
+      count++;
       ndelivery_bloc.insertProduct(newdelivery);
       ndelivery_bloc.dispose();
       ndelivery_bloc.getProduct();
@@ -1038,7 +1038,7 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
         quantity_: 1,
         product_id_: _newData[0].id.toString(),
       );
-
+      count++;
       ndelivery_bloc.insertProduct(newdelivery);
       ndelivery_bloc.dispose();
       ndelivery_bloc.getProduct();
