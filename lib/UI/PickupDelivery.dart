@@ -1,3 +1,4 @@
+import 'package:app/Bloc/PickupDelivery_bloc.dart';
 import 'package:app/Model/NewDeliveryModel.dart';
 import 'package:app/Model/PickupDeliveryModel.dart';
 import 'package:app/Resources/database_helper.dart';
@@ -24,6 +25,7 @@ class _PickupDeliveryState extends State<PickupDelivery> {
   var qrText = "";
   var controller;
   bool qr_request = false;
+  bool status = false;
 
   TextEditingController _searchQueryController = new TextEditingController();
 
@@ -38,7 +40,7 @@ class _PickupDeliveryState extends State<PickupDelivery> {
 
   DatabaseHelper helper = DatabaseHelper();
 
-  PickupDeliveryModel newdelivery;
+  PickupDeliveryModel pickupDelivery;
   PickupDeliveryModel product;
 
   DatabaseHelper databaseHelper = DatabaseHelper();
@@ -58,10 +60,28 @@ class _PickupDeliveryState extends State<PickupDelivery> {
   bool _validate1;
   bool _validate2;
 
+  SinglePickupDataModel fetcheddata;
+
   String errortext1 = "Value Can\'t Be Empty";
   String errortext2 = "Value Can\'t Be Empty";
 
   final DismissDirection _dismissDirection = DismissDirection.horizontal;
+
+
+  onChangedValue(String text){
+    print(text);
+
+      pickupdelivery_bloc.getProductIDfromScan(text.toString());
+      pickupdelivery_bloc.getSingledata();
+      pickupdelivery_bloc.dispose();
+      count++;
+//    pickupDelivery = PickupDeliveryModel(
+//      delivery_id_: "TP1005",
+//    );
+
+    //pickupdelivery_bloc.insertPickupProduct(pickupDelivery);
+
+  }
 
 
   void _onQRViewCreated(QRViewController controller) {
@@ -70,6 +90,9 @@ class _PickupDeliveryState extends State<PickupDelivery> {
       setState(() {
         qrText = scanData;
         _searchQueryController.text = qrText;
+
+        onChangedValue(qrText);
+        controller.dispose();
 
 //        ndelivery_bloc.getselecteditemProductName("ProductsNameHere");
 //        ndelivery_bloc.getselecteditemBarcode(_searchQueryController.text.toString());
@@ -87,9 +110,7 @@ class _PickupDeliveryState extends State<PickupDelivery> {
 //      newdelivery.Quantity = 1;
 
       setState(() {
-        controller.dispose();
         qr_request = false;
-        count++;
         //print(newdelivery.barcode.toString());
         //print(newdelivery.productName.toString());
 //        ndelivery_bloc.insertProduct(newdelivery);
@@ -99,6 +120,23 @@ class _PickupDeliveryState extends State<PickupDelivery> {
     });
   });
   }
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    products.clear();
+    pickupdelivery_bloc.dispose();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    pickupdelivery_bloc.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -111,6 +149,7 @@ class _PickupDeliveryState extends State<PickupDelivery> {
             color: Colors.black54,
           ),
           onPressed: () {
+            pickupdelivery_bloc.dispose();
             return Navigator.push(context,
                 MaterialPageRoute(builder: (context) => HomePage()));
           },
@@ -135,8 +174,27 @@ class _PickupDeliveryState extends State<PickupDelivery> {
           ),
           onPressed: () {
             print("akjsaks");
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => PickupSummary()));
+
+            if(products == null){
+              print("Empty");
+            }
+
+            else{
+
+              for(int i = 0; i< products.length; i++){
+                print(products[i].delivery_id_);
+
+                pickupdelivery_bloc.insertPickupProduct(products[i]);
+                pickupdelivery_bloc.dispose();
+                pickupdelivery_bloc.getAllpickupdatafromDB();
+
+              }
+
+              products.clear();
+
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => PickupSummary()));
+            }
           },
         ),
         backgroundColor: Colors.green,
@@ -151,7 +209,7 @@ class _PickupDeliveryState extends State<PickupDelivery> {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.all(10.0),
-                  child: Text(" Please Input product ID or GTIN to \n add for the delivery \n or you can tap on scan button for quick adding",style: GoogleFonts.exo2(
+                  child: Text(" Please Input product ID to \n add for the pickup \n or you can tap on scan button for quick adding",style: GoogleFonts.exo2(
                   textStyle: TextStyle(
                       fontSize: 12,
                       color: Theme.of(context).accentColor,
@@ -185,7 +243,7 @@ class _PickupDeliveryState extends State<PickupDelivery> {
                   width: 50,
                   child: Center(
                       child: Text(
-                        "33",
+                        count.toString(),
                         style: GoogleFonts.exo2(textStyle: TextStyle(fontSize: 25)),
                       )),
                 ),
@@ -216,6 +274,7 @@ class _PickupDeliveryState extends State<PickupDelivery> {
                     padding: const EdgeInsets.only(left: 8.0),
                     child: TextField(
                         controller: _searchQueryController,
+                        onChanged: onChangedValue,
                         autocorrect: true,
                         style: GoogleFonts.exo2(
                           textStyle: TextStyle(
@@ -242,7 +301,7 @@ class _PickupDeliveryState extends State<PickupDelivery> {
                               fontSize: 16,
                             ),
                           ),
-                          hintText: "Enter or Scan Product GTIN To Add",
+                          hintText: "Enter or Scan Product ID To Add",
                         )),
                   ),
                 ),
@@ -322,8 +381,8 @@ class _PickupDeliveryState extends State<PickupDelivery> {
               },
               child: SingleChildScrollView(
                 child: Container(
-                  height: 110,
-                  width: MediaQuery.of(context).size.width - 30,
+                  height: 80,
+                  width: MediaQuery.of(context).size.width - 20,
                   margin: EdgeInsets.only(top: 10),
                   decoration: BoxDecoration(
                     color: Theme.of(context).backgroundColor,
@@ -350,7 +409,73 @@ class _PickupDeliveryState extends State<PickupDelivery> {
 //                    },
 //                  ),
 
-                child: Center(child: Text("No data")),
+                child: StreamBuilder<SinglePickupDataModel>(
+                  stream: pickupdelivery_bloc.singlePickupData,
+                  builder: (context, AsyncSnapshot<SinglePickupDataModel> snapshot) {
+                    if (snapshot.hasData) {
+                      fetcheddata = snapshot.data;
+                      //_newData = fetcheddata;
+                      print("Data gula:: ");
+
+                      print(fetcheddata.deliveryCode);
+
+                      //TODO:: Here is the problem
+
+
+//                      pickupDelivery = PickupDeliveryModel(
+//                        delivery_id_: fetcheddata.deliveryCode,
+//                        huid_: fetcheddata.huType=="" || fetcheddata.huType==null ? "HU01" : fetcheddata.huType,
+//                        pos_: fetcheddata.position,
+//                        qnty_: fetcheddata.quantity,
+//                      );
+
+//                      products.add(PickupDeliveryModel(
+//                        delivery_id_: fetcheddata.deliveryCode,
+//                        huid_: fetcheddata.huType=="" || fetcheddata.huType==null ? "HU01" : fetcheddata.huType,
+//                        pos_: fetcheddata.position,
+//                        qnty_: fetcheddata.quantity,
+//                      ));
+//
+////                      pickupdelivery_bloc.insertPickupProduct(pickupDelivery);
+////                      pickupdelivery_bloc.dispose();
+////                      pickupdelivery_bloc.getAllpickupdatafromDB();
+//
+//                      return Card(
+//                        margin: EdgeInsets.all(5),
+//                        child: Container(
+//                          height: 20,
+//                          width: MediaQuery
+//                              .of(context)
+//                              .size
+//                              .width - 20,
+//                          decoration: BoxDecoration(
+//                            color: Colors.white,
+//                          ),
+//                          child: ListTile(
+//                            onTap: () {
+//                              print("Asche");
+//                            },
+//                            title: Text(fetcheddata.deliveryCode.toString(), style: GoogleFonts.exo2(
+//                              fontSize: 20,
+//                            ),),
+//                            subtitle: Text(
+//                              fetcheddata.huType=="" || fetcheddata.huType==null ? "HU01" : fetcheddata.huType,
+//                              style: GoogleFonts.exo2(
+//
+//                            ),),
+//                          ),
+//                        ),
+//                      );
+
+                    //return Text("ajskas");
+
+                    } else if (snapshot.hasError) {
+                      return Text("${snapshot.error}");
+                    }
+
+                    return Center(child: Text("No Match"));
+                  },
+                ),
                 ),
               ),
             ),

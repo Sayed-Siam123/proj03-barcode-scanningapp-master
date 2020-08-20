@@ -1,11 +1,12 @@
 import 'package:app/Model/NewDeliveryModel.dart';
 import 'package:app/Model/PickupDeliveryModel.dart';
-import 'package:app/database/database.dart';
-import 'package:app/database/pickupdelivery_db.dart';
+import 'package:app/database/Delivery_database.dart';
+import 'package:app/database/Pickup_database.dart';
+
 
 class ProductDB {
-  final dbProvider = DatabaseProvider.dbProvider;
-  final pickupDeliveryDBProvider = PickupDeliveryProvider.pickupdbProvider;
+  final dbProvider = DatabaseProvider_delivery.dbProvider; //delivery db
+  final pickupDBprovider  = DatabaseProvider_pickup.dbProvider; //pickup db
 
   Future<int> createTodo(NewDeliveryModel productinfo) async {
     print("FORM DBPROVIDER: " + productinfo.barcode.toString());
@@ -77,35 +78,41 @@ class ProductDB {
 
 //Pickup delivery START
 
+  Future<int> createPickup(PickupDeliveryModel productinfo) async {
+    print("FORM DBPROVIDER: " + productinfo.huID.toString());
 
-  Future<List<PickupDeliveryModel>> getAllPickupProduct(
-      {List<String> columns, String query}) async {
-    var db = await pickupDeliveryDBProvider.database;
-    print("Eikhane");
-    var result = await db.query(
-        pickupDeliveryTABLE, orderBy: '$colpickupId ASC');
-
-
-    List<PickupDeliveryModel> products = result.isNotEmpty
-        ? result.map((item) => PickupDeliveryModel.fromMapObject(item)).toList()
-        : [];
-    return products;
-  }
-
-
-  Future<int> createPickupList(PickupDeliveryModel productinfo) async {
-    //print("FORM DBPROVIDER: "+productinfo.barcode.toString());
-
-    var db = await pickupDeliveryDBProvider.database;
+    var db = await pickupDBprovider.database;
     print("ebar eikhane");
     print("1");
     var result = db.insert(
-        pickupDeliveryTABLE, productinfo.toMap(), nullColumnHack: colpickupId);
+        pickupTABLE, productinfo.toMap(), nullColumnHack: Id);
     print("2");
     return result;
+  }
 
+
+  Future<List<PickupDeliveryModel>> getAllPickupProduct(
+      {List<String> columns, String query}) async {
+    var db = await pickupDBprovider.database;
+    print("Eikhane");
+    var result = await db.query(pickupTABLE, orderBy: '$colId ASC');
+
+
+    List<PickupDeliveryModel> pickproducts = result.isNotEmpty
+        ? result.map((item) => PickupDeliveryModel.fromMapObject(item)).toList()
+        : [];
+    return pickproducts;
+  }
+
+  Future deleteAllPickupProducts() async {
+    final db = await pickupDBprovider.database;
+    var result = await db.delete(
+      pickupTABLE,
+    );
+
+    return result;
+  }
 
 //Pickup delivery END
 
-  }
 }

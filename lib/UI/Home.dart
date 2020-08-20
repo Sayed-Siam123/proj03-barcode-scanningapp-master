@@ -84,6 +84,25 @@ class _HomePageState extends State<HomePage> {
                 );
               },
             ),
+
+            ListTile(
+              title: Text('Logout',style: GoogleFonts.exo2(
+                textStyle: TextStyle(
+                  fontSize: 20,
+                  color: Colors.black,
+                ),
+              ),),
+              trailing: new Icon(Icons.power_settings_new),
+              onTap: () {
+                // Update the state of the app.
+                // ...
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MasterData()),
+                );
+              },
+            ),
+
             Divider(),
             Text("Version 1.0.1",style: GoogleFonts.exo2(
               textStyle: TextStyle(

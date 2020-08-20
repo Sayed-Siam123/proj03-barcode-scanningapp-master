@@ -4,6 +4,7 @@ import 'package:app/Model/GetSuccess_Model.dart';
 import 'package:app/Model/ManufactureModel.dart';
 import 'package:app/Model/MaterialPackModel.dart';
 import 'package:app/Model/NewDeliveryModel.dart';
+import 'package:app/Model/PickupDeliveryModel.dart';
 import 'package:app/Model/SubCategory.dart';
 import 'package:app/Model/UserLogin_Success_Model.dart';
 import 'package:app/Model/masterdata_model.dart';
@@ -109,6 +110,17 @@ class Repository {
   Future updateProduct(NewDeliveryModel product) => dbprovider.updateProduct(product);
 
 
+
+
+
+
+
+  Future insertPickupData(PickupDeliveryModel pickupdata) => dbprovider.createPickup(pickupdata);
+
+  Future<List<PickupDeliveryModel>> fetchallpickupData() => dbprovider.getAllPickupProduct();
+
+  Future deleteAllPickupProductsTable() => dbprovider.deleteAllPickupProducts();
+
 //TODO:: END
 
   Future<List<DeliveriesListModel>> fetchDelivereisData() => apiprovider.fetchDelivereisData();
@@ -117,6 +129,9 @@ class Repository {
 
 
   Future createDeliverypost(String data) => apiprovider.createDeliverypost(data);
+
+
+  Future<SinglePickupDataModel> fetchSinglePickupData(String deliveryID) => apiprovider.fetchsinglePickupdata(deliveryID);
 
 
 }

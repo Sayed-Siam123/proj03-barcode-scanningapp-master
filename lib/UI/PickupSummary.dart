@@ -1,6 +1,7 @@
 import 'package:app/Bloc/NewDelivery_bloc.dart';
-import 'package:app/Bloc/PickupDelivey_bloc.dart';
+import 'package:app/Bloc/PickupDelivery_bloc.dart';
 import 'package:app/Model/DeliveriesListModel.dart';
+import 'package:app/Model/PickupDeliveryModel.dart';
 import 'package:app/UI/Home.dart';
 import 'package:app/UI/NewDeliveryPage.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,8 +17,10 @@ class _PickupSummaryState extends State<PickupSummary> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   String finalDate = '';
-  List<PickupListModel> fetcheddata = [];
+  List<PickupDeliveryModel> fetcheddata = [];
 
+
+  bool status = false;
 
   @override
   void initState() {
@@ -25,14 +28,14 @@ class _PickupSummaryState extends State<PickupSummary> {
     super.initState();
     getCurrentDate();
     print(finalDate);
-    pdelivery_bloc.getAllPickupList();
+    pickupdelivery_bloc.getAllpickupdatafromDB();
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    pdelivery_bloc.dispose();
+    pickupdelivery_bloc.dispose();
   }
 
   @override
@@ -48,6 +51,7 @@ class _PickupSummaryState extends State<PickupSummary> {
           onPressed: () {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => HomePage()));
+
           },
         ),
         title: Text(
@@ -71,10 +75,10 @@ class _PickupSummaryState extends State<PickupSummary> {
           color: Theme
               .of(context)
               .backgroundColor,
-          child: StreamBuilder<List<PickupListModel>>(
-            stream: pdelivery_bloc.allPickupData,
+          child: status == false ? StreamBuilder<List<PickupDeliveryModel>>(
+            stream: pickupdelivery_bloc.allPickupProductData1,
             builder: (context,
-                AsyncSnapshot<List<PickupListModel>> snapshot) {
+                AsyncSnapshot<List<PickupDeliveryModel>> snapshot) {
               if (snapshot.hasData) {
                 fetcheddata = snapshot.data;
                 //_newData = fetcheddata;
@@ -88,17 +92,49 @@ class _PickupSummaryState extends State<PickupSummary> {
 
               return Center(child: CircularProgressIndicator());
             },
-          ),
+          ) : Center(child: Text("No Data")),
         ),
       ),
 
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: status == false ? FloatingActionButton(
         onPressed: () {
           print("jabs");
           // Add your onPressed code here!
+
+          String str = '';
+
+          for(int i = 0; i<fetcheddata.length;i++){
+            str += "1"+","+fetcheddata[i].delivery_id_.toString()+"\$ ";
+          }
+
+          print(str);
+
+          setState(() {
+            status = true;
+          });
+
+          pickupdelivery_bloc.deletePickupTable();
+          pickupdelivery_bloc.dispose();
+
         },
         child: Icon(
           Icons.done,
+          size: 50,
+        ),
+        backgroundColor: Colors.green,
+      ) : FloatingActionButton(
+        onPressed: () {
+          print("jabs");
+          // Add your onPressed code here!
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => HomePage()));
+
+          pickupdelivery_bloc.deletePickupTable();
+          pickupdelivery_bloc.dispose();
+
+        },
+        child: Icon(
+          Icons.arrow_back,
           size: 50,
         ),
         backgroundColor: Colors.green,
@@ -129,10 +165,10 @@ class _PickupSummaryState extends State<PickupSummary> {
                       onTap: () {
                         print("Asche");
                       },
-                      title: Text(data[index].deliveryId.toString(), style: GoogleFonts.exo2(
+                      title: Text(data[index].delivery_id_.toString(), style: GoogleFonts.exo2(
                         fontSize: 20,
                       ),),
-                      subtitle: Text(data[index].huTypeID.toString(), style: GoogleFonts.exo2(
+                      subtitle: Text(data[index].huid_.toString(), style: GoogleFonts.exo2(
 
                       ),),
                       trailing: Container(
@@ -151,7 +187,7 @@ class _PickupSummaryState extends State<PickupSummary> {
                                       .accentColor,
                                 ),
                               ),
-                              Text(data[index].position.toString()+"/"+data[index].quantity.toString(),
+                              Text(data[index].pos_.toString()+"/"+data[index].qnty_.toString(),
                                 style: GoogleFonts.exo2(
                                   fontSize: 15,
                                   color: Theme

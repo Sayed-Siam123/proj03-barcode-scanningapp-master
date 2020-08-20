@@ -5,6 +5,7 @@ import 'package:app/Model/DeliveriesListModel.dart';
 import 'package:app/Model/GetDeliveryResponse_Model.dart';
 import 'package:app/Model/ManufactureModel.dart';
 import 'package:app/Model/MaterialPackModel.dart';
+import 'package:app/Model/PickupDeliveryModel.dart';
 import 'package:app/Model/SubCategory.dart';
 import 'package:app/Model/GetSuccess_Model.dart';
 import 'package:app/Model/UserLogin_Success_Model.dart';
@@ -668,6 +669,27 @@ class ApiProvider {
 
       debugPrint("From create:: "+json.decode(response.body).toString());
       return getdeliverysuccess_model.fromJson(json.decode(response.body));
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load album');
+    }
+  }
+
+  Future<SinglePickupDataModel> fetchsinglePickupdata(deliveryID) async{
+
+    getIP();
+    getPort();
+    await new Future.delayed(const Duration(milliseconds: 1000));
+
+    final response = await client.get(initial+serverIP+":"+serverPort+"/api/CreateDelivery/GetPickupData/"+deliveryID);
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+
+      debugPrint("From singleGet Class:: "+json.decode(response.body).toString());
+      return SinglePickupDataModel.fromJson(json.decode(response.body));
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.

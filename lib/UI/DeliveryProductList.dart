@@ -18,13 +18,15 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   List<NewDeliveryModel> _product;
 
+  String finalDate = '';
+
   bool status = false;
 
   int _quantity = 0;
 
   List quantityofitems = List<int>();
 
-  getdeliverysuccess_model fetched_data;
+  getdeliverysuccess_model fetched_data = new getdeliverysuccess_model();
 
   void _incrament() {
     setState(() {
@@ -46,6 +48,8 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    getCurrentDate();
+    print(finalDate);
     ndelivery_bloc.getallProduct();
   }
 
@@ -561,7 +565,7 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
                             child: pw.BarcodeWidget(
                           height: 70,
                           width: 170,
-                          data: fetched_data.id == null? "TP0000": fetched_data.id,
+                          data: fetched_data.barcode == null? "TP0000": fetched_data.barcode,
                           barcode: pw.Barcode.code128(),
                         ))),
                     pw.SizedBox(height: 10),
@@ -596,7 +600,7 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
                               mainAxisAlignment:
                                   pw.MainAxisAlignment.spaceEvenly,
                               children: <pw.Widget>[
-                                pw.Text("26.05.2020",
+                                pw.Text(finalDate.toString(),
                                     style: pw.TextStyle(
                                       font: pw.Font.helveticaBold(),
                                       fontSize: 15,
@@ -606,7 +610,7 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
                                       font: pw.Font.helveticaBold(),
                                       fontSize: 15,
                                     )),
-                                pw.Text("4/201",
+                                pw.Text(fetched_data.position+"/"+"201",
                                     style: pw.TextStyle(
                                       font: pw.Font.helveticaBold(),
                                       fontSize: 15,
@@ -621,5 +625,17 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
         return doc.save();
       },
     );
+  }
+
+  getCurrentDate() {
+    var date = new DateTime.now().toString();
+
+    var dateParse = DateTime.parse(date);
+
+    var formattedDate = "${dateParse.day}.${dateParse.month}.${dateParse.year}";
+
+    setState(() {
+      finalDate = formattedDate.toString();
+    });
   }
 }

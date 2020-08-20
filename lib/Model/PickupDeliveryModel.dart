@@ -1,57 +1,82 @@
 class PickupDeliveryModel {
   int id_;
-  String date_;
-  String store_;
-  int pos_;
-  int qnty_;
+  String delivery_id_;
+  String pos_;
+  String qnty_;
+  String huid_;
+
 
   //String note = null;
 
-  PickupDeliveryModel({this.date_, this.store_, this.pos_, this.qnty_});
+  PickupDeliveryModel({this.delivery_id_, this.huid_, this.pos_, this.qnty_});
 
-  PickupDeliveryModel.withID(
-      {this.id_, this.date_, this.store_, this.pos_, this.qnty_});
+  PickupDeliveryModel.withID({this.id_, this.delivery_id_, this.huid_, this.pos_, this.qnty_});
 
   int get id => this.id;
 
-  String get date => this.date_;
+  String get deliveryID => this.delivery_id_;
 
-  String get store => this.store_;
+  String get huID => this.huid_;
 
-  int get pos => this.pos_;
+  String get pos => this.pos_;
 
-  int get qty => this.qnty_;
+  String get qty => this.qnty_;
 
-  set Date(String date) {
-    this.date_ = date;
+  set DeliveryID(String id) {
+    this.delivery_id_ = id;
   }
 
-  set Store(String store) {
-    this.store_ = store;
+  set HuID(String id) {
+    this.huid_ = id;
   }
 
-  set Pos(int pos) {
+  set Pos(String pos) {
     this.pos_ = pos;
   }
 
-  set Quantity(int quantity) {
+  set Quantity(String quantity) {
     this.qnty_ = quantity;
   }
 
   // ignore: missing_return
   Map<String, dynamic> toMap() => {
-        "date": this.date_,
-        "store": this.store_,
-        "pos": this.pos_,
-        "qnty": this.qnty_,
+        "delivery_id": this.delivery_id_,
+        "handling_unit": this.huid_,
+        "position": this.pos_,
+        "quantity": this.qnty_,
       };
 
   factory PickupDeliveryModel.fromMapObject(Map<String, dynamic> data) =>
       PickupDeliveryModel.withID(
         id_: data['id'],
-        date_: data['date'],
-        store_: data['store'],
-        pos_: data['pos'],
-        qnty_: data['qnty'],
+        delivery_id_: data['delivery_id'],
+        huid_: data['handling_unit'],
+        pos_: data['position'],
+        qnty_: data['quantity'],
       );
+}
+
+class SinglePickupDataModel{
+
+  String position;
+  String deliveryCode,huType,quantity;
+
+
+  SinglePickupDataModel({this.position,this.huType,this.deliveryCode,this.quantity});
+
+
+
+
+
+  factory SinglePickupDataModel.fromJson(Map<dynamic, dynamic> json) {
+    return SinglePickupDataModel(
+
+      position: json['id'],
+      deliveryCode: json['deliveryCode'],
+      huType: json['huType'],
+      quantity: json['quantity'],
+
+    );
+  }
+
 }
