@@ -74,7 +74,11 @@ class _PickupDeliveryState extends State<PickupDelivery> {
       pickupdelivery_bloc.getProductIDfromScan(text.toString());
       pickupdelivery_bloc.getSingledata();
       pickupdelivery_bloc.dispose();
-      count++;
+
+      setState(() {
+        count++;
+      });
+
 //    pickupDelivery = PickupDeliveryModel(
 //      delivery_id_: "TP1005",
 //    );
