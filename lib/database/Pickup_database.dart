@@ -5,16 +5,16 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
-final pickupDeliveryTABLE = 'pickupDeliveryTable';
-String colpickupId = 'id';
-String colProd_store_name = 'store';
-String colProd_postition = 'pos';
-String colProd_quantity = 'qnty';
-String colProd_date = 'date';
+final pickupTABLE = 'pickupTable';
+String Id = 'id';
+String Prod_quantity = 'quantity';
+String Prod_position = 'position';
+String Delivery_id = 'delivery_id';
+String Prod_handling_unit = 'handling_unit';
 
 
-class PickupDeliveryProvider {
-  static final PickupDeliveryProvider pickupdbProvider = PickupDeliveryProvider();
+class DatabaseProvider_pickup {
+  static final DatabaseProvider_pickup dbProvider = DatabaseProvider_pickup();
 
   Database _database;
 
@@ -27,9 +27,9 @@ class PickupDeliveryProvider {
   createDatabase() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     //"ReactiveTodo.db is our database instance name
-    String path = join(documentsDirectory.path, "Product.db");
+    String path = join(documentsDirectory.path, "Pickup.db");
 
-    print("DB PATH IS "+path);
+    print("Pickup DB PATH IS "+path);
 
     var database = await openDatabase(path,
         version: 1, onCreate: initDB, onUpgrade: onUpgrade);
@@ -42,7 +42,7 @@ class PickupDeliveryProvider {
   }
 
   void initDB(Database database, int version) async {
-    await database.execute('CREATE TABLE $pickupDeliveryTABLE($colpickupId INTEGER PRIMARY KEY AUTOINCREMENT, $colProd_store_name TEXT, '
-        '$colProd_postition TEXT, $colProd_quantity INTEGER, $colProd_date TEXT)');
+    await database.execute('CREATE TABLE $pickupTABLE($Id INTEGER PRIMARY KEY AUTOINCREMENT, $Delivery_id TEXT, '
+        '$Prod_position TEXT, $Prod_quantity TEXT, $Prod_handling_unit TEXT)');
   }
 }
