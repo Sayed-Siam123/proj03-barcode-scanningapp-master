@@ -429,43 +429,43 @@ class _PickupDeliveryState extends State<PickupDelivery> {
 //                        qnty_: fetcheddata.quantity,
 //                      );
 
-//                      products.add(PickupDeliveryModel(
-//                        delivery_id_: fetcheddata.deliveryCode,
-//                        huid_: fetcheddata.huType=="" || fetcheddata.huType==null ? "HU01" : fetcheddata.huType,
-//                        pos_: fetcheddata.position,
-//                        qnty_: fetcheddata.quantity,
-//                      ));
+                      products.add(PickupDeliveryModel(
+                        delivery_id_: fetcheddata.deliveryCode,
+                        huid_: fetcheddata.huType=="" || fetcheddata.huType==null ? "HU01" : fetcheddata.huType,
+                        pos_: fetcheddata.position,
+                        qnty_: fetcheddata.quantity,
+                      ));
 //
 ////                      pickupdelivery_bloc.insertPickupProduct(pickupDelivery);
 ////                      pickupdelivery_bloc.dispose();
 ////                      pickupdelivery_bloc.getAllpickupdatafromDB();
 //
-//                      return Card(
-//                        margin: EdgeInsets.all(5),
-//                        child: Container(
-//                          height: 20,
-//                          width: MediaQuery
-//                              .of(context)
-//                              .size
-//                              .width - 20,
-//                          decoration: BoxDecoration(
-//                            color: Colors.white,
-//                          ),
-//                          child: ListTile(
-//                            onTap: () {
-//                              print("Asche");
-//                            },
-//                            title: Text(fetcheddata.deliveryCode.toString(), style: GoogleFonts.exo2(
-//                              fontSize: 20,
-//                            ),),
-//                            subtitle: Text(
-//                              fetcheddata.huType=="" || fetcheddata.huType==null ? "HU01" : fetcheddata.huType,
-//                              style: GoogleFonts.exo2(
-//
-//                            ),),
-//                          ),
-//                        ),
-//                      );
+                      return Card(
+                        margin: EdgeInsets.all(5),
+                        child: Container(
+                          height: 20,
+                          width: MediaQuery
+                              .of(context)
+                              .size
+                              .width - 20,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                          ),
+                          child: ListTile(
+                            onTap: () {
+                              print("Asche");
+                            },
+                            title: Text(fetcheddata.deliveryCode.toString(), style: GoogleFonts.exo2(
+                              fontSize: 20,
+                            ),),
+                            subtitle: Text(
+                              fetcheddata.huType=="" || fetcheddata.huType==null ? "HU01" : fetcheddata.huType,
+                              style: GoogleFonts.exo2(
+
+                            ),),
+                          ),
+                        ),
+                      );
 
                     //return Text("ajskas");
 

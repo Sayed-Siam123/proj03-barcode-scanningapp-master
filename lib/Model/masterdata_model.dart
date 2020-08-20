@@ -76,3 +76,107 @@ class SingleMasterDataModel{
   }
 
 }
+
+class MasterdataDBModel {
+  String id_;
+  String product_id,manufacturerName,gtin,productId,productName,subCategoryName,categoryName,productDescription,referenceNo,listPrice,productWeight,packagingUnit,productPicture;
+
+  MasterdataDBModel({this.gtin,this.categoryName,this.listPrice,this.manufacturerName,this.packagingUnit,this.productDescription,this.productId,this.productPicture,
+    this.productName,this.productWeight,this.referenceNo,this.subCategoryName,this.product_id});
+
+  MasterdataDBModel.withID({this.id_, this.gtin,this.categoryName,this.listPrice,this.manufacturerName,this.packagingUnit,this.productDescription,this.productId,this.productPicture,
+    this.productName,this.productWeight,this.referenceNo,this.subCategoryName,this.product_id});
+
+
+  String get id => this.id_;
+
+  String get getmanufacturerName => this.manufacturerName;
+  String get getGtin => this.gtin;
+  String get getproductId => this.product_id;
+  String get getproductName => this.productName;
+  String get getsubCategoryName => this.subCategoryName;
+  String get getcategoryName => this.categoryName;
+  String get getproductDescription => this.productDescription;
+  String get getreferenceNo => this.referenceNo;
+  String get getlistPrice => this.listPrice;
+  String get getproductWeight => this.productWeight;
+  String get getpackagingUnit => this.packagingUnit;
+  String get getproductPicture => this.productPicture;
+
+
+
+  set setmanufacturerName(String manufac_name) {
+    this.manufacturerName = manufac_name;
+  }
+
+  set setGtin(String gtin) {
+    this.gtin = gtin;
+  }
+
+  set setproductId(String productId) {
+    this.productId = productId;
+  }
+
+  set setproductName(String productName) {
+    this.productName = productName;
+  }
+
+  set setsubCategoryName(String subCategoryName) {
+    this.subCategoryName = subCategoryName;
+  }
+
+  set setcategoryName(String categoryName) {
+    this.categoryName = categoryName;
+  }
+
+  set setproductDescription(String productDescription) {
+    this.productDescription = productDescription;
+  }
+
+  set setreferenceNo(String referenceNo) {
+    this.referenceNo = referenceNo;
+  }
+
+  set setlistPrice(String listPrice) {
+    this.listPrice = listPrice;
+  }
+
+  set setproductWeight(String productWeight) {
+    this.productWeight = productWeight;
+  }
+
+  set setpackagingUnit(String packagingUnit) {
+    this.packagingUnit = packagingUnit;
+  }
+
+  set setproductPicture(String productPicture) {
+    this.productPicture = productPicture;
+  }
+
+
+
+  // ignore: missing_return
+  Map<String, dynamic> toMap() => {
+
+//    "product_name" : this.product_name_,
+//    "barcode" : this.barcode_,
+//    "quantity" : this.quantity_,
+//    "handling_unit" : this.handling_unit,
+//    "note" : this.note,
+//    "product_id" : this.product_id_,
+
+  };
+
+
+  factory MasterdataDBModel.fromMapObject(Map<String, dynamic> data) => MasterdataDBModel.withID(
+//      id_ : data['id'],
+//      barcode_ : data['barcode'],
+//      product_name_ : data['product_name'],
+//      quantity_ : data['quantity'],
+//      handling_unit: data['handling_unit'],
+//      note: data['note'],
+//      product_id_: data['product_id']
+
+  );
+
+}
