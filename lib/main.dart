@@ -19,7 +19,9 @@ import 'package:flutter/gestures.dart';
 import 'dart:async';
 //import 'package:barcode_scan/barcode_scan.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:splashscreen/splashscreen.dart';
 //importing master data
+import 'Resources/SharedPrefer.dart';
 import 'Widgets/MasterdataView.dart';
 import 'UI/Login.dart';
 import 'UI/ProductDetails.dart';
@@ -36,17 +38,19 @@ Future<void> main() async {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
 
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   Color _background = new HexColor("#F2F2F3");
+
   Color _font = new HexColor("#4F4F4F");
+
   Color _floatbuttoncolor = new HexColor("#828282");
 
-
-
-
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -70,7 +74,64 @@ class MyApp extends StatelessWidget {
         '/product_details': (BuildContext context) => new ProductDetailsPage(),
       },
 
-      home: new LoginPage(),
+      home: Splash(),
+    );
+  }
+
+}
+
+class Splash extends StatefulWidget {
+  @override
+  _SplashState createState() => _SplashState();
+}
+
+class _SplashState extends State<Splash> {
+
+  SessionManager prefs = SessionManager();
+
+  String loginKey="loginKey";
+
+  String loginStatus = '';
+
+  void getLogin() async {
+
+    Future<String> serverip = prefs.getData(loginKey);
+    serverip.then((data) async{
+      print('login status pabo');
+      print("login status " + data.toString());
+
+      setState(() {
+        loginStatus = data.toString();
+      });
+      print(loginStatus.toString());
+
+//      Future.delayed(const Duration(milliseconds: 1000), () {
+//
+//      });
+    },onError: (e) {
+      print(e);
+    });
+
+  }
+
+  @override
+  void initState(){
+    // TODO: implement initState
+    super.initState();
+    getLogin();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SplashScreen(
+      backgroundColor: Theme.of(context).backgroundColor,
+      seconds: 6,
+      navigateAfterSeconds: loginStatus == "false" ? LoginPage() : HomePage(),
+      //title: new Text('IDENTIT',textScaleFactor: 2,),
+      image: new Image.asset('assets/images/logo.jpeg'),
+      loadingText: Text("Loading"),
+      photoSize: 150.0,
+      loaderColor: Colors.black54,
     );
   }
 }

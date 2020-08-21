@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:app/Bloc/user_bloc.dart';
 import 'package:app/Model/GetSuccess_Model.dart';
 import 'package:app/Model/UserLogin_Success_Model.dart';
+import 'package:app/Resources/SharedPrefer.dart';
 import 'package:app/UI/Home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,18 +19,27 @@ class LoginWidget extends StatefulWidget {
 class _LoginWidgetState extends State<LoginWidget> {
   @override
 
-  bool loginPress = false ;
+  SessionManager prefs =  SessionManager();
+
+  String loginKey="loginKey";
+
+  bool loginPress = false;
 
   // Getting value from TextField widget.
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
+  bool _validate1;
+  bool _validate2;
+
+  String errortext1 = "*username can\'t be empty";
+  String errortext2 = "*password can\'t be empty";
 
 
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child: Center(
+        child: loginPress == false ? Center(
           child: Column(
               children: <Widget>[
 
@@ -39,7 +49,9 @@ class _LoginWidgetState extends State<LoginWidget> {
 
                       style: GoogleFonts.exo2(
                         fontSize: 35,
-                        textStyle: TextStyle(color: Theme.of(context).accentColor),
+                        textStyle: TextStyle(color: Theme
+                            .of(context)
+                            .accentColor),
                       ),
 
 
@@ -51,7 +63,9 @@ class _LoginWidgetState extends State<LoginWidget> {
                   child: new Text("Please fill out the below fields to login",
                     style: GoogleFonts.exo2(
                       fontSize: 17,
-                      textStyle: TextStyle(color: Theme.of(context).accentColor),
+                      textStyle: TextStyle(color: Theme
+                          .of(context)
+                          .accentColor),
                     ),),
 
                 ),
@@ -63,9 +77,12 @@ class _LoginWidgetState extends State<LoginWidget> {
 
 
                 Container(
-                  height: 58,
+                  height: 70,
                   width:
-                  MediaQuery.of(context).size.width - 70,
+                  MediaQuery
+                      .of(context)
+                      .size
+                      .width - 70,
                   alignment: Alignment.center,
                   margin: const EdgeInsets.only(
                       top: 20, left: 13, right: 10),
@@ -84,7 +101,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 8.0),
                     child: TextField(
-                      controller: emailController,
+                        controller: emailController,
                         autocorrect: true,
                         style: GoogleFonts.exo2(
                           textStyle: TextStyle(
@@ -107,6 +124,8 @@ class _LoginWidgetState extends State<LoginWidget> {
                               fontSize: 16,
                             ),
                           ),
+                          errorText:
+                          _validate1 == false ? errortext1 : null,
                           prefixIcon: Icon(
                               Icons.account_circle),
                           hintText: "Enter Your User ID Here",
@@ -115,11 +134,13 @@ class _LoginWidgetState extends State<LoginWidget> {
                 ),
 
 
-
                 Container(
-                  height: 58,
+                  height: 70,
                   width:
-                  MediaQuery.of(context).size.width - 70,
+                  MediaQuery
+                      .of(context)
+                      .size
+                      .width - 70,
                   alignment: Alignment.center,
                   margin: const EdgeInsets.only(
                       top: 20, left: 13, right: 10),
@@ -138,7 +159,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 8.0),
                     child: TextField(
-                      controller: passwordController,
+                        controller: passwordController,
                         autocorrect: true,
                         style: GoogleFonts.exo2(
                           textStyle: TextStyle(
@@ -162,6 +183,8 @@ class _LoginWidgetState extends State<LoginWidget> {
                               fontSize: 16,
                             ),
                           ),
+                          errorText:
+                          _validate2 == false ? errortext2 : null,
                           prefixIcon: Icon(
                               Icons.lock),
                           hintText: "Enter Your password Here",
@@ -169,39 +192,77 @@ class _LoginWidgetState extends State<LoginWidget> {
                   ),
                 ),
 
-                 SizedBox(height: 40,),
+                SizedBox(height: 40,),
 
                 Container(
                   height: 50,
-                  width: MediaQuery.of(context).size.width-80,
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width - 80,
                   child: FlatButton(
 
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
+                        borderRadius: BorderRadius.circular(18.0),
                       ),
                       color: Colors.green,
                       textColor: Colors.white,
 
                       onPressed: () {
+                        if (emailController.text.isEmpty &&
+                            emailController.text == "") {
+                          print("KHali");
 
-//                        print(emailController.text);
-//                        print(passwordController.text);
-//
+                          setState(() {
+                            _validate2 = true;
+                            _validate1 = false;
+                          });
+
+                          //TODO:: Toast hobe ekta
+                        } else if (passwordController.text.isEmpty &&
+                            passwordController.text == "") {
+                          print("eitao KHali");
+
+                          setState(() {
+                            _validate1 = true;
+                            _validate2 = false;
+                          });
+
+                          //TODO:: Toast hobe ekta
+                        } else {
+                          setState(() {
+                            _validate1 = true;
+                            _validate2 = true;
+                          });
+                        }
+                        print("Vora");
+
+                        print(emailController.text);
+                        print(passwordController.text);
+
+
+
 //                        userbloc.getemail(emailController.text);
 //                        userbloc.getpass(passwordController.text);
 //
 //                        userbloc.userlogin();
 //
 //
-//                        setState(() {
-//                          loginPress = true;
-//                        });
-//
-//                        print(loginPress);
 
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => HomePage()),);
+                        if(_validate1 && _validate2){
+                          setState(() {
+                            loginPress = true;
+                          });
+
+                          print(loginPress);
+
+                          prefs.setData(loginKey, "true");
+                        }
+
+
+//                      Navigator.push(
+//                          context,
+//                          MaterialPageRoute(builder: (context) => HomePage()),);
                       },
 
                       child: Text(
@@ -241,6 +302,87 @@ class _LoginWidgetState extends State<LoginWidget> {
 
               ]
           ),
+        ) : Column(
+          children: <Widget>[
+            Center(
+              child: Text("Login Pressed"),
+            ),
+            SizedBox(height: 10,),
+
+            Container(
+              height: 50,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width - 80,
+              child: FlatButton(
+
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18.0),
+                  ),
+                  color: Colors.green,
+                  textColor: Colors.white,
+
+                  onPressed: () {
+
+                    setState(() {
+                      loginPress = false;
+                    });
+
+                    print(loginPress);
+
+
+
+//                      Navigator.push(
+//                          context,
+//                          MaterialPageRoute(builder: (context) => HomePage()),);
+                  },
+
+                  child: Text(
+                    "Login Back".toUpperCase(),
+                    style: GoogleFonts.exo2(
+                      fontSize: 17,
+                      textStyle: TextStyle(color: Colors.white),
+                    ),
+                  )
+              ),
+            ),
+
+            SizedBox(height: 10,),
+
+            Container(
+              height: 50,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width - 80,
+              child: FlatButton(
+
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18.0),
+                  ),
+                  color: Colors.green,
+                  textColor: Colors.white,
+
+                  onPressed: () {
+
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => HomePage()),);
+                  },
+
+                  child: Text(
+                    "Home".toUpperCase(),
+                    style: GoogleFonts.exo2(
+                      fontSize: 17,
+                      textStyle: TextStyle(color: Colors.white),
+                    ),
+                  )
+              ),
+            ),
+
+
+          ],
         ),
       ),
     );

@@ -15,4 +15,11 @@ class SessionManager {
     data = pref.getString(key) ?? null;
     return data;
   }
+
+
+  Future<void> removeData(String key) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove(key);
+  }
+
 }

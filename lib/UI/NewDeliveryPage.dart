@@ -1008,7 +1008,7 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
     }
 
     _fetcheddata.forEach((userDetail) {
-      if (userDetail.gtin.toLowerCase().contains(text.toLowerCase()))
+      if (userDetail.gtin.toLowerCase().contains(text.toLowerCase()) || userDetail.id.toLowerCase().contains(text.toLowerCase()))
         _newData.add(userDetail);
     });
 

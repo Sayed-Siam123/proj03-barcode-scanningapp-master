@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:app/Resources/SharedPrefer.dart';
 import 'package:app/UI/MasterData.dart';
 import 'package:app/UI/Settings.dart';
 import 'package:app/Widgets/HomeWidget.dart';
@@ -9,12 +10,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'Login.dart';
+
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+
+  SessionManager prefs = SessionManager();
+
+  String loginKey="loginKey";
+
+  void logout() async {
+
+    prefs.setData(loginKey,"false");
+
+  }
+
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   static const snackBarDuration = Duration(seconds: 3);
   final snackBar = SnackBar(
@@ -96,9 +110,13 @@ class _HomePageState extends State<HomePage> {
               onTap: () {
                 // Update the state of the app.
                 // ...
+
+
+                logout();
+
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => MasterData()),
+                  MaterialPageRoute(builder: (context) => LoginPage()),
                 );
               },
             ),

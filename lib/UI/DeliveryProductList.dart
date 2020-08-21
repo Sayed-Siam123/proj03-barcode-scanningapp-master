@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app/Bloc/NewDelivery_bloc.dart';
 import 'package:app/Model/GetDeliveryResponse_Model.dart';
 import 'package:app/Model/NewDeliveryModel.dart';
@@ -8,6 +10,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
+import 'package:responsive_grid/responsive_grid.dart';
 
 class DeliveryProductList extends StatefulWidget {
   @override
@@ -22,35 +25,61 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
 
   bool status = false;
 
+  String position_ = null;
+
   int _quantity = 0;
+
+  int totalQuantity = 0;
+  bool countStatus = false;
 
   List quantityofitems = List<int>();
 
   getdeliverysuccess_model fetched_data = new getdeliverysuccess_model();
+  getdeliverysuccess_model another_fetched_data = new getdeliverysuccess_model();
 
-  void _incrament() {
-    setState(() {
-      _quantity++;
-    });
-    print(_quantity.toString());
-  }
-
-  void _decrement() {
-    setState(() {
-      if (_quantity != 0) {
-        _quantity--;
-      }
-    });
-    print(_quantity.toString());
-  }
+//  void _incrament() {
+//    setState(() {
+//      _quantity++;
+//    });
+//    print(_quantity.toString());
+//  }
+//
+//  void _decrement() {
+//    setState(() {
+//      if (_quantity != 0) {
+//        _quantity--;
+//      }
+//    });
+//    print(_quantity.toString());
+//  }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    quantityofitems.clear();
     getCurrentDate();
     print(finalDate);
     ndelivery_bloc.getallProduct();
+    Timer(Duration(seconds: 3), () {
+      getTotal();
+    });
+  }
+
+  getTotal(){
+
+    if(countStatus == false){
+      for(int i = 0; i<quantityofitems.length;i++){
+        setState(() {
+          totalQuantity += quantityofitems[i];
+        });
+      }
+      print("length:: "+quantityofitems.length.toString());
+      countStatus = true;
+    }
+
+
+    print(totalQuantity);
   }
 
   @override
@@ -91,6 +120,7 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
                       backgroundColor: Colors.grey.shade700,
                       onPressed: () async {
                         print("Inactive");
+
                       },
                       child: Icon(
                         Icons.print,
@@ -160,6 +190,17 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
                         setState(() {
                           status = true;
                         });
+
+                        Timer(Duration(seconds: 3), () {
+                          setState(() {
+                            another_fetched_data.position = fetched_data.position;
+                            another_fetched_data.code = fetched_data.code;
+                            another_fetched_data.message = fetched_data.message;
+
+                          });
+                        });
+
+                        print("From ANother : "+another_fetched_data.position.toString());
                       },
                       child: Icon(
                         Icons.done,
@@ -210,160 +251,169 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
                   height: 240,
                   width: MediaQuery.of(context).size.width - 20,
                   color: Colors.white,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.only(left: 30, top: 18),
-                        width: 100,
-                        height: 210,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                              "Delivery ID",
-                              style: GoogleFonts.exo2(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 8,
-                            ),
-                            Text(
-                              "Pallet",
-                              style: GoogleFonts.exo2(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 40,
-                            ),
-                            Column(
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    child: ResponsiveGridRow(
+                      children: [
+                        ResponsiveGridCol(
+                          xs: 5,
+                          md: 3,
+                          child: Container(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  "Position(Total)",
+                                  "Delivery ID",
                                   style: GoogleFonts.exo2(
                                     color: Colors.black,
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
-                                Container(
-                                  margin: EdgeInsets.only(
-                                    left: 0,
-                                    top: 10,
-                                  ),
-                                  height: 70,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.white,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.0),
-                                        spreadRadius: 0,
-                                        blurRadius: 0,
-                                        offset: Offset(0, 0),
-                                      ),
-                                    ],
-                                  ),
-                                  width: 70,
-                                  child: Center(
-                                      child: Text(
-                                    "4",
-                                    style: GoogleFonts.exo2(
-                                        textStyle: TextStyle(fontSize: 30)),
-                                  )),
-                                ),
                                 SizedBox(
-                                  height: 10,
+                                  height: 8,
                                 ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(top: 20, left: 40),
-                        width: 150,
-                        height: 210,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                              "TP 1000015",
-                              style: GoogleFonts.exo2(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 15,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 8,
-                            ),
-                            Text(
-                              "Collapsible boxes with lids",
-                              style: GoogleFonts.exo2(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 15,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
-                            ),
-                            SizedBox(
-                              height: 40,
-                            ),
-                            Column(
-                              children: <Widget>[
                                 Text(
-                                  "Quantity(Total)",
+                                  "Pallet",
                                   style: GoogleFonts.exo2(
                                     color: Colors.black,
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
-                                Container(
-                                  margin: EdgeInsets.only(
-                                    left: 0,
-                                    top: 10,
-                                  ),
-                                  height: 70,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.white,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.0),
-                                        spreadRadius: 0,
-                                        blurRadius: 0,
-                                        offset: Offset(0, 0),
-                                      ),
-                                    ],
-                                  ),
-                                  width: 70,
-                                  child: Center(
-                                      child: Text(
-                                    "17",
-                                    style: GoogleFonts.exo2(
-                                        textStyle: TextStyle(fontSize: 30)),
-                                  )),
-                                ),
                                 SizedBox(
-                                  height: 10,
+                                  height: 40,
+                                ),
+                                Column(
+                                  children: <Widget>[
+                                    Text(
+                                      "Position(Total)",
+                                      style: GoogleFonts.exo2(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.only(
+                                        left: 0,
+                                        top: 10,
+                                      ),
+                                      height: 70,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.white,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.0),
+                                            spreadRadius: 0,
+                                            blurRadius: 0,
+                                            offset: Offset(0, 0),
+                                          ),
+                                        ],
+                                      ),
+                                      width: 70,
+                                      child: Center(
+                                          child: Text(
+                                            another_fetched_data.position==null? "" : another_fetched_data.position.toString(),
+                                            style: GoogleFonts.exo2(
+                                                textStyle: TextStyle(fontSize: 30)),
+                                          )),
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                  ],
                                 ),
                               ],
-                            )
-                          ],
+                            ),
+                          ),
                         ),
-                      ),
-                    ],
+                        ResponsiveGridCol(
+                          xs: 7,
+                          md: 5,
+                          child: Container(
+                            child: Column(
+                              children: <Widget>[
+                                Container(
+
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(
+                                        another_fetched_data.code==null ? "" : another_fetched_data.code.toString(),
+                                        style: GoogleFonts.exo2(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text(
+                                        another_fetched_data.message==null ? "" : another_fetched_data.message.toString(),
+                                        style: GoogleFonts.exo2(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 15,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 2,
+                                      ),
+                                      SizedBox(
+                                        height: 40,
+                                      ),
+                                      Column(
+                                        children: <Widget>[
+                                          Text(
+                                            "Quantity(Total)",
+                                            style: GoogleFonts.exo2(
+                                              color: Colors.black,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                          Container(
+                                            margin: EdgeInsets.only(
+                                              left: 0,
+                                              top: 12,
+                                            ),
+                                            height: 70,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Colors.white,
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.grey.withOpacity(0.0),
+                                                  spreadRadius: 0,
+                                                  blurRadius: 0,
+                                                  offset: Offset(0, 0),
+                                                ),
+                                              ],
+                                            ),
+                                            width: 70,
+                                            child: Center(
+                                                child: Text(
+                                                  totalQuantity.toString(),
+                                                  style: GoogleFonts.exo2(
+                                                      textStyle: TextStyle(fontSize: 30)),
+                                                )),
+                                          ),
+                                          SizedBox(
+                                            height: 12,
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -388,9 +438,11 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
                       stream: ndelivery_bloc.deliveypostdata,
                       builder: (context, AsyncSnapshot<getdeliverysuccess_model> snapshot) {
                         if (snapshot.hasData) {
-                          fetched_data = snapshot.data;
                           //_newData = fetcheddata;
                           print("Data gula:: ");
+
+                          fetched_data = snapshot.data;
+
 
                           //TODO::eikhan theke kaj shuru hbe ashar por
                           //TODO::fetched data new datay copy hoise
@@ -398,6 +450,8 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
                           //TODO::filter amake oi newlist theke kora lagbe search korar jonne
 
                           print(fetched_data.message);
+                          print(fetched_data.position.toString());
+                          print(fetched_data.code.toString());
                         } else if (snapshot.hasError) {
                           return Text("${snapshot.error}");
                         }
@@ -426,6 +480,15 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
           itemBuilder: (context, index) {
             _product = snapshot.data;
             quantityofitems.add(snapshot.data[index].quantity);
+
+
+//              if(countStatus == false){
+//                  totalQuantity = quantityofitems.length;
+//              }
+//            countStatus = true;
+
+            //print("Length :: "+quantityofitems.length.toString());
+
             return Container(
               margin: EdgeInsets.only(top: 5),
               decoration: BoxDecoration(
@@ -466,6 +529,10 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
                             setState(() {
                               if (quantityofitems[index] != 1) {
                                 quantityofitems[index]--;
+
+                                if(countStatus){
+                                  totalQuantity--;
+                                }
                                 print(quantityofitems[index].toString());
                                 //ndelivery_bloc.updateProduct(_product[index]);
                                 _product[index].Quantity =
@@ -498,6 +565,11 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
                           onPressed: () {
                             setState(() {
                               quantityofitems[index]++;
+
+                              if(countStatus){
+                                totalQuantity++;
+                              }
+
                               print(quantityofitems[index].toString());
                               _product[index].Quantity = quantityofitems[index];
                               print("After increment Total quantity: " +
@@ -565,7 +637,7 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
                             child: pw.BarcodeWidget(
                           height: 70,
                           width: 170,
-                          data: fetched_data.barcode == null? "TP0000": fetched_data.barcode,
+                          data: fetched_data.code == null? "TP0000": fetched_data.code,
                           barcode: pw.Barcode.code128(),
                         ))),
                     pw.SizedBox(height: 10),

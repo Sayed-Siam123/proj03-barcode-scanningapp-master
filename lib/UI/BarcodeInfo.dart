@@ -280,7 +280,7 @@ class _BarcodeInfoState extends State<BarcodeInfo> {
     }
 
     _fetcheddata.forEach((userDetail) {
-      if (userDetail.gtin.toLowerCase().contains(text.toLowerCase()))
+      if (userDetail.gtin.toLowerCase().contains(text.toLowerCase()) || userDetail.id.toLowerCase().contains(text.toLowerCase()))
         _newData.add(userDetail);
 
     });
