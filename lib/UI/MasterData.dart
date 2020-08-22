@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app/Bloc/masterData_bloc.dart';
 import 'package:app/Model/masterdata_model.dart';
 import 'package:app/UI/AddProduct.dart';
@@ -6,10 +8,12 @@ import 'package:app/Widgets/MastarDataDrawer.dart';
 import 'package:app/Widgets/MastarDataWidget.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:barcode_scan/platform_wrapper.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sweetalert/sweetalert.dart';
 
 class MasterData extends StatefulWidget {
   @override
@@ -28,6 +32,9 @@ class _MasterDataState extends State<MasterData> {
   List<MasterDataModel> _newData = [];
   List<MasterDataModel> fetcheddata = [];
 
+  StreamSubscription streamerforIChecker;
+  ConnectivityResult result;
+
   //Barcode scan implement
   ScanResult barcode;
 
@@ -37,6 +44,17 @@ class _MasterDataState extends State<MasterData> {
   initState() {
     masterdata_bloc.fetchAllMasterdatafromDB();
     super.initState();
+  }
+
+  _showDialog(String title) async {
+    await Future.delayed(Duration(seconds: 2));
+
+    SweetAlert.show(context,
+      title: "Info!",
+      subtitle: title.toString(),     //TODO:: SWEET ALERT EXAMPLE
+      style: SweetAlertStyle.loading,
+
+    );
   }
 
   Widget build(BuildContext context) {
@@ -120,6 +138,19 @@ class _MasterDataState extends State<MasterData> {
                 backgroundColor: Colors.green,
                 onPressed: () async {
                   print("jabs");
+
+                  streamerforIChecker = Connectivity().onConnectivityChanged.listen((ConnectivityResult resnow) {
+                    if(resnow == ConnectivityResult.none){
+
+                      print("No Connection");
+                      _showDialog("No Internet! Turn on WiFi or mobile");
+                    }
+                    else if(resnow == ConnectivityResult.mobile || resnow == ConnectivityResult.wifi){
+                      _showDialog("Internet OK!");
+                      print("Has Connection");
+                    }
+                  });
+
                 },
                 child: Icon(
                   Icons.cloud_upload,
@@ -133,10 +164,13 @@ class _MasterDataState extends State<MasterData> {
               child: FloatingActionButton(
                 onPressed: () {
                     print("jabs");
+
+                    int lastID = int.parse(fetcheddata.last.id.toString());
+
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => AddProductPage()));
+                            builder: (context) => AddProductPage(id: lastID,)));
                     // Add your onPressed code here!
                   },
                   child: Icon(

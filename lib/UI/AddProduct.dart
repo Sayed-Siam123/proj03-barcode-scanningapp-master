@@ -14,6 +14,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 
 class AddProductPage extends StatefulWidget {
+
+  final int id;
+
+  const AddProductPage({Key key, this.id}) : super(key: key);
+
   @override
   _AddProductPageState createState() => _AddProductPageState();
 }
@@ -36,6 +41,7 @@ class _AddProductPageState extends State<AddProductPage> {
     // TODO: implement initState
     super.initState();
     masterdata_bloc.fetchMaxIDData();
+    print(widget.id.toString());
   }
 
   @override

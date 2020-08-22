@@ -1,12 +1,14 @@
 class MasterDataModel{
 
-  String id;
-  String product_id=null,manufacturerName,gtin,productId,productName,subCategoryName,categoryName,productDescription,referenceNo,listPrice,productWeight,packagingUnit,productPicture;
+  String id=null;
+  String product_id=null,manufacturerName=null,gtin=null,productId=null,productName=null,subCategoryName=null,categoryName=null,productDescription=null,referenceNo=null,listPrice=null,productWeight=null,packagingUnit=null,productPicture=null;
   String updateFlag="false";
+  String manufacturerId=null,manufacturerPN=null,unitId=null,categoryNameId=null,subCategoryNameId=null,isTransferToApp=null,isOrderableViaApp=null,productLength=null,productHeight=null,productWidth=null,unitName=null;
 
 
   MasterDataModel({this.gtin,this.product_id,this.categoryName,this.id,this.listPrice,this.manufacturerName,this.packagingUnit,this.productDescription,this.productId,this.productPicture,
-  this.productName,this.productWeight,this.referenceNo,this.subCategoryName,this.updateFlag});
+  this.productName,this.productWeight,this.referenceNo,this.subCategoryName,this.updateFlag,
+    this.manufacturerId,this.manufacturerPN,this.unitId,this.categoryNameId,this.subCategoryNameId,this.isTransferToApp,this.isOrderableViaApp,this.productLength,this.productHeight,this.productWidth,this.unitName});
 
   MasterDataModel.withID({this.gtin,this.product_id,this.categoryName,this.listPrice,this.manufacturerName,this.packagingUnit,this.productDescription,this.productId,this.productPicture,
     this.productName,this.productWeight,this.referenceNo,this.subCategoryName,this.updateFlag});
@@ -33,16 +35,77 @@ class MasterDataModel{
 
   String get getupdateFlag => this.updateFlag;
 
+  String get getmanufacturerId => this.manufacturerId;
+  String get getmanufacturerPN => this.manufacturerPN;
+  String get getunitId => this.unitId;
+  String get getcategoryNameId => this.categoryNameId;
+  String get getsubCategoryNameId => this.subCategoryNameId;
+  String get getisTransferToApp => this.isTransferToApp;
+  String get getisOrderableViaApp => this.isOrderableViaApp;
+  String get getproductLength => this.productLength;
+  String get getproductHeight => this.productHeight;
+  String get getproductWidth => this.productWidth;
+  String get getunitName => this.unitName;
+
+
+
+  set setproductWidth(String productWidth) {
+    this.productWidth = productWidth;
+  }
+
+  set setunitName(String unitName) {
+    this.unitName = unitName;
+  }
+
+  set setsubCategoryNameId(String subCategoryNameId) {
+    this.subCategoryNameId = subCategoryNameId;
+  }
+
+  set setisTransferToApp(String isTransferToApp) {
+    this.isTransferToApp = isTransferToApp;
+  }
+
+  set setisOrderableViaApp(String isOrderableViaApp) {
+    this.isOrderableViaApp = isOrderableViaApp;
+  }
+
+  set setproductLength(String productLength) {
+    this.productLength = productLength;
+  }
+
+
+
+
+
+  set setcategoryNameId(String categoryNameId) {
+    this.categoryNameId = categoryNameId;
+  }
+
+  set setproductHeight(String productHeight) {
+    this.productHeight = productHeight;
+  }
+  set setmanufacturerPN(String manufacturerPN) {
+    this.manufacturerPN = manufacturerPN;
+  }
+
+  set setproductId(String productId) {
+    this.productId = productId;
+  }
+
+
+
+
+  set setunitId(String unitId) {
+    this.unitId = unitId;
+  }
+
+
   set setmanufacturerName(String manufac_name) {
     this.manufacturerName = manufac_name;
   }
 
   set setGtin(String gtin) {
     this.gtin = gtin;
-  }
-
-  set setproductId(String productId) {
-    this.productId = productId;
   }
 
   set setproductName(String productName) {
@@ -85,6 +148,12 @@ class MasterDataModel{
     this.updateFlag = flag;
   }
 
+  set setmanufacturerId(String manufacturerId) {
+    this.manufacturerId = manufacturerId;
+  }
+
+
+
 
 
   // ignore: missing_return
@@ -92,16 +161,28 @@ class MasterDataModel{
     "id" : this.id,  //product id te id pathabo
     "productName" : this.productName,
     "manufacturerName" : this.manufacturerName,
+    "manufacturerId" : this.manufacturerId,
+    "manufacturerPN": this.manufacturerPN,
     "categoryName" : this.categoryName,
+    'categoryNameId': this.categoryNameId,
     "subCategoryName" : this.subCategoryName,
+    "subCategoryNameId": this.subCategoryNameId,
+    "unitName": this.unitName,
+    "unitId": this.unitId,
     "referenceNo" : this.referenceNo,
     "gtin" : this.gtin,
     "productDescription" : this.productDescription,
     "listPrice" : this.listPrice,
+    "isTransferToApp":this.isTransferToApp,
+    "isOrderableViaApp": this.isOrderableViaApp,
+    "productLength":this.productLength,
+    "productHeight": this.productHeight,
+    "productWidth":this.productWidth,
     "productWeight" : this.productWeight,
     "packagingUnit" : this.packagingUnit,
     "productPicture" : this.productPicture,
     "updateFlag" : this.updateFlag,
+
   };
 
 
@@ -111,14 +192,25 @@ class MasterDataModel{
       productPicture: json['productPicture'],
       productName: json['productName'],
       categoryName: json['categoryName'],
+      categoryNameId: json['categoryNameId'],
       subCategoryName: json['subCategoryName'],
+      subCategoryNameId: json['subCategoryNameId'],
       gtin: json['gtin'],
       listPrice: json['listPrice'],
       manufacturerName: json['manufacturerName'],
+      manufacturerId: json['manufacturerId'],
+      manufacturerPN: json['manufacturerPN'],
       packagingUnit: json['packagingUnit'],
+      unitId: json['unitId'],
+      unitName: json['unitName'],
+      isOrderableViaApp: json['isOrderableViaApp'],
+      isTransferToApp: json['isTransferToApp'],
       productDescription: json['productDescription'],
       productId: json['productId'],
       productWeight: json['productWeight'],
+      productHeight: json['productHeight'],
+      productLength: json['productLength'],
+      productWidth: json['productWidth'],
       referenceNo: json['referenceNo'],
       updateFlag: json['updateFlag'],
     );

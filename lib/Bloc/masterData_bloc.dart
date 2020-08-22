@@ -116,7 +116,12 @@ class MasterData_Bloc{
     productName: productinfo.productName.toString(),manufacturerName: productinfo.manufacturerName.toString(),categoryName: productinfo.categoryName.toString(),
     productDescription: productinfo.productDescription.toString(),subCategoryName: productinfo.subCategoryName.toString(),packagingUnit: productinfo.packagingUnit.toString(),
     gtin: productinfo.gtin.toString(),productPicture: productinfo.productPicture.toString(),listPrice: productinfo.listPrice.toString(),
-    productWeight: productinfo.productWeight.toString(),referenceNo: productinfo.referenceNo.toString(),updateFlag: "false");
+    productWeight: productinfo.productWeight.toString(),referenceNo: productinfo.referenceNo.toString(),updateFlag: "false",
+    categoryNameId: productinfo.categoryNameId.toString(),isOrderableViaApp: productinfo.isOrderableViaApp.toString(),isTransferToApp: productinfo.isTransferToApp.toString(),
+    manufacturerId: productinfo.manufacturerId.toString(),
+    manufacturerPN: productinfo.manufacturerPN == null?"111":productinfo.manufacturerPN.toString(),
+    productHeight: productinfo.productHeight.toString(),productLength: productinfo.productLength.toString(),productWidth: productinfo.productWidth.toString(),
+      subCategoryNameId: productinfo.subCategoryNameId.toString(),unitId: productinfo.unitId.toString(),unitName:productinfo.unitName.toString());
 
     print("Product barcode in bloc: "+ master.id.toString());
 

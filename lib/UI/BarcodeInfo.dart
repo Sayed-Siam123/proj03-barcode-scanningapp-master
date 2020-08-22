@@ -33,7 +33,7 @@ class _BarcodeInfoState extends State<BarcodeInfo> {
   //String _scanBarcode = 'Unknown';
 
   initState() {
-    masterdata_bloc.fetchAllMasterData();
+    masterdata_bloc.fetchAllMasterdatafromDB();
     super.initState();
   }
 

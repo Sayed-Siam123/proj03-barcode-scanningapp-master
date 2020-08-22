@@ -107,7 +107,7 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
     getPort();
     ndelivery_bloc.getProduct();
     //ndelivery_bloc.deleteTable();
-    masterdata_bloc.fetchAllMasterData();
+    masterdata_bloc.fetchAllMasterdatafromDB();
   }
 
   @override

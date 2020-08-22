@@ -20,6 +20,19 @@ String masterproductPicture = 'productPicture';
 String masterproductWeight = 'productWeight';
 String masterupdateFlag = 'updateFlag';
 
+String mastermanufacturerId = 'manufacturerId';
+String mastermanufacturerPN = 'manufacturerPN';
+String masterunitId = 'unitId';
+String mastercategoryNameId = 'categoryNameId';
+String mastersubCategoryNameId = 'subCategoryNameId';
+String masterisTransferToApp = 'isTransferToApp';
+String masterisOrderableViaApp = 'isOrderableViaApp';
+String masterproductLength = 'productLength';
+String masterproductHeight = 'productHeight';
+String masterproductWidth = 'productWidth';
+String masterunitName = 'unitName';
+
+
 class DatabaseProvider_Masterdata {
   static final DatabaseProvider_Masterdata dbProvider = DatabaseProvider_Masterdata();
 
@@ -50,7 +63,8 @@ class DatabaseProvider_Masterdata {
 
   void initDB(Database database, int version) async {
     await database.execute('CREATE TABLE $masterTABLE($master_Id TEXT, '
-        '$masterProd_name TEXT, $masterProd_manufacturerName TEXT, $mastercategoryName TEXT,$mastersubCategoryName TEXT,$masterproductDescription TEXT,'
-        '$masterpackagingUnit TEXT,$masterlistPrice TEXT,$masterproductPicture TEXT,$masterreferenceNo TEXT,$masterproductWeight TEXT,$masterProd_gtin TEXT,$masterupdateFlag TEXT)');
+        '$masterProd_name TEXT, $masterProd_manufacturerName TEXT,$mastermanufacturerId TEXT,$mastermanufacturerPN TEXT, $mastercategoryName TEXT,$mastercategoryNameId TEXT,$mastersubCategoryName TEXT,$mastersubCategoryNameId TEXT,$masterproductDescription TEXT,'
+        '$masterpackagingUnit TEXT,$masterlistPrice TEXT,$masterproductPicture TEXT,$masterreferenceNo TEXT,$masterproductWeight TEXT,$masterProd_gtin TEXT,$masterupdateFlag TEXT,'
+    '$masterunitId TEXT,$masterunitName TEXT,$masterisTransferToApp TEXT,$masterisOrderableViaApp TEXT,$masterproductHeight TEXT,$masterproductWidth TEXT,$masterproductLength TEXT)');
   }
 }
