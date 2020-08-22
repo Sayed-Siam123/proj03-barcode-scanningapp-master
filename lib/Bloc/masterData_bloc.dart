@@ -6,6 +6,8 @@ import 'package:rxdart/rxdart.dart';
 
 class MasterData_Bloc{
   final _repository = Repository();
+  MasterDataModel master;
+  bool status = false;
   // ignore: close_sinks
   final _masterdataFetcher = PublishSubject<List<MasterDataModel>>();
   final _singlemasterdatafetcher = PublishSubject<List<SingleMasterDataModel>>();
@@ -58,11 +60,32 @@ class MasterData_Bloc{
   Stream<sublist_getsuccess_model> get MaxIDData => _MaxIdFetcher.stream;
 
 
+  fetchAllMasterdatafromDB() async{
+    List<MasterDataModel> masterdatadb = await _repository.getAllMAsterProduct();
+    _masterdataFetcher.sink.add(masterdatadb);
+  }
+
 
   fetchAllMasterData() async {
 
-       List<MasterDataModel> masterdata = await _repository.fetchAllMasterData();
-       _masterdataFetcher.sink.add(masterdata);
+       List<MasterDataModel> masterdataapi = await _repository.fetchAllMasterData(); //from api check
+       List<MasterDataModel> masterdatadb = await _repository.getAllMAsterProduct(); //from db check
+
+
+       if(masterdatadb.isEmpty){
+
+         for(int i = 0; i<masterdataapi.length;i++){
+           print ("Length:: "+masterdatadb.length.toString());
+           insertProduct(masterdataapi[i]);
+
+         }
+       }
+
+       else{
+         print ("Length:: "+masterdatadb.length.toString());
+       }
+
+       //eikhan theke db te porbe
 
   }
 
@@ -82,6 +105,29 @@ class MasterData_Bloc{
     _MaxIdFetcher.sink.add(MaxIDdata);
 
   }
+
+
+  insertProduct(MasterDataModel productinfo) async{
+    //print("GET: "+ selectedItembarcode.value.toString() + "   " + selectedItemproductname.value.toString()+ "   " + selectedItemquantity.value.toString());
+
+
+
+    master = MasterDataModel(id: productinfo.id.toString(),
+    productName: productinfo.productName.toString(),manufacturerName: productinfo.manufacturerName.toString(),categoryName: productinfo.categoryName.toString(),
+    productDescription: productinfo.productDescription.toString(),subCategoryName: productinfo.subCategoryName.toString(),packagingUnit: productinfo.packagingUnit.toString(),
+    gtin: productinfo.gtin.toString(),productPicture: productinfo.productPicture.toString(),listPrice: productinfo.listPrice.toString(),
+    productWeight: productinfo.productWeight.toString(),referenceNo: productinfo.referenceNo.toString(),updateFlag: "false");
+
+    print("Product barcode in bloc: "+ master.id.toString());
+
+    await _repository.insertMasterdata(master);
+
+    print("FROM BLOC");
+
+  }
+
+
+
 
   void dispose() async{
 //    _title.close();

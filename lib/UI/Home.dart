@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:app/Bloc/masterData_bloc.dart';
 import 'package:app/Resources/SharedPrefer.dart';
 import 'package:app/UI/MasterData.dart';
 import 'package:app/UI/Settings.dart';
@@ -37,6 +38,14 @@ class _HomePageState extends State<HomePage> {
   );
   DateTime backButtonPressTime;
 
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    masterdata_bloc.fetchAllMasterData();
+    masterdata_bloc.fetchAllMasterdatafromDB();
+  }
 
   @override
   Widget build(BuildContext context) {

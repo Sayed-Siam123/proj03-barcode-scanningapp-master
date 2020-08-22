@@ -5,16 +5,23 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
-final masterTABLE = 'pickupTable';
+final masterTABLE = 'masterTable';
 String master_Id = 'id';
-String masterProd_name = 'product_name';
-String masterProd_id = 'product_id';
-String masterProd_manufacturerName = 'manufacturer_name';
-String master_Prod_gtin = 'gtin';
+String masterProd_name = 'productName';
+String masterProd_manufacturerName = 'manufacturerName';
+String masterProd_gtin = 'gtin';
+String mastercategoryName = 'categoryName';
+String mastersubCategoryName = 'subCategoryName';
+String masterproductDescription = 'productDescription';
+String masterreferenceNo = 'referenceNo';
+String masterpackagingUnit = 'packagingUnit';
+String masterlistPrice = 'listPrice';
+String masterproductPicture = 'productPicture';
+String masterproductWeight = 'productWeight';
+String masterupdateFlag = 'updateFlag';
 
-
-class DatabaseProvider_pickup {
-  static final DatabaseProvider_pickup dbProvider = DatabaseProvider_pickup();
+class DatabaseProvider_Masterdata {
+  static final DatabaseProvider_Masterdata dbProvider = DatabaseProvider_Masterdata();
 
   Database _database;
 
@@ -27,7 +34,7 @@ class DatabaseProvider_pickup {
   createDatabase() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     //"ReactiveTodo.db is our database instance name
-    String path = join(documentsDirectory.path, "Pickup.db");
+    String path = join(documentsDirectory.path, "Masterdata.db");
 
     print("Pickup DB PATH IS "+path);
 
@@ -42,7 +49,8 @@ class DatabaseProvider_pickup {
   }
 
   void initDB(Database database, int version) async {
-//    await database.execute('CREATE TABLE $masterTABLE($master_Id INTEGER PRIMARY KEY AUTOINCREMENT, $Delivery_id TEXT, '
-//        '$Prod_position TEXT, $Prod_quantity TEXT, $Prod_handling_unit TEXT)');
+    await database.execute('CREATE TABLE $masterTABLE($master_Id TEXT, '
+        '$masterProd_name TEXT, $masterProd_manufacturerName TEXT, $mastercategoryName TEXT,$mastersubCategoryName TEXT,$masterproductDescription TEXT,'
+        '$masterpackagingUnit TEXT,$masterlistPrice TEXT,$masterproductPicture TEXT,$masterreferenceNo TEXT,$masterproductWeight TEXT,$masterProd_gtin TEXT,$masterupdateFlag TEXT)');
   }
 }

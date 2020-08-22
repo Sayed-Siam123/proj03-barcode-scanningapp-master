@@ -1,12 +1,15 @@
 import 'package:app/Model/NewDeliveryModel.dart';
 import 'package:app/Model/PickupDeliveryModel.dart';
+import 'package:app/Model/masterdata_model.dart';
 import 'package:app/database/Delivery_database.dart';
+import 'package:app/database/Masterdata_database.dart';
 import 'package:app/database/Pickup_database.dart';
 
 
 class ProductDB {
   final dbProvider = DatabaseProvider_delivery.dbProvider; //delivery db
   final pickupDBprovider  = DatabaseProvider_pickup.dbProvider; //pickup db
+  final masterdataDBprovider  = DatabaseProvider_Masterdata.dbProvider; //pickup db
 
   Future<int> createTodo(NewDeliveryModel productinfo) async {
     print("FORM DBPROVIDER: " + productinfo.barcode.toString());
@@ -114,5 +117,49 @@ class ProductDB {
   }
 
 //Pickup delivery END
+
+
+//MASTERDATA DB START
+
+  Future<int> insertMasterdata(MasterDataModel productinfo) async {
+    print("FORM DBPROVIDER: " + productinfo.product_id.toString());
+
+    var db = await masterdataDBprovider.database;
+    print("ebar eikhane");
+    print("1");
+    var result = db.insert(
+        masterTABLE, productinfo.toMap(), nullColumnHack: master_Id);
+    print("2");
+    return result;
+  }
+
+
+
+  Future deleteAllMasterProducts() async {
+    final db = await masterdataDBprovider.database;
+    var result = await db.delete(
+      masterTABLE,
+    );
+
+    return result;
+  }
+
+  Future<List<MasterDataModel>> getAllMAsterProduct(
+      {List<String> columns, String query}) async {
+    var db = await masterdataDBprovider.database;
+    print("Eikhane");
+    var result = await db.query(masterTABLE, orderBy: '$colId ASC');
+
+
+    List<MasterDataModel> product = result.isNotEmpty
+        ? result.map((item) => MasterDataModel.fromJson(item)).toList()
+        : [];
+    return product;
+  }
+
+
+
+//MASTERDATA DB END
+
 
 }

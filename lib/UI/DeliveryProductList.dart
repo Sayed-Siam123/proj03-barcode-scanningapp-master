@@ -443,12 +443,6 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
 
                           fetched_data = snapshot.data;
 
-
-                          //TODO::eikhan theke kaj shuru hbe ashar por
-                          //TODO::fetched data new datay copy hoise
-                          //TODO::normally ja fetch hoye ashbe oitai new data list e dhuke jabe
-                          //TODO::filter amake oi newlist theke kora lagbe search korar jonne
-
                           print(fetched_data.message);
                           print(fetched_data.position.toString());
                           print(fetched_data.code.toString());
@@ -480,14 +474,6 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
           itemBuilder: (context, index) {
             _product = snapshot.data;
             quantityofitems.add(snapshot.data[index].quantity);
-
-
-//              if(countStatus == false){
-//                  totalQuantity = quantityofitems.length;
-//              }
-//            countStatus = true;
-
-            //print("Length :: "+quantityofitems.length.toString());
 
             return Container(
               margin: EdgeInsets.only(top: 5),

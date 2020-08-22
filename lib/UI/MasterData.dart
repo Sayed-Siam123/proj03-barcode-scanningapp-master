@@ -35,7 +35,7 @@ class _MasterDataState extends State<MasterData> {
 
   @override
   initState() {
-    masterdata_bloc.fetchAllMasterData();
+    masterdata_bloc.fetchAllMasterdatafromDB();
     super.initState();
   }
 
@@ -94,19 +94,61 @@ class _MasterDataState extends State<MasterData> {
             },
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            print("jabs");
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => AddProductPage()));
-            // Add your onPressed code here!
-          },
-          child: Icon(
-            Icons.add,
-            size: 50,
-          ),
-          backgroundColor: Colors.green,
+//        floatingActionButton: FloatingActionButton(
+//          onPressed: () {
+//            print("jabs");
+//            Navigator.push(context,
+//                MaterialPageRoute(builder: (context) => AddProductPage()));
+//            // Add your onPressed code here!
+//          },
+//          child: Icon(
+//            Icons.add,
+//            size: 50,
+//          ),
+//          backgroundColor: Colors.green,
+//        ),
+      floatingActionButton: Container(
+        height: 110,
+        width: MediaQuery.of(context).size.width - 30,
+        child: Stack(
+          children: <Widget>[
+            Align(
+              alignment: Alignment.bottomLeft,
+              child: FloatingActionButton(
+                heroTag: null,
+                tooltip: "Backup data",
+                backgroundColor: Colors.green,
+                onPressed: () async {
+                  print("jabs");
+                },
+                child: Icon(
+                  Icons.cloud_upload,
+                  color: Colors.white,
+                  size: 30,
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: FloatingActionButton(
+                onPressed: () {
+                    print("jabs");
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AddProductPage()));
+                    // Add your onPressed code here!
+                  },
+                  child: Icon(
+                    Icons.add,
+                    size: 50,
+                  ),
+                  backgroundColor: Colors.green,
+                ),
+              ),
+          ],
         ),
+      ),
       ),
     );
   }

@@ -134,4 +134,16 @@ class Repository {
   Future<SinglePickupDataModel> fetchSinglePickupData(String deliveryID) => apiprovider.fetchsinglePickupdata(deliveryID);
 
 
+  //TODO:: MASTER DATA DB CONFIG AND OPERATION :: START
+
+  Future insertMasterdata(MasterDataModel productinfo) => dbprovider.insertMasterdata(productinfo);
+  Future<List<MasterDataModel>> getAllMAsterProduct() => dbprovider.getAllMAsterProduct();
+
+
+
+
+
+ //TODO:: MASTER DATA DB CONFIG AND OPERATION :: END
+
+
 }

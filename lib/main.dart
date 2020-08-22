@@ -8,6 +8,7 @@ import 'package:app/UI/Home.dart';
 import 'package:app/UI/MasterData.dart';
 import 'package:app/UI/Details.dart';
 import 'package:app/UI/Settings.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_stetho/flutter_stetho.dart';
@@ -16,17 +17,20 @@ import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:beauty_textfield/beauty_textfield.dart';
 import 'package:flutter/gestures.dart';
+import 'package:responsive_grid/responsive_grid.dart';
 import 'dart:async';
+
 //import 'package:barcode_scan/barcode_scan.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:splashscreen/splashscreen.dart';
+import 'package:sweetalert/sweetalert.dart';
+
 //importing master data
 import 'Resources/SharedPrefer.dart';
 import 'Widgets/MasterdataView.dart';
 import 'UI/Login.dart';
 import 'UI/ProductDetails.dart';
 import 'package:global_configuration/global_configuration.dart';
-
 
 
 Future<void> main() async {
@@ -66,7 +70,7 @@ class _MyAppState extends State<MyApp> {
 
 
       routes: <String, WidgetBuilder>{
-        '/home': (BuildContext context) => new HomePage(),       //for routing pages
+        '/home': (BuildContext context) => new HomePage(), //for routing pages
         '/master': (BuildContext context) => new MasterData(),
         '/login': (BuildContext context) => new LoginPage(),
         '/settings': (BuildContext context) => new SettingsPage(),
@@ -87,16 +91,36 @@ class Splash extends StatefulWidget {
 
 class _SplashState extends State<Splash> {
 
+  final TextEditingController _inputcontrol1 = TextEditingController();
+  final TextEditingController _inputcontrol2 = TextEditingController();
+
+  //Toaster toast;
+
+  StreamSubscription streamerforIChecker;
+  ConnectivityResult result;
+
+  final _resetKey1 = GlobalKey<FormState>();
+  final _resetKey2 = GlobalKey<FormState>();
+  bool _resetValidate1 = false;
+  bool _resetValidate2 = false;
+
+  bool _validate1;
+  bool _validate2;
+
+  String errortext1 = "Value Can\'t Be Empty";
+  String errortext2 = "Value Can\'t Be Empty";
+
+  ScaffoldState scaffold;
+
   SessionManager prefs = SessionManager();
 
-  String loginKey="loginKey";
+  String loginKey = "loginKey";
 
   String loginStatus = '';
 
   void getLogin() async {
-
     Future<String> serverip = prefs.getData(loginKey);
-    serverip.then((data) async{
+    serverip.then((data) async {
       print('login status pabo');
       print("login status " + data.toString());
 
@@ -108,25 +132,50 @@ class _SplashState extends State<Splash> {
 //      Future.delayed(const Duration(milliseconds: 1000), () {
 //
 //      });
-    },onError: (e) {
+    }, onError: (e) {
       print(e);
     });
-
   }
 
   @override
-  void initState(){
+  void initState() {
     // TODO: implement initState
     super.initState();
     getLogin();
+
+    streamerforIChecker = Connectivity().onConnectivityChanged.listen((ConnectivityResult resnow) {
+      if(resnow == ConnectivityResult.none){
+
+        print("No Connection");
+        _showDialog();
+      }
+      else if(resnow == ConnectivityResult.mobile || resnow == ConnectivityResult.wifi){
+        print("Has Connection");
+      }
+    });
+  }
+
+  _showDialog() async {
+    await Future.delayed(Duration(seconds: 2));
+
+    SweetAlert.show(context,
+        title: "Info!",
+        subtitle: "No internet! OFFLINE MODE loading....",     //TODO:: SWEET ALERT EXAMPLE
+        style: SweetAlertStyle.loading,
+
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return SplashScreen(
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme
+          .of(context)
+          .backgroundColor,
       seconds: 6,
-      navigateAfterSeconds: loginStatus == "false" ? LoginPage() : HomePage(),
+      navigateAfterSeconds: loginStatus == "false" || loginStatus == "null"
+          ? LoginPage()
+          : HomePage(),
       //title: new Text('IDENTIT',textScaleFactor: 2,),
       image: new Image.asset('assets/images/logo.jpeg'),
       loadingText: Text("Loading"),
@@ -135,37 +184,6 @@ class _SplashState extends State<Splash> {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /*void main() => runApp(
