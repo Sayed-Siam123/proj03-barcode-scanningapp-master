@@ -47,12 +47,23 @@ class _MasterDataState extends State<MasterData> {
   }
 
   _showDialog(String title) async {
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(Duration(seconds: 1));
 
     SweetAlert.show(context,
       title: "Info!",
       subtitle: title.toString(),     //TODO:: SWEET ALERT EXAMPLE
       style: SweetAlertStyle.loading,
+
+    );
+  }
+
+  _showDialog1(String title) async {
+    await Future.delayed(Duration(seconds: 1));
+
+    SweetAlert.show(context,
+      title: "Info!",
+      subtitle: title.toString(),     //TODO:: SWEET ALERT EXAMPLE
+      style: SweetAlertStyle.success,
 
     );
   }
@@ -139,17 +150,15 @@ class _MasterDataState extends State<MasterData> {
                 onPressed: () async {
                   print("jabs");
 
-                  streamerforIChecker = Connectivity().onConnectivityChanged.listen((ConnectivityResult resnow) {
-                    if(resnow == ConnectivityResult.none){
-
-                      print("No Connection");
-                      _showDialog("No Internet! Turn on WiFi or mobile");
-                    }
-                    else if(resnow == ConnectivityResult.mobile || resnow == ConnectivityResult.wifi){
-                      _showDialog("Internet OK!");
-                      print("Has Connection");
-                    }
-                  });
+                  var connectivityResult = await (Connectivity().checkConnectivity());
+                  if (connectivityResult == ConnectivityResult.mobile) {
+                    _showDialog1("Mobile Internet OK");
+                  } else if (connectivityResult == ConnectivityResult.wifi) {
+                    _showDialog1("WiFi Internet OK");
+                  } else {
+                    print("No internet");
+                    _showDialog("No Internet");
+                  }
 
                 },
                 child: Icon(
@@ -362,7 +371,7 @@ class _MasterDataState extends State<MasterData> {
         ? RefreshIndicator(
             key: _refreshIndicatorKey,
             onRefresh: () {
-              return masterdata_bloc.fetchAllMasterData();
+              return masterdata_bloc.fetchAllMasterdatafromDB();
             },
             child: ListView.builder(
                 scrollDirection: Axis.vertical,
