@@ -138,7 +138,9 @@ class Repository {
 
   Future insertMasterdata(MasterDataModel productinfo) => dbprovider.insertMasterdata(productinfo);
   Future<List<MasterDataModel>> getAllMAsterProduct() => dbprovider.getAllMAsterProduct();
+  Future<List<SingleMasterDataModel>> getsinglemasterdatafromDB(String id) => dbprovider.getsinglemasterdatafromDB(id);
 
+  Future<List<MasterDataModel>> getAllMAsterNewProduct() => dbprovider.getAllMAsterNewProduct();
 
  //TODO:: MASTER DATA DB CONFIG AND OPERATION :: END
 
@@ -163,6 +165,8 @@ class Repository {
 
   Future insertManufacdata (ManufactureModel productinfo) => dbprovider.insertManufacdata(productinfo);
   Future<List<ManufactureModel>> getAllManufacDatafromDB() => dbprovider.getAllManufacDatafromDB();
+  Future updateManufac(ManufactureModel product) => dbprovider.updateManufac(product);
+
 
   //TODO:: MANUFAC DB CONFIG AND OPERATION :: END
 
@@ -171,7 +175,7 @@ class Repository {
 
   Future insertUnitdata(UnitModel productinfo) => dbprovider.insertUnitdata(productinfo);
   Future<List<UnitModel>> getAllUnitDatafromDB() => dbprovider.getAllUnitDatafromDB();
-
+  Future updateUnit(UnitModel product) => dbprovider.updateUnit(product);
   //TODO:: UNIT DB CONFIG AND OPERATION :: END
 
 

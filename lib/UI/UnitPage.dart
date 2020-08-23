@@ -264,7 +264,8 @@ class _UnitPageViewState extends State<UnitPageView> {
                         id: null,
                         unitName: null,
                         unitShort: null,
-                        updateFlag: 'true',
+                        updateFlag: 'false',
+                        newFlag: 'true',
                       );
 
                       Navigator.pop(context);

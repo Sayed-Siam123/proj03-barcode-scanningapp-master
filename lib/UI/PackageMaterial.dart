@@ -296,7 +296,8 @@ class _PackageMaterialPageState extends State<PackageMaterialPage> {
                         MaterialPackModel data = MaterialPackModel(
                           id: null,
                           materialName: null,
-                          updateFlag: "true",
+                          updateFlag: "false",
+                          newFlag: "true",
                         );
 
                         Navigator.pop(context);

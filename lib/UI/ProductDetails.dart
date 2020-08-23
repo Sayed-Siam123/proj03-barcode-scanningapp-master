@@ -17,7 +17,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   @override
   void initState() {
     // TODO: implement initState
-    masterdata_bloc.getsinglemasterdata();
+    masterdata_bloc.getsinglemasterdatafromDB();
     super.initState();
   }
 

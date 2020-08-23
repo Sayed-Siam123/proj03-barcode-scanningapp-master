@@ -15,6 +15,7 @@ String packmat_isEdit = 'isEdit';
 String packmat_isDelete = 'isDelete';
 String packmat_isDeactivate = 'isDeactivate';
 String packmat_updateFlag = 'updateFlag';
+String packmat_newFlag = 'newFlag';
 
 
 class DatabaseProvider_packmaterial {
@@ -47,6 +48,6 @@ class DatabaseProvider_packmaterial {
 
   void initDB(Database database, int version) async {
     await database.execute('CREATE TABLE $packmatTABLE($packmat_Id TEXT, $packmat_name TEXT, '
-        '$packmat_desc TEXT, $packmat_isView TEXT, $packmat_isAdd TEXT, $packmat_isEdit TEXT,$packmat_isDelete TEXT,$packmat_isDeactivate TEXT,$packmat_updateFlag TEXT)');
+        '$packmat_desc TEXT, $packmat_isView TEXT, $packmat_isAdd TEXT, $packmat_isEdit TEXT,$packmat_isDelete TEXT,$packmat_isDeactivate TEXT,$packmat_updateFlag TEXT,$packmat_newFlag TEXT)');
   }
 }

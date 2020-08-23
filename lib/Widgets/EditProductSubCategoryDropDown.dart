@@ -1,4 +1,5 @@
 import 'package:app/Bloc/Sublist_bloc.dart';
+import 'package:app/Bloc/masterData_bloc.dart';
 import 'package:app/Model/ManufactureModel.dart';
 import 'package:app/Model/SubCategory.dart';
 import 'package:direct_select_flutter/direct_select_item.dart';
@@ -6,6 +7,7 @@ import 'package:direct_select_flutter/direct_select_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:searchable_dropdown/searchable_dropdown.dart';
 
 class EditProductSubCategoryDropDown extends StatefulWidget {
   String subcat, previous_id;
@@ -22,6 +24,7 @@ class _EditProductSubCategoryDropDownState
   //List<CategoryModel> _valCategoryName = List();
 
   String _valSubCategoryName = "";
+  String _valSubCategoryID = "";
 
   SubCategoryModel subcategorySelect;
   List<SubCategoryModel> data;
@@ -32,7 +35,8 @@ class _EditProductSubCategoryDropDownState
   void initState() {
     // TODO: implement initState
     super.initState();
-    sublist_bloc.fetchAllSubCatagoryData();
+    sublist_bloc.fetchAllSubCatDatafromDB();
+    masterdata_bloc.getsinglemasterdatafromDB();
   }
 
   @override
@@ -407,56 +411,108 @@ class _EditProductSubCategoryDropDownState
                         ),
                       ),
 
+//                      Padding(
+//                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+//                        child: Container(
+//                          decoration: _getShadowDecoration(),
+//                          child: Card(
+//                              child: Row(
+//                                mainAxisSize: MainAxisSize.min,
+//                                children: <Widget>[
+//                                  Flexible(
+//                                    fit: FlexFit.loose,
+//                                    child: SizedBox(
+//                                      width: MediaQuery.of(context).size.width-60,
+//                                      height: 50,
+//                                      child: DirectSelectList<SubCategoryModel>(
+//                                        onUserTappedListener: () {
+//                                          Scaffold.of(context).showSnackBar(SnackBar(
+//                                            content: Text(
+//                                              'Hold and drag the item',
+//                                              style: GoogleFonts.exo2(
+//                                                textStyle: TextStyle(
+//                                                  fontSize: 16,
+//                                                ),
+//                                              ),
+//                                            ),
+//                                            duration: Duration(seconds: 2),
+//                                          ));
+//                                        },
+//                                        values: data,
+//                                        itemBuilder: (SubCategoryModel category) =>
+//                                            getDropDownMenuItem(category),
+//                                        focusedItemDecoration: _getDslDecoration(),
+//                                        onItemSelectedListener: (value, selectedIndex, context) {
+//                                          FocusScope.of(context).requestFocus(FocusNode());
+//                                          subcategorySelect = value;
+//
+////                                          print(categorySelect.categoryName.toString());
+////                                          print("ID HOITESE: " + categorySelect.id);
+////                                          sublist_bloc.getCategoryID(categorySelect.id);
+//
+//
+//                                        },
+//                                      ),
+//                                    ),
+//                                  ),
+//                                  Padding(
+//                                    padding: EdgeInsets.only(right: 8),
+//                                    child: _getDropdownIcon(),
+//                                  )
+//                                ],
+//                              )),
+//                        ),
+//                      ),
+
                       Padding(
                         padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                         child: Container(
                           decoration: _getShadowDecoration(),
                           child: Card(
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Flexible(
-                                    fit: FlexFit.loose,
-                                    child: SizedBox(
-                                      width: MediaQuery.of(context).size.width-60,
-                                      height: 50,
-                                      child: DirectSelectList<SubCategoryModel>(
-                                        onUserTappedListener: () {
-                                          Scaffold.of(context).showSnackBar(SnackBar(
-                                            content: Text(
-                                              'Hold and drag the item',
-                                              style: GoogleFonts.exo2(
-                                                textStyle: TextStyle(
-                                                  fontSize: 16,
-                                                ),
-                                              ),
-                                            ),
-                                            duration: Duration(seconds: 2),
-                                          ));
-                                        },
-                                        values: data,
-                                        itemBuilder: (SubCategoryModel category) =>
-                                            getDropDownMenuItem(category),
-                                        focusedItemDecoration: _getDslDecoration(),
-                                        onItemSelectedListener: (value, selectedIndex, context) {
-                                          FocusScope.of(context).requestFocus(FocusNode());
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Container(
+                                  width: MediaQuery.of(context).size.width-30,
+                                  height: 70,
+                                  child: Padding(
+                                    padding: const EdgeInsets.fromLTRB(0,2,0,0),
+                                    child: SearchableDropdown.single(
+                                      items: data.map((item) {
+                                        return new DropdownMenuItem<SubCategoryModel>(
+                                            child: Padding(
+                                              padding: const EdgeInsets.fromLTRB(0,0,0,0),
+                                              child: Text(item.subCategoryName),
+                                            ), value: item);
+                                      }).toList(),
+                                      value: subcategorySelect,
+                                      hint: widget.subcat.toString(),
+                                      searchHint: "Select one",
+                                      isCaseSensitiveSearch: true,
+                                      onChanged: (value) {
+                                        setState(() {
                                           subcategorySelect = value;
-
-//                                          print(categorySelect.categoryName.toString());
-//                                          print("ID HOITESE: " + categorySelect.id);
-//                                          sublist_bloc.getCategoryID(categorySelect.id);
-
-
-                                        },
+                                          _valSubCategoryID = value.id.toString();
+                                          _valSubCategoryName = value.subCategoryName.toString();
+                                        });
+                                        sublist_bloc.getSubCategoryID(_valSubCategoryID);
+                                        sublist_bloc.getSubCategoryName(_valSubCategoryName);
+                                      },
+                                      isExpanded: true,
+                                      underline: Container(
+                                        height: 0.0,
+                                        decoration: BoxDecoration(
+                                            border:
+                                            Border(bottom: BorderSide(color: Colors.transparent, width: 0.0))),
                                       ),
                                     ),
                                   ),
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 8),
-                                    child: _getDropdownIcon(),
-                                  )
-                                ],
-                              )),
+
+                                  //child: Text("Asche"),  //TODO:: eikhan theke kaj shuru hbe
+                                )],
+                            ),
+                          ),
+
                         ),
                       ),
                     ],

@@ -13,9 +13,9 @@ import 'Home.dart';
 
 class DetailsPage extends StatefulWidget {
 
-  String product_name;
+  String product_name,id;
 
-  DetailsPage({this.product_name});
+  DetailsPage({this.product_name,this.id});
 
   @override
   _DetailsPageState createState() => _DetailsPageState();
@@ -29,7 +29,7 @@ class _DetailsPageState extends State<DetailsPage>
 
   @override
   void initState() {
-    //masterdata_bloc.getsinglemasterdata();
+    masterdata_bloc.getsinglemasterdatafromDB();
     _tabController = new TabController(length: 3, vsync: this);
     super.initState();
   }
@@ -75,8 +75,8 @@ class _DetailsPageState extends State<DetailsPage>
                   color: Colors.black54,
                 ),
                 onPressed: () {
-                  print("Edit");
-                  masterdata_bloc.getsinglemasterdata();
+                  print("Edit: ");
+                  masterdata_bloc.getsinglemasterdatafromDB();
                   Navigator.push(
                       context,
                       MaterialPageRoute(

@@ -38,9 +38,9 @@ class MasterDataWidget extends StatelessWidget {
         child: ListTile(
           onTap: (){
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => DetailsPage(product_name: this.product_name.toString(),)));
+                MaterialPageRoute(builder: (context) => DetailsPage(product_name: this.product_name.toString(),id: this.product_id.toString())));
             masterdata_bloc.getId(this.product_id.toString());
-            masterdata_bloc.getsinglemasterdata();
+            masterdata_bloc.getsinglemasterdatafromDB();
           },
           leading: CircleAvatar(
             radius: 30,
@@ -86,9 +86,10 @@ class MasterDataWidget extends StatelessWidget {
           ),
           trailing: IconButton(
             onPressed: () {
-              Navigator.of(context).pushNamed('/details');
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => DetailsPage(product_name: this.product_name.toString(),id: this.product_id.toString())));
               masterdata_bloc.getId(this.product_id.toString());
-              masterdata_bloc.getsinglemasterdata();
+              masterdata_bloc.getsinglemasterdatafromDB();
               //TODO:: eikhane
             },
             icon: Padding(

@@ -94,7 +94,14 @@ class MasterData_Bloc{
     print("ID NUMBER IS :: "+_id.value);
     List<SingleMasterDataModel> singlemasterdata = await _repository.getsinglemasterdata(_id.value);
     _singlemasterdatafetcher.sink.add(singlemasterdata);
-  } //GET_BY
+  }//GET_BY API CALL
+
+  getsinglemasterdatafromDB() async{
+    print("ID NUMBER IS :: "+_id.value);
+    List<SingleMasterDataModel> singlemasterdata = await _repository.getsinglemasterdatafromDB(_id.value);
+    print(singlemasterdata[0].productName.toString());
+    _singlemasterdatafetcher.sink.add(singlemasterdata);
+  } //FETCH FROM DB
 
 
 
@@ -121,7 +128,8 @@ class MasterData_Bloc{
     manufacturerId: productinfo.manufacturerId.toString(),
     manufacturerPN: productinfo.manufacturerPN == null?"111":productinfo.manufacturerPN.toString(),
     productHeight: productinfo.productHeight.toString(),productLength: productinfo.productLength.toString(),productWidth: productinfo.productWidth.toString(),
-      subCategoryNameId: productinfo.subCategoryNameId.toString(),unitId: productinfo.unitId.toString(),unitName:productinfo.unitName.toString());
+      subCategoryNameId: productinfo.subCategoryNameId.toString(),unitId: productinfo.unitId.toString(),unitName:productinfo.unitName.toString(),
+    newFlag: productinfo.newFlag==null ? "false" : productinfo.newFlag.toString(),);
 
     print("Product barcode in bloc: "+ master.id.toString());
 
@@ -129,6 +137,13 @@ class MasterData_Bloc{
 
     print("FROM BLOC");
 
+  }
+
+  syncDatatoAPI() async{
+    List<MasterDataModel> newmasterdata = await _repository.getAllMAsterNewProduct();
+    for(int i = 0;i<newmasterdata.length;i++){
+      print(newmasterdata[i].productName.toString());
+    }
   }
 
 

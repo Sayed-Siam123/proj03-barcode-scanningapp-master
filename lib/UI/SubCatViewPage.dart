@@ -359,7 +359,8 @@ class _SubCatPageViewState extends State<SubCatPageView> {
                                 subCategoryName: null,
                                 categoryId: null,
                                 categoryName: null,
-                                updateFlag: 'true',
+                                updateFlag: 'false',
+                                newFlag: "true",
                               );
 
                               Navigator.pop(context);

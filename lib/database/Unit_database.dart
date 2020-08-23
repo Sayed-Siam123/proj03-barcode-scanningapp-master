@@ -16,6 +16,7 @@ String unit_isEdit = 'isEdit';
 String unit_isDelete = 'isDelete';
 String unit_isDeactivate = 'isDeactivate';
 String unit_updateFlag = 'updateFlag';
+String unit_newFlag = 'newFlag';
 
 
 class DatabaseProvider_unit {
@@ -48,6 +49,6 @@ class DatabaseProvider_unit {
 
   void initDB(Database database, int version) async {
     await database.execute('CREATE TABLE $unitTABLE($unit_Id TEXT, $unit_name TEXT, $unit_short TEXT,'
-        '$unit_desc TEXT, $unit_isView TEXT, $unit_isAdd TEXT, $unit_isEdit TEXT,$unit_isDelete TEXT,$unit_isDeactivate TEXT,$unit_updateFlag TEXT)');
+        '$unit_desc TEXT, $unit_isView TEXT, $unit_isAdd TEXT, $unit_isEdit TEXT,$unit_isDelete TEXT,$unit_isDeactivate TEXT,$unit_updateFlag TEXT,$unit_newFlag TEXT)');
   }
 }

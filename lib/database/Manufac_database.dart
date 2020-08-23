@@ -15,6 +15,7 @@ String manufac_isEdit = 'isEdit';
 String manufac_isDelete = 'isDelete';
 String manufac_isDeactivate = 'isDeactivate';
 String manufac_updateFlag = 'updateFlag';
+String manufac_newFlag = 'newFlag';
 
 
 class DatabaseProvider_manufac {
@@ -47,6 +48,6 @@ class DatabaseProvider_manufac {
 
   void initDB(Database database, int version) async {
     await database.execute('CREATE TABLE $manufacTABLE($manufac_Id TEXT, $manufac_name TEXT, '
-        '$manufac_desc TEXT, $manufac_isView TEXT, $manufac_isAdd TEXT, $manufac_isEdit TEXT,$manufac_isDelete TEXT,$manufac_isDeactivate TEXT,$manufac_updateFlag TEXT)');
+        '$manufac_desc TEXT, $manufac_isView TEXT, $manufac_isAdd TEXT, $manufac_isEdit TEXT,$manufac_isDelete TEXT,$manufac_isDeactivate TEXT,$manufac_updateFlag TEXT,$manufac_newFlag TEXT)');
   }
 }

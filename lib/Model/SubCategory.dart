@@ -1,11 +1,11 @@
 class SubCategoryModel{
 
   String sl;
-  String id=null,subCategoryName=null,subcategoryDescription=null,isView=null,isAdd=null,isEdit=null,isDelete=null,isDeactivate=null,categoryId=null,categoryName=null,updateFlag=null;
+  String id=null,subCategoryName=null,subcategoryDescription=null,isView=null,isAdd=null,isEdit=null,isDelete=null,isDeactivate=null,categoryId=null,categoryName=null,updateFlag=null,newFlag=null;
 
 
   SubCategoryModel({this.subCategoryName,this.isEdit,this.id,this.subcategoryDescription,this.isDelete,this.isView,this.isDeactivate,this.isAdd,this.categoryName,
-  this.categoryId,this.updateFlag});
+  this.categoryId,this.updateFlag,this.newFlag});
 
 
   Map<String, dynamic> toMap() => {
@@ -20,6 +20,7 @@ class SubCategoryModel{
     "updateFlag" : this.updateFlag,
     "categoryId": this.categoryId,
     "categoryName" : this.categoryName,
+    "newFlag" : this.newFlag,
 
   };
 
@@ -37,7 +38,12 @@ class SubCategoryModel{
       categoryId: json['categoryId'],
       categoryName: json['categoryName'],
       updateFlag: json['updateFlag'],
+      newFlag: json['newFlag'],
     );
+  }
+
+  String toString() {
+    return '${subCategoryName}';
   }
 
 }

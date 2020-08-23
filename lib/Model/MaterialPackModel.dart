@@ -1,10 +1,10 @@
 class MaterialPackModel{
 
   String sl;
-  String id=null,materialName=null,materialDescription=null,isView=null,isAdd=null,isEdit=null,isDelete=null,isDeactivate=null,updateFlag=null;
+  String id=null,materialName=null,materialDescription=null,isView=null,isAdd=null,isEdit=null,isDelete=null,isDeactivate=null,updateFlag=null,newFlag=null;
 
 
-  MaterialPackModel({this.materialName,this.isEdit,this.id,this.materialDescription,this.isDelete,this.isView,this.isDeactivate,this.isAdd,this.updateFlag});
+  MaterialPackModel({this.materialName,this.isEdit,this.id,this.materialDescription,this.isDelete,this.isView,this.isDeactivate,this.isAdd,this.updateFlag,this.newFlag});
 
 
   Map<String, dynamic> toMap() => {
@@ -17,7 +17,7 @@ class MaterialPackModel{
     'isDelete': this.isDelete,
     "isDeactivate" : this.isDeactivate,
     "updateFlag" : this.updateFlag,
-
+    "newFlag" : this.newFlag,
   };
 
 
@@ -32,7 +32,12 @@ class MaterialPackModel{
       isDelete: json['isDelete'],
       isDeactivate: json['isDeactivate'],
       updateFlag: json['updateFlag'],
+      newFlag: json['newFlag'],
     );
+  }
+
+  String toString() {
+    return '${materialName}';
   }
 
 }

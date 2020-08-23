@@ -239,7 +239,8 @@ class _CategorieViewPageState extends State<CategorieViewPage> {
                         CategoryModel data = CategoryModel(
                           id: null,
                           categoryName: null,
-                          updateFlag: "true",
+                          updateFlag: "false",
+                          newFlag: 'true',
                         );
 
                         Navigator.pop(context);

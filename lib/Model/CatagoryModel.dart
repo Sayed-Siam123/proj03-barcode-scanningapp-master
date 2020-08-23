@@ -1,10 +1,10 @@
 class CategoryModel{
 
   String sl;
-  String id=null,categoryName=null,categoryDescription=null,isView=null,isAdd=null,isEdit=null,isDelete=null,isDeactivate=null,updateFlag=null;
+  String id=null,categoryName=null,categoryDescription=null,isView=null,isAdd=null,isEdit=null,isDelete=null,isDeactivate=null,updateFlag=null,newFlag=null;
 
 
-  CategoryModel({this.categoryName,this.isEdit,this.id,this.categoryDescription,this.isDelete,this.isView,this.isDeactivate,this.isAdd,this.updateFlag});
+  CategoryModel({this.categoryName,this.isEdit,this.id,this.categoryDescription,this.isDelete,this.isView,this.isDeactivate,this.isAdd,this.updateFlag,this.newFlag});
 
 
 
@@ -18,6 +18,7 @@ class CategoryModel{
     'isDelete': this.isDelete,
     "isDeactivate" : this.isDeactivate,
     "updateFlag" : this.updateFlag,
+    "newFlag" :this.newFlag,
 
   };
 
@@ -33,8 +34,13 @@ class CategoryModel{
       isDelete: json['isDelete'],
       isDeactivate: json['isDeactivate'],
       updateFlag: json['updateFlag'],
+      newFlag: json['newFlag']
 
     );
+  }
+
+  String toString() {
+    return '${categoryName}';
   }
 
 }

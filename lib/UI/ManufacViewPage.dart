@@ -245,7 +245,8 @@ class _ManufacViewPageState extends State<ManufacViewPage> {
                             ManufactureModel data = ManufactureModel(
                               id: null,
                               manufacturerName: null,
-                              updateFlag: "true",
+                              updateFlag: "false",
+                              newFlag: "true",
                             );
 
                             print(data.manufacturerName.toString());

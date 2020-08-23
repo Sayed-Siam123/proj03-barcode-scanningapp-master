@@ -6,6 +6,7 @@ import 'package:app/Model/PickupDeliveryModel.dart';
 import 'package:app/Model/SubCategory.dart';
 import 'package:app/Model/masterdata_model.dart';
 import 'package:app/Model/unit_model.dart';
+import 'package:app/UI/PackageMaterial.dart';
 import 'package:app/database/Category_database.dart';
 import 'package:app/database/Delivery_database.dart';
 import 'package:app/database/Manufac_database.dart';
@@ -172,6 +173,47 @@ class ProductDB {
     return product;
   }
 
+  Future<List<SingleMasterDataModel>> getsinglemasterdatafromDB(String id,
+      {List<String> columns, String query}) async {
+
+    print("ProductID is: "+id.toString());
+
+    var db = await masterdataDBprovider.database;
+    print("Eikhane");
+    var result = await db.query(masterTABLE, where: "id = ?", whereArgs: [id.toString()], orderBy: '$master_Id ASC');
+
+
+    List<SingleMasterDataModel> product = result.isNotEmpty
+        ? result.map((item) => SingleMasterDataModel.fromJson(item)).toList()
+        : [];
+    return product;
+  }
+
+
+  Future<List<MasterDataModel>> getAllMAsterNewProduct({List<String> columns, String query}) async {
+
+    String status = "true";
+
+    var db = await masterdataDBprovider.database;
+    print("Eikhane");
+    var result = await db.query(masterTABLE, where: "newFlag = ?", whereArgs: [status], orderBy: '$master_Id ASC');
+
+
+    List<MasterDataModel> product = result.isNotEmpty
+        ? result.map((item) => MasterDataModel.fromJson(item)).toList()
+        : [];
+    return product;
+  }
+
+  Future<int> updateMaster(MasterDataModel product) async {
+    final db = await masterdataDBprovider.database;
+
+    var result = await db.update(masterTABLE, product.toMap(),
+        where: "id = ?", whereArgs: [product.id]);
+
+    return result;
+  }
+
 //MASTERDATA DB END
 
 //CATEGORY DB START
@@ -198,6 +240,15 @@ class ProductDB {
         ? result.map((item) => CategoryModel.fromJson(item)).toList()
         : [];
     return product;
+  }
+
+  Future<int> updateCat(CategoryModel product) async {
+    final db = await catDBprovider.database;
+
+    var result = await db.update(catTABLE, product.toMap(),
+        where: "id = ?", whereArgs: [product.id]);
+
+    return result;
   }
 //CATEGORY DB END
 
@@ -227,6 +278,15 @@ class ProductDB {
         ? result.map((item) => SubCategoryModel.fromJson(item)).toList()
         : [];
     return product;
+  }
+
+  Future<int> updateSubcat(SubCategoryModel product) async {
+    final db = await subcatDBprovider.database;
+
+    var result = await db.update(subcatTABLE, product.toMap(),
+        where: "id = ?", whereArgs: [product.id]);
+
+    return result;
   }
 
 //SUBCATEGORY DB END
@@ -259,6 +319,15 @@ class ProductDB {
     return product;
   }
 
+  Future<int> updateManufac(ManufactureModel product) async {
+    final db = await manufacDBprovider.database;
+
+    var result = await db.update(manufacTABLE, product.toMap(),
+        where: "id = ?", whereArgs: [product.id]);
+
+    return result;
+  }
+
   //MANUFAC DB END
 
 
@@ -289,6 +358,15 @@ class ProductDB {
     return product;
   }
 
+  Future<int> updateUnit(UnitModel product) async {
+    final db = await unitDBprovider.database;
+
+    var result = await db.update(unitTABLE, product.toMap(),
+        where: "id = ?", whereArgs: [product.id]);
+
+    return result;
+  }
+
 //UNIT DB END
 
 
@@ -317,6 +395,15 @@ class ProductDB {
         ? result.map((item) => MaterialPackModel.fromJson(item)).toList()
         : [];
     return product;
+  }
+
+  Future<int> updatePackMat(MaterialPackModel product) async {
+    final db = await packmatDBprovider.database;
+
+    var result = await db.update(packmatTABLE, product.toMap(),
+        where: "id = ?", whereArgs: [product.id]);
+
+    return result;
   }
 
 //PACKEGING_MATERIAL DB END

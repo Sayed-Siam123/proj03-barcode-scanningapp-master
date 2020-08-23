@@ -15,7 +15,7 @@ String cat_isEdit = 'isEdit';
 String cat_isDelete = 'isDelete';
 String cat_isDeactivate = 'isDeactivate';
 String cat_updateFlag = 'updateFlag';
-
+String cat_newFlag = 'newFlag';
 
 class DatabaseProvider_category {
   static final DatabaseProvider_category dbProvider_category = DatabaseProvider_category();
@@ -47,6 +47,6 @@ class DatabaseProvider_category {
 
   void initDB(Database database, int version) async {
     await database.execute('CREATE TABLE $catTABLE($cat_Id TEXT, $cat_name TEXT, '
-        '$cat_desc TEXT, $cat_isView TEXT, $cat_isAdd TEXT, $cat_isEdit TEXT,$cat_isDelete TEXT,$cat_isDeactivate TEXT,$cat_updateFlag TEXT)');
+        '$cat_desc TEXT, $cat_isView TEXT, $cat_isAdd TEXT, $cat_isEdit TEXT,$cat_isDelete TEXT,$cat_isDeactivate TEXT,$cat_updateFlag TEXT,$cat_newFlag TEXT)');
   }
 }

@@ -14,7 +14,7 @@ class _ProductPackagingPageState extends State<ProductPackagingPage> {
   @override
   void initState() {
     // TODO: implement initState
-    masterdata_bloc.getsinglemasterdata();
+    masterdata_bloc.getsinglemasterdatafromDB();
     super.initState();
   }
 

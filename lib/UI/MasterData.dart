@@ -13,6 +13,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:sweetalert/sweetalert.dart';
 
 class MasterData extends StatefulWidget {
@@ -28,7 +29,7 @@ class _MasterDataState extends State<MasterData> {
   TextEditingController _searchQueryController = TextEditingController();
   bool _isSearching = false;
   String searchQuery = "Search query";
-
+  ProgressDialog pr;
   List<MasterDataModel> _newData = [];
   List<MasterDataModel> fetcheddata = [];
 
@@ -68,7 +69,55 @@ class _MasterDataState extends State<MasterData> {
     );
   }
 
+  _showDialog2(BuildContext context) async {
+
+//    pr = ProgressDialog(
+//      context,
+//      type: ProgressDialogType.Download,
+//      textDirection: TextDirection.rtl,
+//      isDismissible: true,
+////      customBody: LinearProgressIndicator(
+////        valueColor: AlwaysStoppedAnimation<Color>(Colors.blueAccent),
+////        backgroundColor: Colors.white,
+////      ),
+//    );
+//
+//    pr.style(
+////      message: 'Downloading file...',
+//      message:
+//      'Please Wait',
+//      borderRadius: 10.0,
+//      backgroundColor: Colors.white,
+//      elevation: 10.0,
+//      insetAnimCurve: Curves.easeInOut,
+//      progress: 0.0,
+//      progressWidgetAlignment: Alignment.center,
+//      maxProgress: 100.0,
+//      progressTextStyle: TextStyle(
+//          color: Colors.black, fontSize: 13.0, fontWeight: FontWeight.w400),
+//      messageTextStyle: TextStyle(
+//          color: Colors.black, fontSize: 19.0, fontWeight: FontWeight.w600),
+//    );
+
+    pr = new ProgressDialog(context,type: ProgressDialogType.Normal);
+
+    pr.style(
+      message: 'Backing up data. Please wait...',
+      borderRadius: 10.0,
+      backgroundColor: Colors.white,
+      progressWidget: CircularProgressIndicator(),
+      elevation: 10.0,
+      insetAnimCurve: Curves.easeInOut,
+      progressTextStyle: TextStyle(
+          color: Colors.black, fontSize: 13.0, fontWeight: FontWeight.w400),
+      messageTextStyle: TextStyle(
+          color: Colors.black, fontSize: 19.0, fontWeight: FontWeight.w600),
+    );
+
+  }
+
   Widget build(BuildContext context) {
+    _showDialog2(context);
     return WillPopScope(
       onWillPop: () => Navigator.push(
           context, MaterialPageRoute(builder: (context) => HomePage())),
@@ -152,9 +201,18 @@ class _MasterDataState extends State<MasterData> {
 
                   var connectivityResult = await (Connectivity().checkConnectivity());
                   if (connectivityResult == ConnectivityResult.mobile) {
-                    _showDialog1("Mobile Internet OK");
+                    //_showDialog1("Mobile Internet OK");
                   } else if (connectivityResult == ConnectivityResult.wifi) {
-                    _showDialog1("WiFi Internet OK");
+                    //_showDialog1("WiFi Internet OK");
+                    pr.show();
+                    masterdata_bloc.syncDatatoAPI(); //sync the data to api
+                    Future.delayed(Duration(seconds: 3)).then((value) {
+                      pr.hide().whenComplete(() {
+//                        Navigator.of(context).push(CupertinoPageRoute(
+//                            builder: (BuildContext context) => SecondScreen()));
+                      print("COmpleted");
+                      });
+                    });
                   } else {
                     print("No internet");
                     _showDialog("No Internet");

@@ -61,11 +61,12 @@ class _ProductEditPageState extends State<ProductEditPage> {
   final Color _hintcolor = new HexColor("#737373");
 
   HandlerClass handle;
+  List<SingleMasterDataModel> data;
 
   @override
   void initState() {
     // TODO: implement initState
-    masterdata_bloc.getsinglemasterdata();
+    masterdata_bloc.getsinglemasterdatafromDB();
     //productName.text = widget.productname;
     print(widget.productname);
     super.initState();
@@ -102,10 +103,10 @@ class _ProductEditPageState extends State<ProductEditPage> {
             color: Colors.black54,
           ),
           onPressed: () => Navigator.push(
-              context, MaterialPageRoute(builder: (context) => DetailsPage())),
+              context, MaterialPageRoute(builder: (context) => DetailsPage(product_name: data[0].productName))),
         ),
         actions: <Widget>[
-          /*new IconButton(
+          new IconButton(
               icon: new Icon(
                 Icons.save,
                 color: Colors.black54,
@@ -173,9 +174,14 @@ class _ProductEditPageState extends State<ProductEditPage> {
                 sublist_bloc.getPreviousSubCategoryID(sub_categoryID);
                 sublist_bloc.getPreviousUnitID(unitID);
 
+                sublist_bloc.getPreviousCategoryName(category);
+                sublist_bloc.getPreviousManufacturerName(manufac);
+                sublist_bloc.getPreviousSubCategoryName(sub_category);
+                sublist_bloc.getPreviousUnitName(unit);
+
 //
                 print("eikhnane submit");
-                sublist_bloc.UpdateProductMasterData();
+                sublist_bloc.UpdateProductMasterDatatoDB();
                 sublist_bloc.dispose();
 //              sublist_bloc.dispose();
 
@@ -194,9 +200,9 @@ class _ProductEditPageState extends State<ProductEditPage> {
                     textColor: Colors.white,
                     fontSize: 16.0);
 
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => MasterData()));
-              }),*/
+//                Navigator.push(context,
+//                    MaterialPageRoute(builder: (context) => MasterData()));
+              }),
         ],
       ),
       body: DirectSelectContainer(
@@ -211,7 +217,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
                       builder: (context,
                           AsyncSnapshot<List<SingleMasterDataModel>> snapshot) {
                         if (snapshot.hasData) {
-                          List<SingleMasterDataModel> data = snapshot.data;
+                          data = snapshot.data;
                           print("Data gula:: ");
                           print(data.length);
                           //return masterdataview(data);
@@ -588,7 +594,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
                                     ResponsiveGridCol(
                                       lg: 12,
                                       child: Container(
-                                          height: 90,
+                                          height: 95,
                                           alignment: Alignment.center,
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -599,7 +605,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
                                                   child: Row(
                                                     children: <Widget>[
                                                       Container(
-                                                        child: EditProductCategoryDropDown(),
+                                                        child: EditProductCategoryDropDown(category: category),
                                                       ),
                                                     ],
                                                   ),
@@ -613,7 +619,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
                                     ResponsiveGridCol(
                                       lg: 12,
                                       child: Container(
-                                          height: 90,
+                                          height: 95,
                                           alignment: Alignment.center,
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -624,7 +630,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
                                                   child: Row(
                                                     children: <Widget>[
                                                       Container(
-                                                        child: EditProductSubCategoryDropDown(),
+                                                        child: EditProductSubCategoryDropDown(subcat: sub_category,),
                                                       ),
                                                     ],
                                                   ),
@@ -638,7 +644,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
                                     ResponsiveGridCol(
                                       lg: 12,
                                       child: Container(
-                                          height: 90,
+                                          height: 95,
                                           alignment: Alignment.center,
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -649,7 +655,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
                                                   child: Row(
                                                     children: <Widget>[
                                                       Container(
-                                                        child: EditProductManufacturerDropDown(),
+                                                        child: EditProductManufacturerDropDown(manufac: manufac,),
                                                       ),
                                                     ],
                                                   ),
@@ -663,7 +669,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
                                     ResponsiveGridCol(
                                       lg: 12,
                                       child: Container(
-                                          height: 90,
+                                          height: 95,
                                           alignment: Alignment.center,
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -674,7 +680,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
                                                   child: Row(
                                                     children: <Widget>[
                                                       Container(
-                                                        child: EditProductUnitDropDown(),
+                                                        child: EditProductUnitDropDown(unit: unit,),
                                                       ),
                                                     ],
                                                   ),

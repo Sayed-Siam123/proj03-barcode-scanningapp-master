@@ -270,7 +270,8 @@ class _ManufacListState extends State<ManufacList> {
 
                             sublist_bloc.getManufacturerID(id.toString());
                             sublist_bloc.getmanufacturer(_inputcontrol1.text);
-                            sublist_bloc.updatemanufacturer();
+                            sublist_bloc.updateManufacDatafromDB();
+                            sublist_bloc.dispose();
 
                             _inputcontrol1.text = "";
                             //_inputcontrol2.text = "";

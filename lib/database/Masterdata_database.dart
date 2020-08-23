@@ -19,7 +19,7 @@ String masterlistPrice = 'listPrice';
 String masterproductPicture = 'productPicture';
 String masterproductWeight = 'productWeight';
 String masterupdateFlag = 'updateFlag';
-
+String masternewFlag = 'newFlag';
 String mastermanufacturerId = 'manufacturerId';
 String mastermanufacturerPN = 'manufacturerPN';
 String masterunitId = 'unitId';
@@ -64,7 +64,7 @@ class DatabaseProvider_Masterdata {
   void initDB(Database database, int version) async {
     await database.execute('CREATE TABLE $masterTABLE($master_Id TEXT, '
         '$masterProd_name TEXT, $masterProd_manufacturerName TEXT,$mastermanufacturerId TEXT,$mastermanufacturerPN TEXT, $mastercategoryName TEXT,$mastercategoryNameId TEXT,$mastersubCategoryName TEXT,$mastersubCategoryNameId TEXT,$masterproductDescription TEXT,'
-        '$masterpackagingUnit TEXT,$masterlistPrice TEXT,$masterproductPicture TEXT,$masterreferenceNo TEXT,$masterproductWeight TEXT,$masterProd_gtin TEXT,$masterupdateFlag TEXT,'
+        '$masterpackagingUnit TEXT,$masterlistPrice TEXT,$masterproductPicture TEXT,$masterreferenceNo TEXT,$masterproductWeight TEXT,$masterProd_gtin TEXT,$masterupdateFlag TEXT,$masternewFlag TEXT,'
     '$masterunitId TEXT,$masterunitName TEXT,$masterisTransferToApp TEXT,$masterisOrderableViaApp TEXT,$masterproductHeight TEXT,$masterproductWidth TEXT,$masterproductLength TEXT)');
   }
 }

@@ -15,6 +15,7 @@ String subcat_isEdit = 'isEdit';
 String subcat_isDelete = 'isDelete';
 String subcat_isDeactivate = 'isDeactivate';
 String subcat_updateFlag = 'updateFlag';
+String subcat_newFlag = 'newFlag';
 String subcat_catID = 'categoryId';
 String subcat_catName = 'categoryName';
 
@@ -49,6 +50,6 @@ class DatabaseProvider_subcat {
 
   void initDB(Database database, int version) async {
     await database.execute('CREATE TABLE $subcatTABLE($subcat_Id TEXT, $subcat_name TEXT, '
-        '$subcat_desc TEXT, $subcat_isView TEXT, $subcat_isAdd TEXT, $subcat_isEdit TEXT,$subcat_isDelete TEXT,$subcat_isDeactivate TEXT,$subcat_updateFlag TEXT,$subcat_catID TEXT,$subcat_catName TEXT)');
+        '$subcat_desc TEXT, $subcat_isView TEXT, $subcat_isAdd TEXT, $subcat_isEdit TEXT,$subcat_isDelete TEXT,$subcat_isDeactivate TEXT,$subcat_updateFlag TEXT,$subcat_catID TEXT,$subcat_catName TEXT,$subcat_newFlag TEXT)');
   }
 }

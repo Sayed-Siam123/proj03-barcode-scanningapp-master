@@ -1,10 +1,12 @@
 import 'package:app/Bloc/Sublist_bloc.dart';
+import 'package:app/Bloc/masterData_bloc.dart';
 import 'package:app/Model/ManufactureModel.dart';
 import 'package:direct_select_flutter/direct_select_item.dart';
 import 'package:direct_select_flutter/direct_select_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:searchable_dropdown/searchable_dropdown.dart';
 
 class EditProductManufacturerDropDown extends StatefulWidget {
   String manufac, previous_id;
@@ -21,6 +23,7 @@ class _EditProductManufacturerDropDownState
   //List<CategoryModel> _valCategoryName = List();
 
   String _valManufacName = "";
+  String _valManufacID = "";
 
   ManufactureModel manufacturer;
   List<ManufactureModel> data;
@@ -31,7 +34,8 @@ class _EditProductManufacturerDropDownState
   void initState() {
     // TODO: implement initState
     super.initState();
-    sublist_bloc.fetchAllManufacData();
+    sublist_bloc.fetchAllManufacDatafromDB();
+    masterdata_bloc.getsinglemasterdatafromDB();
   }
 
   @override
@@ -195,58 +199,112 @@ class _EditProductManufacturerDropDownState
                         ),
                       ),
 
+//                      Padding(
+//                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+//                        child: Container(
+//                          decoration: _getShadowDecoration(),
+//                          child: Card(
+//                              child: Row(
+//                                mainAxisSize: MainAxisSize.min,
+//                                children: <Widget>[
+//                                  Flexible(
+//                                    fit: FlexFit.loose,
+//                                    child: SizedBox(
+//                                      width: MediaQuery.of(context).size.width-60,
+//                                      height: 50,
+//                                      child: DirectSelectList<ManufactureModel>(
+//                                        onUserTappedListener: () {
+//                                          Scaffold.of(context).showSnackBar(SnackBar(
+//                                            content: Text(
+//                                              'Hold and drag the item',
+//                                              style: GoogleFonts.exo2(
+//                                                textStyle: TextStyle(
+//                                                  fontSize: 16,
+//                                                ),
+//                                              ),
+//                                            ),
+//                                            duration: Duration(seconds: 2),
+//                                          ));
+//                                        },
+//                                        values: data,
+//                                        itemBuilder: (ManufactureModel category) =>
+//                                            getDropDownMenuItem(category),
+//                                        focusedItemDecoration: _getDslDecoration(),
+//                                        onItemSelectedListener: (value, selectedIndex, context) {
+//                                          FocusScope.of(context).requestFocus(FocusNode());
+//                                          manufacturer = value;
+//
+////                                          print(categorySelect.categoryName.toString());
+////                                          print("ID HOITESE: " + categorySelect.id);
+////                                          sublist_bloc.getCategoryID(categorySelect.id);
+//
+//
+//                                        },
+//                                      ),
+//                                    ),
+//                                  ),
+//                                  Padding(
+//                                    padding: EdgeInsets.only(right: 8),
+//                                    child: _getDropdownIcon(),
+//                                  )
+//                                ],
+//                              )),
+//                        ),
+//                      ),
+
                       Padding(
                         padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                         child: Container(
                           decoration: _getShadowDecoration(),
                           child: Card(
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Flexible(
-                                    fit: FlexFit.loose,
-                                    child: SizedBox(
-                                      width: MediaQuery.of(context).size.width-60,
-                                      height: 50,
-                                      child: DirectSelectList<ManufactureModel>(
-                                        onUserTappedListener: () {
-                                          Scaffold.of(context).showSnackBar(SnackBar(
-                                            content: Text(
-                                              'Hold and drag the item',
-                                              style: GoogleFonts.exo2(
-                                                textStyle: TextStyle(
-                                                  fontSize: 16,
-                                                ),
-                                              ),
-                                            ),
-                                            duration: Duration(seconds: 2),
-                                          ));
-                                        },
-                                        values: data,
-                                        itemBuilder: (ManufactureModel category) =>
-                                            getDropDownMenuItem(category),
-                                        focusedItemDecoration: _getDslDecoration(),
-                                        onItemSelectedListener: (value, selectedIndex, context) {
-                                          FocusScope.of(context).requestFocus(FocusNode());
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Container(
+                                  width: MediaQuery.of(context).size.width-30,
+                                  height: 70,
+                                  child: Padding(
+                                    padding: const EdgeInsets.fromLTRB(0,2,0,0),
+                                    child: SearchableDropdown.single(
+                                      clearIcon: null,
+                                      items: data.map((item) {
+                                        return new DropdownMenuItem<ManufactureModel>(
+                                            child: Padding(
+                                              padding: const EdgeInsets.fromLTRB(0,0,0,0),
+                                              child: Text(item.manufacturerName),
+                                            ), value: item);
+                                      }).toList(),
+                                      value: manufacturer,
+                                      hint: widget.manufac.toString(),
+                                      searchHint: "Select one",
+                                      isCaseSensitiveSearch: true,
+                                      onChanged: (value) {
+                                        setState(() {
                                           manufacturer = value;
-
-//                                          print(categorySelect.categoryName.toString());
-//                                          print("ID HOITESE: " + categorySelect.id);
-//                                          sublist_bloc.getCategoryID(categorySelect.id);
-
-
-                                        },
+                                          _valManufacID = value.id.toString();
+                                          _valManufacName = value.manufacturerName.toString();
+                                        });
+                                        sublist_bloc.getManufacturerID(_valManufacID);
+                                        sublist_bloc.getManufacturerName(_valManufacName);
+                                      },
+                                      isExpanded: true,
+                                      underline: Container(
+                                        height: 0.0,
+                                        decoration: BoxDecoration(
+                                            border:
+                                            Border(bottom: BorderSide(color: Colors.transparent, width: 0.0))),
                                       ),
                                     ),
                                   ),
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 8),
-                                    child: _getDropdownIcon(),
-                                  )
-                                ],
-                              )),
+
+                                  //child: Text("Asche"),  //TODO:: eikhan theke kaj shuru hbe
+                                )],
+                            ),
+                          ),
+
                         ),
                       ),
+
                     ],
                   ),
 

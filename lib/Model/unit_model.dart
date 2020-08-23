@@ -1,10 +1,10 @@
 class UnitModel{
 
   String sl;
-  String id=null,unitName=null,unitShort=null,unitDescription=null,isView=null,isAdd=null,isEdit=null,isDelete=null,isDeactivate=null,updateFlag=null;
+  String id=null,unitName=null,unitShort=null,unitDescription=null,isView=null,isAdd=null,isEdit=null,isDelete=null,isDeactivate=null,updateFlag=null,newFlag=null;
 
 
-  UnitModel({this.unitName,this.unitShort,this.isEdit,this.id,this.unitDescription,this.isDelete,this.isView,this.isDeactivate,this.isAdd,this.updateFlag});
+  UnitModel({this.unitName,this.unitShort,this.isEdit,this.id,this.unitDescription,this.isDelete,this.isView,this.isDeactivate,this.isAdd,this.updateFlag,this.newFlag});
 
 
   Map<String, dynamic> toMap() => {
@@ -18,6 +18,7 @@ class UnitModel{
     "isDeactivate" : this.isDeactivate,
     "updateFlag" : this.updateFlag,
     "unitShort" : this.unitShort,
+    "newFlag" : this.newFlag,
 
   };
 
@@ -26,6 +27,7 @@ class UnitModel{
     return UnitModel(
       id: json['id'],
       unitName: json['unitName'],
+      unitShort: json['unitShort'],
       unitDescription: json['unitDescription'],
       isView: json['isView'],
       isAdd: json['isAdd'],
@@ -33,7 +35,12 @@ class UnitModel{
       isDelete: json['isDelete'],
       isDeactivate: json['isDeactivate'],
       updateFlag: json['updateFlag'],
+      newFlag: json['newFlag'],
     );
+  }
+
+  String toString() {
+    return '${unitName}';
   }
 
 }

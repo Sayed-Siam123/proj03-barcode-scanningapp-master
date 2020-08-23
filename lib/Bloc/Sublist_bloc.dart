@@ -71,6 +71,11 @@ class sublist_Bloc {
   final _previousUnitList = BehaviorSubject<String>();
   final _previousManufacturer = BehaviorSubject<String>();
 
+  final _previousCategoryName = BehaviorSubject<String>();
+  final _previousSubCategoryName = BehaviorSubject<String>();
+  final _previousUnitListName = BehaviorSubject<String>();
+  final _previousManufacturerName = BehaviorSubject<String>();
+
   Function(int) get getLastID => _lastID.sink.add;
 
   Function(String) get getProductName => _ProductName.sink.add;
@@ -99,13 +104,19 @@ class sublist_Bloc {
 
   Function(String) get getPreviousCategoryID => _previousCategory.sink.add;
 
-  Function(String) get getPreviousSubCategoryID =>
-      _previousSubCategory.sink.add;
+  Function(String) get getPreviousSubCategoryID => _previousSubCategory.sink.add;
 
   Function(String) get getPreviousUnitID => _previousUnitList.sink.add;
 
-  Function(String) get getPreviousManufacturerID =>
-      _previousManufacturer.sink.add;
+  Function(String) get getPreviousManufacturerID => _previousManufacturer.sink.add;
+
+  Function(String) get getPreviousCategoryName => _previousCategoryName.sink.add;
+
+  Function(String) get getPreviousSubCategoryName => _previousSubCategoryName.sink.add;
+
+  Function(String) get getPreviousUnitName => _previousUnitListName.sink.add;
+
+  Function(String) get getPreviousManufacturerName => _previousManufacturerName.sink.add;
 
   final _CreatePropductSuccessFetcher =
       PublishSubject<sublist_getsuccess_model>();
@@ -236,11 +247,29 @@ class sublist_Bloc {
       isDelete: data.isDelete.toString(),
       isDeactivate: data.isDeactivate.toString(),
       updateFlag: data.updateFlag == null ? "false" : data.updateFlag.toString(),
+      newFlag: data.newFlag == null ? "false" : data.newFlag.toString(),
       unitShort: data.unitShort ==null? _unitshort.value.toString() : data.unitShort.toString(),
     );
 
     await _repository.insertUnitdata(unitdata);
     print("MANUFAC DATA STORED IN DB");
+  }
+
+  updateUnitDatafromDB() async {
+
+    UnitModel product = UnitModel(
+      id: _UnitList.value.toString(),
+      unitName: _unit.value.toString(),
+      unitShort: _unitshort.value.toString(),
+      updateFlag: "true",
+      newFlag: "false",
+    );
+
+    print("Product ID "+ product.id.toString());
+    print("Product Name "+ product.unitName.toString());
+
+    await _repository.updateUnit(product);
+    fetchAllManufacDatafromDB();
   }
 
   //UNIT END
@@ -286,6 +315,7 @@ class sublist_Bloc {
       isDelete: data.isDelete.toString(),
       isDeactivate: data.isDeactivate.toString(),
       updateFlag: data.updateFlag == null ? "false" : data.updateFlag.toString(),
+      newFlag: data.newFlag == null ? "false" : data.newFlag.toString(),
     );
 
     await _repository.insertCatdata(catdata);
@@ -333,6 +363,7 @@ class sublist_Bloc {
       isDelete: data.isDelete.toString(),
       isDeactivate: data.isDeactivate.toString(),
       updateFlag: data.updateFlag == null ? "false" : data.updateFlag.toString(),
+      newFlag: data.newFlag == null ? "false" : data.newFlag.toString(),
       categoryId: data.categoryId == null? _Category.value.toString() : data.categoryId.toString(),
       categoryName: data.categoryName == null ? _CategoryName.value.toString() : data.categoryName.toString(),
     );
@@ -382,6 +413,7 @@ class sublist_Bloc {
       isDelete: data.isDelete.toString(),
       isDeactivate: data.isDeactivate.toString(),
       updateFlag: data.updateFlag == null ? "false" : data.updateFlag.toString(),
+      newFlag: data.newFlag == null ? "false" : data.newFlag.toString(),
     );
 
     await _repository.insertPackMatdata(materialpackdata);
@@ -430,10 +462,27 @@ class sublist_Bloc {
       isDelete: data.isDelete.toString(),
       isDeactivate: data.isDeactivate.toString(),
       updateFlag: data.updateFlag == null ? "false" : data.updateFlag.toString(),
+      newFlag: data.newFlag == null ? "false" : data.newFlag.toString(),
     );
 
     await _repository.insertManufacdata(manufacdata);
     print("MANUFAC DATA STORED IN DB");
+  }
+
+  updateManufacDatafromDB() async {
+
+    ManufactureModel product = ManufactureModel(
+      id: _Manufacturer.value.toString(),
+      manufacturerName: _manufacturer.value.toString(),
+      updateFlag: "true",
+      newFlag: "false",
+    );
+
+    print("Product ID "+ product.id.toString());
+    print("Product Name "+ product.manufacturerName.toString());
+
+   await _repository.updateManufac(product);
+   fetchAllManufacDatafromDB();
   }
 
 //MANUFAC END
@@ -565,13 +614,98 @@ class sublist_Bloc {
         productDescription: _ProductDescription.value.toString(),
         gtin: _Gtin.value.toString(),
         listPrice: _ListPrice.value.toString(),
-        updateFlag: "true",
+        updateFlag: "false",
+        newFlag: "true",
       );
 
       masterdata_bloc.insertProduct(master);
 
 
 //    _CreatePropductSuccessFetcher.sink.add(success);
+  }
+
+  UpdateProductMasterDatatoDB() async {
+//    print('id: '+_product_id.value+" CatagoryID: "+_Category.value+" SubID: "+_SubCategory.value+" UnitID: "+_UnitList.value+" ManuID: "+_Manufacturer.value+
+//        "Productname: "+_ProductName.value+" Description: "+_ProductDescription.value+" Manu PN: "+_Manufacturer_Pn.value+" Gtin: "+_Gtin.value+" ListPrice "+_ListPrice.value);
+
+//        print("Previous cat"+ _previousCategory.value);
+//        print("New Category"+ _Category.value);
+//        dispose();
+
+    var cat = _Category.value;
+    var manuid = _Manufacturer.value;
+    var subcat = _SubCategory.value;
+    var unit = _UnitList.value;
+
+    String finalcategoryID;
+    String finalSubcategoryID;
+    String finalManufacID;
+    String finalUnitID;
+
+    String finalcategoryName;
+    String finalSubcategoryName;
+    String finalManufacName;
+    String finalUnitName;
+
+    //TODO:: extra variable lagbe to store which data i will use
+
+    if (cat == null) {
+
+      finalcategoryID = _previousCategory.value;
+      finalcategoryName = _previousCategoryName.value;
+      print("Previous Cat: " + _previousCategory.value+" and "+_previousCategoryName.value);
+      print("CAT OK");
+    } else if (cat != null) {
+      finalcategoryID = _Category.value;
+      finalcategoryName = _CategoryName.value;
+      print("New Category: " + _Category.value+" and "+_CategoryName.value);
+    }
+
+    if (manuid == null) {
+      finalManufacID = _previousManufacturer.value;
+      finalManufacName = _previousManufacturerName.value;
+      print("Previous Manu: " + _previousManufacturer.value+" and "+_previousManufacturerName.value);
+      print("MANU OK");
+    } else if (manuid != null) {
+      finalManufacID = _Manufacturer.value;
+      finalManufacName = _ManufacturerName.value;
+      print("New Manu: " + _Manufacturer.value+" and "+_ManufacturerName.value);
+    }
+
+    if (subcat == null) {
+      finalSubcategoryID = _previousSubCategory.value;
+      finalSubcategoryName = _previousSubCategoryName.value;
+      print("Previous subcat: " + _previousSubCategory.value+" and "+_previousSubCategoryName.value);
+      print("subcat OK");
+    } else if (subcat != null) {
+      finalSubcategoryID = _SubCategory.value;
+      finalSubcategoryName = _SubCategoryName.value;
+      print("New subcat: " + _SubCategory.value+" and "+_SubCategoryName.value);
+    }
+
+    if (unit == null) {
+      finalUnitID = _previousUnitList.value;
+      finalUnitName = _previousUnitListName.value;
+      print("Previous unit: " + _previousUnitList.value+" and "+_previousUnitListName.value);
+      print("unit OK");
+    } else if (unit != null) {
+      finalUnitID = _UnitList.value;
+      finalUnitName = _UnitName.value;
+      print("New unit: " + _UnitList.value+" and "+_UnitName.value);
+    }
+
+
+
+    print('id: '+_product_id.value+" CatagoryID: "+finalcategoryID+" SubID: "+finalSubcategoryID+" UnitID: "+finalUnitID+" ManuID: "+finalManufacID+
+        "Productname: "+_ProductName.value+" Description: "+_ProductDescription.value+" Manu PN: "+_Manufacturer_Pn.value+" Gtin: "+_Gtin.value+" ListPrice "+_ListPrice.value);
+
+
+
+
+//    sublist_getsuccess_model success = await _repository.updateProductMasterData(_product_id.value,_ProductName.value,_ProductDescription.value,finalcategoryID,finalSubcategoryID,finalUnitID,finalManufacID,
+//        _Manufacturer_Pn.value,_Gtin.value,_ListPrice.value);
+//
+//    _UpdatePropductSuccessFetcher.sink.add(success);
   }
 
   UpdateProductMasterData() async {
@@ -592,43 +726,56 @@ class sublist_Bloc {
     String finalManufacID;
     String finalUnitID;
 
+    String finalcategoryName;
+    String finalSubcategoryName;
+    String finalManufacName;
+    String finalUnitName;
+
     //TODO:: extra variable lagbe to store which data i will use
 
     if (cat == null) {
 
       finalcategoryID = _previousCategory.value;
-      print("Previous Cat: " + _previousCategory.value);
+      finalcategoryName = _previousCategoryName.value;
+      print("Previous Cat: " + _previousCategory.value+" and "+_previousCategoryName.value);
       print("CAT OK");
     } else if (cat != null) {
       finalcategoryID = _Category.value;
-      print("New Category: " + _Category.value);
+      finalcategoryName = _CategoryName.value;
+      print("New Category: " + _Category.value+" and "+_CategoryName.value);
     }
 
     if (manuid == null) {
       finalManufacID = _previousManufacturer.value;
-      print("Previous Manu: " + _previousManufacturer.value);
+      finalManufacName = _previousManufacturerName.value;
+      print("Previous Manu: " + _previousManufacturer.value+" and "+_previousManufacturerName.value);
       print("MANU OK");
     } else if (manuid != null) {
       finalManufacID = _Manufacturer.value;
-      print("New Manu: " + _Manufacturer.value);
+      finalManufacName = _ManufacturerName.value;
+      print("New Manu: " + _Manufacturer.value+" and "+_ManufacturerName.value);
     }
 
     if (subcat == null) {
       finalSubcategoryID = _previousSubCategory.value;
-      print("Previous subcat: " + _previousSubCategory.value);
+      finalSubcategoryName = _previousSubCategoryName.value;
+      print("Previous subcat: " + _previousSubCategory.value+" and "+_previousSubCategoryName.value);
       print("subcat OK");
     } else if (subcat != null) {
       finalSubcategoryID = _SubCategory.value;
-      print("New subcat: " + _SubCategory.value);
+      finalSubcategoryName = _SubCategoryName.value;
+      print("New subcat: " + _SubCategory.value+" and "+_SubCategoryName.value);
     }
 
     if (unit == null) {
       finalUnitID = _previousUnitList.value;
-      print("Previous unit: " + _previousUnitList.value);
+      finalUnitName = _previousUnitListName.value;
+      print("Previous unit: " + _previousUnitList.value+" and "+_previousUnitListName.value);
       print("unit OK");
     } else if (unit != null) {
       finalUnitID = _UnitList.value;
-      print("New unit: " + _UnitList.value);
+      finalUnitName = _UnitName.value;
+      print("New unit: " + _UnitList.value+" and "+_UnitName.value);
     }
 
 
@@ -639,10 +786,10 @@ class sublist_Bloc {
 
 
 
-    sublist_getsuccess_model success = await _repository.updateProductMasterData(_product_id.value,_ProductName.value,_ProductDescription.value,finalcategoryID,finalSubcategoryID,finalUnitID,finalManufacID,
-        _Manufacturer_Pn.value,_Gtin.value,_ListPrice.value);
-
-    _UpdatePropductSuccessFetcher.sink.add(success);
+//    sublist_getsuccess_model success = await _repository.updateProductMasterData(_product_id.value,_ProductName.value,_ProductDescription.value,finalcategoryID,finalSubcategoryID,finalUnitID,finalManufacID,
+//        _Manufacturer_Pn.value,_Gtin.value,_ListPrice.value);
+//
+//    _UpdatePropductSuccessFetcher.sink.add(success);
   }
 
   //UPDATE SUBLIST ALL THING CODE
@@ -677,6 +824,22 @@ class sublist_Bloc {
     _previousUnitList.drain();
     _previousManufacturer.drain();
 
+    _previousManufacturerName.drain();
+    _previousSubCategoryName.drain();
+    _previousUnitListName.drain();
+    _previousManufacturerName.drain();
+
+    _CategoryName.drain();
+    _SubCategoryName.drain();
+    _ManufacturerName.drain();
+    _UnitName.drain();
+
+
+    _CategoryName.value = null;
+    _SubCategoryName.value = null;
+    _ManufacturerName.value = null;
+    _UnitName.value = null;
+
 
     _lastID.value = null;
     _Category.value = null;
@@ -688,6 +851,11 @@ class sublist_Bloc {
     _previousSubCategory.value = null;
     _previousUnitList.value = null;
     _previousManufacturer.value = null;
+
+    _previousCategoryName.value = null;
+    _previousSubCategoryName.value = null;
+    _previousUnitListName.value = null;
+    _previousManufacturerName.value = null;
 
     _ProductName.value = null;
     _ProductDescription.value = null;

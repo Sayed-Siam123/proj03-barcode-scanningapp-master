@@ -3,10 +3,10 @@
 class ManufactureModel{
 
   String sl;
-  String id=null,manufacturerName=null,manufacturerDescription=null,isView=null,isAdd=null,isEdit=null,isDelete=null,isDeactivate=null,updateFlag=null;
+  String id=null,manufacturerName=null,manufacturerDescription=null,isView=null,isAdd=null,isEdit=null,isDelete=null,isDeactivate=null,updateFlag=null,newFlag=null;
 
 
-  ManufactureModel({this.manufacturerName,this.isEdit,this.id,this.manufacturerDescription,this.isDelete,this.isView,this.isDeactivate,this.isAdd,this.updateFlag});
+  ManufactureModel({this.manufacturerName,this.isEdit,this.id,this.manufacturerDescription,this.isDelete,this.isView,this.isDeactivate,this.isAdd,this.updateFlag,this.newFlag});
 
 
   String get getmanufacId=> this.id;
@@ -66,7 +66,7 @@ class ManufactureModel{
     'isDelete': this.isDelete,
     "isDeactivate" : this.isDeactivate,
     "updateFlag" : this.updateFlag,
-
+    "newFlag" : this.newFlag,
   };
 
   factory ManufactureModel.fromJson(Map<String, dynamic> json) {
@@ -80,8 +80,13 @@ class ManufactureModel{
       isDelete: json['isDelete'],
       isDeactivate: json['isDeactivate'],
       updateFlag: json['updateFlag'],
+      newFlag: json['newFlag'],
 
     );
+  }
+
+  String toString() {
+    return '${manufacturerName}';
   }
 
 }
