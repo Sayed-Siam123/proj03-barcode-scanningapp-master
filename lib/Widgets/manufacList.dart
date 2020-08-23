@@ -1,5 +1,6 @@
 import 'package:app/Bloc/Sublist_bloc.dart';
 import 'package:app/Model/ManufactureModel.dart';
+import 'package:app/UI/ManufacViewPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -30,7 +31,7 @@ class _ManufacListState extends State<ManufacList> {
 
   void initState() {
     // TODO: implement initState
-    sublist_bloc.fetchAllManufacData();
+    sublist_bloc.fetchAllManufacDatafromDB();
     super.initState();
   }
 
@@ -45,6 +46,9 @@ class _ManufacListState extends State<ManufacList> {
             List<ManufactureModel> data = snapshot.data;
             print("Data gula:: ");
             print(data.length);
+            int lastID = int.parse(data.last.id.toString());
+            print(lastID.toString());
+            sublist_bloc.getLastID(lastID); //to get last id of list
             return masterdataview(data);
           } else if (snapshot.hasError) {
             return Text("${snapshot.error}");
@@ -60,7 +64,7 @@ class _ManufacListState extends State<ManufacList> {
     return RefreshIndicator(
       key: _refreshIndicatorKey,
       onRefresh: () {
-        return sublist_bloc.fetchAllManufacData();
+        return sublist_bloc.fetchAllManufacDatafromDB();
       },
       child: ListView.builder(
           scrollDirection: Axis.vertical,

@@ -1,15 +1,26 @@
 // ignore: camel_case_types
+import 'package:app/Bloc/masterData_bloc.dart';
 import 'package:app/Model/CatagoryModel.dart';
 import 'package:app/Model/GetSuccess_Model.dart';
 import 'package:app/Model/ManufactureModel.dart';
 import 'package:app/Model/MaterialPackModel.dart';
 import 'package:app/Model/SubCategory.dart';
+import 'package:app/Model/masterdata_model.dart';
 import 'package:app/Model/unit_model.dart';
 import 'package:app/Resources/Repository.dart';
+import 'package:app/UI/PackageMaterial.dart';
 import 'package:rxdart/rxdart.dart';
 
 class sublist_Bloc {
   final _repository = Repository();
+  MasterDataModel master;
+  ManufactureModel manufacdata;
+  CategoryModel catdata;
+  SubCategoryModel subcatdata;
+  UnitModel unitdata;
+  MaterialPackModel materialpackdata;
+
+  final _lastID = BehaviorSubject<int>();
 
   final _unitFetcher = PublishSubject<List<UnitModel>>();
   final _manufacFetcher =
@@ -44,9 +55,13 @@ class sublist_Bloc {
   final _ProductName = BehaviorSubject<String>();
   final _ProductDescription = BehaviorSubject<String>();
   final _Category = BehaviorSubject<String>();
+  final _CategoryName = BehaviorSubject<String>();
   final _SubCategory = BehaviorSubject<String>();
+  final _SubCategoryName = BehaviorSubject<String>();
   final _UnitList = BehaviorSubject<String>();
+  final _UnitName = BehaviorSubject<String>();
   final _Manufacturer = BehaviorSubject<String>();
+  final _ManufacturerName = BehaviorSubject<String>();
   final _Manufacturer_Pn = BehaviorSubject<String>();
   final _Gtin = BehaviorSubject<String>();
   final _ListPrice = BehaviorSubject<String>();
@@ -56,17 +71,23 @@ class sublist_Bloc {
   final _previousUnitList = BehaviorSubject<String>();
   final _previousManufacturer = BehaviorSubject<String>();
 
+  Function(int) get getLastID => _lastID.sink.add;
+
   Function(String) get getProductName => _ProductName.sink.add;
 
   Function(String) get getProductDesc => _ProductDescription.sink.add;
 
   Function(String) get getCategoryID => _Category.sink.add;
+  Function(String) get getCategoryName => _CategoryName.sink.add;
 
   Function(String) get getSubCategoryID => _SubCategory.sink.add;
+  Function(String) get getSubCategoryName => _SubCategoryName.sink.add;
 
   Function(String) get getUnitID => _UnitList.sink.add;
+  Function(String) get getUnitName => _UnitName.sink.add;
 
   Function(String) get getManufacturerID => _Manufacturer.sink.add;
+  Function(String) get getManufacturerName => _ManufacturerName.sink.add;
 
   Function(String) get getManufacturerPn => _Manufacturer_Pn.sink.add;
 
@@ -171,32 +192,253 @@ class sublist_Bloc {
   Function(String) get getmanufacturer_id => _manufacturer_id.sink.add;
 
 //getunit_id
+//  fetchAllUnitData() async {
+//    List<UnitModel> unitdata = await _repository.getAllUnitData();
+//    _unitFetcher.sink.add(unitdata);
+//  }
+
+  //UNIT START
+
+  fetchAllUnitDatafromDB() async {
+    List<UnitModel> catdatafromDB = await _repository.getAllUnitDatafromDB();
+    _unitFetcher.sink.add(catdatafromDB);
+  }
+
   fetchAllUnitData() async {
-    List<UnitModel> unitdata = await _repository.getAllUnitData();
-    _unitFetcher.sink.add(unitdata);
+    List<UnitModel> unitapi = await _repository.getAllUnitData();
+    List<UnitModel> unitfromDB = await _repository.getAllUnitDatafromDB();
+    if(unitfromDB.isEmpty){
+
+      for(int i = 0; i<unitapi.length;i++){
+        print ("Length:: "+unitfromDB.length.toString());
+        insertUnitDatatoDB(unitapi[i]);
+
+      }
+    }
+
+    else{
+      print ("Length:: "+unitfromDB.length.toString());
+    }
+  }
+
+
+  insertUnitDatatoDB(UnitModel data) async{
+
+    print(_lastID.value.toString());
+
+    unitdata= UnitModel(
+      id: data.id==null ? (_lastID.value+1).toString() :data.id.toString(),
+      unitName: data.unitName ==null? _unit.value.toString() : data.unitName.toString(),
+      unitDescription: data.unitDescription.toString(),
+      isView: data.isView.toString(),
+      isAdd: data.isAdd.toString(),
+      isEdit: data.isEdit.toString(),
+      isDelete: data.isDelete.toString(),
+      isDeactivate: data.isDeactivate.toString(),
+      updateFlag: data.updateFlag == null ? "false" : data.updateFlag.toString(),
+      unitShort: data.unitShort ==null? _unitshort.value.toString() : data.unitShort.toString(),
+    );
+
+    await _repository.insertUnitdata(unitdata);
+    print("MANUFAC DATA STORED IN DB");
+  }
+
+  //UNIT END
+
+
+
+  //CAT START
+
+  fetchAllCatDatafromDB() async {
+    List<CategoryModel> catdatafromDB = await _repository.getAllCatDatafromDB();
+    _catagoryFetcher.sink.add(catdatafromDB);
   }
 
   fetchAllCatagoryData() async {
-    List<CategoryModel> categorydata = await _repository.getAllCatagoryData();
-    _catagoryFetcher.sink.add(categorydata);
+    List<CategoryModel> catdataapi = await _repository.getAllCatagoryData();
+    List<CategoryModel> catfromDB = await _repository.getAllCatDatafromDB();
+    if(catfromDB.isEmpty){
+
+      for(int i = 0; i<catdataapi.length;i++){
+        print ("Length:: "+catfromDB.length.toString());
+        insertCatDatatoDB(catdataapi[i]);
+
+      }
+    }
+
+    else{
+      print ("Length:: "+catfromDB.length.toString());
+    }
+  }
+
+
+  insertCatDatatoDB(CategoryModel data) async{
+
+    print(_lastID.value.toString());
+
+    catdata = CategoryModel(
+      id: data.id==null ? (_lastID.value+1).toString() :data.id.toString(),
+      categoryName: data.categoryName ==null? _category.value.toString() : data.categoryName.toString(),
+      categoryDescription: data.categoryDescription.toString(),
+      isView: data.isView.toString(),
+      isAdd: data.isAdd.toString(),
+      isEdit: data.isEdit.toString(),
+      isDelete: data.isDelete.toString(),
+      isDeactivate: data.isDeactivate.toString(),
+      updateFlag: data.updateFlag == null ? "false" : data.updateFlag.toString(),
+    );
+
+    await _repository.insertCatdata(catdata);
+    print("MANUFAC DATA STORED IN DB");
+  }
+
+  //CAT END
+
+  //SUB CAT START
+
+  fetchAllSubCatDatafromDB() async {
+    List<SubCategoryModel> materialpackdatafromDB = await _repository.getAllsubCatDatafromDB();
+    _subcatagoryFetcher.sink.add(materialpackdatafromDB);
   }
 
   fetchAllSubCatagoryData() async {
-    List<SubCategoryModel> subcategorydata =
-        await _repository.getAllSubCategoryData();
-    _subcatagoryFetcher.sink.add(subcategorydata);
+    List<SubCategoryModel> subcatdataapi = await _repository.getAllSubCategoryData();
+    List<SubCategoryModel> subcatfromDB = await _repository.getAllsubCatDatafromDB();
+    if(subcatfromDB.isEmpty){
+
+      for(int i = 0; i<subcatdataapi.length;i++){
+        print ("Length:: "+subcatfromDB.length.toString());
+        insertSubCatDatatoDB(subcatdataapi[i]);
+
+      }
+    }
+
+    else{
+      print ("Length:: "+subcatfromDB.length.toString());
+    }
+  }
+
+
+  insertSubCatDatatoDB(SubCategoryModel data) async{
+
+    print(_lastID.value.toString());
+
+    subcatdata = SubCategoryModel(
+      id: data.id==null ? (_lastID.value+1).toString() :data.id.toString(),
+      subCategoryName: data.subCategoryName ==null? _sub_category.value.toString() : data.subCategoryName.toString(),
+      subcategoryDescription: data.subcategoryDescription.toString(),
+      isView: data.isView.toString(),
+      isAdd: data.isAdd.toString(),
+      isEdit: data.isEdit.toString(),
+      isDelete: data.isDelete.toString(),
+      isDeactivate: data.isDeactivate.toString(),
+      updateFlag: data.updateFlag == null ? "false" : data.updateFlag.toString(),
+      categoryId: data.categoryId == null? _Category.value.toString() : data.categoryId.toString(),
+      categoryName: data.categoryName == null ? _CategoryName.value.toString() : data.categoryName.toString(),
+    );
+
+    await _repository.insertsubCatdata(subcatdata);
+    print("MANUFAC DATA STORED IN DB");
+  }
+
+  //SUB CAT END
+
+  //MAT PACK START
+
+  fetchAllMateralPackDatafromDB() async {
+    List<MaterialPackModel> materialpackdatafromDB = await _repository.getAllPackMatDatafromDB();
+    _materialpackFetcher.sink.add(materialpackdatafromDB);
   }
 
   fetchAllMateralPackData() async {
-    List<MaterialPackModel> materialpackdata =
-        await _repository.getAllMaterialPackData();
-    _materialpackFetcher.sink.add(materialpackdata);
+    List<MaterialPackModel> materialpackdataapi = await _repository.getAllMaterialPackData();
+    List<MaterialPackModel> materialpackdatafromDB = await _repository.getAllPackMatDatafromDB();
+    if(materialpackdatafromDB.isEmpty){
+
+      for(int i = 0; i<materialpackdataapi.length;i++){
+        print ("Length:: "+materialpackdatafromDB.length.toString());
+        insertMatPackDatatoDB(materialpackdataapi[i]);
+
+      }
+    }
+
+    else{
+      print ("Length:: "+materialpackdatafromDB.length.toString());
+    }
+  }
+
+
+  insertMatPackDatatoDB(MaterialPackModel data) async{
+
+    print(_lastID.value.toString());
+
+    materialpackdata = MaterialPackModel(
+      id: data.id==null ? (_lastID.value+1).toString() :data.id.toString(),
+      materialName: data.materialName ==null? _packaging_material.value.toString() : data.materialName.toString(),
+      materialDescription: data.materialDescription.toString(),
+      isView: data.isView.toString(),
+      isAdd: data.isAdd.toString(),
+      isEdit: data.isEdit.toString(),
+      isDelete: data.isDelete.toString(),
+      isDeactivate: data.isDeactivate.toString(),
+      updateFlag: data.updateFlag == null ? "false" : data.updateFlag.toString(),
+    );
+
+    await _repository.insertPackMatdata(materialpackdata);
+    print("MANUFAC DATA STORED IN DB");
+  }
+
+  //MAT PACK END
+
+
+  //MANUFAC START
+
+  fetchAllManufacDatafromDB() async {
+    List<ManufactureModel> manufacDatafromDB = await _repository.getAllManufacDatafromDB();
+    _manufacFetcher.sink.add(manufacDatafromDB);
   }
 
   fetchAllManufacData() async {
-    List<ManufactureModel> manufacData = await _repository.getAllmanufacData();
-    _manufacFetcher.sink.add(manufacData);
-  } //TODO::ALL GET LIST
+    List<ManufactureModel> manufacDataapi = await _repository.getAllmanufacData();
+    List<ManufactureModel> manufacDatafromDB = await _repository.getAllManufacDatafromDB();
+
+    if(manufacDatafromDB.isEmpty){
+
+      for(int i = 0; i<manufacDataapi.length;i++){
+        print ("Length:: "+manufacDatafromDB.length.toString());
+        insertManufacDatatoDB(manufacDataapi[i]);
+
+      }
+    }
+
+    else{
+      print ("Length:: "+manufacDatafromDB.length.toString());
+    }
+  }
+
+  insertManufacDatatoDB(ManufactureModel data) async{
+
+    print(_lastID.value.toString());
+
+    manufacdata = ManufactureModel(
+      id: data.id==null ? (_lastID.value+1).toString() :data.id.toString(),
+      manufacturerName: data.manufacturerName ==null? _manufacturer.value.toString() : data.manufacturerName.toString(),
+      manufacturerDescription: data.manufacturerDescription.toString(),
+      isView: data.isView.toString(),
+      isAdd: data.isAdd.toString(),
+      isEdit: data.isEdit.toString(),
+      isDelete: data.isDelete.toString(),
+      isDeactivate: data.isDeactivate.toString(),
+      updateFlag: data.updateFlag == null ? "false" : data.updateFlag.toString(),
+    );
+
+    await _repository.insertManufacdata(manufacdata);
+    print("MANUFAC DATA STORED IN DB");
+  }
+
+//MANUFAC END
+
+  //TODO::ALL GET LIST
 
   createunit() async {
     print("data:: " + _unit.value + " " + _unitshort.value);
@@ -284,6 +526,54 @@ class sublist_Bloc {
     _CreatePropductSuccessFetcher.sink.add(success);
   }
 
+  createProductMasterDatatoDB() async {
+    print("CatagoryID: " +
+        _Category.value +
+        " SubID: " +
+        _SubCategory.value +
+        " UnitID: " +
+        _UnitList.value +
+        " ManuID: " +
+        _Manufacturer.value +
+        "Productname: " +
+        _ProductName.value +
+        " Description: " +
+        _ProductDescription.value +
+        " Manu PN: " +
+        _Manufacturer_Pn.value +
+        " Gtin: " +
+        _Gtin.value +
+        " ListPrice " +
+        _ListPrice.value);
+
+    print("Product ID: " +
+        _product_id.value);
+
+
+      master = MasterDataModel(
+        id: _product_id.value.toString(),
+        productName: _ProductName.value.toString(),
+        manufacturerName: _ManufacturerName.value.toString(),
+        manufacturerId: _Manufacturer.value.toString(),
+        manufacturerPN: _Manufacturer_Pn.value.toString(),
+        categoryName: _CategoryName.value.toString(),
+        categoryNameId: _Category.value.toString(),
+        subCategoryName: _SubCategoryName.value.toString(),
+        subCategoryNameId: _SubCategory.value.toString(),
+        unitName: _UnitName.value.toString(),
+        unitId: _UnitList.value.toString(),
+        productDescription: _ProductDescription.value.toString(),
+        gtin: _Gtin.value.toString(),
+        listPrice: _ListPrice.value.toString(),
+        updateFlag: "true",
+      );
+
+      masterdata_bloc.insertProduct(master);
+
+
+//    _CreatePropductSuccessFetcher.sink.add(success);
+  }
+
   UpdateProductMasterData() async {
 //    print('id: '+_product_id.value+" CatagoryID: "+_Category.value+" SubID: "+_SubCategory.value+" UnitID: "+_UnitList.value+" ManuID: "+_Manufacturer.value+
 //        "Productname: "+_ProductName.value+" Description: "+_ProductDescription.value+" Manu PN: "+_Manufacturer_Pn.value+" Gtin: "+_Gtin.value+" ListPrice "+_ListPrice.value);
@@ -362,6 +652,7 @@ class sublist_Bloc {
 //    _id.drain();
 //    _name.drain();
 //    _posts.drain();
+    _lastID.drain();
     _product_id.drain();
 
     _unit.drain();
@@ -386,6 +677,8 @@ class sublist_Bloc {
     _previousUnitList.drain();
     _previousManufacturer.drain();
 
+
+    _lastID.value = null;
     _Category.value = null;
     _SubCategory.value = null;
     _Manufacturer.value = null;

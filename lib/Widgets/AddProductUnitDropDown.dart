@@ -25,7 +25,7 @@ class _AddProductUnitDropDownState extends State<AddProductUnitDropDown> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    sublist_bloc.fetchAllUnitData();
+    sublist_bloc.fetchAllUnitDatafromDB();
   }
 
   @override
@@ -99,6 +99,7 @@ class _AddProductUnitDropDownState extends State<AddProductUnitDropDown> {
                                           print(unitSelect.unitName.toString());
                                           print("ID HOITESE: " + unitSelect.id);
                                           sublist_bloc.getUnitID(unitSelect.id);
+                                          sublist_bloc.getUnitName(unitSelect.unitName);
 
 
                                         },

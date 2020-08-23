@@ -30,7 +30,7 @@ class _AddProductCategoryDropDownState
   void initState() {
     // TODO: implement initState
     super.initState();
-    sublist_bloc.fetchAllCatagoryData();
+    sublist_bloc.fetchAllCatDatafromDB();
   }
 
   @override
@@ -103,6 +103,7 @@ class _AddProductCategoryDropDownState
                                           print(categorySelect.categoryName.toString());
                                           print("ID HOITESE: " + categorySelect.id);
                                           sublist_bloc.getCategoryID(categorySelect.id);
+                                          sublist_bloc.getCategoryName(categorySelect.categoryName);
 
 
                                         },

@@ -25,7 +25,7 @@ class _AddProductManufacturerDropDownState
   void initState() {
     // TODO: implement initState
     super.initState();
-    sublist_bloc.fetchAllManufacData();
+    sublist_bloc.fetchAllManufacDatafromDB();
   }
 
   @override
@@ -99,8 +99,8 @@ class _AddProductManufacturerDropDownState
                                       print(manufacSelect.manufacturerName
                                           .toString());
                                       print("ID HOITESE: " + manufacSelect.id);
-                                      sublist_bloc
-                                          .getManufacturerID(manufacSelect.id);
+                                      sublist_bloc.getManufacturerID(manufacSelect.id);
+                                      sublist_bloc.getManufacturerName(manufacSelect.manufacturerName);
                                     },
                                   ),
                                 ),

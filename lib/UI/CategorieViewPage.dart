@@ -1,4 +1,5 @@
 import 'package:app/Bloc/Sublist_bloc.dart';
+import 'package:app/Model/CatagoryModel.dart';
 import 'package:app/Widgets/CategoryList.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
@@ -221,7 +222,7 @@ class _CategorieViewPageState extends State<CategorieViewPage> {
                         //print(_inputcontrol2.text);
 
                         sublist_bloc.getcategory(_inputcontrol1.text);
-                        sublist_bloc.createcategory();
+                        //sublist_bloc.createcategory();
 
                         _inputcontrol1.text = "";
                         //_inputcontrol2.text = "";
@@ -235,10 +236,16 @@ class _CategorieViewPageState extends State<CategorieViewPage> {
                             textColor: Colors.white,
                             fontSize: 16.0);
 
+                        CategoryModel data = CategoryModel(
+                          id: null,
+                          categoryName: null,
+                          updateFlag: "true",
+                        );
 
                         Navigator.pop(context);
+                        sublist_bloc.insertCatDatatoDB(data);
                         sublist_bloc.dispose();
-                        sublist_bloc.fetchAllCatagoryData();
+                        sublist_bloc.fetchAllCatDatafromDB();
 
 
                       }

@@ -1,4 +1,5 @@
 import 'package:app/Bloc/Sublist_bloc.dart';
+import 'package:app/Model/MaterialPackModel.dart';
 import 'package:app/Widgets/MaterialPackList.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +30,13 @@ class _PackageMaterialPageState extends State<PackageMaterialPage> {
   String errortext1 = "Value Can\'t Be Empty";
   String errortext2 = "Value Can\'t Be Empty";
 
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    sublist_bloc.fetchAllMateralPackDatafromDB();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -272,7 +280,6 @@ class _PackageMaterialPageState extends State<PackageMaterialPage> {
                         //print(_inputcontrol2.text);
 
                         sublist_bloc.getpackaging_material(_inputcontrol1.text);
-                        sublist_bloc.createpackagingmaterial();
 
                         _inputcontrol1.text = "";
                         //_inputcontrol2.text = "";
@@ -286,10 +293,16 @@ class _PackageMaterialPageState extends State<PackageMaterialPage> {
                             textColor: Colors.white,
                             fontSize: 16.0);
 
+                        MaterialPackModel data = MaterialPackModel(
+                          id: null,
+                          materialName: null,
+                          updateFlag: "true",
+                        );
 
                         Navigator.pop(context);
+                        sublist_bloc.insertMatPackDatatoDB(data);
                         sublist_bloc.dispose();
-                        sublist_bloc.fetchAllMateralPackData();
+                        sublist_bloc.fetchAllMateralPackDatafromDB();
 
 
                       }

@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:barcode_scan/barcode_scan.dart';
+import 'package:responsive_grid/responsive_grid.dart';
 
 class AddProductPage extends StatefulWidget {
 
@@ -78,14 +79,15 @@ class _AddProductPageState extends State<AddProductPage> {
             ),
             onPressed: () {
 
+              sublist_bloc.getProductID((widget.id+1).toString());
               sublist_bloc.getProductName(ProductName.text);
               sublist_bloc.getProductDesc(ProductDesc.text);
               sublist_bloc.getManufacturerPn(manu_pn.text);
               sublist_bloc.getGtin(gtin.text);
               sublist_bloc.getListPrice(ListPrice.text);
-              sublist_bloc.createProductMasterData();
+              sublist_bloc.createProductMasterDatatoDB();
               sublist_bloc.dispose();
-              masterdata_bloc.fetchAllMasterData();
+              masterdata_bloc.fetchAllMasterdatafromDB();
 
 //              Fluttertoast.showToast(
 //                  msg: "Product Added!",
@@ -130,50 +132,98 @@ class _AddProductPageState extends State<AddProductPage> {
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text(
-                            "Product ID",
-                            style: GoogleFonts.exo2(
-                              textStyle: TextStyle(
-                                fontSize: 14,
-                                fontStyle: FontStyle.italic
-                              ),
-                            ),
-                          ),
-                          Container(
-                            height: 35,
-                            width: 120,
-                            child: StreamBuilder<sublist_getsuccess_model>(
-                              stream: masterdata_bloc.MaxIDData,
-                              builder: (context,
-                                  AsyncSnapshot<sublist_getsuccess_model>
-                                      snapshot) {
-                                if (snapshot.hasData) {
-                                  sublist_getsuccess_model data = snapshot.data;
-                                  print("Cat er Data gula:: ");
-                                  //return masterdataview(data);
 
-                                  return Center(
-                                    child: Text(
-                                      "#"+data.id.toString(),
+                          ResponsiveGridRow(
+                            children: [
+                              ResponsiveGridCol(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 12.0),
+                                  child: Container(
+                                    child: Column(
+                                      children: <Widget>[
+                                    Text(
+                                      "Product ID",
+                                      style: GoogleFonts.exo2(
+                                        textStyle: TextStyle(
+                                            fontSize: 14,
+                                            fontStyle: FontStyle.italic),
+                                      ),
+                                    ),
+                                  ],
+                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              ResponsiveGridCol(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 12.0),
+                                  child: Container(
+                                    child: Column(
+                                      children: <Widget>[
+                                      Text(
+                                      "#"+(widget.id+1).toString(),
                                       style: GoogleFonts.exo2(
                                         textStyle: TextStyle(
                                           fontSize: 30,
                                         ),
                                       ),
                                     ),
-                                  );
-                                  //return Text(data[index].categoryName);
+                                      ],
+                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
 
-                                  //TODO:: eikhan theke start hbe
+//                          Text(
+//                            "Product ID",
+//                            style: GoogleFonts.exo2(
+//                              textStyle: TextStyle(
+//                                fontSize: 14,
+//                                fontStyle: FontStyle.italic
+//                              ),
+//                            ),
+//                          ),
+//                          Container(
+//                            height: 35,
+//                            width: 120,
+//                            child: StreamBuilder<sublist_getsuccess_model>(
+//                              stream: masterdata_bloc.MaxIDData,
+//                              builder: (context,
+//                                  AsyncSnapshot<sublist_getsuccess_model>
+//                                      snapshot) {
+//                                if (snapshot.hasData) {
+//                                  sublist_getsuccess_model data = snapshot.data;
+//                                  print("Cat er Data gula:: ");
+//                                  //return masterdataview(data);
+//
+//                                  return Center(
+//                                    child: Text(
+//                                      "#"+data.id.toString(),
+//                                      style: GoogleFonts.exo2(
+//                                        textStyle: TextStyle(
+//                                          fontSize: 30,
+//                                        ),
+//                                      ),
+//                                    ),
+//                                  );
+//                                  //return Text(data[index].categoryName);
+//
+//                                  //TODO:: eikhan theke start hbe
+//
+//                                } else if (snapshot.hasError) {
+//                                  return Text("${snapshot.error}");
+//                                }
+//
+//                                return Center(child: CircularProgressIndicator());
+//                              },
+//                            ),
+//                          ),
 
-                                } else if (snapshot.hasError) {
-                                  return Text("${snapshot.error}");
-                                }
 
-                                return Center(child: CircularProgressIndicator());
-                              },
-                            ),
-                          ),
                         ],
                       ),
                     ),

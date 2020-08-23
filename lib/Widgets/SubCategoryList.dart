@@ -18,7 +18,8 @@ class _SubCategoryListState extends State<SubCategoryList> {
 
   void initState() {
     // TODO: implement initState
-    sublist_bloc.fetchAllSubCatagoryData();
+    sublist_bloc.fetchAllCatDatafromDB();
+    sublist_bloc.fetchAllSubCatDatafromDB();
     super.initState();
 
   }
@@ -34,6 +35,9 @@ class _SubCategoryListState extends State<SubCategoryList> {
             List<SubCategoryModel> data = snapshot.data;
             print("Data gula:: ");
             print(data.length);
+            int lastID = int.parse(data.last.id.toString());
+            print(lastID.toString());
+            sublist_bloc.getLastID(lastID);
             return masterdataview(data);
 
           } else if (snapshot.hasError) {
@@ -51,7 +55,7 @@ class _SubCategoryListState extends State<SubCategoryList> {
       key: _refreshIndicatorKey,
 
       onRefresh: (){
-        return sublist_bloc.fetchAllSubCatagoryData();
+        return sublist_bloc.fetchAllSubCatDatafromDB();
       },
       child: ListView.builder(
           scrollDirection: Axis.vertical,

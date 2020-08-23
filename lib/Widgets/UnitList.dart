@@ -15,7 +15,7 @@ class _UnitListState extends State<UnitList> {
 
   void initState() {
     // TODO: implement initState
-    sublist_bloc.fetchAllUnitData();
+    sublist_bloc.fetchAllUnitDatafromDB();
     super.initState();
   }
 
@@ -30,6 +30,9 @@ class _UnitListState extends State<UnitList> {
             List<UnitModel> data = snapshot.data;
             print("Data gula:: ");
             print(data.length);
+            int lastID = int.parse(data.last.id.toString());
+            print(lastID.toString());
+            sublist_bloc.getLastID(lastID);
             return masterdataview(data);
           } else if (snapshot.hasError) {
             return Text("${snapshot.error}");
@@ -45,7 +48,7 @@ class _UnitListState extends State<UnitList> {
     return RefreshIndicator(
       key: _refreshIndicatorKey,
       onRefresh: () {
-        return sublist_bloc.fetchAllUnitData();
+        return sublist_bloc.fetchAllUnitDatafromDB();
       },
       child: ListView.builder(
           scrollDirection: Axis.vertical,

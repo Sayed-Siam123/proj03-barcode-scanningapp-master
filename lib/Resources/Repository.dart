@@ -140,10 +140,47 @@ class Repository {
   Future<List<MasterDataModel>> getAllMAsterProduct() => dbprovider.getAllMAsterProduct();
 
 
-
-
-
  //TODO:: MASTER DATA DB CONFIG AND OPERATION :: END
+
+
+//TODO:: CATEGORY DB CONFIG AND OPERATION :: START
+
+  Future insertCatdata(CategoryModel productinfo) => dbprovider.insertCatdata(productinfo);
+  Future<List<CategoryModel>> getAllCatDatafromDB() => dbprovider.getAllCatDatafromDB();
+
+  //TODO:: CATEGORY DB CONFIG AND OPERATION :: END
+
+
+//TODO:: SUBCATEGORY DB CONFIG AND OPERATION :: START
+
+  Future insertsubCatdata(SubCategoryModel productinfo) => dbprovider.insertsubCatdata(productinfo);
+  Future<List<SubCategoryModel>> getAllsubCatDatafromDB() => dbprovider.getAllsubCatDatafromDB();
+
+  //TODO:: SUBCATEGORY DB CONFIG AND OPERATION :: END
+
+
+//TODO:: MANUFAC DB CONFIG AND OPERATION :: START
+
+  Future insertManufacdata (ManufactureModel productinfo) => dbprovider.insertManufacdata(productinfo);
+  Future<List<ManufactureModel>> getAllManufacDatafromDB() => dbprovider.getAllManufacDatafromDB();
+
+  //TODO:: MANUFAC DB CONFIG AND OPERATION :: END
+
+
+//TODO:: UNIT DB CONFIG AND OPERATION :: START
+
+  Future insertUnitdata(UnitModel productinfo) => dbprovider.insertUnitdata(productinfo);
+  Future<List<UnitModel>> getAllUnitDatafromDB() => dbprovider.getAllUnitDatafromDB();
+
+  //TODO:: UNIT DB CONFIG AND OPERATION :: END
+
+
+//TODO:: PACKAGING MATERIAL DB CONFIG AND OPERATION :: START
+
+  Future insertPackMatdata(MaterialPackModel productinfo) => dbprovider.insertPackMatdata(productinfo);
+  Future<List<MaterialPackModel>> getAllPackMatDatafromDB() => dbprovider.getAllPackMatDatafromDB();
+
+  //TODO:: PACKAGING MATERIAL DB CONFIG AND OPERATION :: END
 
 
 }

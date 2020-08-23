@@ -1,4 +1,5 @@
 import 'package:app/Bloc/Sublist_bloc.dart';
+import 'package:app/Model/unit_model.dart';
 import 'package:app/UI/Sublist.dart';
 import 'package:app/Widgets/UnitList.dart';
 import 'package:flutter/cupertino.dart';
@@ -25,6 +26,13 @@ class _UnitPageViewState extends State<UnitPageView> {
 
   String errortext1 = "*value can\'t be empty";
   String errortext2 = "*value can\'t be empty";
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    sublist_bloc.fetchAllUnitDatafromDB();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -238,7 +246,7 @@ class _UnitPageViewState extends State<UnitPageView> {
 
                       sublist_bloc.getUnit(_inputcontrol1.text);
                       sublist_bloc.getUnitShort(_inputcontrol1.text);
-                      sublist_bloc.createunit();
+                      //sublist_bloc.createunit();
 
                       _inputcontrol1.text = "";
                       _inputcontrol2.text = "";
@@ -252,9 +260,17 @@ class _UnitPageViewState extends State<UnitPageView> {
                           textColor: Colors.white,
                           fontSize: 16.0);
 
+                      UnitModel data = UnitModel(
+                        id: null,
+                        unitName: null,
+                        unitShort: null,
+                        updateFlag: 'true',
+                      );
+
                       Navigator.pop(context);
+                      sublist_bloc.insertUnitDatatoDB(data);
                       sublist_bloc.dispose();
-                      sublist_bloc.fetchAllUnitData();
+                      sublist_bloc.fetchAllUnitDatafromDB();
                     }
 
 //                      setState(() {

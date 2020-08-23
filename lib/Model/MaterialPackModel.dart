@@ -1,13 +1,24 @@
 class MaterialPackModel{
 
   String sl;
-  String id,materialName,materialDescription,isView,isAdd,isEdit,isDelete,isDeactivate;
+  String id=null,materialName=null,materialDescription=null,isView=null,isAdd=null,isEdit=null,isDelete=null,isDeactivate=null,updateFlag=null;
 
 
-  MaterialPackModel({this.materialName,this.isEdit,this.id,this.materialDescription,this.isDelete,this.isView,this.isDeactivate,this.isAdd});
+  MaterialPackModel({this.materialName,this.isEdit,this.id,this.materialDescription,this.isDelete,this.isView,this.isDeactivate,this.isAdd,this.updateFlag});
 
 
+  Map<String, dynamic> toMap() => {
+    "id" : this.id,
+    "materialName" : this.materialName,
+    "materialDescription" : this.materialDescription,
+    "isView" : this.isView,
+    "isAdd": this.isAdd,
+    "isEdit" : this.isEdit,
+    'isDelete': this.isDelete,
+    "isDeactivate" : this.isDeactivate,
+    "updateFlag" : this.updateFlag,
 
+  };
 
 
   factory MaterialPackModel.fromJson(Map<String, dynamic> json) {
@@ -20,7 +31,7 @@ class MaterialPackModel{
       isEdit: json['isEdit'],
       isDelete: json['isDelete'],
       isDeactivate: json['isDeactivate'],
-
+      updateFlag: json['updateFlag'],
     );
   }
 

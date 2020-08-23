@@ -1,3 +1,4 @@
+import 'package:app/Bloc/Sublist_bloc.dart';
 import 'package:app/UI/MasterData.dart';
 import 'package:app/Widgets/SublistView.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,6 +13,16 @@ class SublistPage extends StatefulWidget {
 }
 
 class _SublistPageState extends State<SublistPage> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    //sublist_bloc.fetchAllManufacData();
+    //sublist_bloc.fetchAllManufacDatafromDB();
+    //sublist_bloc.fetchAllUnitDatafromDB();
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(

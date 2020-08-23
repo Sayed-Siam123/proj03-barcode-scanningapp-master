@@ -1,4 +1,5 @@
 import 'package:app/Bloc/Sublist_bloc.dart';
+import 'package:app/Model/ManufactureModel.dart';
 import 'package:app/Widgets/manufacList.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'Sublist.dart';
 
 class ManufacViewPage extends StatefulWidget {
+
+  final int id;
+
+  const ManufacViewPage({Key key, this.id}) : super(key: key);
+
   @override
   _ManufacViewPageState createState() => _ManufacViewPageState();
 }
@@ -26,6 +32,13 @@ class _ManufacViewPageState extends State<ManufacViewPage> {
 
   String errortext1 = "Value Can\'t Be Empty";
   String errortext2 = "Value Can\'t Be Empty";
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    sublist_bloc.fetchAllSubCatDatafromDB();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +83,6 @@ class _ManufacViewPageState extends State<ManufacViewPage> {
 //                MaterialPageRoute(builder: (context) => AddProductPage())
 //            );
             // Add your onPressed code here!
-
             _showDialog();
           },
           child: Icon(
@@ -214,7 +226,7 @@ class _ManufacViewPageState extends State<ManufacViewPage> {
                             //print(_inputcontrol2.text);
 
                             sublist_bloc.getmanufacturer(_inputcontrol1.text);
-                            sublist_bloc.createmanufacturer();
+                            //sublist_bloc.createmanufacturer();
 
                             _inputcontrol1.text = "";
                             //_inputcontrol2.text = "";
@@ -229,8 +241,18 @@ class _ManufacViewPageState extends State<ManufacViewPage> {
                                 fontSize: 16.0);
 
                             Navigator.pop(context);
+
+                            ManufactureModel data = ManufactureModel(
+                              id: null,
+                              manufacturerName: null,
+                              updateFlag: "true",
+                            );
+
+                            print(data.manufacturerName.toString());
+
+                            sublist_bloc.insertManufacDatatoDB(data);
                             sublist_bloc.dispose();
-                            sublist_bloc.fetchAllManufacData();
+                            sublist_bloc.fetchAllManufacDatafromDB();
                           }
 
 //                      setState(() {

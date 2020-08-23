@@ -26,7 +26,7 @@ class _AddProductSubCategoryDropDownState extends State<AddProductSubCategoryDro
   void initState() {
     // TODO: implement initState
     super.initState();
-    sublist_bloc.fetchAllSubCatagoryData();
+    sublist_bloc.fetchAllSubCatDatafromDB();
   }
 
   @override
@@ -129,6 +129,7 @@ class _AddProductSubCategoryDropDownState extends State<AddProductSubCategoryDro
                                           print(subcategorySelect.subCategoryName.toString());
                                           print("ID HOITESE: " + subcategorySelect.id);
                                           sublist_bloc.getSubCategoryID(subcategorySelect.id);
+                                          sublist_bloc.getSubCategoryName(subcategorySelect.subCategoryName);
 
 
                                         },

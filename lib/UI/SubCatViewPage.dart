@@ -1,4 +1,5 @@
 import 'package:app/Bloc/Sublist_bloc.dart';
+import 'package:app/Model/SubCategory.dart';
 import 'package:app/Widgets/CategoryDropDown.dart';
 import 'package:app/Widgets/SubCategoryList.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
@@ -43,7 +44,8 @@ class _SubCatPageViewState extends State<SubCatPageView> {
 
   @override
   void initState() {
-    sublist_bloc.fetchAllCatagoryData();
+    sublist_bloc.fetchAllCatDatafromDB();
+    sublist_bloc.fetchAllSubCatDatafromDB();
   }
 
   @override
@@ -339,7 +341,6 @@ class _SubCatPageViewState extends State<SubCatPageView> {
                               //print(_inputcontrol2.text);
 
                               sublist_bloc.getsub_category(_inputcontrol1.text);
-                              sublist_bloc.createsubcategory();
 
                               _inputcontrol1.text = "";
                               //_inputcontrol2.text = "";
@@ -353,9 +354,18 @@ class _SubCatPageViewState extends State<SubCatPageView> {
                                   textColor: Colors.white,
                                   fontSize: 16.0);
 
+                              SubCategoryModel data = SubCategoryModel(
+                                id: null,
+                                subCategoryName: null,
+                                categoryId: null,
+                                categoryName: null,
+                                updateFlag: 'true',
+                              );
+
                               Navigator.pop(context);
+                              sublist_bloc.insertSubCatDatatoDB(data);
                               sublist_bloc.dispose();
-                              sublist_bloc.fetchAllSubCatagoryData();
+                              sublist_bloc.fetchAllSubCatDatafromDB();
                             }
 
 //                      setState(() {

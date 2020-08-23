@@ -18,7 +18,7 @@ class _MaterialPackListState extends State<MaterialPackList> {
 
   void initState() {
     // TODO: implement initState
-    sublist_bloc.fetchAllMateralPackData();
+    sublist_bloc.fetchAllMateralPackDatafromDB();
     super.initState();
 
   }
@@ -34,6 +34,9 @@ class _MaterialPackListState extends State<MaterialPackList> {
             List<MaterialPackModel> data = snapshot.data;
             print("Data gula:: ");
             print(data.length);
+            int lastID = int.parse(data.last.id.toString());
+            print(lastID.toString());
+            sublist_bloc.getLastID(lastID);
             return masterdataview(data);
 
           } else if (snapshot.hasError) {
@@ -50,7 +53,7 @@ class _MaterialPackListState extends State<MaterialPackList> {
     return RefreshIndicator(
       key: _refreshIndicatorKey,
       onRefresh: (){
-        return sublist_bloc.fetchAllMateralPackData();
+        return sublist_bloc.fetchAllMateralPackDatafromDB();
       },
       child: ListView.builder(
           scrollDirection: Axis.vertical,

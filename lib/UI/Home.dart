@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:app/Bloc/Sublist_bloc.dart';
 import 'package:app/Bloc/masterData_bloc.dart';
 import 'package:app/Resources/SharedPrefer.dart';
 import 'package:app/UI/MasterData.dart';
@@ -45,6 +46,21 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     masterdata_bloc.fetchAllMasterData();
     masterdata_bloc.fetchAllMasterdatafromDB();
+
+    sublist_bloc.fetchAllManufacData();
+    sublist_bloc.fetchAllManufacDatafromDB();
+
+    sublist_bloc.fetchAllCatagoryData();
+    sublist_bloc.fetchAllCatDatafromDB();
+
+    sublist_bloc.fetchAllSubCatagoryData();
+    sublist_bloc.fetchAllSubCatDatafromDB();
+
+    sublist_bloc.fetchAllUnitData();
+    sublist_bloc.fetchAllUnitDatafromDB();
+
+    sublist_bloc.fetchAllMateralPackData();
+    sublist_bloc.fetchAllMateralPackDatafromDB();
   }
 
   @override
