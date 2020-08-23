@@ -7,6 +7,7 @@ import 'package:app/Model/masterdata_model.dart';
 import 'package:app/Resources/SharedPrefer.dart';
 import 'package:app/Resources/database_helper.dart';
 import 'package:app/UI/Deliveries.dart';
+import 'package:app/Widgets/SystemSettings.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +36,8 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
   var controller;
   bool qr_request = false;
 
-
+  String cameraStatus;
+  String _cameraKey = "_camera";
   SessionManager prefs =  SessionManager();
 
   String deviceID=""
@@ -92,6 +94,25 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
 
   Client client = Client();
 
+  void getCamera() async {
+    Future<bool> serverip = prefs.getBoolData(_cameraKey);
+    serverip.then((data) async {
+
+      print("camera status " + data.toString());
+
+      setState(() {
+        cameraStatus = data.toString();
+      });
+      print(cameraStatus.toString());
+
+//      Future.delayed(const Duration(milliseconds: 1000), () {
+//
+//      });
+    }, onError: (e) {
+      print(e);
+    });
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -105,6 +126,7 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
 
     getIP();
     getPort();
+    getCamera();
     ndelivery_bloc.getProduct();
     //ndelivery_bloc.deleteTable();
     masterdata_bloc.fetchAllMasterdatafromDB();
@@ -202,291 +224,321 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
         ),
         backgroundColor: Colors.green,
       ),
-      body: Container(
-        color: Theme
-            .of(context)
-            .backgroundColor,
-        child: Column(
-          children: <Widget>[
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: Builder(
+        builder: (context) {
+          return Container(
+            color: Theme
+                .of(context)
+                .backgroundColor,
+            child: Column(
               children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(13.0),
-                  child: Text(
-                    " Please Input product ID or GTIN to \n add for the delivery \n or you can tap on scan button for quick adding",
-                    style: GoogleFonts.exo2(
-                      textStyle: TextStyle(
-                          fontSize: 12,
-                          color: Theme
-                              .of(context)
-                              .accentColor,
-                          fontWeight: FontWeight.w500
-                      ),
-                    ),),
-                ),
 
-                Container(
-                  margin: EdgeInsets.only(
-                    left: 0,
-                    top: 10,
-                    right: 10,
-                  ),
-                  height: 50,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 2,
-                        blurRadius: 13,
-                        offset: Offset(3, 3),
-                      ),
-                    ],
-                  ),
-                  width: 50,
-                  child: Center(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(13.0),
                       child: Text(
-                        count.toString(),
-                        style: GoogleFonts.exo2(
-                            textStyle: TextStyle(fontSize: 26)),
-                      )),
-                ),
-              ],
-            ),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  height: 58,
-                  width: MediaQuery
-                      .of(context)
-                      .size
-                      .width - 87,
-                  alignment: Alignment.center,
-                  margin: const EdgeInsets.only(top: 10, left: 13, right: 10),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 2,
-                        blurRadius: 13,
-                        offset: Offset(1, 1),
-                      ),
-                    ],
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: TextField(
-                        controller: _searchQueryController,
-                        onChanged: onSearchTextChanged,
-                        autocorrect: true,
+                        " Please Input product ID or GTIN to \n add for the delivery \n or you can tap on scan button for quick adding",
                         style: GoogleFonts.exo2(
                           textStyle: TextStyle(
-                            fontSize: 20,
+                              fontSize: 12,
+                              color: Theme
+                                  .of(context)
+                                  .accentColor,
+                              fontWeight: FontWeight.w500
                           ),
-                        ),
-                        decoration: new InputDecoration(
-                          suffixIcon: IconButton(
-                            icon: Icon(Icons.search),
-                            onPressed: () {},
-                          ),
-                          border: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          enabledBorder: InputBorder.none,
-                          errorBorder: InputBorder.none,
-                          disabledBorder: InputBorder.none,
-                          hintStyle: GoogleFonts.exo2(
-                            textStyle: TextStyle(
-                              fontSize: 16,
-                            ),
-                          ),
-                          labelStyle: GoogleFonts.exo2(
-                            textStyle: TextStyle(
-                              fontSize: 16,
-                            ),
-                          ),
-                          hintText: "Enter or Scan Product GTIN To Add",
-                        )),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Theme
-                          .of(context)
-                          .buttonColor,
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.white60,
-                          spreadRadius: 1,
-                          blurRadius: 1,
-                          offset: Offset(1, 1),
-                        ),
-                      ],
+                        ),),
                     ),
-                    child: SizedBox(
-                      height: 55,
-                      width: 55,
-                      child: Container(
-                        child: IconButton(
-                          icon: new Image.asset(
-                            'assets/images/barcode.png',
-                            fit: BoxFit.contain,
-                            color: Colors.white,
-                          ),
-                          tooltip: 'Scan barcode',
-                          onPressed: () {
-                            setState(() {
-                              qr_request = true;
-                            });
 
-                            setState(() {
-                              qrText = "";
-                            });
-                          },
+                    Container(
+                      margin: EdgeInsets.only(
+                        left: 0,
+                        top: 10,
+                        right: 10,
+                      ),
+                      height: 50,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.rectangle,
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 13,
+                            offset: Offset(3, 3),
+                          ),
+                        ],
+                      ),
+                      width: 50,
+                      child: Center(
+                          child: Text(
+                            count.toString(),
+                            style: GoogleFonts.exo2(
+                                textStyle: TextStyle(fontSize: 26)),
+                          )),
+                    ),
+                  ],
+                ),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      height: 58,
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width - 87,
+                      alignment: Alignment.center,
+                      margin: const EdgeInsets.only(top: 10, left: 13, right: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 13,
+                            offset: Offset(1, 1),
+                          ),
+                        ],
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: TextField(
+                            controller: _searchQueryController,
+                            onChanged: onSearchTextChanged,
+                            autocorrect: true,
+                            style: GoogleFonts.exo2(
+                              textStyle: TextStyle(
+                                fontSize: 20,
+                              ),
+                            ),
+                            decoration: new InputDecoration(
+                              suffixIcon: IconButton(
+                                icon: Icon(Icons.search),
+                                onPressed: () {},
+                              ),
+                              border: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              errorBorder: InputBorder.none,
+                              disabledBorder: InputBorder.none,
+                              hintStyle: GoogleFonts.exo2(
+                                textStyle: TextStyle(
+                                  fontSize: 16,
+                                ),
+                              ),
+                              labelStyle: GoogleFonts.exo2(
+                                textStyle: TextStyle(
+                                  fontSize: 16,
+                                ),
+                              ),
+                              hintText: "Enter or Scan Product GTIN To Add",
+                            )),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Theme
+                              .of(context)
+                              .buttonColor,
+                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.white60,
+                              spreadRadius: 1,
+                              blurRadius: 1,
+                              offset: Offset(1, 1),
+                            ),
+                          ],
                         ),
+                        child: SizedBox(
+                          height: 55,
+                          width: 55,
+                          child: Container(
+                            child: IconButton(
+                              icon: new Image.asset(
+                                'assets/images/barcode.png',
+                                fit: BoxFit.contain,
+                                color: Colors.white,
+                              ),
+                              tooltip: 'Scan barcode',
+                              onPressed: () {
+
+                                if(cameraStatus=="true"){
+                                  setState(() {
+                                    qr_request = true;
+                                  });
+
+                                  setState(() {
+                                    qrText = "";
+                                  });
+                                }
+                                else{
+                                  Scaffold.of(context).showSnackBar(SnackBar(
+                                    action: SnackBarAction(
+                                      label: 'Settings',
+                                      textColor: Colors.blue,
+                                      onPressed: () {
+                                        // some code
+                                        Navigator.push(
+                                            context, MaterialPageRoute(builder: (context) => SystemSettingsPage()));
+                                      },
+                                    ),
+                                    content: Text(
+                                      'Turn on Camera from System Settings First!',
+                                      style: GoogleFonts.exo2(
+                                        textStyle: TextStyle(
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ),
+                                    duration: Duration(seconds: 4),
+                                  ));
+                                }
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                qr_request
+                    ? Padding(
+                  padding: EdgeInsets.only(top: 100.0),
+                  child: Container(
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width - 60,
+                    height: 300,
+                    child: qrText.isEmpty
+                        ? QRView(
+                      key: qrKey,
+                      onQRViewCreated: _onQRViewCreated,
+                      overlay: QrScannerOverlayShape(
+                        borderColor: Colors.green,
+                        borderRadius: 10,
+                        borderLength: 30,
+                        borderWidth: 10,
+                        cutOutSize: 300,
+                      ),
+                    )
+                        : Container(),
+                  ),
+                )
+                    : WillPopScope(
+                  // ignore: missing_return
+                  onWillPop: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DeliveriesPage()));
+                    ndelivery_bloc.deleteTable();
+                  },
+                  child: SingleChildScrollView(
+                    child: Container(
+
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            height: 110,
+                            width: MediaQuery
+                                .of(context)
+                                .size
+                                .width - 30,
+                            margin: EdgeInsets.only(top: 10),
+                            decoration: BoxDecoration(
+                              color: Theme
+                                  .of(context)
+                                  .backgroundColor,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Theme
+                                      .of(context)
+                                      .backgroundColor
+                                      .withOpacity(0.5),
+                                  spreadRadius: 2,
+                                  blurRadius: 5,
+                                  offset: Offset(0, 3),
+                                ),
+                              ],
+                            ),
+                            child: StatefulBuilder(
+                              builder: (context, setState) {
+                                return StreamBuilder(
+                                    stream: ndelivery_bloc.allProductData,
+                                    builder: (BuildContext context, AsyncSnapshot<
+                                        List<NewDeliveryModel>>snapshot) {
+                                      return newproductdata(snapshot);
+                                    });
+                              },
+                            ),
+                          ),
+
+                          SizedBox(height: 20,),
+
+                          Container(
+                            height: 110,
+                            width: MediaQuery
+                                .of(context)
+                                .size
+                                .width - 30,
+                            margin: EdgeInsets.only(top: 10),
+                            decoration: BoxDecoration(
+                              color: Theme
+                                  .of(context)
+                                  .backgroundColor,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Theme
+                                      .of(context)
+                                      .backgroundColor
+                                      .withOpacity(0.5),
+                                  spreadRadius: 2,
+                                  blurRadius: 5,
+                                  //TODO:: eikhane master data load khabe!
+                                  offset: Offset(0, 3),
+                                ),
+                              ],
+                            ),
+                            child: StreamBuilder<List<MasterDataModel>>(
+                              stream: masterdata_bloc.allMasterData,
+                              builder: (context,
+                                  AsyncSnapshot<List<MasterDataModel>> snapshot) {
+                                if (snapshot.hasData) {
+                                  _fetcheddata = snapshot.data;
+                                  //_newData = fetcheddata;
+                                  print("Data eikhane:: ");
+
+                                  print(_fetcheddata.length);
+                                }
+
+                                else if (snapshot.hasError) {
+                                  return Text("${snapshot.error}");
+                                }
+
+                                return Center(child: Text(""));
+                                //return masterdataview(_fetcheddata); //it should be changed
+                              },
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                )
+                ),
               ],
             ),
-            qr_request
-                ? Padding(
-              padding: EdgeInsets.only(top: 100.0),
-              child: Container(
-                width: MediaQuery
-                    .of(context)
-                    .size
-                    .width - 60,
-                height: 300,
-                child: qrText.isEmpty
-                    ? QRView(
-                  key: qrKey,
-                  onQRViewCreated: _onQRViewCreated,
-                  overlay: QrScannerOverlayShape(
-                    borderColor: Colors.green,
-                    borderRadius: 10,
-                    borderLength: 30,
-                    borderWidth: 10,
-                    cutOutSize: 300,
-                  ),
-                )
-                    : Container(),
-              ),
-            )
-                : WillPopScope(
-              // ignore: missing_return
-              onWillPop: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => DeliveriesPage()));
-                ndelivery_bloc.deleteTable();
-              },
-              child: SingleChildScrollView(
-                child: Container(
+          );
+        },
 
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                        height: 110,
-                        width: MediaQuery
-                            .of(context)
-                            .size
-                            .width - 30,
-                        margin: EdgeInsets.only(top: 10),
-                        decoration: BoxDecoration(
-                          color: Theme
-                              .of(context)
-                              .backgroundColor,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Theme
-                                  .of(context)
-                                  .backgroundColor
-                                  .withOpacity(0.5),
-                              spreadRadius: 2,
-                              blurRadius: 5,
-                              offset: Offset(0, 3),
-                            ),
-                          ],
-                        ),
-                        child: StatefulBuilder(
-                          builder: (context, setState) {
-                            return StreamBuilder(
-                                stream: ndelivery_bloc.allProductData,
-                                builder: (BuildContext context, AsyncSnapshot<
-                                    List<NewDeliveryModel>>snapshot) {
-                                  return newproductdata(snapshot);
-                                });
-                          },
-                        ),
-                      ),
-
-                      SizedBox(height: 20,),
-
-                      Container(
-                        height: 110,
-                        width: MediaQuery
-                            .of(context)
-                            .size
-                            .width - 30,
-                        margin: EdgeInsets.only(top: 10),
-                        decoration: BoxDecoration(
-                          color: Theme
-                              .of(context)
-                              .backgroundColor,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Theme
-                                  .of(context)
-                                  .backgroundColor
-                                  .withOpacity(0.5),
-                              spreadRadius: 2,
-                              blurRadius: 5,
-                              //TODO:: eikhane master data load khabe!
-                              offset: Offset(0, 3),
-                            ),
-                          ],
-                        ),
-                        child: StreamBuilder<List<MasterDataModel>>(
-                          stream: masterdata_bloc.allMasterData,
-                          builder: (context,
-                              AsyncSnapshot<List<MasterDataModel>> snapshot) {
-                            if (snapshot.hasData) {
-                              _fetcheddata = snapshot.data;
-                              //_newData = fetcheddata;
-                              print("Data eikhane:: ");
-
-                              print(_fetcheddata.length);
-                            }
-
-                            else if (snapshot.hasError) {
-                              return Text("${snapshot.error}");
-                            }
-
-                            return Center(child: Text(""));
-                            //return masterdataview(_fetcheddata); //it should be changed
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }

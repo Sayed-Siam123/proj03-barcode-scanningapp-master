@@ -1,3 +1,4 @@
+import 'package:app/UI/Home.dart';
 import 'package:app/UI/Settings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -93,7 +94,8 @@ class _SystemSettingsPageState extends State<SystemSettingsPage> {
             color: Colors.black54,
           ),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => HomePage()));
           },
         ),
       ),

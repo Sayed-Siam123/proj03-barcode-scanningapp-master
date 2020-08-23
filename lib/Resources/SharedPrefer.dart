@@ -16,6 +16,13 @@ class SessionManager {
     return data;
   }
 
+  Future<bool> getBoolData(String key) async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    bool data;
+    data = pref.getBool(key) ?? null;
+    return data;
+  }
+
 
   Future<void> removeData(String key) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();

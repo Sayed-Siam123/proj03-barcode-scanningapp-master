@@ -1,7 +1,9 @@
 import 'package:app/Bloc/Sublist_bloc.dart';
 import 'package:app/Bloc/masterData_bloc.dart';
 import 'package:app/Model/masterdata_model.dart';
+import 'package:app/Resources/SharedPrefer.dart';
 import 'package:app/Widgets/MastarDataWidget.dart';
+import 'package:app/Widgets/SystemSettings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,13 +19,15 @@ class BarcodeInfo extends StatefulWidget {
 }
 
 class _BarcodeInfoState extends State<BarcodeInfo> {
+  SessionManager prefs = SessionManager();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
   TextEditingController _searchQueryController = TextEditingController();
   bool _isSearching = false;
   String searchQuery = "Search query";
-
+  String cameraStatus;
+  String _cameraKey = "_camera";
   List<MasterDataModel> _newData = [];
   List<MasterDataModel> _fetcheddata = [];
 
@@ -32,7 +36,27 @@ class _BarcodeInfoState extends State<BarcodeInfo> {
 
   //String _scanBarcode = 'Unknown';
 
+  void getCamera() async {
+    Future<bool> serverip = prefs.getBoolData(_cameraKey);
+    serverip.then((data) async {
+
+      print("camera status " + data.toString());
+
+      setState(() {
+        cameraStatus = data.toString();
+      });
+      print(cameraStatus.toString());
+
+//      Future.delayed(const Duration(milliseconds: 1000), () {
+//
+//      });
+    }, onError: (e) {
+      print(e);
+    });
+  }
+
   initState() {
+    getCamera();
     masterdata_bloc.fetchAllMasterdatafromDB();
     super.initState();
   }
@@ -86,7 +110,7 @@ class _BarcodeInfoState extends State<BarcodeInfo> {
                 print("Data gula:: ");
 
                 print(_fetcheddata.length);
-                return masterdataview(_fetcheddata);
+                return masterdataview(_fetcheddata,context);
               } else if (snapshot.hasError) {
                 return Text("${snapshot.error}");
               }
@@ -100,7 +124,7 @@ class _BarcodeInfoState extends State<BarcodeInfo> {
     );
   }
 
-  Widget masterdataview(fetcheddata) {
+  Widget masterdataview(fetcheddata,BuildContext context) {
     return SingleChildScrollView(
       child: Container(
         child: Column(
@@ -205,7 +229,33 @@ class _BarcodeInfoState extends State<BarcodeInfo> {
                             color:Colors.white,
                           ),
                           tooltip: 'Scan barcode',
-                          onPressed: barcodeScanning,
+                          onPressed: () {
+                            if(cameraStatus=="true"){
+                              barcodeScanning();
+                            }
+                            else{
+                              Scaffold.of(context).showSnackBar(SnackBar(
+                                action: SnackBarAction(
+                                  label: 'Settings',
+                                  textColor: Colors.blue,
+                                  onPressed: () {
+                                    // some code
+                                    Navigator.push(
+                                        context, MaterialPageRoute(builder: (context) => SystemSettingsPage()));
+                                  },
+                                ),
+                                content: Text(
+                                  'Turn on Camera from System Settings First!',
+                                  style: GoogleFonts.exo2(
+                                    textStyle: TextStyle(
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                                duration: Duration(seconds: 4),
+                              ));
+                            }
+                          },
                         ),
                       ),
 
