@@ -38,6 +38,7 @@ class sublist_Bloc {
 
   //packaging_material
   final _packaging_material = BehaviorSubject<String>();
+  final _packaging_materialName = BehaviorSubject<String>();
 
   //category_get
   final _category = BehaviorSubject<String>();
@@ -45,6 +46,9 @@ class sublist_Bloc {
   //sub-category
   final _sub_category = BehaviorSubject<String>();
   final _category_id = BehaviorSubject<String>();
+  final _previous_category_name = BehaviorSubject<String>();
+  final _previous_category_id = BehaviorSubject<String>();
+  final _previous_sub_category = BehaviorSubject<String>();
 
   final _sub_category_id = BehaviorSubject<String>();
   final _unit_id = BehaviorSubject<String>();
@@ -186,14 +190,21 @@ class sublist_Bloc {
 
   //packaging_material_get_sink
   Function(String) get getpackaging_material => _packaging_material.sink.add;
+  Function(String) get getpackaging_materialName => _packaging_materialName.sink.add;
 
   //category_get_sink
   Function(String) get getcategory => _category.sink.add;
 
   //sub_category_get_sink
-  Function(String) get getsub_category => _sub_category.sink.add;
+  Function(String) get get_new_sub_category => _sub_category.sink.add;
+
+  Function(String) get get_previous_sub_category => _previous_sub_category.sink.add;
 
   Function(String) get getcategory_id => _category_id.sink.add;
+
+  Function(String) get previous_category_id => _previous_category_id.sink.add;
+
+  Function(String) get previous_category_name => _previous_category_name.sink.add;
 
   //ADD PRODUCT
   Function(String) get getsubcategory_id => _sub_category_id.sink.add;
@@ -322,6 +333,22 @@ class sublist_Bloc {
     print("MANUFAC DATA STORED IN DB");
   }
 
+  updateCatDatafromDB() async {
+
+    CategoryModel product = CategoryModel(
+      id: _Category.value.toString(),
+      categoryName: _CategoryName.value.toString(),
+      updateFlag: "true",
+      newFlag: "false",
+    );
+
+    print("Product ID "+ product.id.toString());
+    print("Product Name "+ product.categoryName.toString());
+
+    await _repository.updateCat(product);
+    fetchAllCatDatafromDB();
+  }
+
   //CAT END
 
   //SUB CAT START
@@ -368,8 +395,28 @@ class sublist_Bloc {
       categoryName: data.categoryName == null ? _CategoryName.value.toString() : data.categoryName.toString(),
     );
 
+    print(_Category.value.toString()+" : "+_CategoryName.value.toString());
+
     await _repository.insertsubCatdata(subcatdata);
     print("MANUFAC DATA STORED IN DB");
+  }
+
+  updateSubCattoDB(SubCategoryModel products) async{
+
+    SubCategoryModel product = SubCategoryModel(
+      id: _sub_category_id.value.toString(),
+      subCategoryName: _sub_category.value.toString(),
+      categoryId: _Category.value==null ? _previous_category_id.value.toString(): _Category.value.toString(),
+      categoryName: _CategoryName.value==null? _previous_category_name.toString(): _CategoryName.value.toString(),
+      updateFlag: "true",
+      newFlag: products.newFlag == null ? "false" : products.newFlag.toString(),
+    );
+
+    print("Product ID "+ product.id.toString());
+    print("Product NewFlag "+ product.newFlag.toString());
+
+    await _repository.updateSubCat(product);
+    fetchAllManufacDatafromDB();
   }
 
   //SUB CAT END
@@ -419,6 +466,23 @@ class sublist_Bloc {
     await _repository.insertPackMatdata(materialpackdata);
     print("MANUFAC DATA STORED IN DB");
   }
+
+   updatepackMattoDB() async{
+
+    MaterialPackModel product = MaterialPackModel(
+       id: _packaging_material.value.toString(),
+       materialName: _packaging_materialName.value.toString(),
+       updateFlag: "true",
+       newFlag: "false",
+     );
+
+     print("Product ID "+ product.id.toString());
+     print("Product Name "+ product.materialName.toString());
+
+     await _repository.updatepackMat(product);
+     fetchAllManufacDatafromDB();
+  }
+
 
   //MAT PACK END
 
@@ -624,7 +688,7 @@ class sublist_Bloc {
 //    _CreatePropductSuccessFetcher.sink.add(success);
   }
 
-  UpdateProductMasterDatatoDB() async {
+  UpdateProductMasterDatatoDB(MasterDataModel data) async {
 //    print('id: '+_product_id.value+" CatagoryID: "+_Category.value+" SubID: "+_SubCategory.value+" UnitID: "+_UnitList.value+" ManuID: "+_Manufacturer.value+
 //        "Productname: "+_ProductName.value+" Description: "+_ProductDescription.value+" Manu PN: "+_Manufacturer_Pn.value+" Gtin: "+_Gtin.value+" ListPrice "+_ListPrice.value);
 
@@ -700,7 +764,33 @@ class sublist_Bloc {
         "Productname: "+_ProductName.value+" Description: "+_ProductDescription.value+" Manu PN: "+_Manufacturer_Pn.value+" Gtin: "+_Gtin.value+" ListPrice "+_ListPrice.value);
 
 
+    MasterDataModel master = MasterDataModel(
+      id: _product_id.value.toString(),
+      productName: _ProductName.value.toString(),
+      manufacturerName: finalManufacName.toString(),
+      manufacturerId: finalManufacID.toString(),
+      manufacturerPN: _Manufacturer_Pn.value.toString(),
+      categoryName: finalcategoryName.toString(),
+      categoryNameId: finalcategoryID.toString(),
+      subCategoryName: finalSubcategoryName.toString(),
+      subCategoryNameId: finalSubcategoryID.toString(),
+      unitName: finalUnitName.toString(),
+      unitId: finalUnitID.toString(),
+      productDescription: _ProductDescription.value.toString(),
+      packagingUnit: "0",
+      listPrice: _ListPrice.value.toString(),
+      gtin: _Gtin.value.toString(),
+      updateFlag: "true",
+      newFlag: data.newFlag.toString(),
+      productPicture: data.productPicture.toString(),
+      isTransferToApp: data.isTransferToApp.toString(),
+      isOrderableViaApp: data.isOrderableViaApp.toString(),
+      productHeight: data.productHeight.toString(),
+      productLength: data.productLength.toString(),
+    );
 
+
+    await _repository.updateMaster(master);
 
 //    sublist_getsuccess_model success = await _repository.updateProductMasterData(_product_id.value,_ProductName.value,_ProductDescription.value,finalcategoryID,finalSubcategoryID,finalUnitID,finalManufacID,
 //        _Manufacturer_Pn.value,_Gtin.value,_ListPrice.value);
@@ -833,8 +923,9 @@ class sublist_Bloc {
     _SubCategoryName.drain();
     _ManufacturerName.drain();
     _UnitName.drain();
+    _packaging_materialName.drain();
 
-
+    _packaging_materialName.value = null;
     _CategoryName.value = null;
     _SubCategoryName.value = null;
     _ManufacturerName.value = null;
@@ -898,6 +989,7 @@ class sublist_Bloc {
 //    await _postDatafetcher.drain();
 //    _postDatafetcher.close();
   }
+
 }
 
 final sublist_bloc = sublist_Bloc();

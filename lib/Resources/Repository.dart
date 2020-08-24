@@ -139,8 +139,10 @@ class Repository {
   Future insertMasterdata(MasterDataModel productinfo) => dbprovider.insertMasterdata(productinfo);
   Future<List<MasterDataModel>> getAllMAsterProduct() => dbprovider.getAllMAsterProduct();
   Future<List<SingleMasterDataModel>> getsinglemasterdatafromDB(String id) => dbprovider.getsinglemasterdatafromDB(id);
-
+  Future updateMaster(MasterDataModel product) => dbprovider.updateMaster(product);
+  Future deleteAllMasterdataTable() => dbprovider.deleteAllMasterdataTable();
   Future<List<MasterDataModel>> getAllMAsterNewProduct() => dbprovider.getAllMAsterNewProduct();
+  Future<List<MasterDataModel>> getAllMAsterUpdateProduct() => dbprovider.getAllMAsterUpdateProduct();
 
  //TODO:: MASTER DATA DB CONFIG AND OPERATION :: END
 
@@ -149,6 +151,10 @@ class Repository {
 
   Future insertCatdata(CategoryModel productinfo) => dbprovider.insertCatdata(productinfo);
   Future<List<CategoryModel>> getAllCatDatafromDB() => dbprovider.getAllCatDatafromDB();
+  Future updateCat(CategoryModel product) => dbprovider.updateCat(product);
+  Future deleteAllCategoryTable() => dbprovider.deleteAllCategoryTable();
+  Future<List<CategoryModel>> getAllCategoryNewProduct() => dbprovider.getAllCategoryNewProduct();
+  Future<List<CategoryModel>> getAllCategoryUpdateProduct() => dbprovider.getAllCategoryUpdateProduct();
 
   //TODO:: CATEGORY DB CONFIG AND OPERATION :: END
 
@@ -157,6 +163,10 @@ class Repository {
 
   Future insertsubCatdata(SubCategoryModel productinfo) => dbprovider.insertsubCatdata(productinfo);
   Future<List<SubCategoryModel>> getAllsubCatDatafromDB() => dbprovider.getAllsubCatDatafromDB();
+  Future updateSubCat(SubCategoryModel product) => dbprovider.updateSubcat(product);
+  Future deleteAllSubCategoryTable() => dbprovider.deleteAllSubCategoryTable();
+  Future<List<SubCategoryModel>> getAllSubCategoryNewProduct() => dbprovider.getAllSubCategoryNewProduct();
+  Future<List<SubCategoryModel>> getAllSubCategoryUpdateProduct() => dbprovider.getAllSubCategoryUpdateProduct();
 
   //TODO:: SUBCATEGORY DB CONFIG AND OPERATION :: END
 
@@ -166,6 +176,9 @@ class Repository {
   Future insertManufacdata (ManufactureModel productinfo) => dbprovider.insertManufacdata(productinfo);
   Future<List<ManufactureModel>> getAllManufacDatafromDB() => dbprovider.getAllManufacDatafromDB();
   Future updateManufac(ManufactureModel product) => dbprovider.updateManufac(product);
+  Future deleteAllManufacTable() => dbprovider.deleteAllManufacTable();
+  Future<List<ManufactureModel>> getAllManufacNewProduct() => dbprovider.getAllManufacNewProduct();
+  Future<List<ManufactureModel>> getAllManufacUpdateProduct() => dbprovider.getAllManufacUpdateProduct();
 
 
   //TODO:: MANUFAC DB CONFIG AND OPERATION :: END
@@ -176,6 +189,10 @@ class Repository {
   Future insertUnitdata(UnitModel productinfo) => dbprovider.insertUnitdata(productinfo);
   Future<List<UnitModel>> getAllUnitDatafromDB() => dbprovider.getAllUnitDatafromDB();
   Future updateUnit(UnitModel product) => dbprovider.updateUnit(product);
+  Future deleteAllUnitTable() => dbprovider.deleteAllUnitTable();
+  Future<List<UnitModel>> getAllUnitNewProduct() => dbprovider.getAllUnitNewProduct();
+  Future<List<UnitModel>> getAllUnitUpdateProduct() => dbprovider.getAllUnitUpdateProduct();
+
   //TODO:: UNIT DB CONFIG AND OPERATION :: END
 
 
@@ -183,6 +200,10 @@ class Repository {
 
   Future insertPackMatdata(MaterialPackModel productinfo) => dbprovider.insertPackMatdata(productinfo);
   Future<List<MaterialPackModel>> getAllPackMatDatafromDB() => dbprovider.getAllPackMatDatafromDB();
+  Future updatepackMat(MaterialPackModel product) => dbprovider.updatePackMat(product);
+  Future deleteAllPackMatTable() => dbprovider.deleteAllPackMatTable();
+  Future<List<MaterialPackModel>> getAllPackMatNewProduct() => dbprovider.getAllPackMatNewProduct();
+  Future<List<MaterialPackModel>> getAllPackMatUpdateProduct() => dbprovider.getAllPackMatUpdateProduct();
 
   //TODO:: PACKAGING MATERIAL DB CONFIG AND OPERATION :: END
 

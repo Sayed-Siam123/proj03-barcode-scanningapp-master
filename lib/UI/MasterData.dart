@@ -205,7 +205,8 @@ class _MasterDataState extends State<MasterData> {
                   } else if (connectivityResult == ConnectivityResult.wifi) {
                     //_showDialog1("WiFi Internet OK");
                     pr.show();
-                    masterdata_bloc.syncDatatoAPI(); //sync the data to api
+                    masterdata_bloc.syncAddDatatoAPI(); //sync the data to api
+                    masterdata_bloc.syncUpdateDatatoAPI();
                     Future.delayed(Duration(seconds: 3)).then((value) {
                       pr.hide().whenComplete(() {
 //                        Navigator.of(context).push(CupertinoPageRoute(

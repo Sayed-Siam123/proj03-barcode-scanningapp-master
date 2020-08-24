@@ -27,6 +27,9 @@ class ProductDB {
   final unitDBprovider  = DatabaseProvider_unit.dbProvider_unit;//unit db
   final packmatDBprovider  = DatabaseProvider_packmaterial.dbProvider_packegingMat;//packmat db
 
+  String newStatus = "true";
+  String updateStatus = "true";
+
   Future<int> createTodo(NewDeliveryModel productinfo) async {
     print("FORM DBPROVIDER: " + productinfo.barcode.toString());
 
@@ -151,7 +154,7 @@ class ProductDB {
 
 
 
-  Future deleteAllMasterProducts() async {
+  Future deleteAllMasterdataTable() async {
     final db = await masterdataDBprovider.database;
     var result = await db.delete(
       masterTABLE,
@@ -192,20 +195,34 @@ class ProductDB {
 
   Future<List<MasterDataModel>> getAllMAsterNewProduct({List<String> columns, String query}) async {
 
-    String status = "true";
-
     var db = await masterdataDBprovider.database;
     print("Eikhane");
-    var result = await db.query(masterTABLE, where: "newFlag = ?", whereArgs: [status], orderBy: '$master_Id ASC');
+    var result = await db.query(masterTABLE, where: "newFlag = ?", whereArgs: [newStatus], orderBy: '$master_Id ASC');
 
 
     List<MasterDataModel> product = result.isNotEmpty
         ? result.map((item) => MasterDataModel.fromJson(item)).toList()
         : [];
     return product;
-  }
+  }  // for checking new added master data list
+
+  Future<List<MasterDataModel>> getAllMAsterUpdateProduct({List<String> columns, String query}) async {
+
+    var db = await masterdataDBprovider.database;
+    print("Eikhane");
+    var result = await db.query(masterTABLE, where: "updateFlag = ?", whereArgs: [updateStatus], orderBy: '$master_Id ASC');
+
+
+    List<MasterDataModel> product = result.isNotEmpty
+        ? result.map((item) => MasterDataModel.fromJson(item)).toList()
+        : [];
+    return product;
+  }  // for checking updated master data list
 
   Future<int> updateMaster(MasterDataModel product) async {
+
+    //print("New Flag is :: "+ product.newFlag.toString());
+
     final db = await masterdataDBprovider.database;
 
     var result = await db.update(masterTABLE, product.toMap(),
@@ -250,6 +267,44 @@ class ProductDB {
 
     return result;
   }
+
+  Future<List<CategoryModel>> getAllCategoryNewProduct({List<String> columns, String query}) async {
+
+    var db = await catDBprovider.database;
+    print("Eikhane");
+    var result = await db.query(catTABLE, where: "newFlag = ?", whereArgs: [newStatus], orderBy: '$cat_Id ASC');
+
+
+    List<CategoryModel> product = result.isNotEmpty
+        ? result.map((item) => CategoryModel.fromJson(item)).toList()
+        : [];
+    return product;
+  }  // for checking new added category data list
+
+
+  Future<List<CategoryModel>> getAllCategoryUpdateProduct({List<String> columns, String query}) async {
+
+    var db = await catDBprovider.database;
+    print("Eikhane");
+    var result = await db.query(catTABLE, where: "updateFlag = ?", whereArgs: [updateStatus], orderBy: '$cat_Id ASC');
+
+
+    List<CategoryModel> product = result.isNotEmpty
+        ? result.map((item) => CategoryModel.fromJson(item)).toList()
+        : [];
+    return product;
+  }  // for checking new updated category data list
+
+
+  Future deleteAllCategoryTable() async {
+    final db = await catDBprovider.database;
+    var result = await db.delete(
+      catTABLE,
+    );
+
+    return result;
+  }
+
 //CATEGORY DB END
 
 
@@ -285,6 +340,41 @@ class ProductDB {
 
     var result = await db.update(subcatTABLE, product.toMap(),
         where: "id = ?", whereArgs: [product.id]);
+
+    return result;
+  }
+
+  Future<List<SubCategoryModel>> getAllSubCategoryNewProduct({List<String> columns, String query}) async {
+
+    var db = await subcatDBprovider.database;
+    print("Eikhane");
+    var result = await db.query(subcatTABLE, where: "newFlag = ?", whereArgs: [newStatus], orderBy: '$subcat_Id ASC');
+
+
+    List<SubCategoryModel> product = result.isNotEmpty
+        ? result.map((item) => SubCategoryModel.fromJson(item)).toList()
+        : [];
+    return product;
+  }  // for checking new added sub category data list
+
+  Future<List<SubCategoryModel>> getAllSubCategoryUpdateProduct({List<String> columns, String query}) async {
+
+    var db = await subcatDBprovider.database;
+    print("Eikhane");
+    var result = await db.query(subcatTABLE, where: "updateFlag = ?", whereArgs: [updateStatus], orderBy: '$subcat_Id ASC');
+
+
+    List<SubCategoryModel> product = result.isNotEmpty
+        ? result.map((item) => SubCategoryModel.fromJson(item)).toList()
+        : [];
+    return product;
+  }  // for checking new updated sub category data list
+
+  Future deleteAllSubCategoryTable() async {
+    final db = await subcatDBprovider.database;
+    var result = await db.delete(
+      subcatTABLE,
+    );
 
     return result;
   }
@@ -328,6 +418,42 @@ class ProductDB {
     return result;
   }
 
+  Future<List<ManufactureModel>> getAllManufacNewProduct({List<String> columns, String query}) async {
+
+    var db = await manufacDBprovider.database;
+    print("Eikhane");
+    var result = await db.query(manufacTABLE, where: "newFlag = ?", whereArgs: [newStatus], orderBy: '$manufac_Id ASC');
+
+
+    List<ManufactureModel> product = result.isNotEmpty
+        ? result.map((item) => ManufactureModel.fromJson(item)).toList()
+        : [];
+    return product;
+  }  // for checking new added Manufac data list
+
+  Future<List<ManufactureModel>> getAllManufacUpdateProduct({List<String> columns, String query}) async {
+
+    var db = await manufacDBprovider.database;
+    print("Eikhane");
+    var result = await db.query(manufacTABLE, where: "updateFlag = ?", whereArgs: [updateStatus], orderBy: '$manufac_Id ASC');
+
+
+    List<ManufactureModel> product = result.isNotEmpty
+        ? result.map((item) => ManufactureModel.fromJson(item)).toList()
+        : [];
+    return product;
+  }  // for checking new updated Manufac data list
+
+
+  Future deleteAllManufacTable() async {
+    final db = await manufacDBprovider.database;
+    var result = await db.delete(
+      manufacTABLE,
+    );
+
+    return result;
+  }
+
   //MANUFAC DB END
 
 
@@ -366,6 +492,42 @@ class ProductDB {
 
     return result;
   }
+
+  Future<List<UnitModel>> getAllUnitNewProduct({List<String> columns, String query}) async {
+
+    var db = await unitDBprovider.database;
+    print("Eikhane");
+    var result = await db.query(unitTABLE, where: "newFlag = ?", whereArgs: [newStatus], orderBy: '$unit_Id ASC');
+
+
+    List<UnitModel> product = result.isNotEmpty
+        ? result.map((item) => UnitModel.fromJson(item)).toList()
+        : [];
+    return product;
+  }  // for checking new added Unit data list
+
+  Future<List<UnitModel>> getAllUnitUpdateProduct({List<String> columns, String query}) async {
+
+    var db = await unitDBprovider.database;
+    print("Eikhane");
+    var result = await db.query(unitTABLE, where: "updateFlag = ?", whereArgs: [updateStatus], orderBy: '$unit_Id ASC');
+
+
+    List<UnitModel> product = result.isNotEmpty
+        ? result.map((item) => UnitModel.fromJson(item)).toList()
+        : [];
+    return product;
+  }  // for checking new update Unit data list
+
+  Future deleteAllUnitTable() async {
+    final db = await unitDBprovider.database;
+    var result = await db.delete(
+      unitTABLE,
+    );
+
+    return result;
+  }
+
 
 //UNIT DB END
 
@@ -406,6 +568,40 @@ class ProductDB {
     return result;
   }
 
+  Future<List<MaterialPackModel>> getAllPackMatNewProduct({List<String> columns, String query}) async {
+
+    var db = await packmatDBprovider.database;
+    print("Eikhane");
+    var result = await db.query(packmatTABLE, where: "newFlag = ?", whereArgs: [newStatus], orderBy: '$packmat_Id ASC');
+
+
+    List<MaterialPackModel> product = result.isNotEmpty
+        ? result.map((item) => MaterialPackModel.fromJson(item)).toList()
+        : [];
+    return product;
+  }// for checking new Pack Mat data list
+
+  Future<List<MaterialPackModel>> getAllPackMatUpdateProduct({List<String> columns, String query}) async {
+
+    var db = await packmatDBprovider.database;
+    print("Eikhane");
+    var result = await db.query(packmatTABLE, where: "updateFlag = ?", whereArgs: [updateStatus], orderBy: '$packmat_Id ASC');
+
+
+    List<MaterialPackModel> product = result.isNotEmpty
+        ? result.map((item) => MaterialPackModel.fromJson(item)).toList()
+        : [];
+    return product;
+  }// for checking new Pack Mat data list
+
+  Future deleteAllPackMatTable() async {
+    final db = await packmatDBprovider.database;
+    var result = await db.delete(
+      packmatTABLE,
+    );
+
+    return result;
+  }
 //PACKEGING_MATERIAL DB END
 
 }

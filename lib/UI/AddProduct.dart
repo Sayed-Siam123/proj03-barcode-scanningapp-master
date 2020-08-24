@@ -365,7 +365,7 @@ class _AddProductPageState extends State<AddProductPage> {
                  SizedBox(height: 5,),
 
                  Container(
-                   height: 360,
+                   height: 410,
                    width: double.infinity,
                    color: Colors.white,
                    child: Column(

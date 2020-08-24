@@ -6,6 +6,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'SystemSettings.dart';
+
 class CategoryList extends StatefulWidget {
   @override
   _CategoryListState createState() => _CategoryListState();
@@ -14,6 +16,14 @@ class CategoryList extends StatefulWidget {
 class _CategoryListState extends State<CategoryList> {
 
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
+  bool _validate1;
+  bool _validate2;
+
+  String errortext1 = "*value can\'t be empty";
+  String errortext2 = "*value can\'t be empty";
+
+  final TextEditingController _inputcontrol1 = TextEditingController();
+  final TextEditingController _inputcontrol2 = TextEditingController();
 
   void initState() {
     // TODO: implement initState
@@ -37,7 +47,7 @@ class _CategoryListState extends State<CategoryList> {
             int lastID = int.parse(data.last.id.toString());
             print(lastID.toString());
             sublist_bloc.getLastID(lastID);
-            return masterdataview(data);
+            return masterdataview(data,context);
 
           } else if (snapshot.hasError) {
             return Text("${snapshot.error}");
@@ -49,7 +59,7 @@ class _CategoryListState extends State<CategoryList> {
     );
   }
 
-  Widget masterdataview(data) {
+  Widget masterdataview(data,BuildContext context) {
     return RefreshIndicator(
       key: _refreshIndicatorKey,
       onRefresh: (){
@@ -94,9 +104,10 @@ class _CategoryListState extends State<CategoryList> {
 //                      Navigator.pushReplacement(
 //                          context, MaterialPageRoute(builder: (context) => ManufacViewPage()));
                             //TODO:: eikhane
+                            _showDialog(data[index].id.toString(),data[index].categoryName.toString());
                           },
                           icon: Icon(
-                            Icons.arrow_forward_ios,
+                            Icons.edit,
                             color: Colors.black,
                           ),
                         ),
@@ -114,5 +125,154 @@ class _CategoryListState extends State<CategoryList> {
     );
   }
 
+  _showDialog(String id, String category) async {
+    await showDialog<String>(
+        context: context,
+        builder: (_) =>
 
+            StatefulBuilder(
+              builder: (context, setState) {
+                return new AlertDialog(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                  content: Builder(
+                    builder: (context) {
+                      // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                      var height = MediaQuery.of(context).size.height;
+                      var width = MediaQuery.of(context).size.width;
+
+                      return Container(
+                        height: height * 0.20,
+                        width: 400,
+                        child: new Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+
+                            Text("CATEGORY EDIT",style: GoogleFonts.exo2(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black54,
+                            ),),
+
+                            Divider(
+                              thickness: 1,
+                            ),
+
+                            SizedBox(
+                              height: 5,
+                            ),
+
+                            Container(
+                              child: Column(
+                                children: <Widget>[
+                                  new Text("Category",style: GoogleFonts.exo2(
+                                    fontSize: 16,
+                                  ),),
+                                  SizedBox(height: 2,),
+                                  new TextField(
+                                    autofocus: true,
+                                    style: GoogleFonts.exo2(
+                                      fontSize: 14,
+                                    ),
+                                    decoration: new InputDecoration(
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                                      ),
+                                      hintText: category,
+                                      hintStyle: GoogleFonts.exo2(
+                                        fontSize: 14,
+                                      ),
+                                      errorStyle: GoogleFonts.exo2(
+                                        fontSize: 14,
+                                      ),
+                                      errorText:
+                                      _validate1 == false ? errortext1 : null,
+                                    ),
+                                    controller: _inputcontrol1,
+                                    // ignore: missing_return
+                                  ),
+                                ],
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                  actions: <Widget>[
+                    new FlatButton(
+                        child: Text(
+                          'CANCEL',
+                          style: GoogleFonts.exo2(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                          ),
+                        ),
+                        onPressed: () {
+                          //_inputcontrol2.text = "";
+                          Navigator.pop(context);
+                        }),
+
+                    new FlatButton(
+                        child: Text(
+                          'UPDATE',
+                          style: GoogleFonts.exo2(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.blue,
+                          ),
+                        ),
+                        onPressed: () {
+                          if (_inputcontrol1.text.isEmpty &&
+                              _inputcontrol1.text == "") {
+                            print("KHali");
+
+                            setState(() {
+                              _validate1 = false;
+                            });
+
+                            //TODO:: Toast hobe ekta
+                          } else {
+                            setState(() {
+                              _validate1 = true;
+                            });
+
+                            print("Vora");
+
+                            print(_inputcontrol1.text);
+                            //print(_inputcontrol2.text);
+
+                            sublist_bloc.getCategoryID(id.toString());
+                            sublist_bloc.getCategoryName(_inputcontrol1.text);
+//                            sublist_bloc.getUnitShort(_inputcontrol2.text);
+                            sublist_bloc.updateCatDatafromDB();
+
+                            _inputcontrol1.text = "";
+
+//                            Fluttertoast.showToast(
+//                                msg: "Manufacturer Added!",
+//                                toastLength: Toast.LENGTH_SHORT,
+//                                gravity: ToastGravity.BOTTOM,
+//                                timeInSecForIosWeb: 1,
+//                                backgroundColor: Colors.green,
+//                                textColor: Colors.white,
+//                                fontSize: 16.0);
+
+                            Navigator.pop(context);
+                            sublist_bloc.dispose();
+                            sublist_bloc.fetchAllCatDatafromDB();
+                          }
+
+                        }),
+                  ],
+                );
+              },
+            )
+
+    );
+
+
+ }
 }

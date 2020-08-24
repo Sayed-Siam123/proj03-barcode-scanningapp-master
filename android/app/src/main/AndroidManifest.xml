@@ -17,8 +17,8 @@
 
 
     <application
-        android:label="flutter_app"
-        android:icon="@mipmap/ic_launcher">
+        android:label="IDENTIT"
+        android:icon="@mipmap/logo">
 
         <activity
             android:name=".MainActivity"

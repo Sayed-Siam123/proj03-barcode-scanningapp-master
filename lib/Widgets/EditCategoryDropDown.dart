@@ -7,21 +7,27 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:searchable_dropdown/searchable_dropdown.dart';
 
-class CategoryDropDown extends StatefulWidget {
+class EditCategoryDropDown extends StatefulWidget {
+  final String category, previous_id;
 
+  const EditCategoryDropDown({Key key, this.category, this.previous_id}) : super(key: key);
   @override
-  _CategoryDropDownState createState() => _CategoryDropDownState();
+  _EditCategoryDropDownState createState() => _EditCategoryDropDownState();
 }
 
-class _CategoryDropDownState extends State<CategoryDropDown> {
+class _EditCategoryDropDownState extends State<EditCategoryDropDown> {
   //List<CategoryModel> _valCategoryName = List();
 
-  String _valCategoryName;
+
+  String _valCategoryName = "";
+  String _valCategoryID = "";
 
   CategoryModel categorySelect;
   List<CategoryModel> data;
 
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
+
+
   @override
   void initState() {
     // TODO: implement initState
@@ -185,59 +191,6 @@ class _CategoryDropDownState extends State<CategoryDropDown> {
                           ),
                         ),
                       ),
-
-//                      Padding(
-//                        padding: const EdgeInsets.fromLTRB(0, 3, 0, 0),
-//                        child: Container(
-//                          decoration: _getShadowDecoration(),
-//                          child: Card(
-//                              child: Row(
-//                                mainAxisSize: MainAxisSize.min,
-//                                children: <Widget>[
-//                                  Flexible(
-//                                    fit: FlexFit.loose,
-//                                    child: SizedBox(
-//                                      width: MediaQuery.of(context).size.width-72,
-//                                      height: 50,
-//                                      child: DirectSelectList<CategoryModel>(
-//                                        onUserTappedListener: () {
-////                                          scaffoldKey.currentState.showSnackBar(
-////                                              SnackBar(
-////                                                content: Text('Product Added',
-////                                                  style: GoogleFonts.exo2(
-////                                                    textStyle: TextStyle(
-////                                                      fontSize: 14,
-////                                                    ),
-////                                                  ),),
-////                                                duration: Duration(seconds: 3),
-////                                              ));
-//                                        },
-//                                        values: data,
-//                                        itemBuilder: (CategoryModel category) =>
-//                                            getDropDownMenuItem(category),
-//                                        focusedItemDecoration: _getDslDecoration(),
-//                                        onItemSelectedListener: (value, selectedIndex, context) {
-//                                          FocusScope.of(context).requestFocus(FocusNode());
-//                                          categorySelect = value;
-//
-//                                          print(categorySelect.categoryName.toString());
-//                                          print("ID HOITESE: " + categorySelect.id);
-//                                          sublist_bloc.getCategoryID(categorySelect.id);
-//                                          sublist_bloc.getCategoryName(categorySelect.categoryName);
-//                                        },
-//                                      ),
-//                                    ),
-//                                  ),
-//                                  Padding(
-//                                    padding: EdgeInsets.only(right: 8),
-//                                    child: _getDropdownIcon(),
-//                                  )
-//                                ],
-//                              )),
-//                        ),
-//                      ),
-
-
                       Padding(
                         padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                         child: Container(
@@ -247,7 +200,7 @@ class _CategoryDropDownState extends State<CategoryDropDown> {
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
                                 Container(
-                                  width: MediaQuery.of(context).size.width-137,
+                                  width: MediaQuery.of(context).size.width-136,
                                   height: 70,
                                   child: Padding(
                                     padding: const EdgeInsets.fromLTRB(0,2,0,0),
@@ -261,15 +214,17 @@ class _CategoryDropDownState extends State<CategoryDropDown> {
                                             ), value: item);
                                       }).toList(),
                                       value: categorySelect,
-                                      hint: "Select Category",
+                                      hint: widget.category.toString(),
                                       searchHint: "Select one",
                                       isCaseSensitiveSearch: true,
                                       onChanged: (value) {
                                         setState(() {
                                           categorySelect = value;
+                                          _valCategoryID = value.id.toString();
+                                          _valCategoryName = value.categoryName.toString();
                                         });
-                                        sublist_bloc.getCategoryID(categorySelect.id);
-                                        sublist_bloc.getCategoryName(categorySelect.categoryName);
+                                        sublist_bloc.getCategoryID(_valCategoryName);
+                                        sublist_bloc.getCategoryName(_valCategoryName);
 
                                       },
                                       isExpanded: true,
@@ -289,7 +244,6 @@ class _CategoryDropDownState extends State<CategoryDropDown> {
 
                         ),
                       ),
-
                     ],
                   ),
 

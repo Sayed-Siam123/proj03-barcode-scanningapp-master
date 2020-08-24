@@ -340,7 +340,7 @@ class _SubCatPageViewState extends State<SubCatPageView> {
                               print(_inputcontrol1.text);
                               //print(_inputcontrol2.text);
 
-                              sublist_bloc.getsub_category(_inputcontrol1.text);
+                              sublist_bloc.get_new_sub_category(_inputcontrol1.text);
 
                               _inputcontrol1.text = "";
                               //_inputcontrol2.text = "";

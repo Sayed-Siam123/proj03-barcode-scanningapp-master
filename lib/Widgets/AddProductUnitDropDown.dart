@@ -7,6 +7,7 @@ import 'package:direct_select_flutter/direct_select_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:searchable_dropdown/searchable_dropdown.dart';
 
 class AddProductUnitDropDown extends StatefulWidget {
 
@@ -61,57 +62,108 @@ class _AddProductUnitDropDownState extends State<AddProductUnitDropDown> {
                         ),
                       ),
 
+//                      Padding(
+//                        padding: const EdgeInsets.fromLTRB(0, 3, 0, 0),
+//                        child: Container(
+//                          decoration: _getShadowDecoration(),
+//                          child: Card(
+//                              child: Row(
+//                                mainAxisSize: MainAxisSize.min,
+//                                children: <Widget>[
+//                                  Flexible(
+//                                    fit: FlexFit.loose,
+//                                    child: SizedBox(
+//                                      width: MediaQuery.of(context).size.width-72,
+//                                      height: 50,
+//                                      child: DirectSelectList<UnitModel>(
+//                                        onUserTappedListener: () {
+//                                          Scaffold.of(context).showSnackBar(SnackBar(
+//                                            content: Text(
+//                                              'Hold and drag the item',
+//                                              style: GoogleFonts.exo2(
+//                                                textStyle: TextStyle(
+//                                                  fontSize: 16,
+//                                                ),
+//                                              ),
+//                                            ),
+//                                            duration: Duration(seconds: 2),
+//                                          ));
+//                                        },
+//                                        values: data,
+//                                        itemBuilder: (UnitModel unit) =>
+//                                            getDropDownMenuItem(unit),
+//                                        focusedItemDecoration: _getDslDecoration(),
+//                                        onItemSelectedListener: (value, selectedIndex, context) {
+//                                          FocusScope.of(context).requestFocus(FocusNode());
+//                                          unitSelect = value;
+//
+//                                          print(unitSelect.unitName.toString());
+//                                          print("ID HOITESE: " + unitSelect.id);
+//                                          sublist_bloc.getUnitID(unitSelect.id);
+//                                          sublist_bloc.getUnitName(unitSelect.unitName);
+//
+//
+//                                        },
+//                                      ),
+//                                    ),
+//                                  ),
+//                                  Padding(
+//                                    padding: EdgeInsets.only(right: 8),
+//                                    child: _getDropdownIcon(),
+//                                  )
+//                                ],
+//                              )),
+//                        ),
+//                      ),
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 3, 0, 0),
+                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                         child: Container(
                           decoration: _getShadowDecoration(),
                           child: Card(
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Flexible(
-                                    fit: FlexFit.loose,
-                                    child: SizedBox(
-                                      width: MediaQuery.of(context).size.width-72,
-                                      height: 50,
-                                      child: DirectSelectList<UnitModel>(
-                                        onUserTappedListener: () {
-                                          Scaffold.of(context).showSnackBar(SnackBar(
-                                            content: Text(
-                                              'Hold and drag the item',
-                                              style: GoogleFonts.exo2(
-                                                textStyle: TextStyle(
-                                                  fontSize: 16,
-                                                ),
-                                              ),
-                                            ),
-                                            duration: Duration(seconds: 2),
-                                          ));
-                                        },
-                                        values: data,
-                                        itemBuilder: (UnitModel unit) =>
-                                            getDropDownMenuItem(unit),
-                                        focusedItemDecoration: _getDslDecoration(),
-                                        onItemSelectedListener: (value, selectedIndex, context) {
-                                          FocusScope.of(context).requestFocus(FocusNode());
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Container(
+                                  width: MediaQuery.of(context).size.width-30,
+                                  height: 70,
+                                  child: Padding(
+                                    padding: const EdgeInsets.fromLTRB(0,2,0,0),
+                                    child: SearchableDropdown.single(
+                                      clearIcon: null,
+                                      items: data.map((item) {
+                                        return new DropdownMenuItem<UnitModel>(
+                                            child: Padding(
+                                              padding: const EdgeInsets.fromLTRB(0,0,0,0),
+                                              child: Text(item.unitName),
+                                            ), value: item);
+                                      }).toList(),
+                                      value: unitSelect,
+                                      hint: "Select Unit",
+                                      searchHint: "Select one",
+                                      isCaseSensitiveSearch: true,
+                                      onChanged: (value) {
+                                        setState(() {
                                           unitSelect = value;
 
-                                          print(unitSelect.unitName.toString());
-                                          print("ID HOITESE: " + unitSelect.id);
-                                          sublist_bloc.getUnitID(unitSelect.id);
-                                          sublist_bloc.getUnitName(unitSelect.unitName);
-
-
-                                        },
+                                        });
+                                        sublist_bloc.getUnitID(unitSelect.id);
+                                        sublist_bloc.getUnitName(unitSelect.unitName);
+                                      },
+                                      isExpanded: true,
+                                      underline: Container(
+                                        height: 0.0,
+                                        decoration: BoxDecoration(
+                                            border:
+                                            Border(bottom: BorderSide(color: Colors.transparent, width: 0.0))),
                                       ),
                                     ),
                                   ),
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 8),
-                                    child: _getDropdownIcon(),
-                                  )
-                                ],
-                              )),
+
+                                  //child: Text("Asche"),  //TODO:: eikhan theke kaj shuru hbe
+                                )],
+                            ),
+                          ),
+
                         ),
                       ),
                     ],

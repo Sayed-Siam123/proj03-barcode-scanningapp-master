@@ -46,6 +46,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
       id;
 
   String pre_name, pre_productdesc, pre_manu_pin = "", pre_gtin, pre_listprice;
+  String propic, newFlag,isTransfertoApp,isOrderableviaApp,productHeight,ProductLength;
 
   CategoryModel CategoryPass;
 
@@ -180,8 +181,17 @@ class _ProductEditPageState extends State<ProductEditPage> {
                 sublist_bloc.getPreviousUnitName(unit);
 
 //
+                MasterDataModel data = MasterDataModel(
+                  productPicture: propic.toString(),
+                  newFlag: newFlag.toString(),
+                  isTransferToApp: isTransfertoApp.toString(),
+                  isOrderableViaApp: isOrderableviaApp.toString(),
+                  productHeight: productHeight.toString(),
+                  productLength: ProductLength.toString(),
+                );
+
                 print("eikhnane submit");
-                sublist_bloc.UpdateProductMasterDatatoDB();
+                sublist_bloc.UpdateProductMasterDatatoDB(data);
                 sublist_bloc.dispose();
 //              sublist_bloc.dispose();
 
@@ -200,8 +210,8 @@ class _ProductEditPageState extends State<ProductEditPage> {
                     textColor: Colors.white,
                     fontSize: 16.0);
 
-//                Navigator.push(context,
-//                    MaterialPageRoute(builder: (context) => MasterData()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MasterData()));
               }),
         ],
       ),
@@ -276,6 +286,13 @@ class _ProductEditPageState extends State<ProductEditPage> {
 
                           unit = data[0].packagingUnit;
                           unitID = data[0].unitId;
+
+                          propic = data[0].productPicture;
+                          newFlag = data[0].newFlag;
+                          isTransfertoApp = data[0].isTransferToApp;
+                          isOrderableviaApp = data[0].isOrderableViaApp;
+                          productHeight = data[0].productHeight;
+                          ProductLength = data[0].productLength;
 
                           return Padding(
                             padding: const EdgeInsets.all(10.0),

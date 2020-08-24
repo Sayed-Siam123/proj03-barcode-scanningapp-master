@@ -1,5 +1,11 @@
+import 'package:app/Bloc/Sublist_bloc.dart';
+import 'package:app/Model/CatagoryModel.dart';
 import 'package:app/Model/GetSuccess_Model.dart';
+import 'package:app/Model/ManufactureModel.dart';
+import 'package:app/Model/MaterialPackModel.dart';
+import 'package:app/Model/SubCategory.dart';
 import 'package:app/Model/masterdata_model.dart';
+import 'package:app/Model/unit_model.dart';
 import 'package:app/Resources/Repository.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -139,11 +145,236 @@ class MasterData_Bloc{
 
   }
 
-  syncDatatoAPI() async{
+  syncAddDatatoAPI() async{
     List<MasterDataModel> newmasterdata = await _repository.getAllMAsterNewProduct();
-    for(int i = 0;i<newmasterdata.length;i++){
-      print(newmasterdata[i].productName.toString());
+    List<CategoryModel> catdata = await _repository.getAllCategoryNewProduct();
+    List<SubCategoryModel> subcatdata = await _repository.getAllSubCategoryNewProduct();
+    List<UnitModel> unitdata = await _repository.getAllUnitNewProduct();
+    List<MaterialPackModel> packmatdata = await _repository.getAllPackMatNewProduct();
+    List<ManufactureModel> manufacdata = await _repository.getAllManufacNewProduct();
+
+
+    //MASTER ADD
+    if(newmasterdata.length ==0){
+      print("master Kicchu nai");
     }
+
+    else if(newmasterdata.length !=0) {
+
+      for(int i = 0;i<newmasterdata.length;i++){
+        print("new master data");
+        print(newmasterdata[i].productName.toString());
+        await _repository.createProductMasterData(newmasterdata[i].productName.toString(), newmasterdata[i].productDescription.toString(), newmasterdata[i].categoryNameId.toString(), newmasterdata[i].subCategoryNameId.toString(), newmasterdata[i].unitId.toString(), newmasterdata[i].manufacturerId.toString(), newmasterdata[i].manufacturerPN.toString(), newmasterdata[i].gtin.toString(), newmasterdata[i].listPrice.toString());
+      }
+      await _repository.deleteAllMasterdataTable();
+      fetchAllMasterData();
+    }
+
+    //CAT ADD
+    if(catdata.length ==0){
+      print("cat Kicchu nai");
+    }
+
+    else if(catdata.length !=0) {
+
+      for(int i = 0;i<catdata.length;i++){
+        print(catdata[i].categoryName.toString());
+        await _repository.createCategory(catdata[i].categoryName.toString());
+
+      }
+
+      await _repository.deleteAllCategoryTable();
+      sublist_bloc.fetchAllCatagoryData();
+
+    }
+
+    //SUB CAT ADD
+    if(subcatdata.length ==0){
+      print("subcat Kicchu nai");
+    }
+
+    else if(subcatdata.length !=0) {
+
+      for(int i = 0;i<subcatdata.length;i++){
+        print(subcatdata[i].categoryId.toString());
+        await _repository.createSubCategory(subcatdata[i].categoryId.toString(), subcatdata[i].subCategoryName.toString());
+      }
+
+      await _repository.deleteAllSubCategoryTable();
+      sublist_bloc.fetchAllSubCatagoryData();
+    }
+
+
+    //UNIT ADD
+    if(unitdata.length ==0){
+      print("unit Kicchu nai");
+    }
+
+    else if(unitdata.length !=0) {
+
+      for(int i = 0;i<unitdata.length;i++){
+        print(unitdata[i].unitName.toString());
+        await _repository.createUnit(unitdata[i].unitName.toString(),unitdata[i].unitShort.toString());
+      }
+
+      await _repository.deleteAllUnitTable();
+      sublist_bloc.fetchAllUnitData();
+
+    }
+
+    // PACK MAT ADD
+    if(packmatdata.length ==0){
+      print("packmat Kicchu nai");
+    }
+
+    else if(packmatdata.length !=0) {
+
+      for(int i = 0;i<packmatdata.length;i++){
+        print(packmatdata[i].materialName.toString());
+        await _repository.createPackagingMaterial(packmatdata[i].materialName.toString());
+      }
+
+      await _repository.deleteAllPackMatTable();
+      sublist_bloc.fetchAllMateralPackData();
+
+    }
+
+    //MANUFAC ADD
+    if(manufacdata.length ==0){
+      print("packmat Kicchu nai");
+    }
+
+    else if(manufacdata.length !=0) {
+
+      for(int i = 0;i<manufacdata.length;i++){
+        print(manufacdata[i].manufacturerName.toString());
+        await _repository.createManufacturer(manufacdata[i].manufacturerName.toString());
+      }
+
+      await _repository.deleteAllManufacTable();
+      sublist_bloc.fetchAllManufacData();
+
+    }
+
+  }
+
+  syncUpdateDatatoAPI() async{
+    List<MasterDataModel> updatemasterdata = await _repository.getAllMAsterUpdateProduct();
+    List<CategoryModel> updatecatdata = await _repository.getAllCategoryUpdateProduct();
+    List<SubCategoryModel> updatesubcatdata = await _repository.getAllSubCategoryUpdateProduct();
+    List<UnitModel> updateunitdata = await _repository.getAllUnitUpdateProduct();
+    List<MaterialPackModel> updatepackmatdata = await _repository.getAllPackMatUpdateProduct();
+    List<ManufactureModel> updatemanufacdata = await _repository.getAllManufacUpdateProduct();
+
+
+    //MASTER ADD
+    if(updatemasterdata.length ==0){
+      print("master Kicchu nai");
+    }
+
+    else if(updatemasterdata.length !=0) {
+
+      for(int i = 0;i<updatemasterdata.length;i++){
+        print("new master data");
+        print(updatemasterdata[i].productName.toString());
+        await _repository.updateProductMasterData(updatemasterdata[i].id.toString(),updatemasterdata[i].productName.toString()
+            , updatemasterdata[i].productDescription.toString(), updatemasterdata[i].categoryNameId.toString()
+            , updatemasterdata[i].subCategoryNameId.toString(), updatemasterdata[i].unitId.toString()
+            , updatemasterdata[i].manufacturerId.toString(), updatemasterdata[i].manufacturerPN.toString()
+            , updatemasterdata[i].gtin.toString(), updatemasterdata[i].listPrice.toString());
+      }
+      await _repository.deleteAllMasterdataTable();
+      fetchAllMasterData();
+    }
+
+    //CAT ADD
+    if(updatecatdata.length ==0){
+      print("cat Kicchu nai");
+    }
+
+    else if(updatecatdata.length !=0) {
+
+      for(int i = 0;i<updatecatdata.length;i++){
+        print(updatecatdata[i].categoryName.toString());
+        //await _repository.updateCategory(catdata[i].categoryName.toString());
+
+      }
+
+      //await _repository.deleteAllCategoryTable();
+      //sublist_bloc.fetchAllCatagoryData();
+
+    }
+
+    //SUB CAT ADD
+    if(updatesubcatdata.length ==0){
+      print("subcat Kicchu nai");
+    }
+
+    else if(updatesubcatdata.length !=0) {
+
+      for(int i = 0;i<updatesubcatdata.length;i++){
+        print(updatesubcatdata[i].categoryId.toString());
+        //await _repository.createSubCategory(subcatdata[i].categoryId.toString(), subcatdata[i].subCategoryName.toString());
+      }
+
+      //await _repository.deleteAllSubCategoryTable();
+      //sublist_bloc.fetchAllSubCatagoryData();
+    }
+
+
+    //UNIT ADD
+    if(updateunitdata.length ==0){
+      print("unit Kicchu nai");
+    }
+
+    else if(updateunitdata.length !=0) {
+
+      for(int i = 0;i<updateunitdata.length;i++){
+        print(updateunitdata[i].unitName.toString());
+        //await _repository.createUnit(unitdata[i].unitName.toString(),unitdata[i].unitShort.toString());
+      }
+
+      //await _repository.deleteAllUnitTable();
+      //sublist_bloc.fetchAllUnitData();
+
+    }
+
+    // PACK MAT ADD
+    if(updatepackmatdata.length ==0){
+      print("packmat Kicchu nai");
+    }
+
+    else if(updatepackmatdata.length !=0) {
+
+      for(int i = 0;i<updatepackmatdata.length;i++){
+        print(updatepackmatdata[i].materialName.toString());
+        //await _repository.createPackagingMaterial(packmatdata[i].materialName.toString());
+      }
+
+      //await _repository.deleteAllPackMatTable();
+      //sublist_bloc.fetchAllMateralPackData();
+
+    }
+
+    //MANUFAC ADD
+    if(updatemanufacdata.length ==0){
+      print("manufac Kicchu nai");
+    }
+
+    else if(updatemanufacdata.length !=0) {
+
+      for(int i = 0;i<updatemanufacdata.length;i++){
+        print(updatemanufacdata[i].manufacturerName.toString());
+        //await _repository.createManufacturer(manufacdata[i].manufacturerName.toString());
+      }
+
+      //await _repository.deleteAllManufacTable();
+      // sublist_bloc.fetchAllManufacData();
+
+    }
+
+
+
   }
 
 
