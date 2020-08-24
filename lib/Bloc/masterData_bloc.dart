@@ -296,12 +296,12 @@ class MasterData_Bloc{
 
       for(int i = 0;i<updatecatdata.length;i++){
         print(updatecatdata[i].categoryName.toString());
-        //await _repository.updateCategory(catdata[i].categoryName.toString());
+        await _repository.updateCatAPI(updatecatdata[i].id.toString(),updatecatdata[i].categoryName.toString());
 
       }
 
-      //await _repository.deleteAllCategoryTable();
-      //sublist_bloc.fetchAllCatagoryData();
+      await _repository.deleteAllCategoryTable();
+      sublist_bloc.fetchAllCatagoryData();
 
     }
 
@@ -314,7 +314,7 @@ class MasterData_Bloc{
 
       for(int i = 0;i<updatesubcatdata.length;i++){
         print(updatesubcatdata[i].categoryId.toString());
-        //await _repository.createSubCategory(subcatdata[i].categoryId.toString(), subcatdata[i].subCategoryName.toString());
+        await _repository.updateSubCatAPI(updatesubcatdata[i].id.toString(),updatesubcatdata[i].categoryId.toString(), updatesubcatdata[i].subCategoryName.toString());
       }
 
       //await _repository.deleteAllSubCategoryTable();
@@ -331,11 +331,11 @@ class MasterData_Bloc{
 
       for(int i = 0;i<updateunitdata.length;i++){
         print(updateunitdata[i].unitName.toString());
-        //await _repository.createUnit(unitdata[i].unitName.toString(),unitdata[i].unitShort.toString());
+        await _repository.updateUnitAPI(updateunitdata[i].id.toString(),updateunitdata[i].unitName.toString(),updateunitdata[i].unitShort.toString());
       }
 
-      //await _repository.deleteAllUnitTable();
-      //sublist_bloc.fetchAllUnitData();
+      await _repository.deleteAllUnitTable();
+      sublist_bloc.fetchAllUnitData();
 
     }
 
@@ -348,11 +348,11 @@ class MasterData_Bloc{
 
       for(int i = 0;i<updatepackmatdata.length;i++){
         print(updatepackmatdata[i].materialName.toString());
-        //await _repository.createPackagingMaterial(packmatdata[i].materialName.toString());
+        await _repository.updatePackMatAPI(updatepackmatdata[i].id.toString(),updatepackmatdata[i].materialName.toString());
       }
 
-      //await _repository.deleteAllPackMatTable();
-      //sublist_bloc.fetchAllMateralPackData();
+      await _repository.deleteAllPackMatTable();
+      sublist_bloc.fetchAllMateralPackData();
 
     }
 
@@ -365,11 +365,11 @@ class MasterData_Bloc{
 
       for(int i = 0;i<updatemanufacdata.length;i++){
         print(updatemanufacdata[i].manufacturerName.toString());
-        //await _repository.createManufacturer(manufacdata[i].manufacturerName.toString());
+        await _repository.updateManufacturerAPI(updatemanufacdata[i].id.toString(),updatemanufacdata[i].manufacturerName.toString());
       }
 
-      //await _repository.deleteAllManufacTable();
-      // sublist_bloc.fetchAllManufacData();
+      await _repository.deleteAllManufacTable();
+      sublist_bloc.fetchAllManufacData();
 
     }
 

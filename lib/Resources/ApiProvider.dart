@@ -461,13 +461,101 @@ class ApiProvider {
   }
 
 
-  Future<sublist_getsuccess_model> updateManufacturer(id,manufacturer) async{
+  Future<sublist_getsuccess_model> updateManufacturerAPI(id,manufacturer) async{
 
     getIP();
     getPort();
     await new Future.delayed(const Duration(milliseconds: 1000));
 
     final response = await client.get(initial+serverIP+":"+serverPort+"/api/SublistPost/"+"ManufacturerUpdate"+"/"+id+"/"+manufacturer);
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+
+
+      debugPrint("From singleGet Class:: "+json.decode(response.body).toString());
+      return sublist_getsuccess_model.fromJson(json.decode(response.body));
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load album');
+    }
+  }
+
+  Future<sublist_getsuccess_model> updateUnitAPI(id,unit,unitShort) async{
+
+    getIP();
+    getPort();
+    await new Future.delayed(const Duration(milliseconds: 1000));
+
+    final response = await client.get(initial+serverIP+":"+serverPort+"/api/SublistPost/"+"UnitUpdate"+"/"+id+"/"+unit+"/"+unitShort);
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+
+
+      debugPrint("From singleGet Class:: "+json.decode(response.body).toString());
+      return sublist_getsuccess_model.fromJson(json.decode(response.body));
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load album');
+    }
+  }
+
+  Future<sublist_getsuccess_model> updateSubCatAPI(id,catID,subcat) async{
+
+    getIP();
+    getPort();
+    await new Future.delayed(const Duration(milliseconds: 1000));
+
+    final response = await client.get(initial+serverIP+":"+serverPort+"/api/SublistPost/"+"SubCategoryUpdate"+"/"+id+"/"+catID+"/"+subcat);
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+
+
+      debugPrint("From singleGet Class:: "+json.decode(response.body).toString());
+      return sublist_getsuccess_model.fromJson(json.decode(response.body));
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load album');
+    }
+  }
+
+  Future<sublist_getsuccess_model> updateCatAPI(id,cat) async{
+
+    getIP();
+    getPort();
+    await new Future.delayed(const Duration(milliseconds: 1000));
+
+    final response = await client.get(initial+serverIP+":"+serverPort+"/api/SublistPost/"+"CategoryUpdate"+"/"+id+"/"+cat);
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+
+
+      debugPrint("From singleGet Class:: "+json.decode(response.body).toString());
+      return sublist_getsuccess_model.fromJson(json.decode(response.body));
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load album');
+    }
+  }
+
+  Future<sublist_getsuccess_model> updatePackMatAPI(id,material) async{
+
+    getIP();
+    getPort();
+    await new Future.delayed(const Duration(milliseconds: 1000));
+
+    final response = await client.get(initial+serverIP+":"+serverPort+"/api/SublistPost/"+"MaterialUpdate"+"/"+id+"/"+material);
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,

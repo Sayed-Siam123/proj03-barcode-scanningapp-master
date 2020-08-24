@@ -202,6 +202,16 @@ class _MasterDataState extends State<MasterData> {
                   var connectivityResult = await (Connectivity().checkConnectivity());
                   if (connectivityResult == ConnectivityResult.mobile) {
                     //_showDialog1("Mobile Internet OK");
+                    pr.show();
+                    masterdata_bloc.syncAddDatatoAPI(); //sync the data to api
+                    masterdata_bloc.syncUpdateDatatoAPI();
+                    Future.delayed(Duration(seconds: 3)).then((value) {
+                      pr.hide().whenComplete(() {
+//                        Navigator.of(context).push(CupertinoPageRoute(
+//                            builder: (BuildContext context) => SecondScreen()));
+                        print("COmpleted");
+                      });
+                    });
                   } else if (connectivityResult == ConnectivityResult.wifi) {
                     //_showDialog1("WiFi Internet OK");
                     pr.show();
@@ -429,8 +439,10 @@ class _MasterDataState extends State<MasterData> {
     return _newData.length != 0 || _searchQueryController.text.isNotEmpty
         ? RefreshIndicator(
             key: _refreshIndicatorKey,
+            // ignore: missing_return
             onRefresh: () {
-              return masterdata_bloc.fetchAllMasterdatafromDB();
+              masterdata_bloc.fetchAllMasterData();
+              masterdata_bloc.fetchAllMasterdatafromDB();
             },
             child: ListView.builder(
                 scrollDirection: Axis.vertical,
@@ -454,8 +466,10 @@ class _MasterDataState extends State<MasterData> {
           )
         : RefreshIndicator(
             key: _refreshIndicatorKey,
+            // ignore: missing_return
             onRefresh: () {
-              return masterdata_bloc.fetchAllMasterData();
+              masterdata_bloc.fetchAllMasterData();
+              masterdata_bloc.fetchAllMasterdatafromDB();
             },
             child: ListView.builder(
                 scrollDirection: Axis.vertical,
