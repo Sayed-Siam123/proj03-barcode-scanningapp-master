@@ -1,12 +1,15 @@
 import 'dart:io';
 
 import 'package:app/Bloc/user_bloc.dart';
+import 'package:app/Handler/AppLanguage.dart';
+import 'package:app/Handler/app_localizations.dart';
 import 'package:app/UI/Settings.dart';
 import 'package:app/Widgets/ConnectionSettings.dart';
 import 'package:app/Widgets/LoginWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -15,6 +18,11 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -25,6 +33,9 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    var appLanguage = Provider.of<AppLanguage>(context);
+    print(AppLocalizations.of(context).translate('title').toString());
+    print(AppLocalizations.of(context).translate('Message').toString());
     return Scaffold(
         appBar: AppBar(
           title: new Text('L O G I N',
@@ -85,6 +96,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   _showDialog() async {
+    var appLanguage = Provider.of<AppLanguage>(context);
     await showDialog<String>(
         context: context,
         builder: (_) =>
@@ -140,6 +152,7 @@ class _LoginPageState extends State<LoginPage> {
                                       leading: Image.asset('assets/images/en.png'),
                                       onTap:(){
                                         print("English Lang");
+                                        appLanguage.changeLanguage(Locale("en"));
                                       },
                                     ),
                                   ),
@@ -157,6 +170,7 @@ class _LoginPageState extends State<LoginPage> {
                                       leading: Image.asset('assets/images/de.png'),
                                       onTap:(){
                                         print("German Lang");
+                                        appLanguage.changeLanguage(Locale("de"));
                                       },
                                     ),
                                   ),

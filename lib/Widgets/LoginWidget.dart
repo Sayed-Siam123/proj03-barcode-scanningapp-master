@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:app/Bloc/user_bloc.dart';
+import 'package:app/Handler/app_localizations.dart';
 import 'package:app/Model/GetSuccess_Model.dart';
 import 'package:app/Model/UserLogin_Success_Model.dart';
 import 'package:app/Resources/SharedPrefer.dart';
@@ -45,7 +46,8 @@ class _LoginWidgetState extends State<LoginWidget> {
                   Padding(
                       padding: EdgeInsets.all(10),
                       child: Text(
-                        'Sign in',
+                        AppLocalizations.of(context).translate('title').toString(),
+                        //'Sign in',
                         style: GoogleFonts.exo2(
                           fontSize: 35,
                           textStyle:
