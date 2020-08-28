@@ -1,5 +1,6 @@
 import 'package:app/Bloc/Sublist_bloc.dart';
 import 'package:app/Bloc/masterData_bloc.dart';
+import 'package:app/Handler/app_localizations.dart';
 import 'package:app/Model/CatagoryModel.dart';
 import 'package:app/Model/unit_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -148,7 +149,7 @@ class _CategoryListState extends State<CategoryList> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
 
-                            Text("CATEGORY EDIT",style: GoogleFonts.exo2(
+                            Text(AppLocalizations.of(context).translate('update_category').toString(),style: GoogleFonts.exo2(
                               fontSize: 18,
                               fontWeight: FontWeight.w600,
                               color: Colors.black54,
@@ -165,7 +166,7 @@ class _CategoryListState extends State<CategoryList> {
                             Container(
                               child: Column(
                                 children: <Widget>[
-                                  new Text("Category",style: GoogleFonts.exo2(
+                                  new Text(AppLocalizations.of(context).translate('category').toString(),style: GoogleFonts.exo2(
                                     fontSize: 16,
                                   ),),
                                   SizedBox(height: 2,),
@@ -203,7 +204,7 @@ class _CategoryListState extends State<CategoryList> {
                   actions: <Widget>[
                     new FlatButton(
                         child: Text(
-                          'CANCEL',
+                          AppLocalizations.of(context).translate('cancel').toString(),
                           style: GoogleFonts.exo2(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
@@ -217,7 +218,7 @@ class _CategoryListState extends State<CategoryList> {
 
                     new FlatButton(
                         child: Text(
-                          'UPDATE',
+                          AppLocalizations.of(context).translate('update').toString(),
                           style: GoogleFonts.exo2(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,

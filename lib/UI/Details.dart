@@ -1,5 +1,6 @@
 import 'package:app/Bloc/Sublist_bloc.dart';
 import 'package:app/Bloc/masterData_bloc.dart';
+import 'package:app/Handler/app_localizations.dart';
 import 'package:app/UI/MasterData.dart';
 import 'package:app/UI/ProductDetails.dart';
 import 'package:app/UI/ProductEditPage.dart';
@@ -12,10 +13,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'Home.dart';
 
 class DetailsPage extends StatefulWidget {
+  String product_name, id;
 
-  String product_name,id;
-
-  DetailsPage({this.product_name,this.id});
+  DetailsPage({this.product_name, this.id});
 
   @override
   _DetailsPageState createState() => _DetailsPageState();
@@ -44,7 +44,7 @@ class _DetailsPageState extends State<DetailsPage>
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: (){
+      onWillPop: () {
         return Navigator.push(
             context, MaterialPageRoute(builder: (context) => MasterData()));
       },
@@ -68,33 +68,32 @@ class _DetailsPageState extends State<DetailsPage>
             onPressed: () => Navigator.push(
                 context, MaterialPageRoute(builder: (context) => MasterData())),
           ),
-          actions: <Widget>[
-            new IconButton(
-                icon: new Icon(
-                  Icons.edit,
-                  color: Colors.black54,
-                ),
-                onPressed: () {
-                  print("Edit: ");
-                  masterdata_bloc.getsinglemasterdatafromDB();
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ProductEditPage(
-                                productname: "Paisi",
-                              )));
-                }),
-          ],
         ),
 
         body: TabBarView(
-
           children: [
             new ProductGeneralPage(),
             new ProductDetailsPage(),
             new ProductPackagingPage(),
           ],
           controller: _tabController,
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            print("Edit: ");
+            masterdata_bloc.getsinglemasterdatafromDB();
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ProductEditPage(
+                          productname: "Paisi",
+                        )));
+          },
+          child: Icon(
+            Icons.edit,
+            size: 40,
+          ),
+          backgroundColor: Colors.green,
         ),
 //      body: Container(
 //        margin: EdgeInsets.all(10),
@@ -122,15 +121,25 @@ class _DetailsPageState extends State<DetailsPage>
           child: TabBar(
             indicatorWeight: 4,
             labelStyle: GoogleFonts.exo2(
-            color: Colors.black,
-            fontWeight: FontWeight.bold
-          ),
+                color: Colors.black, fontWeight: FontWeight.bold),
             unselectedLabelColor: Colors.black45,
             labelColor: Colors.black,
             tabs: [
-              new Tab(text: "General"),
-              new Tab(text: "Details"),
-              new Tab(text: "Packaging")
+              new Tab(
+                text: AppLocalizations.of(context)
+                    .translate('general')
+                    .toString(),
+              ),
+              new Tab(
+                text: AppLocalizations.of(context)
+                    .translate('details')
+                    .toString(),
+              ),
+              new Tab(
+                text: AppLocalizations.of(context)
+                    .translate('packaging')
+                    .toString(),
+              )
             ],
             controller: _tabController,
             indicatorColor: Colors.black,

@@ -6,6 +6,7 @@ import 'package:app/Handler/app_localizations.dart';
 import 'package:app/UI/Settings.dart';
 import 'package:app/Widgets/ConnectionSettings.dart';
 import 'package:app/Widgets/LoginWidget.dart';
+import 'package:app/resources/SharedPrefer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -22,6 +23,7 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    getLang();
   }
 
   @override
@@ -31,14 +33,36 @@ class _LoginPageState extends State<LoginPage> {
     userbloc.dispose();
   }
 
+  void getLang() async {
+    Future<String> lang = prefs.getData("language_code");
+    lang.then((data) async {
+      print('lang status pabo');
+      print("lang status " + data.toString());
+
+      setState(() {
+        language = data.toString();
+      });
+      print(language.toString());
+
+//      Future.delayed(const Duration(milliseconds: 1000), () {
+//
+//      });
+    }, onError: (e) {
+      print(e);
+    });
+  }
+
+
+
+  SessionManager prefs = SessionManager();
+  String language = "";
+
   @override
   Widget build(BuildContext context) {
     var appLanguage = Provider.of<AppLanguage>(context);
-    print(AppLocalizations.of(context).translate('title').toString());
-    print(AppLocalizations.of(context).translate('Message').toString());
     return Scaffold(
         appBar: AppBar(
-          title: new Text('L O G I N',
+          title: new Text(AppLocalizations.of(context).translate('login_title').toString(),
             style: GoogleFonts.exo2(
               textStyle: TextStyle(color: Theme
                   .of(context)
@@ -147,14 +171,19 @@ class _LoginPageState extends State<LoginPage> {
                                         style: GoogleFonts.exo2(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w600,
-                                          color: Colors.black54,
+                                          color: language== "en"? Colors.white: Colors.black54,
                                         ),),
                                       leading: Image.asset('assets/images/en.png'),
                                       onTap:(){
                                         print("English Lang");
                                         appLanguage.changeLanguage(Locale("en"));
+                                        setState(() {
+                                          language = "en";
+                                        });
+                                        Navigator.pop(context);
                                       },
                                     ),
+                                    color: language== "en"? Colors.blue: null,
                                   ),
                                   SizedBox(
                                     height: 2,
@@ -165,14 +194,19 @@ class _LoginPageState extends State<LoginPage> {
                                         style: GoogleFonts.exo2(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w600,
-                                          color: Colors.black54,
+                                          color: language== "de"? Colors.white: Colors.black54,
                                         ),),
                                       leading: Image.asset('assets/images/de.png'),
                                       onTap:(){
                                         print("German Lang");
                                         appLanguage.changeLanguage(Locale("de"));
+                                        setState(() {
+                                          language = "de";
+                                        });
+                                        Navigator.pop(context);
                                       },
                                     ),
+                                    color: language== "de"? Colors.blue: null,
                                   ),
                                 ],
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -189,7 +223,7 @@ class _LoginPageState extends State<LoginPage> {
                   actions: <Widget>[
                     new FlatButton(
                         child: Text(
-                          'CANCEL',
+                          AppLocalizations.of(context).translate('cancel').toString(),
                           style: GoogleFonts.exo2(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:app/Bloc/NewDelivery_bloc.dart';
 import 'package:app/Bloc/masterData_bloc.dart';
+import 'package:app/Handler/app_localizations.dart';
 import 'package:app/Model/NewDeliveryModel.dart';
 import 'package:app/Model/masterdata_model.dart';
 import 'package:app/Resources/SharedPrefer.dart';
@@ -190,7 +191,7 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
           },
         ),
         title: Text(
-          "New Delivery",
+          AppLocalizations.of(context).translate('new_delivery').toString(),
           style: GoogleFonts.exo2(
             textStyle: TextStyle(fontSize: 20, color: Colors.black54),
           ),
@@ -239,7 +240,7 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
                     Padding(
                       padding: const EdgeInsets.all(13.0),
                       child: Text(
-                        " Please Input product ID or GTIN to \n add for the delivery \n or you can tap on scan button for quick adding",
+                        AppLocalizations.of(context).translate('new_delivery_desc').toString(),
                         style: GoogleFonts.exo2(
                           textStyle: TextStyle(
                               fontSize: 12,
@@ -336,7 +337,7 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
                                   fontSize: 16,
                                 ),
                               ),
-                              hintText: "Enter or Scan Product GTIN To Add",
+                              hintText: AppLocalizations.of(context).translate('new_delivery_hint').toString(),
                             )),
                       ),
                     ),
@@ -703,7 +704,7 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
                                       padding: EdgeInsets.only(
                                           left: 16, bottom: 10),
                                       child: Text(
-                                        "Note", style: GoogleFonts.exo2(
+                                        AppLocalizations.of(context).translate('note').toString(),style: GoogleFonts.exo2(
                                         fontSize: 20,
                                       ),),
                                     ),
@@ -756,7 +757,7 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
                                                 fontSize: 16,
                                               ),
                                             ),
-                                            hintText: "Enter Note (OPTIONAL)",
+                                            hintText: AppLocalizations.of(context).translate('note_hint').toString(),
                                           ),
                                           keyboardType: TextInputType.multiline,
                                           maxLines: null,
@@ -774,14 +775,14 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
                   ),
                   actions: <Widget>[
                     new FlatButton(
-                        child: const Text('Skip'),
+                        child: Text(AppLocalizations.of(context).translate('skip').toString()),
                         onPressed: () {
                           print("Skip hbe arekta Dialog khulbe");
                           Navigator.pop(context);
                           _showHandlingUnitDialog(context);
                         }),
                     new FlatButton(
-                        child: const Text('Add'),
+                        child: Text(AppLocalizations.of(context).translate('add').toString(),),
                         onPressed: () {
                           print("Add hobe");
 
@@ -883,7 +884,7 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
                                     Padding(
                                       padding: EdgeInsets.only(
                                           left: 16, bottom: 10),
-                                      child: Text("Handling Unit",
+                                      child: Text(AppLocalizations.of(context).translate('handling_unit').toString(),
                                         style: GoogleFonts.exo2(
                                           fontSize: 20,
                                         ),),
@@ -933,7 +934,7 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
                                                 fontSize: 16,
                                               ),
                                             ),
-                                            hintText: "Enter Handling Unit (OPTIONAL)",
+                                            hintText: AppLocalizations.of(context).translate('handling_unit_hint').toString(),
                                             suffixIcon: IconButton(
                                               icon: new Image.asset(
                                                   'assets/images/barcode.png',
@@ -956,7 +957,7 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
                   ),
                   actions: <Widget>[
                     new FlatButton(
-                        child: const Text('Skip'),
+                        child: Text(AppLocalizations.of(context).translate('skip').toString()),
                         onPressed: () {
                           Navigator.pop(context);
                           Navigator.push(context,
@@ -966,7 +967,7 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
                           print("Skip hbe arekta Dialog khulbe");
                         }),
                     new FlatButton(
-                        child: const Text('Add'),
+                        child: Text(AppLocalizations.of(context).translate('add').toString()),
                         onPressed: () async {
                           print("Add hobe");
 

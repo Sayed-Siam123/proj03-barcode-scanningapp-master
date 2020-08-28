@@ -1,5 +1,6 @@
 import 'package:app/Bloc/NewDelivery_bloc.dart';
 import 'package:app/Bloc/PickupDelivery_bloc.dart';
+import 'package:app/Handler/app_localizations.dart';
 import 'package:app/Model/DeliveriesListModel.dart';
 import 'package:app/Model/PickupDeliveryModel.dart';
 import 'package:app/UI/Home.dart';
@@ -55,7 +56,7 @@ class _PickupSummaryState extends State<PickupSummary> {
           },
         ),
         title: Text(
-          "Direct Pick up - Summary",
+          AppLocalizations.of(context).translate('direct_pickup_summary').toString(),
           style: GoogleFonts.exo2(
             textStyle: TextStyle(fontSize: 20, color: Colors.black54),
           ),

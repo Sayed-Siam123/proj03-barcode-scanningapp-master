@@ -1,3 +1,4 @@
+import 'package:app/Handler/app_localizations.dart';
 import 'package:app/UI/MasterData.dart';
 import 'package:app/UI/Sublist.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,7 +14,7 @@ class MasterDataDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            child: Text('App name',style: GoogleFonts.exo2(
+            child: Text('IDENTIT',style: GoogleFonts.exo2(
                 fontSize: 20,
              ),),
             decoration: BoxDecoration(
@@ -21,7 +22,7 @@ class MasterDataDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            title: Text('Product',style: GoogleFonts.exo2(
+            title: Text(AppLocalizations.of(context).translate('product').toString(),style: GoogleFonts.exo2(
               textStyle: TextStyle(
                 fontSize: 20,
                 color: Colors.black,
@@ -38,7 +39,7 @@ class MasterDataDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            title: Text('Sublist',style: GoogleFonts.exo2(
+            title: Text(AppLocalizations.of(context).translate('sublist').toString(),style: GoogleFonts.exo2(
               textStyle: TextStyle(
                 fontSize: 20,
                 color: Colors.black,
@@ -54,13 +55,6 @@ class MasterDataDrawer extends StatelessWidget {
             );
             },
           ),
-          Divider(),
-          Text("Version 1.0.1",style: GoogleFonts.exo2(
-            textStyle: TextStyle(
-              fontSize: 20,
-              color: Colors.black,
-            ),
-          ),),
         ],
       ),
     );

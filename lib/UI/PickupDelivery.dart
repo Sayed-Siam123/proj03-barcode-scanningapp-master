@@ -1,4 +1,5 @@
 import 'package:app/Bloc/PickupDelivery_bloc.dart';
+import 'package:app/Handler/app_localizations.dart';
 import 'package:app/Model/NewDeliveryModel.dart';
 import 'package:app/Model/PickupDeliveryModel.dart';
 import 'package:app/Resources/SharedPrefer.dart';
@@ -184,7 +185,7 @@ class _PickupDeliveryState extends State<PickupDelivery> {
           },
         ),
         title: Text(
-          "Pickup Delivery",
+          AppLocalizations.of(context).translate('pickup_delivery').toString(),
           style: GoogleFonts.exo2(
             textStyle: TextStyle(fontSize: 20, color: Colors.black54),
           ),
@@ -239,8 +240,8 @@ class _PickupDeliveryState extends State<PickupDelivery> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Text(" Please Input product ID to \n add for the pickup \n or you can tap on scan button for quick adding",style: GoogleFonts.exo2(
+                      padding: EdgeInsets.fromLTRB(5,0,0,0),
+                      child: Text(AppLocalizations.of(context).translate('pickup_delivery_desc').toString(),style: GoogleFonts.exo2(
                         textStyle: TextStyle(
                             fontSize: 12,
                             color: Theme.of(context).accentColor,
@@ -249,13 +250,13 @@ class _PickupDeliveryState extends State<PickupDelivery> {
                       ),),
                     ),
 
-                    SizedBox(width: 40,),
+                    SizedBox(width: 0,),
 
                     Container(
                       margin: EdgeInsets.only(
                         left: 0,
                         top: 10,
-                        right: 8,
+                        right: 0,
                       ),
                       height: 50,
                       decoration: BoxDecoration(
@@ -332,7 +333,7 @@ class _PickupDeliveryState extends State<PickupDelivery> {
                                   fontSize: 16,
                                 ),
                               ),
-                              hintText: "Enter or Scan Product ID To Add",
+                              hintText: AppLocalizations.of(context).translate('pickup_delivery_hint').toString(),
                             )),
                       ),
                     ),

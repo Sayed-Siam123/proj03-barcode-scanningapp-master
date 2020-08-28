@@ -1,5 +1,6 @@
 import 'package:app/Bloc/Sublist_bloc.dart';
 import 'package:app/Bloc/masterData_bloc.dart';
+import 'package:app/Handler/app_localizations.dart';
 import 'package:app/Model/ManufactureModel.dart';
 import 'package:app/Model/SubCategory.dart';
 import 'package:direct_select_flutter/direct_select_item.dart';
@@ -402,7 +403,7 @@ class _EditProductSubCategoryDropDownState
                         alignment: AlignmentDirectional.centerStart,
                         margin: EdgeInsets.only(left: 0),
                         child: Text(
-                          "Sub Category",
+                          AppLocalizations.of(context).translate('sub_category').toString(),
                           style: GoogleFonts.exo2(
                             textStyle: TextStyle(
                               fontSize: 16,
@@ -487,7 +488,7 @@ class _EditProductSubCategoryDropDownState
                                       }).toList(),
                                       value: subcategorySelect,
                                       hint: widget.subcat.toString(),
-                                      searchHint: "Select one",
+                                      searchHint: AppLocalizations.of(context).translate('select_one').toString(),
                                       isCaseSensitiveSearch: true,
                                       onChanged: (value) {
                                         setState(() {

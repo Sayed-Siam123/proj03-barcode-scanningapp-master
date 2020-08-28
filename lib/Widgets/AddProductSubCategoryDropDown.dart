@@ -1,4 +1,5 @@
 import 'package:app/Bloc/Sublist_bloc.dart';
+import 'package:app/Handler/app_localizations.dart';
 import 'package:app/Model/CatagoryModel.dart';
 import 'package:app/Model/ManufactureModel.dart';
 import 'package:app/Model/SubCategory.dart';
@@ -83,7 +84,7 @@ class _AddProductSubCategoryDropDownState extends State<AddProductSubCategoryDro
                         alignment: AlignmentDirectional.centerStart,
                         margin: EdgeInsets.only(left: 4),
                         child: Text(
-                          "Sub Category",
+                          AppLocalizations.of(context).translate('sub_category').toString(),
                           style: GoogleFonts.exo2(
                             textStyle: TextStyle(
                               fontSize: 16,
@@ -167,8 +168,8 @@ class _AddProductSubCategoryDropDownState extends State<AddProductSubCategoryDro
                                             ), value: item);
                                       }).toList(),
                                       value: subcategorySelect,
-                                      hint: "Select Sub Category",
-                                      searchHint: "Select one",
+                                      hint: AppLocalizations.of(context).translate('sub_category_hint').toString(),
+                                      searchHint: AppLocalizations.of(context).translate('select_one').toString(),
                                       isCaseSensitiveSearch: true,
                                       onChanged: (value) {
                                         setState(() {

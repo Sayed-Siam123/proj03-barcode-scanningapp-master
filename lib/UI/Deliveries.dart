@@ -1,4 +1,5 @@
 import 'package:app/Bloc/NewDelivery_bloc.dart';
+import 'package:app/Handler/app_localizations.dart';
 import 'package:app/Model/DeliveriesListModel.dart';
 import 'package:app/UI/Home.dart';
 import 'package:app/UI/NewDeliveryPage.dart';
@@ -50,7 +51,7 @@ class _DeliveriesPageState extends State<DeliveriesPage> {
           },
         ),
         title: Text(
-          "Deliveries",
+          AppLocalizations.of(context).translate('delivereies').toString(),
           style: GoogleFonts.exo2(
             textStyle: TextStyle(fontSize: 20, color: Colors.black54),
           ),

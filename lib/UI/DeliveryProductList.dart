@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/Bloc/NewDelivery_bloc.dart';
+import 'package:app/Handler/app_localizations.dart';
 import 'package:app/Model/GetDeliveryResponse_Model.dart';
 import 'package:app/Model/NewDeliveryModel.dart';
 import 'package:app/UI/Deliveries.dart';
@@ -98,7 +99,7 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
           },
         ),
         title: Text(
-          "Delivery List",
+          AppLocalizations.of(context).translate('delivery_list_title').toString(),
           style: GoogleFonts.exo2(
             textStyle: TextStyle(fontSize: 20, color: Colors.black),
           ),
@@ -263,7 +264,7 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  "Delivery ID",
+                                  AppLocalizations.of(context).translate('delivery_id').toString(),
                                   style: GoogleFonts.exo2(
                                     color: Colors.black,
                                     fontSize: 16,
@@ -274,7 +275,7 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
                                   height: 8,
                                 ),
                                 Text(
-                                  "Pallet",
+                                  AppLocalizations.of(context).translate('pallet').toString(),
                                   style: GoogleFonts.exo2(
                                     color: Colors.black,
                                     fontSize: 16,
@@ -287,7 +288,7 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
                                 Column(
                                   children: <Widget>[
                                     Text(
-                                      "Position(Total)",
+                                      AppLocalizations.of(context).translate('position').toString(),
                                       style: GoogleFonts.exo2(
                                         color: Colors.black,
                                         fontSize: 16,
@@ -367,7 +368,7 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
                                       Column(
                                         children: <Widget>[
                                           Text(
-                                            "Quantity(Total)",
+                                            AppLocalizations.of(context).translate('quantity').toString(),
                                             style: GoogleFonts.exo2(
                                               color: Colors.black,
                                               fontSize: 16,

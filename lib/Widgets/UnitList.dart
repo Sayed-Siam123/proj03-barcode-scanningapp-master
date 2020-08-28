@@ -1,4 +1,5 @@
 import 'package:app/Bloc/Sublist_bloc.dart';
+import 'package:app/Handler/app_localizations.dart';
 import 'package:app/Model/unit_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -154,7 +155,7 @@ class _UnitListState extends State<UnitList> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
 
-                            Text("UNIT EDIT",style: GoogleFonts.exo2(
+                            Text(AppLocalizations.of(context).translate('update_unit').toString(),style: GoogleFonts.exo2(
                               fontSize: 18,
                               fontWeight: FontWeight.w600,
                               color: Colors.black54,
@@ -171,7 +172,7 @@ class _UnitListState extends State<UnitList> {
                             Container(
                               child: Column(
                                 children: <Widget>[
-                                  new Text("Unit",style: GoogleFonts.exo2(
+                                  new Text(AppLocalizations.of(context).translate('unit').toString(),style: GoogleFonts.exo2(
                                     fontSize: 16,
                                   ),),
                                   SizedBox(height: 2,),
@@ -244,7 +245,7 @@ class _UnitListState extends State<UnitList> {
                   actions: <Widget>[
                     new FlatButton(
                         child: Text(
-                          'CANCEL',
+                          AppLocalizations.of(context).translate('cancel').toString(),
                           style: GoogleFonts.exo2(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
@@ -258,7 +259,7 @@ class _UnitListState extends State<UnitList> {
 
                     new FlatButton(
                         child: Text(
-                          'UPDATE',
+                          AppLocalizations.of(context).translate('update').toString(),
                           style: GoogleFonts.exo2(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,

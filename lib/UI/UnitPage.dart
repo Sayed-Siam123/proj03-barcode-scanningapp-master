@@ -1,4 +1,5 @@
 import 'package:app/Bloc/Sublist_bloc.dart';
+import 'package:app/Handler/app_localizations.dart';
 import 'package:app/Model/unit_model.dart';
 import 'package:app/UI/Sublist.dart';
 import 'package:app/Widgets/UnitList.dart';
@@ -56,7 +57,7 @@ class _UnitPageViewState extends State<UnitPageView> {
                     MaterialPageRoute(builder: (context) => SublistPage()));
               }),
           title: Text(
-            "Unit",
+            AppLocalizations.of(context).translate('unit').toString(),
             style: GoogleFonts.exo2(
               fontSize: 20,
               color: Colors.black54,
@@ -108,7 +109,7 @@ class _UnitPageViewState extends State<UnitPageView> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
 
-                      Text("NEW UNIT",style: GoogleFonts.exo2(
+                      Text(AppLocalizations.of(context).translate('new_unit').toString(),style: GoogleFonts.exo2(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
                         color: Colors.black54,
@@ -125,7 +126,7 @@ class _UnitPageViewState extends State<UnitPageView> {
                       Container(
                         child: Column(
                           children: <Widget>[
-                            new Text("Unit",style: GoogleFonts.exo2(
+                            new Text(AppLocalizations.of(context).translate('unit').toString(),style: GoogleFonts.exo2(
                               fontSize: 16,
                             ),),
                             SizedBox(height: 2,),
@@ -197,7 +198,7 @@ class _UnitPageViewState extends State<UnitPageView> {
             ),
             actions: <Widget>[
               new FlatButton(
-                  child: Text('CANCEL',style: GoogleFonts.exo2(
+                  child: Text(AppLocalizations.of(context).translate('cancel').toString(),style: GoogleFonts.exo2(
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
                     color: Colors.black,
@@ -208,7 +209,7 @@ class _UnitPageViewState extends State<UnitPageView> {
                     Navigator.pop(context);
                   }),
               new FlatButton(
-                  child: Text('ADD',style: GoogleFonts.exo2(
+                  child: Text(AppLocalizations.of(context).translate('add').toString(),style: GoogleFonts.exo2(
                     fontSize: 18,
                     fontWeight: FontWeight.w500
                   ),),

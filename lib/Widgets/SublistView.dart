@@ -1,3 +1,4 @@
+import 'package:app/Handler/app_localizations.dart';
 import 'package:app/UI/PackageMaterial.dart';
 import 'package:app/UI/ProductPackaging.dart';
 import 'package:app/UI/CategorieViewPage.dart';
@@ -25,7 +26,7 @@ class _SublistViewPageState extends State<SublistViewPage> {
 
             Padding(
               padding: const EdgeInsets.only(left:13.0),
-              child: Text("Sublist",
+              child: Text(AppLocalizations.of(context).translate('sublist').toString(),
                 style: GoogleFonts.exo2(
                   textStyle: TextStyle(
                     color: Colors.black87,
@@ -49,7 +50,7 @@ class _SublistViewPageState extends State<SublistViewPage> {
                     onTap: (){
                       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ManufacViewPage()));
                     },
-                    title: Text("Manufacturer",
+                    title: Text(AppLocalizations.of(context).translate('manufac').toString(),
                       style: GoogleFonts.exo2(
                         textStyle: TextStyle(
                           fontWeight: FontWeight.w400,
@@ -87,7 +88,7 @@ class _SublistViewPageState extends State<SublistViewPage> {
                     onTap: (){
                       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CategorieViewPage()));
                     },
-                    title: Text("Category",
+                    title: Text(AppLocalizations.of(context).translate('category').toString(),
                       style: GoogleFonts.exo2(
                         textStyle: TextStyle(
                           fontWeight: FontWeight.w400,
@@ -125,7 +126,7 @@ class _SublistViewPageState extends State<SublistViewPage> {
                     onTap: (){
                       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SubCatPageView()));
                     },
-                    title: Text("Sub Category",
+                    title: Text(AppLocalizations.of(context).translate('sub_category').toString(),
                       style: GoogleFonts.exo2(
                         textStyle: TextStyle(
                           fontWeight: FontWeight.w400,
@@ -163,7 +164,7 @@ class _SublistViewPageState extends State<SublistViewPage> {
                     onTap: (){
                       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => UnitPageView()));
                     },
-                    title: Text("Unit",
+                    title: Text(AppLocalizations.of(context).translate('unit').toString(),
                       style: GoogleFonts.exo2(
                         textStyle: TextStyle(
                           fontWeight: FontWeight.w400,
@@ -201,7 +202,7 @@ class _SublistViewPageState extends State<SublistViewPage> {
                     onTap: (){
                       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => PackageMaterialPage()));
                     },
-                    title: Text("Packaging Material",
+                    title: Text(AppLocalizations.of(context).translate('package_material').toString(),
                       style: GoogleFonts.exo2(
                         textStyle: TextStyle(
                           fontWeight: FontWeight.w400,

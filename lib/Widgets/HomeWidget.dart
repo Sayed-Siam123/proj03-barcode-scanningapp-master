@@ -1,3 +1,4 @@
+import 'package:app/Handler/app_localizations.dart';
 import 'package:app/UI/BarcodeInfo.dart';
 import 'package:app/UI/Deliveries.dart';
 import 'package:app/UI/PickupDelivery.dart';
@@ -14,24 +15,28 @@ class _HomeWidgetState extends State<HomeWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(10.00),
+      padding: EdgeInsets.only(top:10.00),
       child: new ListView(
         children: <Widget>[
-          new Card(
+           Container(
               child: ListTile(
             title: new Text(
-              'Barcode information',
+              AppLocalizations.of(context).translate('barcode_info').toString(),
               style: GoogleFonts.exo2(
                 textStyle: TextStyle(
                   fontSize: 20,
                   color: Colors.black,
+                  fontWeight: FontWeight.bold
                 ),
               ),
             ),
             isThreeLine: false,
-            subtitle:
-                new Text('Barcode data display', style: GoogleFonts.exo2()),
-            trailing: new Icon(Icons.arrow_forward),
+            subtitle: new Text(
+                AppLocalizations.of(context)
+                    .translate('barcode_info_desc')
+                    .toString(),
+                style: GoogleFonts.exo2()),
+            //trailing: new Icon(Icons.arrow_forward),
             leading: ConstrainedBox(
               constraints: BoxConstraints(
                 minWidth: 45,
@@ -39,31 +44,40 @@ class _HomeWidgetState extends State<HomeWidget> {
                 maxWidth: 45,
                 maxHeight: 45,
               ),
-              child:
-                  Image.asset('assets/images/barcode-info.jpeg', fit: BoxFit.cover),
+              child: Image.asset('assets/images/barcode-info.jpeg',
+                  fit: BoxFit.cover),
             ),
             onTap: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => BarcodeInfo()));
             },
           )),
-          new Card(
+          Divider(
+            thickness: 1,
+            color: Colors.black54,
+          ),
+          Container(
               child: ListTile(
                   title: new Text(
-                    'Deliveries',
+                    AppLocalizations.of(context)
+                        .translate('delivereies')
+                        .toString(),
                     style: GoogleFonts.exo2(
                       textStyle: TextStyle(
                         fontSize: 20,
                         color: Colors.black,
+                          fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
                   isThreeLine: false,
                   subtitle: new Text(
-                    'Create or modifiy a delivery',
+                    AppLocalizations.of(context)
+                        .translate('delivereies_desc')
+                        .toString(),
                     style: GoogleFonts.exo2(),
                   ),
-                  trailing: new Icon(Icons.arrow_forward),
+                  //trailing: new Icon(Icons.arrow_forward),
                   leading: ConstrainedBox(
                     constraints: BoxConstraints(
                       minWidth: 45,
@@ -80,20 +94,29 @@ class _HomeWidgetState extends State<HomeWidget> {
                         MaterialPageRoute(
                             builder: (context) => DeliveriesPage()));
                   })),
-          new Card(
+          Divider(
+            thickness: 1,
+            color: Colors.black54,
+          ),
+           Container(
               child: ListTile(
             title: new Text(
-              'Pick up',
+              AppLocalizations.of(context).translate('pickup').toString(),
               style: GoogleFonts.exo2(
                 textStyle: TextStyle(
                   fontSize: 20,
                   color: Colors.black,
+                    fontWeight: FontWeight.bold
                 ),
               ),
             ),
             isThreeLine: false,
-            subtitle: new Text('Collect shipment', style: GoogleFonts.exo2()),
-            trailing: new Icon(Icons.arrow_forward),
+            subtitle: new Text(
+                AppLocalizations.of(context)
+                    .translate('pickup_desc')
+                    .toString(),
+                style: GoogleFonts.exo2()),
+            //trailing: new Icon(Icons.arrow_forward),
             leading: ConstrainedBox(
               constraints: BoxConstraints(
                 minWidth: 45,
@@ -101,13 +124,18 @@ class _HomeWidgetState extends State<HomeWidget> {
                 maxWidth: 45,
                 maxHeight: 45,
               ),
-              child: Image.asset('assets/images/pickup.jpeg', fit: BoxFit.cover),
+              child:
+                  Image.asset('assets/images/pickup.jpeg', fit: BoxFit.cover),
             ),
             onTap: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => PickupDelivery()));
             },
           )),
+          Divider(
+            thickness: 1,
+            color: Colors.black54,
+          ),
         ],
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:app/Bloc/Sublist_bloc.dart';
+import 'package:app/Handler/app_localizations.dart';
 import 'package:app/UI/MasterData.dart';
 import 'package:app/Widgets/SublistView.dart';
 import 'package:flutter/cupertino.dart';
@@ -33,7 +34,7 @@ class _SublistPageState extends State<SublistPage> {
 
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Sublist",
+          title: Text(AppLocalizations.of(context).translate('sublist').toString(),
             style: GoogleFonts.exo2(
             textStyle: TextStyle(
             color: Colors.black54,

@@ -1,4 +1,5 @@
 import 'package:app/Bloc/Sublist_bloc.dart';
+import 'package:app/Handler/app_localizations.dart';
 import 'package:app/Model/SubCategory.dart';
 import 'package:app/Widgets/CategoryDropDown.dart';
 import 'package:app/Widgets/SubCategoryList.dart';
@@ -77,7 +78,7 @@ class _SubCatPageViewState extends State<SubCatPageView> {
                     MaterialPageRoute(builder: (context) => SublistPage()));
               }),
           title: Text(
-            "Sub Category",
+              AppLocalizations.of(context).translate('sub_category').toString(),
               style: GoogleFonts.exo2(
                 textStyle: TextStyle(
                     fontSize: 20,
@@ -219,7 +220,7 @@ class _SubCatPageViewState extends State<SubCatPageView> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: <Widget>[
                               Text(
-                                "NEW SUB CATEGORY",
+                                AppLocalizations.of(context).translate('new_sub_category').toString(),
                                 style: GoogleFonts.exo2(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w600,
@@ -243,7 +244,7 @@ class _SubCatPageViewState extends State<SubCatPageView> {
                                 child: Column(
                                   children: <Widget>[
                                     new Text(
-                                      "Sub Category",
+                                      AppLocalizations.of(context).translate('sub_category').toString(),
                                       style: GoogleFonts.exo2(
                                         fontSize: 16,
                                       ),

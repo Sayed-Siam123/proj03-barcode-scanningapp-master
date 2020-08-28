@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:app/Bloc/user_bloc.dart';
+import 'package:app/ColorLibrary/HexColor.dart';
 import 'package:app/Handler/app_localizations.dart';
 import 'package:app/Model/GetSuccess_Model.dart';
 import 'package:app/Model/UserLogin_Success_Model.dart';
@@ -18,6 +20,9 @@ class LoginWidget extends StatefulWidget {
 }
 
 class _LoginWidgetState extends State<LoginWidget> {
+
+  Color button_color = HexColor("#b72b45");
+
   @override
   SessionManager prefs = SessionManager();
 
@@ -25,7 +30,8 @@ class _LoginWidgetState extends State<LoginWidget> {
 
   String loginKey = "loginKey";
 
-  bool loginPress = false;
+  bool loginPress=false;
+  bool loginErrorMessage=false;
 
   // Getting value from TextField widget.
   final emailController = TextEditingController();
@@ -43,28 +49,44 @@ class _LoginWidgetState extends State<LoginWidget> {
         child: loginPress == false
             ? Center(
                 child: Column(children: <Widget>[
-                  Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Text(
-                        AppLocalizations.of(context).translate('title').toString(),
-                        //'Sign in',
-                        style: GoogleFonts.exo2(
-                          fontSize: 35,
-                          textStyle:
-                              TextStyle(color: Theme.of(context).accentColor),
-                        ),
-                      )),
+                  // Padding(
+                  //     padding: EdgeInsets.all(10),
+                  //     child: Text(
+                  //       AppLocalizations.of(context).translate('signin').toString(),
+                  //       //'Sign in',
+                  //       style: GoogleFonts.exo2(
+                  //         fontSize: 35,
+                  //         textStyle:
+                  //             TextStyle(color: Theme.of(context).accentColor),
+                  //       ),
+                  //     )),
+                  //
+                  // Container(
+                  //   padding: EdgeInsets.all(10),
+                  //   child: new Text(
+                  //       AppLocalizations.of(context).translate('signin_desc').toString(),
+                  //     style: GoogleFonts.exo2(
+                  //       fontSize: 17,
+                  //       textStyle:
+                  //           TextStyle(color: Theme.of(context).accentColor),
+                  //     ),
+                  //   ),
+                  // ),
+
 
                   Container(
-                    padding: EdgeInsets.all(10),
-                    child: new Text(
-                      "Please fill out the below fields to login",
-                      style: GoogleFonts.exo2(
-                        fontSize: 17,
-                        textStyle:
-                            TextStyle(color: Theme.of(context).accentColor),
-                      ),
-                    ),
+                    padding: EdgeInsets.fromLTRB(0,40,0,0),
+                    // child: new Text(
+                    //     AppLocalizations.of(context).translate('signin_desc').toString(),
+                    //   style: GoogleFonts.exo2(
+                    //     fontSize: 17,
+                    //     textStyle:
+                    //         TextStyle(color: Theme.of(context).accentColor),
+                    //   ),
+                    // ),
+                    child: Image.asset(
+                        "assets/images/logo.jpeg",
+                        width: 350.0,),
                   ),
 
                   SizedBox(
@@ -116,7 +138,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                             ),
                             errorText: _validate1 == false ? errortext1 : null,
                             prefixIcon: Icon(Icons.account_circle),
-                            hintText: "Enter Your User ID Here",
+                            hintText: AppLocalizations.of(context).translate('userid_hint').toString(),
                           )),
                     ),
                   ),
@@ -167,7 +189,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                             ),
                             errorText: _validate2 == false ? errortext2 : null,
                             prefixIcon: Icon(Icons.lock),
-                            hintText: "Enter Your password Here",
+                            hintText: AppLocalizations.of(context).translate('password_hint').toString(),
                           )),
                     ),
                   ),
@@ -183,7 +205,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(18.0),
                         ),
-                        color: Colors.green,
+                        color: button_color,
                         textColor: Colors.white,
                         onPressed: () {
                           if (emailController.text.isEmpty &&
@@ -219,8 +241,6 @@ class _LoginWidgetState extends State<LoginWidget> {
 
                           userbloc.getemail(emailController.text);
                           userbloc.getpass(passwordController.text);
-//
-//
 
                           if (_validate1 && _validate2) {
                             setState(() {
@@ -228,16 +248,14 @@ class _LoginWidgetState extends State<LoginWidget> {
                             });
                             userbloc.userlogin();
                             print(loginPress);
-
-                            prefs.setData(loginKey, "true");
                           }
 
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => HomePage()),);
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(builder: (context) => HomePage()),);
                         },
                         child: Text(
-                          "Login".toUpperCase(),
+                            AppLocalizations.of(context).translate('login_button').toString().toUpperCase(),
                           style: GoogleFonts.exo2(
                             fontSize: 17,
                             textStyle: TextStyle(color: Colors.white),
@@ -245,139 +263,87 @@ class _LoginWidgetState extends State<LoginWidget> {
                         )),
                   ),
 
-//                loginPress ? Container(
-//                  child: Container(
-//                      child: Container(
-//                        margin: EdgeInsets.all(10),
-//                        child: StreamBuilder<UserLogin_Success_Model>(
-//                          stream: userbloc.LoginSuccessData,
-//                          builder: (context, AsyncSnapshot<UserLogin_Success_Model> snapshot) {
-//                            if (snapshot.hasData) {
-//                              UserLogin_Success_Model data = snapshot.data;
-//                              print("User Data: ");
-//                              print(data.message.toString());
-//                              //print(data.length);
-//                        //      return masterdataview(data);
-//
-//                            } else if (snapshot.hasError) {
-//                              return Text("${snapshot.error}");
-//                            }
-//
-//                            return CircularProgressIndicator();
-//                          },
-//                        ),
-//                      ),
-//                  ),
-//                ) : Text("sakjsak"),
-                ]),
+                  SizedBox(height: 10,),
+
+                  //loginErrorMessage==true? Text("*Incorrect UserID or Password!",style:TextStyle(color: Colors.red),) : Text(""),
+
+
+                  ]
+                ),
               )
-            :
-//        Column(
-//          children: <Widget>[
-//            Center(
-//              child: Text("Login Pressed"),
-//            ),
-//            SizedBox(height: 10,),
-//
-//            Container(
-//              height: 50,
-//              width: MediaQuery
-//                  .of(context)
-//                  .size
-//                  .width - 80,
-//              child: FlatButton(
-//
-//                  shape: RoundedRectangleBorder(
-//                    borderRadius: BorderRadius.circular(18.0),
-//                  ),
-//                  color: Colors.green,
-//                  textColor: Colors.white,
-//
-//                  onPressed: () {
-//
-//                    setState(() {
-//                      loginPress = false;
-//                    });
-//
-//                    print(loginPress);
-//
-//
-//
-////                      Navigator.push(
-////                          context,
-////                          MaterialPageRoute(builder: (context) => HomePage()),);
-//                  },
-//
-//                  child: Text(
-//                    "Login Back".toUpperCase(),
-//                    style: GoogleFonts.exo2(
-//                      fontSize: 17,
-//                      textStyle: TextStyle(color: Colors.white),
-//                    ),
-//                  )
-//              ),
-//            ),
-//
-//            SizedBox(height: 10,),
-//
-//            Container(
-//              height: 50,
-//              width: MediaQuery
-//                  .of(context)
-//                  .size
-//                  .width - 80,
-//              child: FlatButton(
-//
-//                  shape: RoundedRectangleBorder(
-//                    borderRadius: BorderRadius.circular(18.0),
-//                  ),
-//                  color: Colors.green,
-//                  textColor: Colors.white,
-//
-//                  onPressed: () {
-//
-//                      Navigator.push(
-//                          context,
-//                          MaterialPageRoute(builder: (context) => HomePage()),);
-//                  },
-//
-//                  child: Text(
-//                    "Home".toUpperCase(),
-//                    style: GoogleFonts.exo2(
-//                      fontSize: 17,
-//                      textStyle: TextStyle(color: Colors.white),
-//                    ),
-//                  )
-//              ),
-//            ),
-//
-//
-//          ],
-//        ),
+            : Builder(
+              builder: (context) {
+                return Center(
+                  child: Container(
+                    height: MediaQuery.of(context).size.height*.5,
+                    width: 300,
+                    child: StreamBuilder<UserLogin_Success_Model>(
+                      stream: userbloc.LoginSuccessData,
+                      builder:
+                          (context, AsyncSnapshot<UserLogin_Success_Model> snapshot) {
+                        if (snapshot.hasData) {
+                          fetchedData = snapshot.data;
+                          //_newData = fetcheddata;
+                          print("Login:: " + snapshot.data.success.toString());
+                          if (snapshot.data.success.toString() == "true") {
+                            print("Login:: " + snapshot.data.success.toString());
 
-            StreamBuilder<UserLogin_Success_Model>(
-                stream: userbloc.LoginSuccessData,
-                builder:
-                    (context, AsyncSnapshot<UserLogin_Success_Model> snapshot) {
-                  if (snapshot.hasData) {
-                    fetchedData = snapshot.data;
-                    //_newData = fetcheddata;
-                    print("Login:: " + snapshot.data.success.toString());
+                            WidgetsBinding.instance.addPostFrameCallback((_){   // this will call for setState()
+                              prefs.setData(loginKey, "true");
 
-                    if (snapshot.data.success.toString() == "true") {
-                      print("Login:: " + snapshot.data.success.toString());
+                              Timer(Duration(seconds: 3), () {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) => HomePage()));
+                              });    //TODO:: DELAY EXAMPLE
+                              print("Login True");
 
-                    } else if (snapshot.data.success.toString() == "false") {
-                      print("Login:: " + snapshot.data.success.toString());
-                        loginPress = false;
-                    }
-                  } else if (snapshot.hasError) {
-                    return Text("${snapshot.error}");
-                  }
+                            });
 
-                  return Center(child: CircularProgressIndicator());
-                },
-              ),
+
+                          } else if (snapshot.data.success.toString() == "false") {
+                            print("if false Login:: " + snapshot.data.success.toString());
+
+                            WidgetsBinding.instance.addPostFrameCallback((_){
+                              prefs.setData(loginKey, "false");
+                              setState(() {
+                                loginPress = false;
+                                loginErrorMessage = true;
+                              });
+                              print("Login False");
+                              Scaffold.of(context).showSnackBar(SnackBar(
+                                content: Text(
+                                  '*Incorrect UserID or Password!',
+                                  style: GoogleFonts.exo2(
+                                    textStyle: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                                duration: Duration(seconds: 4),
+                              ));
+
+                            });
+
+                          }
+                        } else if (snapshot.hasError) {
+                          return Text("${snapshot.error}");
+                        }
+
+                        return Center(child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            CircularProgressIndicator(),
+                            SizedBox(height: 10,),
+                            Text("Logging in...")
+                          ],
+                        ));
+                      },
+                    ),
+                  ),
+                );
+              },
+            ),
       ),
     );
   }

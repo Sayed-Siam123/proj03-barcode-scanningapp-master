@@ -1,4 +1,5 @@
 import 'package:app/Bloc/Sublist_bloc.dart';
+import 'package:app/Handler/app_localizations.dart';
 import 'package:app/Model/ManufactureModel.dart';
 import 'package:app/Widgets/manufacList.dart';
 import 'package:flutter/cupertino.dart';
@@ -117,7 +118,7 @@ class _ManufacViewPageState extends State<ManufacViewPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
                             Text(
-                              "NEW MANUFACTURER",
+                              AppLocalizations.of(context).translate('new_manufac').toString(),
                               style: GoogleFonts.exo2(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
@@ -134,7 +135,7 @@ class _ManufacViewPageState extends State<ManufacViewPage> {
                               child: Column(
                                 children: <Widget>[
                                   new Text(
-                                    "Manufacturer",
+                                    AppLocalizations.of(context).translate('manufac').toString(),
                                     style: GoogleFonts.exo2(
                                       fontSize: 16,
                                     ),
@@ -185,7 +186,7 @@ class _ManufacViewPageState extends State<ManufacViewPage> {
                         Navigator.pop(context);
                       },
                       child: Text(
-                        'CANCEL',
+                        AppLocalizations.of(context).translate('cancel').toString(),
                         style: GoogleFonts.exo2(
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
@@ -195,7 +196,7 @@ class _ManufacViewPageState extends State<ManufacViewPage> {
                     ),
                     new FlatButton(
                         child: Text(
-                          'ADD',
+                          AppLocalizations.of(context).translate('add').toString(),
                           style: GoogleFonts.exo2(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,

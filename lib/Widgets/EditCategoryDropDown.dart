@@ -1,4 +1,5 @@
 import 'package:app/Bloc/Sublist_bloc.dart';
+import 'package:app/Handler/app_localizations.dart';
 import 'package:app/Model/CatagoryModel.dart';
 import 'package:direct_select_flutter/direct_select_item.dart';
 import 'package:direct_select_flutter/direct_select_list.dart';
@@ -183,7 +184,7 @@ class _EditCategoryDropDownState extends State<EditCategoryDropDown> {
                         alignment: AlignmentDirectional.centerStart,
                         margin: EdgeInsets.only(left: 4),
                         child: Text(
-                          "Category",
+                          AppLocalizations.of(context).translate('category').toString(),
                           style: GoogleFonts.exo2(
                             textStyle: TextStyle(
                               fontSize: 16,
@@ -215,7 +216,7 @@ class _EditCategoryDropDownState extends State<EditCategoryDropDown> {
                                       }).toList(),
                                       value: categorySelect,
                                       hint: widget.category.toString(),
-                                      searchHint: "Select one",
+                                      searchHint: AppLocalizations.of(context).translate('select_one').toString(),
                                       isCaseSensitiveSearch: true,
                                       onChanged: (value) {
                                         setState(() {

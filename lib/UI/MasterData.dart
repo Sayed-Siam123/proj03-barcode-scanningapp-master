@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/Bloc/masterData_bloc.dart';
+import 'package:app/Handler/app_localizations.dart';
 import 'package:app/Model/masterdata_model.dart';
 import 'package:app/UI/AddProduct.dart';
 import 'package:app/UI/Home.dart';
@@ -102,7 +103,7 @@ class _MasterDataState extends State<MasterData> {
     pr = new ProgressDialog(context,type: ProgressDialogType.Normal);
 
     pr.style(
-      message: 'Backing up data. Please wait...',
+      message: 'Backuping data. Please wait...',
       borderRadius: 10.0,
       backgroundColor: Colors.white,
       progressWidget: CircularProgressIndicator(),
@@ -401,7 +402,7 @@ class _MasterDataState extends State<MasterData> {
 
   _buildTitle(BuildContext context) {
     return Text(
-      "Master data",
+        AppLocalizations.of(context).translate('masterdata').toString(),
       style: GoogleFonts.exo2(
       textStyle: TextStyle(
         fontSize: 20,

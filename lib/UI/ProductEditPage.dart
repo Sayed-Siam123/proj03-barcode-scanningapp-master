@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:app/Bloc/Sublist_bloc.dart';
 import 'package:app/Bloc/masterData_bloc.dart';
 import 'package:app/ColorLibrary/HexColor.dart';
 import 'package:app/Handler/HandlerModel.dart';
+import 'package:app/Handler/app_localizations.dart';
 import 'package:app/Model/CatagoryModel.dart';
 import 'package:app/Model/masterdata_model.dart';
 import 'package:app/UI/Details.dart';
@@ -60,6 +63,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
   TextEditingController ListPrice = new TextEditingController();
 
   final Color _hintcolor = new HexColor("#737373");
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   HandlerClass handle;
   List<SingleMasterDataModel> data;
@@ -84,9 +88,10 @@ class _ProductEditPageState extends State<ProductEditPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text(
-          "Edit Product",
+          AppLocalizations.of(context).translate('edit_product').toString(),
           style: GoogleFonts.exo2(
             textStyle: TextStyle(
               fontSize: 18,
@@ -170,30 +175,30 @@ class _ProductEditPageState extends State<ProductEditPage> {
 
                 print(categoryID.toString());
 
-                sublist_bloc.getPreviousCategoryID(categoryID);
-                sublist_bloc.getPreviousManufacturerID(manufacID);
-                sublist_bloc.getPreviousSubCategoryID(sub_categoryID);
-                sublist_bloc.getPreviousUnitID(unitID);
+                // sublist_bloc.getPreviousCategoryID(categoryID);
+                // sublist_bloc.getPreviousManufacturerID(manufacID);
+                // sublist_bloc.getPreviousSubCategoryID(sub_categoryID);
+                // sublist_bloc.getPreviousUnitID(unitID);
+                //
+                // sublist_bloc.getPreviousCategoryName(category);
+                // sublist_bloc.getPreviousManufacturerName(manufac);
+                // sublist_bloc.getPreviousSubCategoryName(sub_category);
+                // sublist_bloc.getPreviousUnitName(unit);
+                //
+                //
+                // MasterDataModel data = MasterDataModel(
+                //   productPicture: propic.toString(),
+                //   newFlag: newFlag.toString(),
+                //   isTransferToApp: isTransfertoApp.toString(),
+                //   isOrderableViaApp: isOrderableviaApp.toString(),
+                //   productHeight: productHeight.toString(),
+                //   productLength: ProductLength.toString(),
+                // );
+                //
+                // print("eikhnane submit");
+                // sublist_bloc.UpdateProductMasterDatatoDB(data);
+                // sublist_bloc.dispose();
 
-                sublist_bloc.getPreviousCategoryName(category);
-                sublist_bloc.getPreviousManufacturerName(manufac);
-                sublist_bloc.getPreviousSubCategoryName(sub_category);
-                sublist_bloc.getPreviousUnitName(unit);
-
-//
-                MasterDataModel data = MasterDataModel(
-                  productPicture: propic.toString(),
-                  newFlag: newFlag.toString(),
-                  isTransferToApp: isTransfertoApp.toString(),
-                  isOrderableViaApp: isOrderableviaApp.toString(),
-                  productHeight: productHeight.toString(),
-                  productLength: ProductLength.toString(),
-                );
-
-                print("eikhnane submit");
-                sublist_bloc.UpdateProductMasterDatatoDB(data);
-                sublist_bloc.dispose();
-//              sublist_bloc.dispose();
 
                 ProductName.text = "";
                 ProductDesc.text = "";
@@ -201,17 +206,28 @@ class _ProductEditPageState extends State<ProductEditPage> {
                 gtin.text = "";
                 ListPrice.text = "";
 
-                Fluttertoast.showToast(
-                    msg: "Product Updated!",
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.BOTTOM,
-                    timeInSecForIosWeb: 1,
-                    backgroundColor: Colors.green,
-                    textColor: Colors.white,
-                    fontSize: 16.0);
+                // Fluttertoast.showToast(
+                //     msg: "Product Updated!",
+                //     toastLength: Toast.LENGTH_SHORT,
+                //     gravity: ToastGravity.BOTTOM,
+                //     timeInSecForIosWeb: 1,
+                //     backgroundColor: Colors.green,
+                //     textColor: Colors.white,
+                //     fontSize: 16.0);
 
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => MasterData()));
+                _scaffoldKey.currentState.showSnackBar(
+                    SnackBar(
+                      content: Text('Updated Successfully',style: GoogleFonts.exo2(),),
+                      duration: Duration(seconds: 3),
+                    ));
+
+                Timer(Duration(seconds: 3), () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MasterData()));
+                });    //TODO:: DELAY EXAMPLE
+
+
+
               }),
         ],
       ),
@@ -307,7 +323,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: <Widget>[
-                                            Text("Product Name",
+                                            Text(AppLocalizations.of(context).translate('product_name').toString(),
                                             style: TextStyle(
                                               fontSize: 16
                                             ),),
@@ -369,7 +385,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: <Widget>[
-                                              Text("Description",
+                                              Text(AppLocalizations.of(context).translate('product_desc').toString(),
                                                 style: TextStyle(
                                                     fontSize: 16
                                                 ),),
@@ -430,7 +446,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: <Widget>[
-                                              Text("Manufacturer PN",
+                                              Text(AppLocalizations.of(context).translate('manufac_pn').toString(),
                                                 style: TextStyle(
                                                     fontSize: 16
                                                 ),),
@@ -492,7 +508,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: <Widget>[
-                                              Text("GTIN",
+                                              Text(AppLocalizations.of(context).translate('gtin').toString(),
                                                 style: TextStyle(
                                                     fontSize: 16
                                                 ),),
@@ -554,7 +570,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: <Widget>[
-                                              Text("ListPrice",
+                                              Text(AppLocalizations.of(context).translate('listprice').toString(),
                                                 style: TextStyle(
                                                     fontSize: 16
                                                 ),),

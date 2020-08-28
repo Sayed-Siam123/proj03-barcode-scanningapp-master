@@ -1,5 +1,6 @@
 import 'package:app/Bloc/Sublist_bloc.dart';
 import 'package:app/Bloc/masterData_bloc.dart';
+import 'package:app/Handler/app_localizations.dart';
 import 'package:app/Model/unit_model.dart';
 import 'package:direct_select_flutter/direct_select_item.dart';
 import 'package:direct_select_flutter/direct_select_list.dart';
@@ -404,7 +405,7 @@ class _EditProductUnitDropDownState extends State<EditProductUnitDropDown> {
                         alignment: AlignmentDirectional.centerStart,
                         margin: EdgeInsets.only(left: 0),
                         child: Text(
-                          "Unit",
+                          AppLocalizations.of(context).translate('unit').toString(),
                           style: GoogleFonts.exo2(
                             textStyle: TextStyle(
                               fontSize: 16,
@@ -490,7 +491,7 @@ class _EditProductUnitDropDownState extends State<EditProductUnitDropDown> {
                                       }).toList(),
                                       value: unitSelect,
                                       hint: widget.unit.toString(),
-                                      searchHint: "Select one",
+                                      searchHint: AppLocalizations.of(context).translate('select_one').toString(),
                                       isCaseSensitiveSearch: true,
                                       onChanged: (value) {
                                         setState(() {

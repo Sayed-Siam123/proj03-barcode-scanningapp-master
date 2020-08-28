@@ -1,4 +1,5 @@
 import 'package:app/Bloc/Sublist_bloc.dart';
+import 'package:app/Handler/app_localizations.dart';
 import 'package:app/Model/CatagoryModel.dart';
 import 'package:app/Widgets/CategoryList.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
@@ -54,7 +55,7 @@ class _CategorieViewPageState extends State<CategorieViewPage> {
               }
           ),
           title: Text(
-            "Category",
+              AppLocalizations.of(context).translate('category').toString(),
               style: GoogleFonts.exo2(
                 textStyle: TextStyle(
                   fontSize: 20,
@@ -112,7 +113,7 @@ class _CategorieViewPageState extends State<CategorieViewPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         Text(
-                          "NEW CATEGORY",
+                          AppLocalizations.of(context).translate('new_category').toString(),
                           style: GoogleFonts.exo2(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
@@ -129,7 +130,7 @@ class _CategorieViewPageState extends State<CategorieViewPage> {
                           child: Column(
                             children: <Widget>[
                               new Text(
-                                "Category",
+                                AppLocalizations.of(context).translate('category').toString(),
                                 style: GoogleFonts.exo2(
                                   fontSize: 16,
                                 ),
@@ -176,7 +177,7 @@ class _CategorieViewPageState extends State<CategorieViewPage> {
               actions: <Widget>[
                 new FlatButton(
                     child: Text(
-                      'CANCEL',
+                      AppLocalizations.of(context).translate('cancel').toString(),
                       style: GoogleFonts.exo2(
                         fontSize: 18,
                         fontWeight: FontWeight.w500,
@@ -190,7 +191,7 @@ class _CategorieViewPageState extends State<CategorieViewPage> {
                     }),
                 new FlatButton(
                     child: Text(
-                      'ADD',
+                      AppLocalizations.of(context).translate('add').toString(),
                       style: GoogleFonts.exo2(
                         fontSize: 18,
                         fontWeight: FontWeight.w500,

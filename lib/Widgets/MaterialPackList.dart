@@ -1,5 +1,6 @@
 import 'package:app/Bloc/Sublist_bloc.dart';
 import 'package:app/Bloc/masterData_bloc.dart';
+import 'package:app/Handler/app_localizations.dart';
 import 'package:app/Model/MaterialPackModel.dart';
 import 'package:app/Model/unit_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -147,7 +148,7 @@ class _MaterialPackListState extends State<MaterialPackList> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
 
-                            Text("PACKEGING MATERIAL EDIT",style: GoogleFonts.exo2(
+                            Text(AppLocalizations.of(context).translate('update_package_material').toString(),style: GoogleFonts.exo2(
                               fontSize: 18,
                               fontWeight: FontWeight.w600,
                               color: Colors.black54,
@@ -164,7 +165,7 @@ class _MaterialPackListState extends State<MaterialPackList> {
                             Container(
                               child: Column(
                                 children: <Widget>[
-                                  new Text("Material",style: GoogleFonts.exo2(
+                                  new Text(AppLocalizations.of(context).translate('package_material').toString(),style: GoogleFonts.exo2(
                                     fontSize: 16,
                                   ),),
                                   SizedBox(height: 2,),
@@ -202,7 +203,7 @@ class _MaterialPackListState extends State<MaterialPackList> {
                   actions: <Widget>[
                     new FlatButton(
                         child: Text(
-                          'CANCEL',
+                          AppLocalizations.of(context).translate('cancel').toString(),
                           style: GoogleFonts.exo2(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
@@ -216,7 +217,7 @@ class _MaterialPackListState extends State<MaterialPackList> {
 
                     new FlatButton(
                         child: Text(
-                          'UPDATE',
+                          AppLocalizations.of(context).translate('update').toString(),
                           style: GoogleFonts.exo2(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,

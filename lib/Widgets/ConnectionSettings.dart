@@ -87,42 +87,31 @@ class _ConnectionSettingsPageState extends State<ConnectionSettingsPage> {
           return SingleChildScrollView(
             child: Column(
               children: [
-                //  Flexible(
-                Container(
-                  width: MediaQuery.of(context).size.width - 30,
-                  padding: EdgeInsets.only(left: 15.0, top: 10, bottom: 10),
-                  child: Text(
-                    "Change Your Settings",
-                    style: GoogleFonts.exo2(
-                      textStyle: TextStyle(
-                          fontSize: 20, color: Theme.of(context).accentColor),
-                    ),
-                  ),
-                ),
-                Container(
-                    padding: EdgeInsets.all(15),
-                    child: Card(
-                      child: Column(mainAxisSize: MainAxisSize.min, children: <
-                          Widget>[
-                        ExpansionTile(
-                          backgroundColor: Colors.white,
-                          leading: Icon(Icons.link),
-                          title: Text(
-                            'Connection settings',
-                            style: GoogleFonts.exo2(
-                              textStyle: TextStyle(
-                                fontSize: 18,
-                              ),
-                            ),
-                          ),
-                          trailing: IconButton(
-                              icon: Icon(Icons.arrow_drop_down_circle),
-                              onPressed: null),
-                          children: <Widget>[
-                            FutureBuilder(
-                                future: getShared(_deviceid),
-                                initialData: false,
-                                builder: (context, snapshot) {
+                Center(
+                  child: Container(
+                      padding: EdgeInsets.all(20),
+                      child: Card(
+                        child: Column(mainAxisSize: MainAxisSize.min, children: <
+                            Widget>[
+                          // ExpansionTile(
+                          //   backgroundColor: Colors.white,
+                          //   leading: Icon(Icons.link),
+                          //   title: Text(
+                          //     'Connection settings',
+                          //     style: GoogleFonts.exo2(
+                          //       textStyle: TextStyle(
+                          //         fontSize: 18,
+                          //       ),
+                          //     ),
+                          //   ),
+                          //   trailing: IconButton(
+                          //       icon: Icon(Icons.arrow_drop_down_circle),
+                          //       onPressed: null),
+                          //   children: <Widget>[
+                              FutureBuilder(
+                                  future: getShared(_deviceid),
+                                  initialData: false,
+                                  builder: (context, snapshot) {
 //                                          return BeautyTextfield(
 //                                            width: double.maxFinite,
 //                                            height: 50.00,
@@ -145,69 +134,69 @@ class _ConnectionSettingsPageState extends State<ConnectionSettingsPage> {
 //                                            },
 //                                          );
 
-                                  return Container(
-                                    height: 58,
-                                    width:
-                                        MediaQuery.of(context).size.width - 87,
-                                    alignment: Alignment.center,
-                                    margin: const EdgeInsets.only(
-                                        top: 20, left: 13, right: 10),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.withOpacity(0.5),
-                                          spreadRadius: 2,
-                                          blurRadius: 5,
-                                          offset: Offset(0, 3),
-                                        ),
-                                      ],
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(left: 8.0),
-                                      child: TextField(
-                                          controller: device_id,
-                                          autocorrect: true,
-                                          style: GoogleFonts.exo2(
-                                            textStyle: TextStyle(
-                                              fontSize: 20,
-                                            ),
+                                    return Container(
+                                      height: 58,
+                                      width:
+                                          MediaQuery.of(context).size.width - 87,
+                                      alignment: Alignment.center,
+                                      margin: const EdgeInsets.only(
+                                          top: 20, left: 13, right: 10),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius:
+                                            BorderRadius.all(Radius.circular(10)),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.5),
+                                            spreadRadius: 2,
+                                            blurRadius: 5,
+                                            offset: Offset(0, 3),
                                           ),
-                                          decoration: new InputDecoration(
-                                            border: InputBorder.none,
-                                            focusedBorder: InputBorder.none,
-                                            enabledBorder: InputBorder.none,
-                                            errorBorder: InputBorder.none,
-                                            disabledBorder: InputBorder.none,
-                                            hintStyle: GoogleFonts.exo2(
+                                        ],
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(left: 8.0),
+                                        child: TextField(
+                                            controller: device_id,
+                                            autocorrect: true,
+                                            style: GoogleFonts.exo2(
                                               textStyle: TextStyle(
-                                                fontSize: 16,
+                                                fontSize: 20,
                                               ),
                                             ),
-                                            labelStyle: GoogleFonts.exo2(
-                                              textStyle: TextStyle(
-                                                fontSize: 16,
+                                            decoration: new InputDecoration(
+                                              border: InputBorder.none,
+                                              focusedBorder: InputBorder.none,
+                                              enabledBorder: InputBorder.none,
+                                              errorBorder: InputBorder.none,
+                                              disabledBorder: InputBorder.none,
+                                              hintStyle: GoogleFonts.exo2(
+                                                textStyle: TextStyle(
+                                                  fontSize: 16,
+                                                ),
                                               ),
-                                            ),
-                                            prefixIcon: Icon(
-                                                Icons.perm_device_information),
-                                            hintText: snapshot.data == null
-                                                ? "Device ID"
-                                                : snapshot.data.toString(),
-                                          )),
-                                    ),
-                                  );
+                                              labelStyle: GoogleFonts.exo2(
+                                                textStyle: TextStyle(
+                                                  fontSize: 16,
+                                                ),
+                                              ),
+                                              prefixIcon: Icon(
+                                                  Icons.perm_device_information),
+                                              hintText: snapshot.data == null
+                                                  ? "Device ID"
+                                                  : snapshot.data.toString(),
+                                            )),
+                                      ),
+                                    );
 
 //                                          return Text(
 //                                            snapshot.data.toString()
 //                                          );
-                                }),
-                            FutureBuilder(
-                                future: getShared(_serverip),
-                                initialData: false,
-                                builder: (context, snapshot) {
+                                  }),
+                              FutureBuilder(
+                                  future: getShared(_serverip),
+                                  initialData: false,
+                                  builder: (context, snapshot) {
 //                                          return BeautyTextfield(
 //                                            width: double.maxFinite,
 //                                            height: 50.00,
@@ -230,123 +219,123 @@ class _ConnectionSettingsPageState extends State<ConnectionSettingsPage> {
 //                                            },
 //                                          );
 
-                                  return Container(
-                                    height: 58,
-                                    width:
-                                        MediaQuery.of(context).size.width - 87,
-                                    alignment: Alignment.center,
-                                    margin: const EdgeInsets.only(
-                                        top: 10, left: 13, right: 10),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.withOpacity(0.5),
-                                          spreadRadius: 2,
-                                          blurRadius: 5,
-                                          offset: Offset(0, 3),
-                                        ),
-                                      ],
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(left: 8.0),
-                                      child: TextField(
-                                          controller: serverip,
-                                          autocorrect: true,
-                                          style: GoogleFonts.exo2(
-                                            textStyle: TextStyle(
-                                              fontSize: 20,
-                                            ),
+                                    return Container(
+                                      height: 58,
+                                      width:
+                                          MediaQuery.of(context).size.width - 87,
+                                      alignment: Alignment.center,
+                                      margin: const EdgeInsets.only(
+                                          top: 10, left: 13, right: 10),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius:
+                                            BorderRadius.all(Radius.circular(10)),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.5),
+                                            spreadRadius: 2,
+                                            blurRadius: 5,
+                                            offset: Offset(0, 3),
                                           ),
-                                          decoration: new InputDecoration(
-                                            prefixIcon:
-                                                Icon(Icons.confirmation_number),
-                                            border: InputBorder.none,
-                                            focusedBorder: InputBorder.none,
-                                            enabledBorder: InputBorder.none,
-                                            errorBorder: InputBorder.none,
-                                            disabledBorder: InputBorder.none,
-                                            hintStyle: GoogleFonts.exo2(
+                                        ],
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(left: 8.0),
+                                        child: TextField(
+                                            controller: serverip,
+                                            autocorrect: true,
+                                            style: GoogleFonts.exo2(
                                               textStyle: TextStyle(
-                                                fontSize: 16,
+                                                fontSize: 20,
                                               ),
                                             ),
-                                            labelStyle: GoogleFonts.exo2(
-                                              textStyle: TextStyle(
-                                                fontSize: 16,
+                                            decoration: new InputDecoration(
+                                              prefixIcon:
+                                                  Icon(Icons.confirmation_number),
+                                              border: InputBorder.none,
+                                              focusedBorder: InputBorder.none,
+                                              enabledBorder: InputBorder.none,
+                                              errorBorder: InputBorder.none,
+                                              disabledBorder: InputBorder.none,
+                                              hintStyle: GoogleFonts.exo2(
+                                                textStyle: TextStyle(
+                                                  fontSize: 16,
+                                                ),
                                               ),
-                                            ),
-                                            hintText: snapshot.data == null
-                                                ? "Server -IP/Name"
-                                                : snapshot.data.toString(),
-                                          )),
-                                    ),
-                                  );
+                                              labelStyle: GoogleFonts.exo2(
+                                                textStyle: TextStyle(
+                                                  fontSize: 16,
+                                                ),
+                                              ),
+                                              hintText: snapshot.data == null
+                                                  ? "Server -IP/Name"
+                                                  : snapshot.data.toString(),
+                                            )),
+                                      ),
+                                    );
 
 //                                          return Text(
 //                                            snapshot.data.toString()
 //                                          );
-                                }),
-                            FutureBuilder(
-                                future: getShared(_serverport),
-                                initialData: false,
-                                builder: (context, snapshot) {
-                                  return Container(
-                                    height: 58,
-                                    width:
-                                        MediaQuery.of(context).size.width - 87,
-                                    alignment: Alignment.center,
-                                    margin: const EdgeInsets.only(
-                                        top: 10, left: 13, right: 10),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.withOpacity(0.5),
-                                          spreadRadius: 2,
-                                          blurRadius: 5,
-                                          offset: Offset(0, 3),
-                                        ),
-                                      ],
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(left: 8.0),
-                                      child: TextField(
-                                          controller: serverport,
-                                          autocorrect: true,
-                                          style: GoogleFonts.exo2(
-                                            textStyle: TextStyle(
-                                              fontSize: 20,
-                                            ),
+                                  }),
+                              FutureBuilder(
+                                  future: getShared(_serverport),
+                                  initialData: false,
+                                  builder: (context, snapshot) {
+                                    return Container(
+                                      height: 58,
+                                      width:
+                                          MediaQuery.of(context).size.width - 87,
+                                      alignment: Alignment.center,
+                                      margin: const EdgeInsets.only(
+                                          top: 10, left: 13, right: 10),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius:
+                                            BorderRadius.all(Radius.circular(10)),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.5),
+                                            spreadRadius: 2,
+                                            blurRadius: 5,
+                                            offset: Offset(0, 3),
                                           ),
-                                          decoration: new InputDecoration(
-                                            prefixIcon:
-                                                Icon(Icons.label_important),
-                                            border: InputBorder.none,
-                                            focusedBorder: InputBorder.none,
-                                            enabledBorder: InputBorder.none,
-                                            errorBorder: InputBorder.none,
-                                            disabledBorder: InputBorder.none,
-                                            hintStyle: GoogleFonts.exo2(
+                                        ],
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(left: 8.0),
+                                        child: TextField(
+                                            controller: serverport,
+                                            autocorrect: true,
+                                            style: GoogleFonts.exo2(
                                               textStyle: TextStyle(
-                                                fontSize: 16,
+                                                fontSize: 20,
                                               ),
                                             ),
-                                            labelStyle: GoogleFonts.exo2(
-                                              textStyle: TextStyle(
-                                                fontSize: 16,
+                                            decoration: new InputDecoration(
+                                              prefixIcon:
+                                                  Icon(Icons.label_important),
+                                              border: InputBorder.none,
+                                              focusedBorder: InputBorder.none,
+                                              enabledBorder: InputBorder.none,
+                                              errorBorder: InputBorder.none,
+                                              disabledBorder: InputBorder.none,
+                                              hintStyle: GoogleFonts.exo2(
+                                                textStyle: TextStyle(
+                                                  fontSize: 16,
+                                                ),
                                               ),
-                                            ),
-                                            hintText: snapshot.data == null
-                                                ? "Server port"
-                                                : snapshot.data.toString(),
-                                          )),
-                                    ),
-                                  );
+                                              labelStyle: GoogleFonts.exo2(
+                                                textStyle: TextStyle(
+                                                  fontSize: 16,
+                                                ),
+                                              ),
+                                              hintText: snapshot.data == null
+                                                  ? "Server port"
+                                                  : snapshot.data.toString(),
+                                            )),
+                                      ),
+                                    );
 
 //                                          return BeautyTextfield(
 //                                            width: double.maxFinite,
@@ -373,11 +362,11 @@ class _ConnectionSettingsPageState extends State<ConnectionSettingsPage> {
 //                                          return Text(
 //                                            snapshot.data.toString()
 //                                          );
-                                }),
-                            FutureBuilder(
-                                future: getShared(_serverlog),
-                                initialData: false,
-                                builder: (context, snapshot) {
+                                  }),
+                              FutureBuilder(
+                                  future: getShared(_serverlog),
+                                  initialData: false,
+                                  builder: (context, snapshot) {
 //                                          return BeautyTextfield(
 //                                            width: double.maxFinite,
 //                                            height: 50.00,
@@ -400,139 +389,139 @@ class _ConnectionSettingsPageState extends State<ConnectionSettingsPage> {
 //                                            },
 //                                          );
 
-                                  return Container(
-                                    height: 58,
-                                    width:
-                                        MediaQuery.of(context).size.width - 87,
-                                    alignment: Alignment.center,
-                                    margin: const EdgeInsets.only(
-                                        top: 10, left: 13, right: 10),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.withOpacity(0.5),
-                                          spreadRadius: 2,
-                                          blurRadius: 5,
-                                          offset: Offset(0, 3),
-                                        ),
-                                      ],
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(left: 8.0),
-                                      child: TextField(
-                                          controller: serverlog,
-                                          autocorrect: true,
-                                          style: GoogleFonts.exo2(
-                                            textStyle: TextStyle(
-                                              fontSize: 20,
-                                            ),
+                                    return Container(
+                                      height: 58,
+                                      width:
+                                          MediaQuery.of(context).size.width - 87,
+                                      alignment: Alignment.center,
+                                      margin: const EdgeInsets.only(
+                                          top: 10, left: 13, right: 10),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius:
+                                            BorderRadius.all(Radius.circular(10)),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.5),
+                                            spreadRadius: 2,
+                                            blurRadius: 5,
+                                            offset: Offset(0, 3),
                                           ),
-                                          decoration: new InputDecoration(
-                                            prefixIcon: Icon(Icons.launch),
-                                            border: InputBorder.none,
-                                            focusedBorder: InputBorder.none,
-                                            enabledBorder: InputBorder.none,
-                                            errorBorder: InputBorder.none,
-                                            disabledBorder: InputBorder.none,
-                                            hintStyle: GoogleFonts.exo2(
+                                        ],
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(left: 8.0),
+                                        child: TextField(
+                                            controller: serverlog,
+                                            autocorrect: true,
+                                            style: GoogleFonts.exo2(
                                               textStyle: TextStyle(
-                                                fontSize: 16,
+                                                fontSize: 20,
                                               ),
                                             ),
-                                            labelStyle: GoogleFonts.exo2(
-                                              textStyle: TextStyle(
-                                                fontSize: 16,
+                                            decoration: new InputDecoration(
+                                              prefixIcon: Icon(Icons.launch),
+                                              border: InputBorder.none,
+                                              focusedBorder: InputBorder.none,
+                                              enabledBorder: InputBorder.none,
+                                              errorBorder: InputBorder.none,
+                                              disabledBorder: InputBorder.none,
+                                              hintStyle: GoogleFonts.exo2(
+                                                textStyle: TextStyle(
+                                                  fontSize: 16,
+                                                ),
                                               ),
-                                            ),
-                                            hintText: snapshot.data == null
-                                                ? "Server Log"
-                                                : snapshot.data.toString(),
-                                          )),
-                                    ),
-                                  );
+                                              labelStyle: GoogleFonts.exo2(
+                                                textStyle: TextStyle(
+                                                  fontSize: 16,
+                                                ),
+                                              ),
+                                              hintText: snapshot.data == null
+                                                  ? "Server Log"
+                                                  : snapshot.data.toString(),
+                                            )),
+                                      ),
+                                    );
 
 //                                          return Text(
 //                                            snapshot.data.toString()
 //                                          );
-                                }),
-                            SizedBox(
-                              height: 30,
-                            ),
-                            Container(
-                              height: 40,
-                              width: MediaQuery.of(context).size.width - 90,
-                              child: RaisedButton(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(18.0),
-                                ),
-                                child: Text(
-                                  "SAVE",
-                                  style: GoogleFonts.exo2(
-                                    textStyle: TextStyle(
-                                      fontSize: 18,
+                                  }),
+                              SizedBox(
+                                height: 30,
+                              ),
+                              Container(
+                                height: 40,
+                                width: MediaQuery.of(context).size.width - 90,
+                                child: RaisedButton(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                  ),
+                                  child: Text(
+                                    "SAVE",
+                                    style: GoogleFonts.exo2(
+                                      textStyle: TextStyle(
+                                        fontSize: 18,
+                                      ),
                                     ),
                                   ),
+                                  color: Colors.green,
+                                  textColor: Colors.white,
+                                  padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                  onPressed: () {
+                                    //print(device_id.text);
+
+                                    if (device_id.text.isNotEmpty) {
+                                      print(device_id.text);
+
+                                      setState(() {
+                                        deviceid = device_id.text;
+                                      });
+
+                                      putShared(
+                                          _deviceid, device_id.text.toString());
+                                      device_id.text = "";
+                                    }
+
+                                    if (serverip.text.isNotEmpty) {
+                                      print(serverip.text);
+                                      setState(() {
+                                        server_ip = serverip.text;
+                                      });
+                                      putShared(
+                                          _serverip, serverip.text.toString());
+                                      serverip.text = "";
+                                    }
+
+                                    if (serverport.text.isNotEmpty) {
+                                      print(serverport.text);
+                                      setState(() {
+                                        server_port = serverport.text;
+                                      });
+                                      putShared(_serverport,
+                                          serverport.text.toString());
+                                      serverport.text = "";
+                                    }
+
+                                    if (serverlog.text.isNotEmpty) {
+                                      print(serverlog.text);
+
+                                      setState(() {
+                                        server_log = serverlog.text;
+                                      });
+
+                                      putShared(
+                                          _serverlog, serverlog.text.toString());
+                                      serverlog.text = "";
+                                    }
+                                  },
                                 ),
-                                color: Colors.green,
-                                textColor: Colors.white,
-                                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                                onPressed: () {
-                                  //print(device_id.text);
-
-                                  if (device_id.text.isNotEmpty) {
-                                    print(device_id.text);
-
-                                    setState(() {
-                                      deviceid = device_id.text;
-                                    });
-
-                                    putShared(
-                                        _deviceid, device_id.text.toString());
-                                    device_id.text = "";
-                                  }
-
-                                  if (serverip.text.isNotEmpty) {
-                                    print(serverip.text);
-                                    setState(() {
-                                      server_ip = serverip.text;
-                                    });
-                                    putShared(
-                                        _serverip, serverip.text.toString());
-                                    serverip.text = "";
-                                  }
-
-                                  if (serverport.text.isNotEmpty) {
-                                    print(serverport.text);
-                                    setState(() {
-                                      server_port = serverport.text;
-                                    });
-                                    putShared(_serverport,
-                                        serverport.text.toString());
-                                    serverport.text = "";
-                                  }
-
-                                  if (serverlog.text.isNotEmpty) {
-                                    print(serverlog.text);
-
-                                    setState(() {
-                                      server_log = serverlog.text;
-                                    });
-
-                                    putShared(
-                                        _serverlog, serverlog.text.toString());
-                                    serverlog.text = "";
-                                  }
-                                },
                               ),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                          ],
-                        ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                          //   ],
+                          // ),
 //                                Row(
 //                                  mainAxisAlignment: MainAxisAlignment.end,
 //                                  children: <Widget>[
@@ -553,8 +542,9 @@ class _ConnectionSettingsPageState extends State<ConnectionSettingsPage> {
 //
 //                                  ],
 //                                ),
-                      ]),
-                    )),
+                        ]),
+                      )),
+                ),
               ],
             ),
           );

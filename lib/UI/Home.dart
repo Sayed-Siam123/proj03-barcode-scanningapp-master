@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:app/Bloc/Sublist_bloc.dart';
 import 'package:app/Bloc/masterData_bloc.dart';
+import 'package:app/Handler/app_localizations.dart';
 import 'package:app/Resources/SharedPrefer.dart';
 import 'package:app/UI/MasterData.dart';
 import 'package:app/UI/Settings.dart';
@@ -79,7 +80,7 @@ class _HomePageState extends State<HomePage> {
           padding: EdgeInsets.zero,
           children: <Widget>[
             DrawerHeader(
-              child: Text('App name',style: GoogleFonts.exo2(
+              child: Text("IDENTIT",style: GoogleFonts.exo2(
                 textStyle: TextStyle(
                   fontSize: 18,
                   color: Colors.black,
@@ -90,7 +91,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             ListTile(
-              title: Text('System setting',style: GoogleFonts.exo2(
+              title: Text(AppLocalizations.of(context).translate('system_setting').toString(),style: GoogleFonts.exo2(
                 textStyle: TextStyle(
                   fontSize: 20,
                   color: Colors.black,
@@ -107,7 +108,7 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             ListTile(
-              title: Text('Master data',style: GoogleFonts.exo2(
+              title: Text(AppLocalizations.of(context).translate('masterdata').toString(),style: GoogleFonts.exo2(
                 textStyle: TextStyle(
                   fontSize: 20,
                   color: Colors.black,
@@ -125,7 +126,7 @@ class _HomePageState extends State<HomePage> {
             ),
 
             ListTile(
-              title: Text('Logout',style: GoogleFonts.exo2(
+              title: Text(AppLocalizations.of(context).translate('logout').toString(),style: GoogleFonts.exo2(
                 textStyle: TextStyle(
                   fontSize: 20,
                   color: Colors.black,
@@ -175,7 +176,7 @@ class _HomePageState extends State<HomePage> {
               height: 32,
             ),
             Container(
-                padding: const EdgeInsets.all(15.0), child: Text('Home'))
+                padding: const EdgeInsets.all(15.0), child: Text(AppLocalizations.of(context).translate('home').toString(),))
           ],
 
         ),

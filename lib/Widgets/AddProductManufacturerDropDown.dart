@@ -1,4 +1,5 @@
 import 'package:app/Bloc/Sublist_bloc.dart';
+import 'package:app/Handler/app_localizations.dart';
 import 'package:app/Model/ManufactureModel.dart';
 import 'package:direct_select_flutter/direct_select_item.dart';
 import 'package:direct_select_flutter/direct_select_list.dart';
@@ -51,7 +52,7 @@ class _AddProductManufacturerDropDownState
                         alignment: AlignmentDirectional.centerStart,
                         margin: EdgeInsets.only(left: 4),
                         child: Text(
-                          "Manufacturer",
+                          AppLocalizations.of(context).translate('manufac').toString(),
                           style: GoogleFonts.exo2(
                             textStyle: TextStyle(
                               fontSize: 16,
@@ -137,8 +138,8 @@ class _AddProductManufacturerDropDownState
                                             ), value: item);
                                       }).toList(),
                                       value: manufacSelect,
-                                      hint: "Select Manufacturer",
-                                      searchHint: "Select one",
+                                      hint: AppLocalizations.of(context).translate('manufac_hint').toString(),
+                                      searchHint: AppLocalizations.of(context).translate('select_one').toString(),
                                       isCaseSensitiveSearch: true,
                                       onChanged: (value) {
                                         setState(() {
