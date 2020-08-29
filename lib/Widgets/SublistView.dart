@@ -7,6 +7,7 @@ import 'package:app/UI/SubCatViewPage.dart';
 import 'package:app/UI/UnitPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/global.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SublistViewPage extends StatefulWidget {
@@ -26,7 +27,7 @@ class _SublistViewPageState extends State<SublistViewPage> {
 
             Padding(
               padding: const EdgeInsets.only(left:13.0),
-              child: Text(AppLocalizations.of(context).translate('sublist').toString(),
+              child: Text(translate('sublist').toString(),
                 style: GoogleFonts.exo2(
                   textStyle: TextStyle(
                     color: Colors.black87,
@@ -50,7 +51,7 @@ class _SublistViewPageState extends State<SublistViewPage> {
                     onTap: (){
                       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ManufacViewPage()));
                     },
-                    title: Text(AppLocalizations.of(context).translate('manufac').toString(),
+                    title: Text(translate('manufac').toString(),
                       style: GoogleFonts.exo2(
                         textStyle: TextStyle(
                           fontWeight: FontWeight.w400,
@@ -88,7 +89,7 @@ class _SublistViewPageState extends State<SublistViewPage> {
                     onTap: (){
                       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CategorieViewPage()));
                     },
-                    title: Text(AppLocalizations.of(context).translate('category').toString(),
+                    title: Text(translate('category').toString(),
                       style: GoogleFonts.exo2(
                         textStyle: TextStyle(
                           fontWeight: FontWeight.w400,
@@ -126,7 +127,7 @@ class _SublistViewPageState extends State<SublistViewPage> {
                     onTap: (){
                       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SubCatPageView()));
                     },
-                    title: Text(AppLocalizations.of(context).translate('sub_category').toString(),
+                    title: Text(translate('sub_category').toString(),
                       style: GoogleFonts.exo2(
                         textStyle: TextStyle(
                           fontWeight: FontWeight.w400,
@@ -164,7 +165,7 @@ class _SublistViewPageState extends State<SublistViewPage> {
                     onTap: (){
                       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => UnitPageView()));
                     },
-                    title: Text(AppLocalizations.of(context).translate('unit').toString(),
+                    title: Text(translate('unit').toString(),
                       style: GoogleFonts.exo2(
                         textStyle: TextStyle(
                           fontWeight: FontWeight.w400,
@@ -202,7 +203,7 @@ class _SublistViewPageState extends State<SublistViewPage> {
                     onTap: (){
                       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => PackageMaterialPage()));
                     },
-                    title: Text(AppLocalizations.of(context).translate('package_material').toString(),
+                    title: Text(translate('package_material').toString(),
                       style: GoogleFonts.exo2(
                         textStyle: TextStyle(
                           fontWeight: FontWeight.w400,

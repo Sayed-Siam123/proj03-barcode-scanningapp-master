@@ -17,6 +17,7 @@ import 'package:direct_select_flutter/direct_select_container.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_translate/global.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_grid/responsive_grid.dart';
@@ -91,7 +92,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
       key: _scaffoldKey,
       appBar: AppBar(
         title: Text(
-          AppLocalizations.of(context).translate('edit_product').toString(),
+          translate('edit_product').toString(),
           style: GoogleFonts.exo2(
             textStyle: TextStyle(
               fontSize: 18,
@@ -175,29 +176,29 @@ class _ProductEditPageState extends State<ProductEditPage> {
 
                 print(categoryID.toString());
 
-                // sublist_bloc.getPreviousCategoryID(categoryID);
-                // sublist_bloc.getPreviousManufacturerID(manufacID);
-                // sublist_bloc.getPreviousSubCategoryID(sub_categoryID);
-                // sublist_bloc.getPreviousUnitID(unitID);
-                //
-                // sublist_bloc.getPreviousCategoryName(category);
-                // sublist_bloc.getPreviousManufacturerName(manufac);
-                // sublist_bloc.getPreviousSubCategoryName(sub_category);
-                // sublist_bloc.getPreviousUnitName(unit);
-                //
-                //
-                // MasterDataModel data = MasterDataModel(
-                //   productPicture: propic.toString(),
-                //   newFlag: newFlag.toString(),
-                //   isTransferToApp: isTransfertoApp.toString(),
-                //   isOrderableViaApp: isOrderableviaApp.toString(),
-                //   productHeight: productHeight.toString(),
-                //   productLength: ProductLength.toString(),
-                // );
-                //
-                // print("eikhnane submit");
-                // sublist_bloc.UpdateProductMasterDatatoDB(data);
-                // sublist_bloc.dispose();
+                sublist_bloc.getPreviousCategoryID(categoryID);
+                sublist_bloc.getPreviousManufacturerID(manufacID);
+                sublist_bloc.getPreviousSubCategoryID(sub_categoryID);
+                sublist_bloc.getPreviousUnitID(unitID);
+
+                sublist_bloc.getPreviousCategoryName(category);
+                sublist_bloc.getPreviousManufacturerName(manufac);
+                sublist_bloc.getPreviousSubCategoryName(sub_category);
+                sublist_bloc.getPreviousUnitName(unit);
+
+
+                MasterDataModel data = MasterDataModel(
+                  productPicture: propic.toString(),
+                  newFlag: newFlag.toString(),
+                  isTransferToApp: isTransfertoApp.toString(),
+                  isOrderableViaApp: isOrderableviaApp.toString(),
+                  productHeight: productHeight.toString(),
+                  productLength: ProductLength.toString(),
+                );
+
+                print("eikhnane submit");
+                sublist_bloc.UpdateProductMasterDatatoDB(data);
+                sublist_bloc.dispose();
 
 
                 ProductName.text = "";
@@ -323,7 +324,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: <Widget>[
-                                            Text(AppLocalizations.of(context).translate('product_name').toString(),
+                                            Text(translate('product_name').toString(),
                                             style: TextStyle(
                                               fontSize: 16
                                             ),),
@@ -385,7 +386,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: <Widget>[
-                                              Text(AppLocalizations.of(context).translate('product_desc').toString(),
+                                              Text(translate('product_desc').toString(),
                                                 style: TextStyle(
                                                     fontSize: 16
                                                 ),),
@@ -446,7 +447,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: <Widget>[
-                                              Text(AppLocalizations.of(context).translate('manufac_pn').toString(),
+                                              Text(translate('manufac_pn').toString(),
                                                 style: TextStyle(
                                                     fontSize: 16
                                                 ),),
@@ -508,7 +509,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: <Widget>[
-                                              Text(AppLocalizations.of(context).translate('gtin').toString(),
+                                              Text(translate('gtin').toString(),
                                                 style: TextStyle(
                                                     fontSize: 16
                                                 ),),
@@ -570,7 +571,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: <Widget>[
-                                              Text(AppLocalizations.of(context).translate('listprice').toString(),
+                                              Text(translate('listprice').toString(),
                                                 style: TextStyle(
                                                     fontSize: 16
                                                 ),),

@@ -322,7 +322,7 @@ class _ProductGeneralPageState extends State<ProductGeneralPage> {
 
                                   Container(
                                     alignment: Alignment.centerLeft,
-                                    child: Text(data[0].gtin,
+                                    child: Text(data[0].id,
                                       style: TextStyle(
                                         fontSize: 16,
                                       ),),
@@ -333,7 +333,7 @@ class _ProductGeneralPageState extends State<ProductGeneralPage> {
 
                                   Container(
                                     alignment: Alignment.centerLeft,
-                                    child: Text(data[0].id,
+                                    child: Text(data[0].gtin,
                                       style: TextStyle(
                                         fontSize: 16,
                                       ),),

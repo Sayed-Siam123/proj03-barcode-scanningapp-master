@@ -4,6 +4,7 @@ import 'package:app/UI/Deliveries.dart';
 import 'package:app/UI/PickupDelivery.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/global.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomeWidget extends StatefulWidget {
@@ -21,7 +22,7 @@ class _HomeWidgetState extends State<HomeWidget> {
            Container(
               child: ListTile(
             title: new Text(
-              AppLocalizations.of(context).translate('barcode_info').toString(),
+              translate('barcode_info'),
               style: GoogleFonts.exo2(
                 textStyle: TextStyle(
                   fontSize: 20,
@@ -32,9 +33,7 @@ class _HomeWidgetState extends State<HomeWidget> {
             ),
             isThreeLine: false,
             subtitle: new Text(
-                AppLocalizations.of(context)
-                    .translate('barcode_info_desc')
-                    .toString(),
+                translate('barcode_info_desc'),
                 style: GoogleFonts.exo2()),
             //trailing: new Icon(Icons.arrow_forward),
             leading: ConstrainedBox(
@@ -59,9 +58,7 @@ class _HomeWidgetState extends State<HomeWidget> {
           Container(
               child: ListTile(
                   title: new Text(
-                    AppLocalizations.of(context)
-                        .translate('delivereies')
-                        .toString(),
+                    translate('delivereies'),
                     style: GoogleFonts.exo2(
                       textStyle: TextStyle(
                         fontSize: 20,
@@ -72,9 +69,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                   ),
                   isThreeLine: false,
                   subtitle: new Text(
-                    AppLocalizations.of(context)
-                        .translate('delivereies_desc')
-                        .toString(),
+                    translate('delivereies_desc'),
                     style: GoogleFonts.exo2(),
                   ),
                   //trailing: new Icon(Icons.arrow_forward),
@@ -101,7 +96,7 @@ class _HomeWidgetState extends State<HomeWidget> {
            Container(
               child: ListTile(
             title: new Text(
-              AppLocalizations.of(context).translate('pickup').toString(),
+              translate('pickup'),
               style: GoogleFonts.exo2(
                 textStyle: TextStyle(
                   fontSize: 20,
@@ -112,9 +107,7 @@ class _HomeWidgetState extends State<HomeWidget> {
             ),
             isThreeLine: false,
             subtitle: new Text(
-                AppLocalizations.of(context)
-                    .translate('pickup_desc')
-                    .toString(),
+                translate('pickup_desc'),
                 style: GoogleFonts.exo2()),
             //trailing: new Icon(Icons.arrow_forward),
             leading: ConstrainedBox(

@@ -5,6 +5,7 @@ import 'package:app/UI/Home.dart';
 import 'package:app/UI/NewDeliveryPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/global.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class DeliveriesPage extends StatefulWidget {
@@ -51,7 +52,7 @@ class _DeliveriesPageState extends State<DeliveriesPage> {
           },
         ),
         title: Text(
-          AppLocalizations.of(context).translate('delivereies').toString(),
+          translate('delivereies').toString(),
           style: GoogleFonts.exo2(
             textStyle: TextStyle(fontSize: 20, color: Colors.black54),
           ),

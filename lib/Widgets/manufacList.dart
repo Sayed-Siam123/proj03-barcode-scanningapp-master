@@ -4,6 +4,7 @@ import 'package:app/Model/ManufactureModel.dart';
 import 'package:app/UI/ManufacViewPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/global.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ManufacList extends StatefulWidget {
@@ -158,7 +159,7 @@ class _ManufacListState extends State<ManufacList> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
                             Text(
-                              AppLocalizations.of(context).translate('update_manufac').toString(),
+                              translate('update_manufac').toString(),
                               style: GoogleFonts.exo2(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
@@ -175,7 +176,7 @@ class _ManufacListState extends State<ManufacList> {
                               child: Column(
                                 children: <Widget>[
                                   new Text(
-                                    AppLocalizations.of(context).translate('manufac').toString(),
+                                    translate('manufac').toString(),
                                     style: GoogleFonts.exo2(
                                       fontSize: 16,
                                     ),
@@ -222,7 +223,7 @@ class _ManufacListState extends State<ManufacList> {
                   actions: <Widget>[
                     new FlatButton(
                         child: Text(
-                          AppLocalizations.of(context).translate('cancel').toString(),
+                          translate('cancel').toString(),
                           style: GoogleFonts.exo2(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
@@ -236,7 +237,7 @@ class _ManufacListState extends State<ManufacList> {
 
                     new FlatButton(
                         child: Text(
-                          AppLocalizations.of(context).translate('update').toString(),
+                          translate('update').toString(),
                           style: GoogleFonts.exo2(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,

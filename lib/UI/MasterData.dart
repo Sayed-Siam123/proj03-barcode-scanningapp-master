@@ -5,7 +5,6 @@ import 'package:app/Handler/app_localizations.dart';
 import 'package:app/Model/masterdata_model.dart';
 import 'package:app/UI/AddProduct.dart';
 import 'package:app/UI/Home.dart';
-import 'package:app/Widgets/MastarDataDrawer.dart';
 import 'package:app/Widgets/MastarDataWidget.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:barcode_scan/platform_wrapper.dart';
@@ -13,7 +12,9 @@ import 'package:connectivity/connectivity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_translate/global.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:multilevel_drawer/multilevel_drawer.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:sweetalert/sweetalert.dart';
 
@@ -51,27 +52,26 @@ class _MasterDataState extends State<MasterData> {
   _showDialog(String title) async {
     await Future.delayed(Duration(seconds: 1));
 
-    SweetAlert.show(context,
+    SweetAlert.show(
+      context,
       title: "Info!",
-      subtitle: title.toString(),     //TODO:: SWEET ALERT EXAMPLE
+      subtitle: title.toString(), //TODO:: SWEET ALERT EXAMPLE
       style: SweetAlertStyle.loading,
-
     );
   }
 
   _showDialog1(String title) async {
     await Future.delayed(Duration(seconds: 1));
 
-    SweetAlert.show(context,
+    SweetAlert.show(
+      context,
       title: "Info!",
-      subtitle: title.toString(),     //TODO:: SWEET ALERT EXAMPLE
+      subtitle: title.toString(), //TODO:: SWEET ALERT EXAMPLE
       style: SweetAlertStyle.success,
-
     );
   }
 
   _showDialog2(BuildContext context) async {
-
 //    pr = ProgressDialog(
 //      context,
 //      type: ProgressDialogType.Download,
@@ -100,7 +100,7 @@ class _MasterDataState extends State<MasterData> {
 //          color: Colors.black, fontSize: 19.0, fontWeight: FontWeight.w600),
 //    );
 
-    pr = new ProgressDialog(context,type: ProgressDialogType.Normal);
+    pr = new ProgressDialog(context, type: ProgressDialogType.Normal);
 
     pr.style(
       message: 'Backuping data. Please wait...',
@@ -114,7 +114,6 @@ class _MasterDataState extends State<MasterData> {
       messageTextStyle: TextStyle(
           color: Colors.black, fontSize: 19.0, fontWeight: FontWeight.w600),
     );
-
   }
 
   Widget build(BuildContext context) {
@@ -124,23 +123,21 @@ class _MasterDataState extends State<MasterData> {
           context, MaterialPageRoute(builder: (context) => HomePage())),
       child: Scaffold(
         key: _scaffoldKey,
-        drawer: new MasterDataDrawer(),
         appBar: AppBar(
           leading: _isSearching
               ? const BackButton()
               : new IconButton(
                   icon: new Icon(
-                    Icons.menu,
+                    Icons.arrow_back,
                     color: Colors.black45,
                   ),
                   color: Colors.black54,
                   onPressed: () {
-//                Navigator.push(
-//                    context,
-//                    MaterialPageRoute(builder: (context) => HomePage())
-//                );
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => HomePage()));
 
-                    _scaffoldKey.currentState.openDrawer();
+                    //
+                    // _scaffoldKey.currentState.openDrawer();
                   }),
           title: _isSearching ? _buildSearchField() : _buildTitle(context),
           actions: _buildActions(),
@@ -186,62 +183,62 @@ class _MasterDataState extends State<MasterData> {
 //          ),
 //          backgroundColor: Colors.green,
 //        ),
-      floatingActionButton: Container(
-        height: 110,
-        width: MediaQuery.of(context).size.width - 30,
-        child: Stack(
-          children: <Widget>[
-            Align(
-              alignment: Alignment.bottomLeft,
-              child: FloatingActionButton(
-                heroTag: null,
-                tooltip: "Backup data",
-                backgroundColor: Colors.green,
-                onPressed: () async {
-                  print("jabs");
+        floatingActionButton: Container(
+          height: 110,
+          width: MediaQuery.of(context).size.width - 30,
+          child: Stack(
+            children: <Widget>[
+              Align(
+                alignment: Alignment.bottomLeft,
+                child: FloatingActionButton(
+                  heroTag: null,
+                  tooltip: "Backup data",
+                  backgroundColor: Colors.green,
+                  onPressed: () async {
+                    print("jabs");
 
-                  var connectivityResult = await (Connectivity().checkConnectivity());
-                  if (connectivityResult == ConnectivityResult.mobile) {
-                    //_showDialog1("Mobile Internet OK");
-                    pr.show();
-                    masterdata_bloc.syncAddDatatoAPI(); //sync the data to api
-                    masterdata_bloc.syncUpdateDatatoAPI();
-                    Future.delayed(Duration(seconds: 3)).then((value) {
-                      pr.hide().whenComplete(() {
+                    var connectivityResult =
+                        await (Connectivity().checkConnectivity());
+                    if (connectivityResult == ConnectivityResult.mobile) {
+                      //_showDialog1("Mobile Internet OK");
+                      pr.show();
+                      masterdata_bloc.syncAddDatatoAPI(); //sync the data to api
+                      masterdata_bloc.syncUpdateDatatoAPI();
+                      Future.delayed(Duration(seconds: 3)).then((value) {
+                        pr.hide().whenComplete(() {
 //                        Navigator.of(context).push(CupertinoPageRoute(
 //                            builder: (BuildContext context) => SecondScreen()));
-                        print("COmpleted");
+                          print("COmpleted");
+                        });
                       });
-                    });
-                  } else if (connectivityResult == ConnectivityResult.wifi) {
-                    //_showDialog1("WiFi Internet OK");
-                    pr.show();
-                    masterdata_bloc.syncAddDatatoAPI(); //sync the data to api
-                    masterdata_bloc.syncUpdateDatatoAPI();
-                    Future.delayed(Duration(seconds: 3)).then((value) {
-                      pr.hide().whenComplete(() {
+                    } else if (connectivityResult == ConnectivityResult.wifi) {
+                      //_showDialog1("WiFi Internet OK");
+                      pr.show();
+                      masterdata_bloc.syncAddDatatoAPI(); //sync the data to api
+                      masterdata_bloc.syncUpdateDatatoAPI();
+                      Future.delayed(Duration(seconds: 3)).then((value) {
+                        pr.hide().whenComplete(() {
 //                        Navigator.of(context).push(CupertinoPageRoute(
 //                            builder: (BuildContext context) => SecondScreen()));
-                      print("COmpleted");
+                          print("COmpleted");
+                        });
                       });
-                    });
-                  } else {
-                    print("No internet");
-                    _showDialog("No Internet");
-                  }
-
-                },
-                child: Icon(
-                  Icons.cloud_upload,
-                  color: Colors.white,
-                  size: 30,
+                    } else {
+                      print("No internet");
+                      _showDialog("No Internet");
+                    }
+                  },
+                  child: Icon(
+                    Icons.cloud_upload,
+                    color: Colors.white,
+                    size: 30,
+                  ),
                 ),
               ),
-            ),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: FloatingActionButton(
-                onPressed: () {
+              Align(
+                alignment: Alignment.bottomRight,
+                child: FloatingActionButton(
+                  onPressed: () {
                     print("jabs");
 
                     int lastID = int.parse(fetcheddata.last.id.toString());
@@ -249,7 +246,9 @@ class _MasterDataState extends State<MasterData> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => AddProductPage(id: lastID,)));
+                            builder: (context) => AddProductPage(
+                                  id: lastID,
+                                )));
                     // Add your onPressed code here!
                   },
                   child: Icon(
@@ -259,9 +258,9 @@ class _MasterDataState extends State<MasterData> {
                   backgroundColor: Colors.green,
                 ),
               ),
-          ],
+            ],
+          ),
         ),
-      ),
       ),
     );
   }
@@ -275,17 +274,12 @@ class _MasterDataState extends State<MasterData> {
         hintText: "Search Data...",
         border: InputBorder.none,
         hintStyle: GoogleFonts.exo2(
-      textStyle: TextStyle(
-      fontSize: 20,
-        color: Colors.black38
-      ),
-    ),
+          textStyle: TextStyle(fontSize: 20, color: Colors.black38),
+        ),
       ),
       style: GoogleFonts.exo2(
-    textStyle: TextStyle(
-    fontSize: 16,
-    color: Colors.black
-    ),),
+        textStyle: TextStyle(fontSize: 16, color: Colors.black),
+      ),
       onChanged: onSearchTextChanged,
     );
   }
@@ -401,14 +395,10 @@ class _MasterDataState extends State<MasterData> {
   }
 
   _buildTitle(BuildContext context) {
-    return Text(
-        AppLocalizations.of(context).translate('masterdata').toString(),
-      style: GoogleFonts.exo2(
-      textStyle: TextStyle(
-        fontSize: 20,
-        color: Colors.black
-    ),)
-    );
+    return Text(translate('masterdata').toString(),
+        style: GoogleFonts.exo2(
+          textStyle: TextStyle(fontSize: 20, color: Colors.black),
+        ));
   }
 
   //scan barcode asynchronously
@@ -493,4 +483,4 @@ class _MasterDataState extends State<MasterData> {
                 }),
           );
   }
- }
+}

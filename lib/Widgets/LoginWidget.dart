@@ -10,6 +10,7 @@ import 'package:app/Resources/SharedPrefer.dart';
 import 'package:app/UI/Home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/global.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -29,6 +30,7 @@ class _LoginWidgetState extends State<LoginWidget> {
   UserLogin_Success_Model fetchedData;
 
   String loginKey = "loginKey";
+  String useridKey = "userid";
 
   bool loginPress=false;
   bool loginErrorMessage=false;
@@ -138,7 +140,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                             ),
                             errorText: _validate1 == false ? errortext1 : null,
                             prefixIcon: Icon(Icons.account_circle),
-                            hintText: AppLocalizations.of(context).translate('userid_hint').toString(),
+                            hintText: translate('userid_hint').toString(),
                           )),
                     ),
                   ),
@@ -189,7 +191,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                             ),
                             errorText: _validate2 == false ? errortext2 : null,
                             prefixIcon: Icon(Icons.lock),
-                            hintText: AppLocalizations.of(context).translate('password_hint').toString(),
+                            hintText: translate('password_hint').toString(),
                           )),
                     ),
                   ),
@@ -255,7 +257,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                       //     MaterialPageRoute(builder: (context) => HomePage()),);
                         },
                         child: Text(
-                            AppLocalizations.of(context).translate('login_button').toString().toUpperCase(),
+                            translate('login_button').toString().toUpperCase(),
                           style: GoogleFonts.exo2(
                             fontSize: 17,
                             textStyle: TextStyle(color: Colors.white),
@@ -290,7 +292,7 @@ class _LoginWidgetState extends State<LoginWidget> {
 
                             WidgetsBinding.instance.addPostFrameCallback((_){   // this will call for setState()
                               prefs.setData(loginKey, "true");
-
+                              prefs.setData(useridKey, snapshot.data.id==null ? "-1" : snapshot.data.id.toString());
                               Timer(Duration(seconds: 3), () {
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) => HomePage()));
@@ -312,7 +314,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                               print("Login False");
                               Scaffold.of(context).showSnackBar(SnackBar(
                                 content: Text(
-                                  '*Incorrect UserID or Password!',
+                                  'Incorrect UserID or Password!',
                                   style: GoogleFonts.exo2(
                                     textStyle: TextStyle(
                                       fontSize: 16,

@@ -4,6 +4,7 @@ import 'package:app/Model/ManufactureModel.dart';
 import 'package:app/Widgets/manufacList.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/global.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -118,7 +119,7 @@ class _ManufacViewPageState extends State<ManufacViewPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
                             Text(
-                              AppLocalizations.of(context).translate('new_manufac').toString(),
+                              translate('new_manufac').toString(),
                               style: GoogleFonts.exo2(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
@@ -135,7 +136,7 @@ class _ManufacViewPageState extends State<ManufacViewPage> {
                               child: Column(
                                 children: <Widget>[
                                   new Text(
-                                    AppLocalizations.of(context).translate('manufac').toString(),
+                                    translate('manufac').toString(),
                                     style: GoogleFonts.exo2(
                                       fontSize: 16,
                                     ),
@@ -186,7 +187,7 @@ class _ManufacViewPageState extends State<ManufacViewPage> {
                         Navigator.pop(context);
                       },
                       child: Text(
-                        AppLocalizations.of(context).translate('cancel').toString(),
+                        translate('cancel').toString(),
                         style: GoogleFonts.exo2(
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
@@ -196,7 +197,7 @@ class _ManufacViewPageState extends State<ManufacViewPage> {
                     ),
                     new FlatButton(
                         child: Text(
-                          AppLocalizations.of(context).translate('add').toString(),
+                          translate('add').toString(),
                           style: GoogleFonts.exo2(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,

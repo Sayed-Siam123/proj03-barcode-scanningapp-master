@@ -13,6 +13,7 @@ import 'package:direct_select_flutter/direct_select_container.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_translate/global.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:responsive_grid/responsive_grid.dart';
@@ -54,7 +55,7 @@ class _AddProductPageState extends State<AddProductPage> {
       key: _scaffoldKey,
       appBar: AppBar(
         title: Text(
-          AppLocalizations.of(context).translate('add_product_title').toString(),
+          translate('add_product_title').toString(),
           style: GoogleFonts.exo2(
             textStyle: TextStyle(
               color: Colors.black54,
@@ -82,15 +83,15 @@ class _AddProductPageState extends State<AddProductPage> {
             ),
             onPressed: () {
 
-              // sublist_bloc.getProductID((widget.id+1).toString());
-              // sublist_bloc.getProductName(ProductName.text);
-              // sublist_bloc.getProductDesc(ProductDesc.text);
-              // sublist_bloc.getManufacturerPn(manu_pn.text);
-              // sublist_bloc.getGtin(gtin.text);
-              // sublist_bloc.getListPrice(ListPrice.text);
-              // sublist_bloc.createProductMasterDatatoDB();
-              // sublist_bloc.dispose();
-              // masterdata_bloc.fetchAllMasterdatafromDB();
+              sublist_bloc.getProductID((widget.id+1).toString());
+              sublist_bloc.getProductName(ProductName.text);
+              sublist_bloc.getProductDesc(ProductDesc.text);
+              sublist_bloc.getManufacturerPn(manu_pn.text);
+              sublist_bloc.getGtin(gtin.text);
+              sublist_bloc.getListPrice(ListPrice.text);
+              sublist_bloc.createProductMasterDatatoDB();
+              sublist_bloc.dispose();
+              masterdata_bloc.fetchAllMasterdatafromDB();
 
 //              Fluttertoast.showToast(
 //                  msg: "Product Added!",
@@ -145,7 +146,7 @@ class _AddProductPageState extends State<AddProductPage> {
                                     child: Column(
                                       children: <Widget>[
                                     Text(
-                                      AppLocalizations.of(context).translate('product_id').toString(),
+                                      translate('product_id').toString(),
                                       style: GoogleFonts.exo2(
                                         textStyle: TextStyle(
                                             fontSize: 14,
@@ -243,7 +244,7 @@ class _AddProductPageState extends State<AddProductPage> {
                     children: <Widget>[
                       Padding(
                         padding: EdgeInsets.only(left: 13,bottom: 3),
-                        child: Text(AppLocalizations.of(context).translate('product_name').toString(),style: GoogleFonts.exo2(
+                        child: Text(translate('product_name').toString(),style: GoogleFonts.exo2(
                           fontSize: 14,
                         ),),
                       ),
@@ -290,7 +291,7 @@ class _AddProductPageState extends State<AddProductPage> {
                                     fontSize: 14,
                                   ),
                                 ),
-                                hintText: AppLocalizations.of(context).translate('product_name').toString(),
+                                hintText: translate('product_name').toString(),
                               )),
                         ),
                       ),
@@ -310,7 +311,7 @@ class _AddProductPageState extends State<AddProductPage> {
                     children: <Widget>[
                       Padding(
                         padding: EdgeInsets.only(left: 13,bottom: 3),
-                        child: Text(AppLocalizations.of(context).translate('product_desc').toString(),style: GoogleFonts.exo2(
+                        child: Text(translate('product_desc').toString(),style: GoogleFonts.exo2(
                           fontSize: 14,
                         ),),
                       ),
@@ -357,7 +358,7 @@ class _AddProductPageState extends State<AddProductPage> {
                                     fontSize: 14,
                                   ),
                                 ),
-                                hintText: AppLocalizations.of(context).translate('product_desc').toString(),
+                                hintText: translate('product_desc').toString(),
                               )),
                         ),
                       ),
@@ -456,7 +457,7 @@ class _AddProductPageState extends State<AddProductPage> {
                     children: <Widget>[
                       Padding(
                         padding: EdgeInsets.only(left: 13,bottom: 3),
-                        child: Text(AppLocalizations.of(context).translate('manufac_pn').toString(),style: GoogleFonts.exo2(
+                        child: Text(translate('manufac_pn').toString(),style: GoogleFonts.exo2(
                           fontSize: 14,
                         ),),
                       ),
@@ -509,7 +510,7 @@ class _AddProductPageState extends State<AddProductPage> {
                                     fontSize: 14,
                                   ),
                                 ),
-                                hintText: AppLocalizations.of(context).translate('manufac_pn_hint').toString(),
+                                hintText: translate('manufac_pn_hint').toString(),
                               )),
                         ),
                       ),
@@ -529,7 +530,7 @@ class _AddProductPageState extends State<AddProductPage> {
                     children: <Widget>[
                       Padding(
                         padding: EdgeInsets.only(left: 13,bottom: 3),
-                        child: Text(AppLocalizations.of(context).translate('gtin').toString(),style: GoogleFonts.exo2(
+                        child: Text(translate('gtin').toString(),style: GoogleFonts.exo2(
                           fontSize: 14,
                         ),),
                       ),
@@ -582,7 +583,7 @@ class _AddProductPageState extends State<AddProductPage> {
                                     fontSize: 14,
                                   ),
                                 ),
-                                hintText: AppLocalizations.of(context).translate('gtin_hint').toString(),
+                                hintText: translate('gtin_hint').toString(),
                               )),
                         ),
                       ),
@@ -602,7 +603,7 @@ class _AddProductPageState extends State<AddProductPage> {
                     children: <Widget>[
                       Padding(
                         padding: EdgeInsets.only(left: 13,bottom: 3),
-                        child: Text(AppLocalizations.of(context).translate('listprice').toString(),style: GoogleFonts.exo2(
+                        child: Text(translate('listprice').toString(),style: GoogleFonts.exo2(
                           fontSize: 14,
                         ),),
                       ),
@@ -649,7 +650,7 @@ class _AddProductPageState extends State<AddProductPage> {
                                     fontSize: 14,
                                   ),
                                 ),
-                                hintText: AppLocalizations.of(context).translate('listprice_hint').toString(),
+                                hintText: translate('listprice_hint').toString(),
                               )),
                         ),
                       ),

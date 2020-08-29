@@ -7,6 +7,7 @@ import 'package:app/UI/Home.dart';
 import 'package:app/UI/NewDeliveryPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/global.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class PickupSummary extends StatefulWidget {
@@ -56,7 +57,7 @@ class _PickupSummaryState extends State<PickupSummary> {
           },
         ),
         title: Text(
-          AppLocalizations.of(context).translate('direct_pickup_summary').toString(),
+          translate('direct_pickup_summary').toString(),
           style: GoogleFonts.exo2(
             textStyle: TextStyle(fontSize: 20, color: Colors.black54),
           ),

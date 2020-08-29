@@ -1,5 +1,8 @@
+import 'package:app/ColorLibrary/HexColor.dart';
+import 'package:app/Handler/app_localizations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/global.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -10,6 +13,8 @@ class ConnectionSettingsPage extends StatefulWidget {
 
 class _ConnectionSettingsPageState extends State<ConnectionSettingsPage> {
   String deviceid, server_ip, server_log, server_port;
+
+  Color button_color = HexColor("#b72b45");
 
   TextEditingController device_id = new TextEditingController();
   TextEditingController serverip = new TextEditingController();
@@ -63,7 +68,7 @@ class _ConnectionSettingsPageState extends State<ConnectionSettingsPage> {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            "Connection Settings",
+            translate('connection_settings_title').toUpperCase().toString(),
             style: GoogleFonts.exo2(
               textStyle: TextStyle(color: Theme.of(context).accentColor),
             ),
@@ -90,9 +95,8 @@ class _ConnectionSettingsPageState extends State<ConnectionSettingsPage> {
                 Center(
                   child: Container(
                       padding: EdgeInsets.all(20),
-                      child: Card(
-                        child: Column(mainAxisSize: MainAxisSize.min, children: <
-                            Widget>[
+                        child: Column(mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
                           // ExpansionTile(
                           //   backgroundColor: Colors.white,
                           //   leading: Icon(Icons.link),
@@ -183,7 +187,7 @@ class _ConnectionSettingsPageState extends State<ConnectionSettingsPage> {
                                               prefixIcon: Icon(
                                                   Icons.perm_device_information),
                                               hintText: snapshot.data == null
-                                                  ? "Device ID"
+                                                  ? translate('device_id').toString()
                                                   : snapshot.data.toString(),
                                             )),
                                       ),
@@ -268,7 +272,7 @@ class _ConnectionSettingsPageState extends State<ConnectionSettingsPage> {
                                                 ),
                                               ),
                                               hintText: snapshot.data == null
-                                                  ? "Server -IP/Name"
+                                                  ? translate('server_ip').toString()
                                                   : snapshot.data.toString(),
                                             )),
                                       ),
@@ -331,7 +335,7 @@ class _ConnectionSettingsPageState extends State<ConnectionSettingsPage> {
                                                 ),
                                               ),
                                               hintText: snapshot.data == null
-                                                  ? "Server port"
+                                                  ? translate('server_port').toString()
                                                   : snapshot.data.toString(),
                                             )),
                                       ),
@@ -437,7 +441,7 @@ class _ConnectionSettingsPageState extends State<ConnectionSettingsPage> {
                                                 ),
                                               ),
                                               hintText: snapshot.data == null
-                                                  ? "Server Log"
+                                                  ? translate('server_log').toString()
                                                   : snapshot.data.toString(),
                                             )),
                                       ),
@@ -458,14 +462,14 @@ class _ConnectionSettingsPageState extends State<ConnectionSettingsPage> {
                                     borderRadius: BorderRadius.circular(18.0),
                                   ),
                                   child: Text(
-                                    "SAVE",
+                                    translate('save').toUpperCase().toString(),
                                     style: GoogleFonts.exo2(
                                       textStyle: TextStyle(
                                         fontSize: 18,
                                       ),
                                     ),
                                   ),
-                                  color: Colors.green,
+                                  color: button_color,
                                   textColor: Colors.white,
                                   padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                                   onPressed: () {
@@ -543,7 +547,7 @@ class _ConnectionSettingsPageState extends State<ConnectionSettingsPage> {
 //                                  ],
 //                                ),
                         ]),
-                      )),
+                      ),
                 ),
               ],
             ),

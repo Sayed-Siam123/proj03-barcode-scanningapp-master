@@ -5,6 +5,7 @@ import 'package:app/Model/CatagoryModel.dart';
 import 'package:app/Model/unit_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/global.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'SystemSettings.dart';
@@ -149,7 +150,7 @@ class _CategoryListState extends State<CategoryList> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
 
-                            Text(AppLocalizations.of(context).translate('update_category').toString(),style: GoogleFonts.exo2(
+                            Text(translate('update_category').toString(),style: GoogleFonts.exo2(
                               fontSize: 18,
                               fontWeight: FontWeight.w600,
                               color: Colors.black54,
@@ -166,7 +167,7 @@ class _CategoryListState extends State<CategoryList> {
                             Container(
                               child: Column(
                                 children: <Widget>[
-                                  new Text(AppLocalizations.of(context).translate('category').toString(),style: GoogleFonts.exo2(
+                                  new Text(translate('category').toString(),style: GoogleFonts.exo2(
                                     fontSize: 16,
                                   ),),
                                   SizedBox(height: 2,),
@@ -204,7 +205,7 @@ class _CategoryListState extends State<CategoryList> {
                   actions: <Widget>[
                     new FlatButton(
                         child: Text(
-                          AppLocalizations.of(context).translate('cancel').toString(),
+                          translate('cancel').toString(),
                           style: GoogleFonts.exo2(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
@@ -218,7 +219,7 @@ class _CategoryListState extends State<CategoryList> {
 
                     new FlatButton(
                         child: Text(
-                          AppLocalizations.of(context).translate('update').toString(),
+                          translate('update').toString(),
                           style: GoogleFonts.exo2(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,

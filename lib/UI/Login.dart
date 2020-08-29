@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:app/Bloc/user_bloc.dart';
@@ -9,6 +10,7 @@ import 'package:app/Widgets/LoginWidget.dart';
 import 'package:app/resources/SharedPrefer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/global.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -23,7 +25,10 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getLang();
+    Timer(Duration(seconds: 1), () {
+      getLang();
+    });
+    print(language);
   }
 
   @override
@@ -59,10 +64,9 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    var appLanguage = Provider.of<AppLanguage>(context);
     return Scaffold(
         appBar: AppBar(
-          title: new Text(AppLocalizations.of(context).translate('login_title').toString(),
+          title: new Text(translate('login_title'),
             style: GoogleFonts.exo2(
               textStyle: TextStyle(color: Theme
                   .of(context)
@@ -86,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
                 onPressed: () {
                   print("hahas");
 
-                  _showDialog();
+                  _showDialog(context);
 
                 }
 
@@ -119,8 +123,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  _showDialog() async {
-    var appLanguage = Provider.of<AppLanguage>(context);
+  _showDialog(BuildContext context) async {
     await showDialog<String>(
         context: context,
         builder: (_) =>
@@ -174,12 +177,18 @@ class _LoginPageState extends State<LoginPage> {
                                           color: language== "en"? Colors.white: Colors.black54,
                                         ),),
                                       leading: Image.asset('assets/images/en.png'),
-                                      onTap:(){
+                                      onTap:() {
                                         print("English Lang");
-                                        appLanguage.changeLanguage(Locale("en"));
-                                        setState(() {
-                                          language = "en";
-                                        });
+                                        // appLanguage.changeLanguage(Locale("en"));
+                                        // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                                          setState(() {
+                                            language = "en";
+                                          });
+                                        // });
+                                        // Navigator.of(context).pop();
+                                        // Navigator.pop(context);
+                                        changeLocale(context, "en");
+                                        prefs.setData("language_code", "en");
                                         Navigator.pop(context);
                                       },
                                     ),
@@ -199,11 +208,22 @@ class _LoginPageState extends State<LoginPage> {
                                       leading: Image.asset('assets/images/de.png'),
                                       onTap:(){
                                         print("German Lang");
-                                        appLanguage.changeLanguage(Locale("de"));
-                                        setState(() {
-                                          language = "de";
-                                        });
+
+                                        // appLanguage.changeLanguage(Locale("de"));
+                                        //
+                                        // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                                          setState(() {
+                                            language = "de";
+                                          });
+                                        // });
+                                        // Navigator.of(context).pop();
+                                        //
+                                        // Navigator.pop(context);
+
+                                        changeLocale(context, "de"); //change the language
+                                        prefs.setData("language_code", "de");
                                         Navigator.pop(context);
+
                                       },
                                     ),
                                     color: language== "de"? Colors.blue: null,
@@ -223,7 +243,7 @@ class _LoginPageState extends State<LoginPage> {
                   actions: <Widget>[
                     new FlatButton(
                         child: Text(
-                          AppLocalizations.of(context).translate('cancel').toString(),
+                          translate('cancel').toString(),
                           style: GoogleFonts.exo2(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,

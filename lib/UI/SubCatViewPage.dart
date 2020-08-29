@@ -7,6 +7,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:direct_select_flutter/direct_select_container.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/global.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -78,7 +79,7 @@ class _SubCatPageViewState extends State<SubCatPageView> {
                     MaterialPageRoute(builder: (context) => SublistPage()));
               }),
           title: Text(
-              AppLocalizations.of(context).translate('sub_category').toString(),
+              translate('sub_category').toString(),
               style: GoogleFonts.exo2(
                 textStyle: TextStyle(
                     fontSize: 20,
@@ -220,7 +221,7 @@ class _SubCatPageViewState extends State<SubCatPageView> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: <Widget>[
                               Text(
-                                AppLocalizations.of(context).translate('new_sub_category').toString(),
+                                translate('new_sub_category').toString(),
                                 style: GoogleFonts.exo2(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w600,
@@ -244,7 +245,7 @@ class _SubCatPageViewState extends State<SubCatPageView> {
                                 child: Column(
                                   children: <Widget>[
                                     new Text(
-                                      AppLocalizations.of(context).translate('sub_category').toString(),
+                                      translate('sub_category').toString(),
                                       style: GoogleFonts.exo2(
                                         fontSize: 16,
                                       ),

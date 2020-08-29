@@ -8,6 +8,7 @@ import 'package:app/UI/ProductGeneral.dart';
 import 'package:app/UI/ProductPackaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/global.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'Home.dart';
@@ -126,19 +127,15 @@ class _DetailsPageState extends State<DetailsPage>
             labelColor: Colors.black,
             tabs: [
               new Tab(
-                text: AppLocalizations.of(context)
-                    .translate('general')
+                text: translate('general')
                     .toString(),
               ),
               new Tab(
-                text: AppLocalizations.of(context)
-                    .translate('details')
+                text: translate('details')
                     .toString(),
               ),
               new Tab(
-                text: AppLocalizations.of(context)
-                    .translate('packaging')
-                    .toString(),
+                text: translate('packaging').toString(),
               )
             ],
             controller: _tabController,

@@ -13,6 +13,7 @@ import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_translate/global.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:http/http.dart' show Client;
@@ -191,7 +192,7 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
           },
         ),
         title: Text(
-          AppLocalizations.of(context).translate('new_delivery').toString(),
+          translate('new_delivery').toString(),
           style: GoogleFonts.exo2(
             textStyle: TextStyle(fontSize: 20, color: Colors.black54),
           ),
@@ -240,7 +241,7 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
                     Padding(
                       padding: const EdgeInsets.all(13.0),
                       child: Text(
-                        AppLocalizations.of(context).translate('new_delivery_desc').toString(),
+                        translate('new_delivery_desc').toString(),
                         style: GoogleFonts.exo2(
                           textStyle: TextStyle(
                               fontSize: 12,
@@ -337,7 +338,7 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
                                   fontSize: 16,
                                 ),
                               ),
-                              hintText: AppLocalizations.of(context).translate('new_delivery_hint').toString(),
+                              hintText: translate('new_delivery_hint').toString(),
                             )),
                       ),
                     ),
@@ -419,8 +420,8 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
                         .size
                         .width - 60,
                     height: 300,
-                    child: qrText.isEmpty
-                        ? QRView(
+                    child:
+                    qrText.isEmpty ? QRView(
                       key: qrKey,
                       onQRViewCreated: _onQRViewCreated,
                       overlay: QrScannerOverlayShape(
@@ -704,7 +705,7 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
                                       padding: EdgeInsets.only(
                                           left: 16, bottom: 10),
                                       child: Text(
-                                        AppLocalizations.of(context).translate('note').toString(),style: GoogleFonts.exo2(
+                                        translate('note').toString(),style: GoogleFonts.exo2(
                                         fontSize: 20,
                                       ),),
                                     ),
@@ -757,7 +758,7 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
                                                 fontSize: 16,
                                               ),
                                             ),
-                                            hintText: AppLocalizations.of(context).translate('note_hint').toString(),
+                                            hintText: translate('note_hint').toString(),
                                           ),
                                           keyboardType: TextInputType.multiline,
                                           maxLines: null,
@@ -775,14 +776,14 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
                   ),
                   actions: <Widget>[
                     new FlatButton(
-                        child: Text(AppLocalizations.of(context).translate('skip').toString()),
+                        child: Text(translate('skip').toString()),
                         onPressed: () {
                           print("Skip hbe arekta Dialog khulbe");
                           Navigator.pop(context);
                           _showHandlingUnitDialog(context);
                         }),
                     new FlatButton(
-                        child: Text(AppLocalizations.of(context).translate('add').toString(),),
+                        child: Text(translate('add').toString(),),
                         onPressed: () {
                           print("Add hobe");
 
@@ -884,7 +885,7 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
                                     Padding(
                                       padding: EdgeInsets.only(
                                           left: 16, bottom: 10),
-                                      child: Text(AppLocalizations.of(context).translate('handling_unit').toString(),
+                                      child: Text(translate('handling_unit').toString(),
                                         style: GoogleFonts.exo2(
                                           fontSize: 20,
                                         ),),
@@ -934,7 +935,7 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
                                                 fontSize: 16,
                                               ),
                                             ),
-                                            hintText: AppLocalizations.of(context).translate('handling_unit_hint').toString(),
+                                            hintText: translate('handling_unit_hint').toString(),
                                             suffixIcon: IconButton(
                                               icon: new Image.asset(
                                                   'assets/images/barcode.png',
@@ -957,7 +958,7 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
                   ),
                   actions: <Widget>[
                     new FlatButton(
-                        child: Text(AppLocalizations.of(context).translate('skip').toString()),
+                        child: Text(translate('skip').toString()),
                         onPressed: () {
                           Navigator.pop(context);
                           Navigator.push(context,
@@ -967,7 +968,7 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
                           print("Skip hbe arekta Dialog khulbe");
                         }),
                     new FlatButton(
-                        child: Text(AppLocalizations.of(context).translate('add').toString()),
+                        child: Text(translate('add').toString()),
                         onPressed: () async {
                           print("Add hobe");
 

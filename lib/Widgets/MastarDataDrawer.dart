@@ -3,6 +3,7 @@ import 'package:app/UI/MasterData.dart';
 import 'package:app/UI/Sublist.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/global.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class MasterDataDrawer extends StatelessWidget {
@@ -22,7 +23,7 @@ class MasterDataDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            title: Text(AppLocalizations.of(context).translate('product').toString(),style: GoogleFonts.exo2(
+            title: Text(translate('product').toString(),style: GoogleFonts.exo2(
               textStyle: TextStyle(
                 fontSize: 20,
                 color: Colors.black,
@@ -39,7 +40,7 @@ class MasterDataDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            title: Text(AppLocalizations.of(context).translate('sublist').toString(),style: GoogleFonts.exo2(
+            title: Text(translate('sublist').toString(),style: GoogleFonts.exo2(
               textStyle: TextStyle(
                 fontSize: 20,
                 color: Colors.black,

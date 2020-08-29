@@ -1,9 +1,12 @@
+import 'package:app/ColorLibrary/HexColor.dart';
 import 'package:app/Handler/AppLanguage.dart';
 import 'package:app/Handler/app_localizations.dart';
 import 'package:app/UI/Home.dart';
 import 'package:app/UI/Settings.dart';
+import 'package:app/resources/SharedPrefer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/global.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,6 +17,9 @@ class SystemSettingsPage extends StatefulWidget {
 
 class _SystemSettingsPageState extends State<SystemSettingsPage> {
 
+
+  SessionManager prefs = SessionManager();
+  Color button_color = HexColor("#b72b45");
   final _formKey = GlobalKey<FormState>();
 
   String _cameraKey = "_camera";
@@ -44,47 +50,59 @@ class _SystemSettingsPageState extends State<SystemSettingsPage> {
     super.initState();
   }
 
-  Widget languageDropDown() {
-    var appLanguage = Provider.of<AppLanguage>(context);
+  Widget languageDropDown(BuildContext context) {
+    //var appLanguage = Provider.of<AppLanguage>(context);
     return Container(
       height: 60.00,
       margin: EdgeInsets.fromLTRB(5,5,5,0),
       child: FormField<String>(
         builder: (FormFieldState<String> state) {
-          return InputDecorator(
-            decoration: InputDecoration(
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0))),
-            child: DropdownButtonHideUnderline(
-              child: DropdownButton<String>(
-                hint: Text(AppLocalizations.of(context).translate('select_language').toString(),),
-                value: currentSelectedValue,
-                isDense: true,
-                onChanged: (newValue) {
-                  // setState(() {
-                  //   currentSelectedValue = newValue;
-                  // });
-                  print(newValue);
+          return Builder(
+            builder: (context) {
+              return InputDecorator(
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0))),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton<String>(
+                    hint: Text(translate('select_language').toString(),),
+                    value: currentSelectedValue,
+                    isDense: true,
+                    onChanged: (newValue) async{
+                      // setState(() {
+                      //   currentSelectedValue = newValue;
+                      // });
+                      print(newValue);
 
-                  if(newValue == "English"){
-                    print("English here");
-                    appLanguage.changeLanguage(Locale("en"));
-                  }
+                      if(newValue == "English"){
+                        print("English here");
+                        // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                        //   appLanguage.changeLanguage(Locale("en"));
+                        // });
+                        changeLocale(context, "en"); //change the language
+                        prefs.setData("language_code", "en");
+                      }
 
-                  if(newValue == "German"){
-                    print("German here");
-                    appLanguage.changeLanguage(Locale("de"));
-                  }
+                      if(newValue == "German"){
+                        print("German here");
+                        // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                        //   appLanguage.changeLanguage(Locale("de"));
+                        // });
+                        changeLocale(context, "de"); //change the language
+                        prefs.setData("language_code", "de");
+                      }
 
-                },
-                items: langtype.map((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-              ),
-            ),
+                    },
+                    items: langtype.map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              );
+            },
           );
         },
       ),
@@ -96,7 +114,7 @@ class _SystemSettingsPageState extends State<SystemSettingsPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          AppLocalizations.of(context).translate('system_setting').toString(),
+          translate('system_setting').toString(),
           style: new TextStyle(color: Colors.black54),
         ),
         backgroundColor: Colors.white,
@@ -122,18 +140,16 @@ class _SystemSettingsPageState extends State<SystemSettingsPage> {
                     Center(
                       child: Container(
                           padding: EdgeInsets.all(20.0),
-                          child: Card(
-                            child:
-                            Column(mainAxisSize: MainAxisSize.min,
+                          child: Column(mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
                                   // ExpansionTile(
                                   //   leading: Icon(Icons.settings_system_daydream),
-                                  //   title: Text(AppLocalizations.of(context).translate('system_setting').toString(),),
+                                  //   title: Text(translate('system_setting').toString(),),
                                   //   trailing: IconButton(
                                   //       icon: Icon(Icons.arrow_drop_down_circle),
                                   //       onPressed: null),
                                   //   children: <Widget>[
-                                      languageDropDown(),
+                                      languageDropDown(context),
                                       Divider(),
                                       FutureBuilder(
                                         future: getShared(_cameraKey),
@@ -284,7 +300,7 @@ class _SystemSettingsPageState extends State<SystemSettingsPage> {
                                   //   ],
                                   // ),
                                 ]),
-                          )),
+                          ),
                     )
                   ],
                 ));

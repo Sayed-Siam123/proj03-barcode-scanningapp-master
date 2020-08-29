@@ -5,8 +5,10 @@ import 'package:app/Handler/app_localizations.dart';
 import 'package:app/Model/GetDeliveryResponse_Model.dart';
 import 'package:app/Model/NewDeliveryModel.dart';
 import 'package:app/UI/Deliveries.dart';
+import 'package:app/resources/SharedPrefer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/global.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -21,12 +23,14 @@ class DeliveryProductList extends StatefulWidget {
 class _DeliveryProductListState extends State<DeliveryProductList> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   List<NewDeliveryModel> _product;
-
+  SessionManager prefs =  SessionManager();
   String finalDate = '';
 
   bool status = false;
 
   String position_ = null;
+  String useridKey = "userid";
+  String userid = "";
 
   int _quantity = 0;
 
@@ -62,9 +66,27 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
     getCurrentDate();
     print(finalDate);
     ndelivery_bloc.getallProduct();
+    getUserid();
     Timer(Duration(seconds: 3), () {
       getTotal();
     });
+  }
+
+  void getUserid() async {
+
+    Future<String> _userid = prefs.getData(useridKey);
+    _userid.then((data) {
+
+      print("userid " + data.toString());
+      this.userid = data.toString();
+
+      print("USerid: "+userid);
+
+    },onError: (e) {
+      print(e);
+    });
+
+
   }
 
   getTotal(){
@@ -164,7 +186,7 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
                         }
 
                         for (int i = 0; i < _product.length; i++) {
-                          str += "1" +
+                          str += userid.toString() +
                               "," +
                               _product[i].handlingUnit +
                               "," +
@@ -288,7 +310,7 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
                                 Column(
                                   children: <Widget>[
                                     Text(
-                                      AppLocalizations.of(context).translate('position').toString(),
+                                      translate('position').toString(),
                                       style: GoogleFonts.exo2(
                                         color: Colors.black,
                                         fontSize: 16,
@@ -475,6 +497,8 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
           itemBuilder: (context, index) {
             _product = snapshot.data;
             quantityofitems.add(snapshot.data[index].quantity);
+
+            print("Initial Quantity:: "+quantityofitems.length.toString());
 
             return Container(
               margin: EdgeInsets.only(top: 5),

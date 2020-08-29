@@ -9,6 +9,7 @@ import 'package:app/UI/PickupSummary.dart';
 import 'package:app/Widgets/SystemSettings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/global.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
@@ -185,7 +186,7 @@ class _PickupDeliveryState extends State<PickupDelivery> {
           },
         ),
         title: Text(
-          AppLocalizations.of(context).translate('pickup_delivery').toString(),
+          translate('pickup_delivery').toString(),
           style: GoogleFonts.exo2(
             textStyle: TextStyle(fontSize: 20, color: Colors.black54),
           ),
@@ -241,7 +242,7 @@ class _PickupDeliveryState extends State<PickupDelivery> {
                   children: <Widget>[
                     Padding(
                       padding: EdgeInsets.fromLTRB(5,0,0,0),
-                      child: Text(AppLocalizations.of(context).translate('pickup_delivery_desc').toString(),style: GoogleFonts.exo2(
+                      child: Text(translate('pickup_delivery_desc').toString(),style: GoogleFonts.exo2(
                         textStyle: TextStyle(
                             fontSize: 12,
                             color: Theme.of(context).accentColor,
@@ -333,7 +334,7 @@ class _PickupDeliveryState extends State<PickupDelivery> {
                                   fontSize: 16,
                                 ),
                               ),
-                              hintText: AppLocalizations.of(context).translate('pickup_delivery_hint').toString(),
+                              hintText: translate('pickup_delivery_hint').toString(),
                             )),
                       ),
                     ),

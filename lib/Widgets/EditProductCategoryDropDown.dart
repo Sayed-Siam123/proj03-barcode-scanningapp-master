@@ -8,6 +8,7 @@ import 'package:direct_select_flutter/direct_select_list.dart';
 import 'package:dropdown_formfield/dropdown_formfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/global.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:searchable_dropdown/searchable_dropdown.dart';
 
@@ -80,7 +81,7 @@ class _EditProductCategoryDropDownState
                         alignment: AlignmentDirectional.centerStart,
                         margin: EdgeInsets.only(left: 0),
                         child: Text(
-                          AppLocalizations.of(context).translate('category').toString(),
+                          translate('category').toString(),
                           style: GoogleFonts.exo2(
                             textStyle: TextStyle(
                               fontSize: 16,
@@ -170,7 +171,7 @@ class _EditProductCategoryDropDownState
                                           }).toList(),
                                           value: categorySelect,
                                           hint: widget.category.toString(),
-                                          searchHint: AppLocalizations.of(context).translate('select_one').toString(),
+                                          searchHint: translate('select_one').toString(),
                                           isCaseSensitiveSearch: true,
                                           onChanged: (value) {
                                             setState(() {

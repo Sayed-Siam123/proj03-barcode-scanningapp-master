@@ -4,6 +4,7 @@ import 'package:app/Model/MaterialPackModel.dart';
 import 'package:app/Widgets/MaterialPackList.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/global.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -67,7 +68,7 @@ class _PackageMaterialPageState extends State<PackageMaterialPage> {
               }
           ),
           title: Text(
-              AppLocalizations.of(context).translate('package_material').toString(),
+              translate('package_material').toString(),
               style: GoogleFonts.exo2(
                 textStyle: TextStyle(
                   fontSize: 20,
@@ -171,7 +172,7 @@ class _PackageMaterialPageState extends State<PackageMaterialPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         Text(
-                          AppLocalizations.of(context).translate('new_package_material').toString(),
+                          translate('new_package_material').toString(),
                           style: GoogleFonts.exo2(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
@@ -188,7 +189,7 @@ class _PackageMaterialPageState extends State<PackageMaterialPage> {
                           child: Column(
                             children: <Widget>[
                               new Text(
-                                AppLocalizations.of(context).translate('package_material').toString(),
+                                translate('package_material').toString(),
                                 style: GoogleFonts.exo2(
                                   fontSize: 16,
                                 ),
@@ -235,7 +236,7 @@ class _PackageMaterialPageState extends State<PackageMaterialPage> {
               actions: <Widget>[
                 new FlatButton(
                     child: Text(
-                      AppLocalizations.of(context).translate('cancel').toString(),
+                      translate('cancel').toString(),
                       style: GoogleFonts.exo2(
                         fontSize: 18,
                         fontWeight: FontWeight.w500,
@@ -249,7 +250,7 @@ class _PackageMaterialPageState extends State<PackageMaterialPage> {
                     }),
                 new FlatButton(
                     child: Text(
-                      AppLocalizations.of(context).translate('add').toString(),
+                      translate('add').toString(),
                       style: GoogleFonts.exo2(
                         fontSize: 18,
                         fontWeight: FontWeight.w500,

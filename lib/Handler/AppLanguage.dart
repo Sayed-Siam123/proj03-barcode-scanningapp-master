@@ -9,10 +9,10 @@ class AppLanguage extends ChangeNotifier {
     var prefs = await SharedPreferences.getInstance();
     if (prefs.getString('language_code') == null) {
       _appLocale = Locale('en');
-      return Null;
+      return null;
     }
     _appLocale = Locale(prefs.getString('language_code'));
-    return Null;
+    return null;
   }
 
 
