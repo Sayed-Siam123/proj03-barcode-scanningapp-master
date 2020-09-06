@@ -121,7 +121,7 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
           },
         ),
         title: Text(
-          AppLocalizations.of(context).translate('delivery_list_title').toString(),
+          translate('delivery_list_title').toString(),
           style: GoogleFonts.exo2(
             textStyle: TextStyle(fontSize: 20, color: Colors.black),
           ),
@@ -286,7 +286,7 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  AppLocalizations.of(context).translate('delivery_id').toString(),
+                                  translate('delivery_id').toString(),
                                   style: GoogleFonts.exo2(
                                     color: Colors.black,
                                     fontSize: 16,
@@ -297,7 +297,7 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
                                   height: 8,
                                 ),
                                 Text(
-                                  AppLocalizations.of(context).translate('pallet').toString(),
+                                  translate('pallet').toString(),
                                   style: GoogleFonts.exo2(
                                     color: Colors.black,
                                     fontSize: 16,
@@ -390,7 +390,7 @@ class _DeliveryProductListState extends State<DeliveryProductList> {
                                       Column(
                                         children: <Widget>[
                                           Text(
-                                            AppLocalizations.of(context).translate('quantity').toString(),
+                                            translate('quantity').toString(),
                                             style: GoogleFonts.exo2(
                                               color: Colors.black,
                                               fontSize: 16,

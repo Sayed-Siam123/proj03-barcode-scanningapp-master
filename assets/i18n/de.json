@@ -81,6 +81,12 @@
 	"server_ip": "Server -IP/Name",
 	"server_port": "Server Port",
 	"server_log": "Server Log",
+
+	"enter_device_id" : "Enter Device ID",
+	"enter_server_ip": "Enter Server -IP/Name",
+	"enter_server_port" : "Enter Server Port",
+	"enter_server_log" : "Enter Server Log",
+
 	"save": "sparen",
 
 	"system_setting_desc": "Ändern Sie Ihre Einstellungen",

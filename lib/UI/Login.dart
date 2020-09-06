@@ -49,6 +49,24 @@ class _LoginPageState extends State<LoginPage> {
       });
       print(language.toString());
 
+      if(language == "null"){
+        setState(() {
+          language = "en";
+        });
+      }
+
+      else if(language == "en"){
+        setState(() {
+          language = "en";
+        });
+      }
+
+      else if(language == "de"){
+        setState(() {
+          language = "de";
+        });
+      }
+
 //      Future.delayed(const Duration(milliseconds: 1000), () {
 //
 //      });

@@ -45,6 +45,6 @@ class DatabaseProvider_delivery {
 
   void initDB(Database database, int version) async {
     await database.execute('CREATE TABLE $productTABLE($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colProd_name TEXT, '
-        '$colProd_barcode TEXT, $colProd_quantity INTEGER, $colProd_handling_unit TEXT, $colProd_note TEXT,$colProd_id TEXT)');
+        '$colProd_barcode TEXT UNIQUE, $colProd_quantity INTEGER, $colProd_handling_unit TEXT, $colProd_note TEXT,$colProd_id TEXT)');
   }
 }

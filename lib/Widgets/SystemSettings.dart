@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app/ColorLibrary/HexColor.dart';
 import 'package:app/Handler/AppLanguage.dart';
 import 'package:app/Handler/app_localizations.dart';
@@ -29,16 +31,60 @@ class _SystemSettingsPageState extends State<SystemSettingsPage> {
   String _datamatrixKey = "_datamatrix";
   String _qrcodeKey = "_qrcode";
 
-  bool _camera = false;
-  bool _code39 = false;
-  bool _code128 = false;
-  bool _ean13 = false;
-  bool _datamatrix = false;
-  bool _qrcode = false;
+  bool _camera = true;
+  bool _code39 = true;
+  bool _code128 = true;
+  bool _ean13 = true;
+  bool _datamatrix = true;
+  bool _qrcode = true;
   var currentSelectedValue;
   final langtype = ["English", "German"];
 
   String result = "";
+
+  String language = "";
+
+  void getLang() async {
+    Future<String> lang = prefs.getData("language_code");
+    lang.then((data) async {
+      print('lang status pabo');
+      print("lang status " + data.toString());
+
+      setState(() {
+        language = data.toString();
+      });
+      print(language.toString());
+
+      if(language =="null"){
+        setState(() {
+          currentSelectedValue = "English";
+        });
+        print(currentSelectedValue);
+      }
+
+      else if(language == "en"){
+        setState(() {
+          currentSelectedValue = "English";
+        });
+        print(currentSelectedValue);
+      }
+
+      else if(language == "de"){
+        setState(() {
+          currentSelectedValue = "German";
+        });
+        print(currentSelectedValue);
+      }
+
+//      Future.delayed(const Duration(milliseconds: 1000), () {
+//
+//      });
+    }, onError: (e) {
+      print(e);
+    });
+  }
+
+
   @override
   initState() {
 
@@ -48,6 +94,9 @@ class _SystemSettingsPageState extends State<SystemSettingsPage> {
 //    serverport = Global.shared.isServerPort;
 
     super.initState();
+    Timer(Duration(seconds: 1), () {
+      getLang();
+    });
   }
 
   Widget languageDropDown(BuildContext context) {
@@ -79,6 +128,9 @@ class _SystemSettingsPageState extends State<SystemSettingsPage> {
                         // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
                         //   appLanguage.changeLanguage(Locale("en"));
                         // });
+                        setState(() {
+                          currentSelectedValue = "English";
+                        });
                         changeLocale(context, "en"); //change the language
                         prefs.setData("language_code", "en");
                       }
@@ -88,6 +140,9 @@ class _SystemSettingsPageState extends State<SystemSettingsPage> {
                         // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
                         //   appLanguage.changeLanguage(Locale("de"));
                         // });
+                        setState(() {
+                          currentSelectedValue = "German";
+                        });
                         changeLocale(context, "de"); //change the language
                         prefs.setData("language_code", "de");
                       }

@@ -290,7 +290,7 @@ class _SplashState extends State<Splash> {
           ? LoginPage()
           : HomePage(),
       //title: new Text('IDENTIT',textScaleFactor: 2,),
-      image: new Image.asset('assets/images/logo.jpeg'),
+      image: new Image.asset('assets/images/logo.png'),
       loadingText: Text("Loading"),
       photoSize: 150.0,
       loaderColor: Colors.black54,

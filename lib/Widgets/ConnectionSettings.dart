@@ -1,5 +1,6 @@
 import 'package:app/ColorLibrary/HexColor.dart';
 import 'package:app/Handler/app_localizations.dart';
+import 'package:app/UI/Login.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/global.dart';
@@ -83,7 +84,11 @@ class _ConnectionSettingsPageState extends State<ConnectionSettingsPage> {
               color: Colors.black54,
             ),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          LoginPage()));
             },
           ),
         ),
@@ -95,7 +100,9 @@ class _ConnectionSettingsPageState extends State<ConnectionSettingsPage> {
                 Center(
                   child: Container(
                       padding: EdgeInsets.all(20),
-                        child: Column(mainAxisSize: MainAxisSize.min,
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
                           // ExpansionTile(
                           //   backgroundColor: Colors.white,
@@ -112,51 +119,35 @@ class _ConnectionSettingsPageState extends State<ConnectionSettingsPage> {
                           //       icon: Icon(Icons.arrow_drop_down_circle),
                           //       onPressed: null),
                           //   children: <Widget>[
+                              Padding(
+                                padding: EdgeInsets.only(left:16.0),
+                                child: Text(translate('device_id').toString(),style: TextStyle(
+                                  fontSize: 16
+                                ),),
+                              ),
                               FutureBuilder(
                                   future: getShared(_deviceid),
                                   initialData: false,
                                   builder: (context, snapshot) {
-//                                          return BeautyTextfield(
-//                                            width: double.maxFinite,
-//                                            height: 50.00,
-//                                            duration: Duration(milliseconds: 300),
-//                                            inputType: TextInputType.text,
-//                                            prefixIcon: Icon(
-//                                                Icons.perm_device_information),
-//                                            placeholder: snapshot.data==null?"Device ID":snapshot.data.toString(),
-//                                            onTap: () {
-//                                              print('Click1');
-//                                            },
-//                                            onSubmitted: (data) {
-//                                              //print(data);
-//
-//                                              setState(() {
-//                                                this.deviceId = data;
-//                                                putShared(_deviceid, this.deviceId);
-//                                                print(this.deviceId);
-//                                              });
-//                                            },
-//                                          );
-
                                     return Container(
                                       height: 58,
                                       width:
-                                          MediaQuery.of(context).size.width - 87,
+                                          MediaQuery.of(context).size.width* .9,
                                       alignment: Alignment.center,
                                       margin: const EdgeInsets.only(
-                                          top: 20, left: 13, right: 10),
+                                          top: 0, left: 13, right: 10,bottom: 15),
                                       decoration: BoxDecoration(
-                                        color: Colors.white,
+                                        color: Colors.transparent,
                                         borderRadius:
                                             BorderRadius.all(Radius.circular(10)),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.grey.withOpacity(0.5),
-                                            spreadRadius: 2,
-                                            blurRadius: 5,
-                                            offset: Offset(0, 3),
-                                          ),
-                                        ],
+                                        // boxShadow: [
+                                        //   BoxShadow(
+                                        //     color: Colors.grey.withOpacity(0.5),
+                                        //     spreadRadius: 2,
+                                        //     blurRadius: 5,
+                                        //     offset: Offset(0, 3),
+                                        //   ),
+                                        // ],
                                       ),
                                       child: Padding(
                                         padding: const EdgeInsets.only(left: 8.0),
@@ -169,11 +160,17 @@ class _ConnectionSettingsPageState extends State<ConnectionSettingsPage> {
                                               ),
                                             ),
                                             decoration: new InputDecoration(
-                                              border: InputBorder.none,
-                                              focusedBorder: InputBorder.none,
-                                              enabledBorder: InputBorder.none,
-                                              errorBorder: InputBorder.none,
-                                              disabledBorder: InputBorder.none,
+                                              // border: InputBorder.none,
+                                              // focusedBorder: InputBorder.none,
+                                              // enabledBorder: InputBorder.none,
+                                              // errorBorder: InputBorder.none,
+                                              // disabledBorder: InputBorder.none,
+                                              enabledBorder: UnderlineInputBorder(
+                                                borderSide: BorderSide(color: Colors.grey),
+                                              ),
+                                              focusedBorder: UnderlineInputBorder(
+                                                borderSide: BorderSide(color: Colors.grey),
+                                              ),
                                               hintStyle: GoogleFonts.exo2(
                                                 textStyle: TextStyle(
                                                   fontSize: 16,
@@ -184,10 +181,10 @@ class _ConnectionSettingsPageState extends State<ConnectionSettingsPage> {
                                                   fontSize: 16,
                                                 ),
                                               ),
-                                              prefixIcon: Icon(
-                                                  Icons.perm_device_information),
+                                              // prefixIcon: Icon(
+                                              //     Icons.perm_device_information),
                                               hintText: snapshot.data == null
-                                                  ? translate('device_id').toString()
+                                                  ? translate('enter_device_id').toString()
                                                   : snapshot.data.toString(),
                                             )),
                                       ),
@@ -197,6 +194,13 @@ class _ConnectionSettingsPageState extends State<ConnectionSettingsPage> {
 //                                            snapshot.data.toString()
 //                                          );
                                   }),
+
+                              Padding(
+                                padding: EdgeInsets.only(left:16.0),
+                                child: Text(translate('server_ip').toString(),style: TextStyle(
+                                    fontSize: 16
+                                ),),
+                              ),
                               FutureBuilder(
                                   future: getShared(_serverip),
                                   initialData: false,
@@ -226,20 +230,20 @@ class _ConnectionSettingsPageState extends State<ConnectionSettingsPage> {
                                     return Container(
                                       height: 58,
                                       width:
-                                          MediaQuery.of(context).size.width - 87,
+                                      MediaQuery.of(context).size.width* .9,
                                       alignment: Alignment.center,
                                       margin: const EdgeInsets.only(
-                                          top: 10, left: 13, right: 10),
+                                          top: 0, left: 13, right: 10,bottom: 15),
                                       decoration: BoxDecoration(
-                                        color: Colors.white,
+                                        color: Colors.transparent,
                                         borderRadius:
                                             BorderRadius.all(Radius.circular(10)),
                                         boxShadow: [
                                           BoxShadow(
-                                            color: Colors.grey.withOpacity(0.5),
-                                            spreadRadius: 2,
-                                            blurRadius: 5,
-                                            offset: Offset(0, 3),
+                                            color: Colors.grey.withOpacity(0.0),
+                                            spreadRadius: 0,
+                                            blurRadius: 0,
+                                            offset: Offset(0, 0),
                                           ),
                                         ],
                                       ),
@@ -254,13 +258,12 @@ class _ConnectionSettingsPageState extends State<ConnectionSettingsPage> {
                                               ),
                                             ),
                                             decoration: new InputDecoration(
-                                              prefixIcon:
-                                                  Icon(Icons.confirmation_number),
-                                              border: InputBorder.none,
-                                              focusedBorder: InputBorder.none,
-                                              enabledBorder: InputBorder.none,
-                                              errorBorder: InputBorder.none,
-                                              disabledBorder: InputBorder.none,
+                                              enabledBorder: UnderlineInputBorder(
+                                                borderSide: BorderSide(color: Colors.grey),
+                                              ),
+                                              focusedBorder: UnderlineInputBorder(
+                                                borderSide: BorderSide(color: Colors.grey),
+                                              ),
                                               hintStyle: GoogleFonts.exo2(
                                                 textStyle: TextStyle(
                                                   fontSize: 16,
@@ -272,7 +275,7 @@ class _ConnectionSettingsPageState extends State<ConnectionSettingsPage> {
                                                 ),
                                               ),
                                               hintText: snapshot.data == null
-                                                  ? translate('server_ip').toString()
+                                                  ? translate('enter_server_ip').toString()
                                                   : snapshot.data.toString(),
                                             )),
                                       ),
@@ -282,6 +285,13 @@ class _ConnectionSettingsPageState extends State<ConnectionSettingsPage> {
 //                                            snapshot.data.toString()
 //                                          );
                                   }),
+
+                              Padding(
+                                padding: EdgeInsets.only(left:16.0),
+                                child: Text(translate('server_port').toString(),style: TextStyle(
+                                    fontSize: 16
+                                ),),
+                              ),
                               FutureBuilder(
                                   future: getShared(_serverport),
                                   initialData: false,
@@ -289,20 +299,20 @@ class _ConnectionSettingsPageState extends State<ConnectionSettingsPage> {
                                     return Container(
                                       height: 58,
                                       width:
-                                          MediaQuery.of(context).size.width - 87,
+                                      MediaQuery.of(context).size.width* .9,
                                       alignment: Alignment.center,
                                       margin: const EdgeInsets.only(
-                                          top: 10, left: 13, right: 10),
+                                          top: 0, left: 13, right: 10,bottom: 15),
                                       decoration: BoxDecoration(
-                                        color: Colors.white,
+                                        color: Colors.transparent,
                                         borderRadius:
                                             BorderRadius.all(Radius.circular(10)),
                                         boxShadow: [
                                           BoxShadow(
-                                            color: Colors.grey.withOpacity(0.5),
-                                            spreadRadius: 2,
-                                            blurRadius: 5,
-                                            offset: Offset(0, 3),
+                                            color: Colors.grey.withOpacity(0.0),
+                                            spreadRadius: 0,
+                                            blurRadius: 0,
+                                            offset: Offset(0, 0),
                                           ),
                                         ],
                                       ),
@@ -317,13 +327,12 @@ class _ConnectionSettingsPageState extends State<ConnectionSettingsPage> {
                                               ),
                                             ),
                                             decoration: new InputDecoration(
-                                              prefixIcon:
-                                                  Icon(Icons.label_important),
-                                              border: InputBorder.none,
-                                              focusedBorder: InputBorder.none,
-                                              enabledBorder: InputBorder.none,
-                                              errorBorder: InputBorder.none,
-                                              disabledBorder: InputBorder.none,
+                                              enabledBorder: UnderlineInputBorder(
+                                                borderSide: BorderSide(color: Colors.grey),
+                                              ),
+                                              focusedBorder: UnderlineInputBorder(
+                                                borderSide: BorderSide(color: Colors.grey),
+                                              ),
                                               hintStyle: GoogleFonts.exo2(
                                                 textStyle: TextStyle(
                                                   fontSize: 16,
@@ -335,7 +344,7 @@ class _ConnectionSettingsPageState extends State<ConnectionSettingsPage> {
                                                 ),
                                               ),
                                               hintText: snapshot.data == null
-                                                  ? translate('server_port').toString()
+                                                  ? translate('enter_server_port').toString()
                                                   : snapshot.data.toString(),
                                             )),
                                       ),
@@ -367,6 +376,13 @@ class _ConnectionSettingsPageState extends State<ConnectionSettingsPage> {
 //                                            snapshot.data.toString()
 //                                          );
                                   }),
+
+                              Padding(
+                                padding: EdgeInsets.only(left:16.0),
+                                child: Text(translate('server_log').toString(),style: TextStyle(
+                                    fontSize: 16
+                                ),),
+                              ),
                               FutureBuilder(
                                   future: getShared(_serverlog),
                                   initialData: false,
@@ -396,20 +412,20 @@ class _ConnectionSettingsPageState extends State<ConnectionSettingsPage> {
                                     return Container(
                                       height: 58,
                                       width:
-                                          MediaQuery.of(context).size.width - 87,
+                                      MediaQuery.of(context).size.width* .9,
                                       alignment: Alignment.center,
                                       margin: const EdgeInsets.only(
-                                          top: 10, left: 13, right: 10),
+                                          top: 0, left: 13, right: 10,bottom: 15),
                                       decoration: BoxDecoration(
-                                        color: Colors.white,
+                                        color: Colors.transparent,
                                         borderRadius:
                                             BorderRadius.all(Radius.circular(10)),
                                         boxShadow: [
                                           BoxShadow(
-                                            color: Colors.grey.withOpacity(0.5),
-                                            spreadRadius: 2,
-                                            blurRadius: 5,
-                                            offset: Offset(0, 3),
+                                            color: Colors.grey.withOpacity(0.0),
+                                            spreadRadius: 0,
+                                            blurRadius: 0,
+                                            offset: Offset(0, 0),
                                           ),
                                         ],
                                       ),
@@ -424,12 +440,12 @@ class _ConnectionSettingsPageState extends State<ConnectionSettingsPage> {
                                               ),
                                             ),
                                             decoration: new InputDecoration(
-                                              prefixIcon: Icon(Icons.launch),
-                                              border: InputBorder.none,
-                                              focusedBorder: InputBorder.none,
-                                              enabledBorder: InputBorder.none,
-                                              errorBorder: InputBorder.none,
-                                              disabledBorder: InputBorder.none,
+                                              enabledBorder: UnderlineInputBorder(
+                                                borderSide: BorderSide(color: Colors.grey),
+                                              ),
+                                              focusedBorder: UnderlineInputBorder(
+                                                borderSide: BorderSide(color: Colors.grey),
+                                              ),
                                               hintStyle: GoogleFonts.exo2(
                                                 textStyle: TextStyle(
                                                   fontSize: 16,
@@ -441,7 +457,7 @@ class _ConnectionSettingsPageState extends State<ConnectionSettingsPage> {
                                                 ),
                                               ),
                                               hintText: snapshot.data == null
-                                                  ? translate('server_log').toString()
+                                                  ? translate('enter_server_log').toString()
                                                   : snapshot.data.toString(),
                                             )),
                                       ),
@@ -454,72 +470,119 @@ class _ConnectionSettingsPageState extends State<ConnectionSettingsPage> {
                               SizedBox(
                                 height: 30,
                               ),
-                              Container(
-                                height: 40,
-                                width: MediaQuery.of(context).size.width - 90,
-                                child: RaisedButton(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(18.0),
-                                  ),
-                                  child: Text(
-                                    translate('save').toUpperCase().toString(),
-                                    style: GoogleFonts.exo2(
-                                      textStyle: TextStyle(
-                                        fontSize: 18,
+
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Container(
+                                    height: 40,
+                                    width: MediaQuery.of(context).size.width*.35,
+                                    child: RaisedButton(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(18.0),
                                       ),
+                                      child: Text(
+                                        translate('CLEAR').toUpperCase().toString(),
+                                        style: GoogleFonts.exo2(
+                                          textStyle: TextStyle(
+                                            fontSize: 18,
+                                          ),
+                                        ),
+                                      ),
+                                      color: button_color,
+                                      textColor: Colors.white,
+                                      padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                      onPressed: () {
+                                        //print(device_id.text);
+
+                                        setState(() {
+                                          deleteShared(_deviceid);
+                                          deleteShared(_serverip);
+                                          deleteShared(_serverlog);
+                                          deleteShared(_serverport);
+                                        });
+
+                                      },
                                     ),
                                   ),
-                                  color: button_color,
-                                  textColor: Colors.white,
-                                  padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                                  onPressed: () {
-                                    //print(device_id.text);
 
-                                    if (device_id.text.isNotEmpty) {
-                                      print(device_id.text);
+                                  SizedBox(
+                                    width: 20,
+                                  ),
 
-                                      setState(() {
-                                        deviceid = device_id.text;
-                                      });
+                                  Container(
+                                    height: 40,
+                                    width: MediaQuery.of(context).size.width*.35,
+                                    child: RaisedButton(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(18.0),
+                                      ),
+                                      child: Text(
+                                        translate('save').toUpperCase().toString(),
+                                        style: GoogleFonts.exo2(
+                                          textStyle: TextStyle(
+                                            fontSize: 18,
+                                          ),
+                                        ),
+                                      ),
+                                      color: button_color,
+                                      textColor: Colors.white,
+                                      padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                      onPressed: () {
+                                        //print(device_id.text);
 
-                                      putShared(
-                                          _deviceid, device_id.text.toString());
-                                      device_id.text = "";
-                                    }
+                                        if (device_id.text.isNotEmpty) {
+                                          print(device_id.text);
 
-                                    if (serverip.text.isNotEmpty) {
-                                      print(serverip.text);
-                                      setState(() {
-                                        server_ip = serverip.text;
-                                      });
-                                      putShared(
-                                          _serverip, serverip.text.toString());
-                                      serverip.text = "";
-                                    }
+                                          setState(() {
+                                            deviceid = device_id.text;
+                                          });
 
-                                    if (serverport.text.isNotEmpty) {
-                                      print(serverport.text);
-                                      setState(() {
-                                        server_port = serverport.text;
-                                      });
-                                      putShared(_serverport,
-                                          serverport.text.toString());
-                                      serverport.text = "";
-                                    }
+                                          putShared(_deviceid, device_id.text.toString());
+                                          device_id.text = "";
+                                        }
 
-                                    if (serverlog.text.isNotEmpty) {
-                                      print(serverlog.text);
+                                        if (serverip.text.isNotEmpty) {
+                                          print(serverip.text);
+                                          setState(() {
+                                            server_ip = serverip.text;
+                                          });
+                                          putShared(
+                                              _serverip, serverip.text.toString());
+                                          serverip.text = "";
+                                        }
 
-                                      setState(() {
-                                        server_log = serverlog.text;
-                                      });
+                                        if (serverport.text.isNotEmpty) {
+                                          print(serverport.text);
+                                          setState(() {
+                                            server_port = serverport.text;
+                                          });
+                                          putShared(_serverport,
+                                              serverport.text.toString());
+                                          serverport.text = "";
+                                        }
 
-                                      putShared(
-                                          _serverlog, serverlog.text.toString());
-                                      serverlog.text = "";
-                                    }
-                                  },
-                                ),
+                                        if (serverlog.text.isNotEmpty) {
+                                          print(serverlog.text);
+
+                                          setState(() {
+                                            server_log = serverlog.text;
+                                          });
+
+                                          putShared(
+                                              _serverlog, serverlog.text.toString());
+                                          serverlog.text = "";
+                                        }
+
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    LoginPage()));
+                                      },
+                                    ),
+                                  ),
+                                ],
                               ),
                               SizedBox(
                                 height: 10,
@@ -564,5 +627,10 @@ class _ConnectionSettingsPageState extends State<ConnectionSettingsPage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String val = prefs.getString(key);
     return val;
+  }
+
+  Future deleteShared(String key) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove(key);
   }
 }

@@ -8,11 +8,13 @@ import 'package:app/Model/GetSuccess_Model.dart';
 import 'package:app/Model/UserLogin_Success_Model.dart';
 import 'package:app/Resources/SharedPrefer.dart';
 import 'package:app/UI/Home.dart';
+import 'package:app/Widgets/ConnectionSettings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/global.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:responsive_grid/responsive_grid.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginWidget extends StatefulWidget {
@@ -42,15 +44,72 @@ class _LoginWidgetState extends State<LoginWidget> {
   bool _validate1;
   bool _validate2;
 
+  String deviceID=""
+  ,serverIP=""
+  ,serverPort=""
+  ,serverLog="";
+
   String errortext1 = "*username can\'t be empty";
   String errortext2 = "*password can\'t be empty";
+
+  void getIP() async {
+
+    Future<String> serverip = prefs.getData("_serverip");
+    serverip.then((data) {
+
+      print('serverip pabo');
+      print("serverip " + data.toString());
+      this.serverIP = data.toString();
+
+//      Future.delayed(const Duration(milliseconds: 1000), () {
+//
+//      });
+    },onError: (e) {
+      print(e);
+    });
+
+  }
+
+  void getPort() async {
+
+    Future<String> serverport = prefs.getData("_serverport");
+    serverport.then((data) {
+
+      print("serverport " + data.toString());
+      this.serverPort = data.toString();
+
+
+    },onError: (e) {
+      print(e);
+    });
+
+
+  }
+
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Timer(Duration(seconds: 1), () {
+      getIP();
+      getPort();
+    });
+
+  }
 
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child: loginPress == false
-            ? Center(
-                child: Column(children: <Widget>[
+
+        child: ResponsiveGridRow(
+
+          children: [
+            ResponsiveGridCol(
+              xs: 12,
+              md: 9,
+              child: loginPress == false
+                  ? Center(
+                child: Column(
+                    children: <Widget>[
                   // Padding(
                   //     padding: EdgeInsets.all(10),
                   //     child: Text(
@@ -87,8 +146,8 @@ class _LoginWidgetState extends State<LoginWidget> {
                     //   ),
                     // ),
                     child: Image.asset(
-                        "assets/images/logo.jpeg",
-                        width: 350.0,),
+                      "assets/images/logo.png",
+                      width: 350.0,),
                   ),
 
                   SizedBox(
@@ -238,26 +297,65 @@ class _LoginWidgetState extends State<LoginWidget> {
                           }
                           print("Vora");
 
-                          print(emailController.text);
-                          print(passwordController.text);
-
-                          userbloc.getemail(emailController.text);
-                          userbloc.getpass(passwordController.text);
-
-                          if (_validate1 && _validate2) {
-                            setState(() {
-                              loginPress = true;
-                            });
-                            userbloc.userlogin();
-                            print(loginPress);
+                          if(serverIP=="null" && serverPort=="null"){
+                            print("Please enter ip and port first");
+                            Scaffold.of(context).showSnackBar(SnackBar(
+                              action: SnackBarAction(
+                                label: 'Connection Settings',
+                                textColor: Colors.blue,
+                                onPressed: () {
+                                  // some code
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              ConnectionSettingsPage()));
+                                },
+                              ),
+                              content: Text(
+                                'Please set Connection Settings First',
+                                style: GoogleFonts.exo2(
+                                  textStyle: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                              duration: Duration(seconds: 4),
+                            ));
                           }
 
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(builder: (context) => HomePage()),);
+                          else{
+                            print("Server ip and port remains");
+
+                            print(emailController.text);
+                            print(passwordController.text);
+                            userbloc.getemail(emailController.text);
+                            userbloc.getpass(passwordController.text);
+
+
+                            if (_validate1 && _validate2) {
+                              setState(() {
+                                loginPress = true;
+                              });
+                              userbloc.userlogin();
+                              print(loginPress);
+
+                              print("Full Valiud");
+
+                            }
+
+                            else{
+                              print("set your connection first");
+                            }
+                          }
+
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(builder: (context) => HomePage()),);
                         },
                         child: Text(
-                            translate('login_button').toString().toUpperCase(),
+                          translate('login_button').toString().toUpperCase(),
                           style: GoogleFonts.exo2(
                             fontSize: 17,
                             textStyle: TextStyle(color: Colors.white),
@@ -270,82 +368,86 @@ class _LoginWidgetState extends State<LoginWidget> {
                   //loginErrorMessage==true? Text("*Incorrect UserID or Password!",style:TextStyle(color: Colors.red),) : Text(""),
 
 
-                  ]
+                ]
                 ),
               )
-            : Builder(
-              builder: (context) {
-                return Center(
-                  child: Container(
-                    height: MediaQuery.of(context).size.height*.5,
-                    width: 300,
-                    child: StreamBuilder<UserLogin_Success_Model>(
-                      stream: userbloc.LoginSuccessData,
-                      builder:
-                          (context, AsyncSnapshot<UserLogin_Success_Model> snapshot) {
-                        if (snapshot.hasData) {
-                          fetchedData = snapshot.data;
-                          //_newData = fetcheddata;
-                          print("Login:: " + snapshot.data.success.toString());
-                          if (snapshot.data.success.toString() == "true") {
+                  : Builder(
+                builder: (context) {
+                  return Center(
+                    child: Container(
+                      height: MediaQuery.of(context).size.height*.5,
+                      width: 300,
+                      child: StreamBuilder<UserLogin_Success_Model>(
+                        stream: userbloc.LoginSuccessData,
+                        builder:
+                            (context, AsyncSnapshot<UserLogin_Success_Model> snapshot) {
+                          if (snapshot.hasData) {
+                            fetchedData = snapshot.data;
+                            //_newData = fetcheddata;
                             print("Login:: " + snapshot.data.success.toString());
+                            if (snapshot.data.success.toString() == "true") {
+                              print("Login:: " + snapshot.data.success.toString());
 
-                            WidgetsBinding.instance.addPostFrameCallback((_){   // this will call for setState()
-                              prefs.setData(loginKey, "true");
-                              prefs.setData(useridKey, snapshot.data.id==null ? "-1" : snapshot.data.id.toString());
-                              Timer(Duration(seconds: 3), () {
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) => HomePage()));
-                              });    //TODO:: DELAY EXAMPLE
-                              print("Login True");
+                              WidgetsBinding.instance.addPostFrameCallback((_){   // this will call for setState()
+                                prefs.setData(loginKey, "true");
+                                prefs.setData(useridKey, snapshot.data.id==null ? "-1" : snapshot.data.id.toString());
+                                Timer(Duration(seconds: 3), () {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) => HomePage()));
+                                });    //TODO:: DELAY EXAMPLE
+                                print("Login True");
 
-                            });
-
-
-                          } else if (snapshot.data.success.toString() == "false") {
-                            print("if false Login:: " + snapshot.data.success.toString());
-
-                            WidgetsBinding.instance.addPostFrameCallback((_){
-                              prefs.setData(loginKey, "false");
-                              setState(() {
-                                loginPress = false;
-                                loginErrorMessage = true;
                               });
-                              print("Login False");
-                              Scaffold.of(context).showSnackBar(SnackBar(
-                                content: Text(
-                                  'Incorrect UserID or Password!',
-                                  style: GoogleFonts.exo2(
-                                    textStyle: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.white,
+
+
+                            } else if (snapshot.data.success.toString() == "false") {
+                              print("if false Login:: " + snapshot.data.success.toString());
+
+                              WidgetsBinding.instance.addPostFrameCallback((_){
+                                prefs.setData(loginKey, "false");
+                                setState(() {
+                                  loginPress = false;
+                                  loginErrorMessage = true;
+                                });
+                                print("Login False");
+                                Scaffold.of(context).showSnackBar(SnackBar(
+                                  content: Text(
+                                    'Incorrect UserID or Password!',
+                                    style: GoogleFonts.exo2(
+                                      textStyle: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.white,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                duration: Duration(seconds: 4),
-                              ));
+                                  duration: Duration(seconds: 4),
+                                ));
 
-                            });
+                              });
 
+                            }
+                          } else if (snapshot.hasError) {
+                            return Text("${snapshot.error}");
                           }
-                        } else if (snapshot.hasError) {
-                          return Text("${snapshot.error}");
-                        }
 
-                        return Center(child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: <Widget>[
-                            CircularProgressIndicator(),
-                            SizedBox(height: 10,),
-                            Text("Logging in...")
-                          ],
-                        ));
-                      },
+                          return Center(child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: <Widget>[
+                              CircularProgressIndicator(),
+                              SizedBox(height: 10,),
+                              Text("Logging in...")
+                            ],
+                          ));
+                        },
+                      ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
+
             ),
+          ],
+        ),
       ),
     );
   }

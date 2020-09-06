@@ -77,6 +77,11 @@
 
 	"connection_settings_title" : "Connection Settings",
 	"connection_settings_description": "Change Your Settings",
+	"enter_device_id" : "Enter Device ID",
+	"enter_server_ip": "Enter Server -IP/Name",
+	"enter_server_port" : "Enter Server Port",
+	"enter_server_log" : "Enter Server Log",
+
 	"device_id" : "Device ID",
 	"server_ip": "Server -IP/Name",
 	"server_port" : "Server Port",

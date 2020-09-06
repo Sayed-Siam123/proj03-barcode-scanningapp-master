@@ -408,18 +408,19 @@ class _PickupDeliveryState extends State<PickupDelivery> {
 
                 qr_request
                     ? Padding(
-                  padding: EdgeInsets.only(top: 100.0),
+                  padding: EdgeInsets.only(top: 170.0),
                   child: Container(
-                    width: MediaQuery.of(context).size.width - 60,
+                    width: MediaQuery.of(context).size.width *.97,
                     height: 300,
-                    child: qrText.isEmpty
+                    // ignore: unrelated_type_equality_checks
+                    child: qrText.isEmpty && cameraStatus == "true"
                         ? QRView(
                       key: qrKey,
                       onQRViewCreated: _onQRViewCreated,
                       overlay: QrScannerOverlayShape(
                         borderColor: Colors.green,
                         borderRadius: 10,
-                        borderLength: 30,
+                        borderLength: 150,
                         borderWidth: 10,
                         cutOutSize: 300,
                       ),
