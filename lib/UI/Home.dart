@@ -104,308 +104,308 @@ class _HomePageState extends State<HomePage> {
 //      },
     return Scaffold(
       key: _scaffoldKey,
-      drawer: new Drawer(
-        child: ListView(
-          // Important: Remove any padding from the ListView.
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.only(top: 35,left:10),
-              child: Container(
-                padding: EdgeInsets.only(bottom: 15),
-                child: status == false
-                    ? InkWell(
-                        child: Row(
-                          children: <Widget>[
-                            Icon(Icons.arrow_back),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text(
-                              "Back",
-                              style: GoogleFonts.exo2(
-                                textStyle: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        onTap: () {
-                          if (_scaffoldKey.currentState.isDrawerOpen) {
-                            _scaffoldKey.currentState.openEndDrawer();
-                          };
-                        })
-                    : InkWell(
-                        child: Row(
-                          children: <Widget>[
-                            Icon(Icons.arrow_back),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text(
-                              "Back",
-                              style: GoogleFonts.exo2(
-                                textStyle: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        onTap: () {
-                          setState(() {
-                            status = false;
-                          });
-                        }),
-                margin: EdgeInsets.only(top: 0),
-              ),
-              color: Colors.amberAccent,
-            ),
-            status
-                ? ListTile(
-                    title: Text(
-                      translate('product').toString(),
-                      style: GoogleFonts.exo2(
-                        textStyle: TextStyle(
-                          fontSize: 20,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                    trailing: new Icon(Icons.arrow_forward),
-                    onTap: () {
-                      // Update the state of the app.
-                      // ...
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => MasterData()),
-                      );
-                    },
-                  )
-                : Text(""),
-            status
-                ? ListTile(
-                    title: Text(
-                      translate('sublist').toString(),
-                      style: GoogleFonts.exo2(
-                        textStyle: TextStyle(
-                          fontSize: 20,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                    trailing: new Icon(Icons.arrow_forward),
-                    onTap: () {
-                      // Update the state of the app.
-                      // ...
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => SublistPage()),
-                      );
-                    },
-                  )
-                : Text(""),
-            status == false
-                ? ListTile(
-                    title: Text(
-                      translate('system_setting').toString(),
-                      style: GoogleFonts.exo2(
-                        textStyle: TextStyle(
-                          fontSize: 20,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                    trailing: new Icon(Icons.arrow_forward),
-                    onTap: () {
-                      // Update the state of the app.
-                      // ...
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => SystemSettingsPage()),
-                      );
-                    },
-                  )
-                : Text(""),
-            status == false
-                ? ListTile(
-                    title: Text(
-                      translate('masterdata').toString(),
-                      style: GoogleFonts.exo2(
-                        textStyle: TextStyle(
-                          fontSize: 20,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                    trailing: new Icon(Icons.arrow_forward),
-                    onTap: () {
-                      // Update the state of the app.
-                      // ...
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(builder: (context) => MasterData()),
-                      // );
-
-                      setState(() {
-                        status = true;
-                      });
-                    },
-                  )
-                : Text(""),
-            status == false
-                ? ListTile(
-                    title: Text(
-                      translate('logout').toString(),
-                      style: GoogleFonts.exo2(
-                        textStyle: TextStyle(
-                          fontSize: 20,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                    trailing: new Icon(Icons.power_settings_new),
-                    onTap: () {
-                      // Update the state of the app.
-                      // ...
-
-                      logout();
-
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => LoginPage()),
-                      );
-                    },
-                  )
-                : Text(""),
-            status ==true ? Divider(): Text(""),
-            status ==false
-                ? Text(
-                    "Version 1.0.1",
-                    style: GoogleFonts.exo2(
-                      textStyle: TextStyle(
-                        fontSize: 20,
-                        color: Colors.black,
-                      ),
-                    ),
-                  )
-                : Text(""),
-          ],
-        ),
-      ),
-      // drawer: MultiLevelDrawer(
-      //   backgroundColor: drawer_color,
-      //   rippleColor: Colors.white,
-      //   subMenuBackgroundColor: drawer_color,
-      //   divisionColor: Colors.grey,
-      //   header: Container(
-      //     height: MediaQuery.of(context).size.height * 0.30,
-      //     child: Center(
-      //         child: Column(
-      //       mainAxisAlignment: MainAxisAlignment.center,
-      //       children: <Widget>[
-      //         Image.asset(
-      //           "assets/images/logo.jpeg",
-      //           width: 100,
-      //           height: 100,
+      // drawer: new Drawer(
+      //   child: ListView(
+      //     // Important: Remove any padding from the ListView.
+      //     padding: EdgeInsets.zero,
+      //     children: <Widget>[
+      //       Container(
+      //         padding: EdgeInsets.only(top: 35,left:10),
+      //         child: Container(
+      //           padding: EdgeInsets.only(bottom: 15),
+      //           child: status == false
+      //               ? InkWell(
+      //                   child: Row(
+      //                     children: <Widget>[
+      //                       Icon(Icons.arrow_back),
+      //                       SizedBox(
+      //                         width: 5,
+      //                       ),
+      //                       Text(
+      //                         "Back",
+      //                         style: GoogleFonts.exo2(
+      //                           textStyle: TextStyle(
+      //                             fontSize: 20,
+      //                             color: Colors.black,
+      //                           ),
+      //                         ),
+      //                       ),
+      //                     ],
+      //                   ),
+      //                   onTap: () {
+      //                     if (_scaffoldKey.currentState.isDrawerOpen) {
+      //                       _scaffoldKey.currentState.openEndDrawer();
+      //                     };
+      //                   })
+      //               : InkWell(
+      //                   child: Row(
+      //                     children: <Widget>[
+      //                       Icon(Icons.arrow_back),
+      //                       SizedBox(
+      //                         width: 5,
+      //                       ),
+      //                       Text(
+      //                         "Back",
+      //                         style: GoogleFonts.exo2(
+      //                           textStyle: TextStyle(
+      //                             fontSize: 20,
+      //                             color: Colors.black,
+      //                           ),
+      //                         ),
+      //                       ),
+      //                     ],
+      //                   ),
+      //                   onTap: () {
+      //                     setState(() {
+      //                       status = false;
+      //                     });
+      //                   }),
+      //           margin: EdgeInsets.only(top: 0),
       //         ),
-      //         SizedBox(
-      //           height: 10,
-      //         ),
-      //         Text("Version 1.0.1",style: GoogleFonts.exo2(
-      //           textStyle: TextStyle(
-      //             color: Colors.white,
-      //           ),),),
-      //       ],
-      //     )),
-      //   ),
-      //   children: [
-      //     MLMenuItem(
-      //         leading: Icon(Icons.table_chart,color: Colors.white,),
-      //         trailing: Icon(Icons.arrow_right,color: Colors.white,),
-      //         content: Text(
-      //           translate('masterdata'),
-      //           style: GoogleFonts.exo2(
-      //         textStyle: TextStyle(
-      //         color: Colors.white,
-      //         ),),
-      //         ),
-      //         subMenuItems: [
-      //           MLSubmenu(
-      //               onClick: () {
-      //                 Navigator.of(context).pop();
+      //         color: Colors.amberAccent,
+      //       ),
+      //       status
+      //           ? ListTile(
+      //               title: Text(
+      //                 translate('product').toString(),
+      //                 style: GoogleFonts.exo2(
+      //                   textStyle: TextStyle(
+      //                     fontSize: 20,
+      //                     color: Colors.black,
+      //                   ),
+      //                 ),
+      //               ),
+      //               trailing: new Icon(Icons.arrow_forward),
+      //               onTap: () {
+      //                 // Update the state of the app.
+      //                 // ...
       //                 Navigator.push(
       //                   context,
       //                   MaterialPageRoute(builder: (context) => MasterData()),
       //                 );
       //               },
-      //               submenuContent: Text(
-      //                 translate('product'),
+      //             )
+      //           : Text(""),
+      //       status
+      //           ? ListTile(
+      //               title: Text(
+      //                 translate('sublist').toString(),
       //                 style: GoogleFonts.exo2(
       //                   textStyle: TextStyle(
-      //                     color: Colors.white,
+      //                     fontSize: 20,
+      //                     color: Colors.black,
       //                   ),
       //                 ),
-      //               )
-      //           ),
-      //           MLSubmenu(
-      //               onClick: () {
-      //                 Navigator.of(context).pop();
+      //               ),
+      //               trailing: new Icon(Icons.arrow_forward),
+      //               onTap: () {
+      //                 // Update the state of the app.
+      //                 // ...
       //                 Navigator.push(
-      //                     context,
-      //                     MaterialPageRoute(builder: (context) => SublistPage()));
+      //                   context,
+      //                   MaterialPageRoute(builder: (context) => SublistPage()),
+      //                 );
       //               },
-      //               submenuContent: Text(
-      //                 translate('sublist'),
+      //             )
+      //           : Text(""),
+      //       status == false
+      //           ? ListTile(
+      //               title: Text(
+      //                 translate('system_setting').toString(),
       //                 style: GoogleFonts.exo2(
       //                   textStyle: TextStyle(
-      //                     color: Colors.white,
+      //                     fontSize: 20,
+      //                     color: Colors.black,
       //                   ),
       //                 ),
-      //               )),
-      //         ],
-      //         onClick: () {}),
-      //     MLMenuItem(
-      //       leading: Icon(Icons.settings,color: Colors.white,),
-      //       trailing: Icon(Icons.arrow_right,color: Colors.white,),
-      //       content: Text(
-      //         translate('system_setting'),
-      //         style: GoogleFonts.exo2(
-      //           textStyle: TextStyle(
-      //             color: Colors.white,
-      //           ),),
-      //       ),
-      //       onClick: () {
-      //         Navigator.of(context).pop();
-      //         Navigator.push(
-      //             context,
-      //             MaterialPageRoute(
-      //                 builder: (context) => SystemSettingsPage()));
-      //       },
-      //     ),
-      //     MLMenuItem(
-      //       leading: Icon(Icons.power_settings_new,color: Colors.white,),
-      //       trailing: Icon(Icons.arrow_right,color: Colors.white,),
-      //       content: Text(
-      //         translate('logout'),
-      //         style: GoogleFonts.exo2(
-      //           textStyle: TextStyle(
-      //             color: Colors.white,
-      //           ),),
-      //       ),
-      //       onClick: () {
-      //         logout();
+      //               ),
+      //               trailing: new Icon(Icons.arrow_forward),
+      //               onTap: () {
+      //                 // Update the state of the app.
+      //                 // ...
+      //                 Navigator.push(
+      //                   context,
+      //                   MaterialPageRoute(
+      //                       builder: (context) => SystemSettingsPage()),
+      //                 );
+      //               },
+      //             )
+      //           : Text(""),
+      //       status == false
+      //           ? ListTile(
+      //               title: Text(
+      //                 translate('masterdata').toString(),
+      //                 style: GoogleFonts.exo2(
+      //                   textStyle: TextStyle(
+      //                     fontSize: 20,
+      //                     color: Colors.black,
+      //                   ),
+      //                 ),
+      //               ),
+      //               trailing: new Icon(Icons.arrow_forward),
+      //               onTap: () {
+      //                 // Update the state of the app.
+      //                 // ...
+      //                 // Navigator.push(
+      //                 //   context,
+      //                 //   MaterialPageRoute(builder: (context) => MasterData()),
+      //                 // );
       //
-      //         Navigator.push(context,
-      //             MaterialPageRoute(builder: (context) => LoginPage()));
-      //       },
-      //     ),
-      //   ],
+      //                 setState(() {
+      //                   status = true;
+      //                 });
+      //               },
+      //             )
+      //           : Text(""),
+      //       status == false
+      //           ? ListTile(
+      //               title: Text(
+      //                 translate('logout').toString(),
+      //                 style: GoogleFonts.exo2(
+      //                   textStyle: TextStyle(
+      //                     fontSize: 20,
+      //                     color: Colors.black,
+      //                   ),
+      //                 ),
+      //               ),
+      //               trailing: new Icon(Icons.power_settings_new),
+      //               onTap: () {
+      //                 // Update the state of the app.
+      //                 // ...
+      //
+      //                 logout();
+      //
+      //                 Navigator.push(
+      //                   context,
+      //                   MaterialPageRoute(builder: (context) => LoginPage()),
+      //                 );
+      //               },
+      //             )
+      //           : Text(""),
+      //       status ==true ? Divider(): Text(""),
+      //       status ==false
+      //           ? Text(
+      //               "Version 1.0.1",
+      //               style: GoogleFonts.exo2(
+      //                 textStyle: TextStyle(
+      //                   fontSize: 20,
+      //                   color: Colors.black,
+      //                 ),
+      //               ),
+      //             )
+      //           : Text(""),
+      //     ],
+      //   ),
       // ),
+      drawer: MultiLevelDrawer(
+        backgroundColor: drawer_color,
+        rippleColor: Colors.white,
+        subMenuBackgroundColor: drawer_color,
+        divisionColor: Colors.grey,
+        header: Container(
+          height: MediaQuery.of(context).size.height * 0.30,
+          child: Center(
+              child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Image.asset(
+                "assets/images/logo.png",
+                width: 100,
+                height: 100,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text("Version 1.0.1",style: GoogleFonts.exo2(
+                textStyle: TextStyle(
+                  color: Colors.white,
+                ),),),
+            ],
+          )),
+        ),
+        children: [
+          MLMenuItem(
+              leading: Icon(Icons.table_chart,color: Colors.white,),
+              trailing: Icon(Icons.arrow_right,color: Colors.white,),
+              content: Text(
+                translate('masterdata'),
+                style: GoogleFonts.exo2(
+              textStyle: TextStyle(
+              color: Colors.white,
+              ),),
+              ),
+              subMenuItems: [
+                MLSubmenu(
+                    onClick: () {
+                      Navigator.of(context).pop();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => MasterData()),
+                      );
+                    },
+                    submenuContent: Text(
+                      translate('product'),
+                      style: GoogleFonts.exo2(
+                        textStyle: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    )
+                ),
+                MLSubmenu(
+                    onClick: () {
+                      Navigator.of(context).pop();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => SublistPage()));
+                    },
+                    submenuContent: Text(
+                      translate('sublist'),
+                      style: GoogleFonts.exo2(
+                        textStyle: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    )),
+              ],
+              onClick: () {}),
+          MLMenuItem(
+            leading: Icon(Icons.settings,color: Colors.white,),
+            trailing: Icon(Icons.arrow_right,color: Colors.white,),
+            content: Text(
+              translate('system_setting'),
+              style: GoogleFonts.exo2(
+                textStyle: TextStyle(
+                  color: Colors.white,
+                ),),
+            ),
+            onClick: () {
+              Navigator.of(context).pop();
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => SystemSettingsPage()));
+            },
+          ),
+          MLMenuItem(
+            leading: Icon(Icons.power_settings_new,color: Colors.white,),
+            trailing: Icon(Icons.arrow_right,color: Colors.white,),
+            content: Text(
+              translate('logout'),
+              style: GoogleFonts.exo2(
+                textStyle: TextStyle(
+                  color: Colors.white,
+                ),),
+            ),
+            onClick: () {
+              logout();
+
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => LoginPage()));
+            },
+          ),
+        ],
+      ),
       appBar: AppBar(
 //        title: Text("Home", style: GoogleFonts.exo2(
 //          textStyle: TextStyle(
