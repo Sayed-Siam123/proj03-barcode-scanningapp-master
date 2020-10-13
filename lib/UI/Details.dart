@@ -82,7 +82,7 @@ class _DetailsPageState extends State<DetailsPage>
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             print("Edit: ");
-            masterdata_bloc.getsinglemasterdatafromDB();
+            masterdata_bloc.getsinglemasterdatafromDBV2();
             Navigator.push(
                 context,
                 MaterialPageRoute(

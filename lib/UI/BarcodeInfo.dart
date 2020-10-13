@@ -6,7 +6,7 @@ import 'package:app/Model/NewDeliveryModel.dart';
 import 'package:app/Model/masterdata_model.dart';
 import 'package:app/Resources/SharedPrefer.dart';
 import 'package:app/Widgets/MastarDataWidget.dart';
-import 'package:app/Widgets/SystemSettings.dart';
+import 'package:app/UI/SystemSettings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,6 +15,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:barcode_scan/platform_wrapper.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'BarcodeInfoDetails.dart';
+import 'BarcodeinfoSystemSettings.dart';
 import 'Details.dart';
 import 'Home.dart';
 import 'package:barcode_scan/barcode_scan.dart';
@@ -109,6 +110,15 @@ class _BarcodeInfoState extends State<BarcodeInfo> {
           backgroundColor: Colors.white,
           elevation: 1.0,
           centerTitle: true,
+          actions: <Widget>[
+            IconButton(
+              onPressed: (){
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => BarcodeinfoSystemSettings()));
+              },
+              icon: Icon(Icons.settings,color: Colors.black54,),
+            )
+          ],
         ),
         // body: Container(
         //   color: Theme.of(context).backgroundColor,

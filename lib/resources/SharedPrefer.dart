@@ -8,6 +8,11 @@ class SessionManager {
     prefs.setString(key, value);
   }
 
+  Future<void> setData_int(String key,int value) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt(key, value);
+  }
+
 //get value from shared preferences
   Future<String> getData(String key) async {
     final SharedPreferences pref = await SharedPreferences.getInstance();

@@ -1,4 +1,4 @@
-package com.example.flutter_app
+package com.identit_warehouse.identit
 
 import io.flutter.embedding.android.FlutterActivity
 

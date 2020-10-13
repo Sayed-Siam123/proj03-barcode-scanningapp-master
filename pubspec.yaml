@@ -38,7 +38,6 @@ dependencies:
   sqflite: any
   splashscreen: ^1.2.0
   path_provider: any
-  flutter_stetho: ^0.5.2
   progress_dialog: ^1.2.4
   dio: ^3.0.1
   #flutter_barcode_scanner: ^1.0.1
@@ -53,6 +52,20 @@ dependencies:
   flutter_translate:
   flutter_cupertino_localizations: ^1.0.1 #for language
   cupertino_icons: ^0.1.3
+  responsive_screen: ^1.0.0 #responsive use
+  responsive_builder: ^0.3.0 #responsive use
+  flutter_slidable: ^0.5.7
+  camera:
+  path: ^1.6.4
+  image_picker: ^0.6.7+11
+  fxpoi: ^1.0.0
+  permission_handler: ^5.0.1+1
+  file_picker: ^1.3.6
+  path_provider_ex: ^1.0.1
+  flutter_file_manager: ^0.2.0
+  change_app_package_name: ^0.1.2 # to change package name (flutter pub run change_app_package_name:main com.identit_warehouse.identit)
+
+
   #provider: ^4.0.0
 
 dev_dependencies:
@@ -74,8 +87,6 @@ flutter:
     - assets/cfg/
     - assets/fonts/
     - assets/i18n/
-    - i18n/en.json #language translation file
-    - i18n/de.json #language translation file
 
   uses-material-design: true
 

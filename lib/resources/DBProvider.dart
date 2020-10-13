@@ -1,4 +1,5 @@
 import 'package:app/Model/CatagoryModel.dart';
+import 'package:app/Model/DataAcquisition_model.dart';
 import 'package:app/Model/ManufactureModel.dart';
 import 'package:app/Model/MaterialPackModel.dart';
 import 'package:app/Model/NewDeliveryModel.dart';
@@ -8,9 +9,11 @@ import 'package:app/Model/masterdata_model.dart';
 import 'package:app/Model/unit_model.dart';
 import 'package:app/UI/PackageMaterial.dart';
 import 'package:app/database/Category_database.dart';
+import 'package:app/database/DataAcquisition_database.dart';
 import 'package:app/database/Delivery_database.dart';
 import 'package:app/database/Manufac_database.dart';
 import 'package:app/database/Masterdata_database.dart';
+import 'package:app/database/Masterdata_databaseV2.dart';
 import 'package:app/database/PackagingMaterial_database.dart';
 import 'package:app/database/Pickup_database.dart';
 import 'package:app/database/SubCategory_database.dart';
@@ -20,12 +23,16 @@ import 'package:app/database/Unit_database.dart';
 class ProductDB {
   final dbProvider = DatabaseProvider_delivery.dbProvider; //delivery db
   final pickupDBprovider  = DatabaseProvider_pickup.dbProvider; //pickup db
-  final masterdataDBprovider  = DatabaseProvider_Masterdata.dbProvider;//pickup db
+  final masterdataDBprovider  = DatabaseProvider_Masterdata.dbProvider;//master db v1
+  final masterdataDBproviderV2  = DatabaseProvider_MasterdataV2.dbProvider_MasterDataV2;//master db v2
+
   final manufacDBprovider  = DatabaseProvider_manufac.dbProvider_manufac;//manufac db
   final catDBprovider  = DatabaseProvider_category.dbProvider_category;//cat db
   final subcatDBprovider  = DatabaseProvider_subcat.dbProvider_subcat;//subcat db
   final unitDBprovider  = DatabaseProvider_unit.dbProvider_unit;//unit db
   final packmatDBprovider  = DatabaseProvider_packmaterial.dbProvider_packegingMat;//packmat db
+  final dataAcquiDBprovider  = DatabaseProvider_dataAcquisition.dbProvider_dataAcqui;//data acquisition db
+
 
   String newStatus = "true";
   String updateStatus = "true";
@@ -153,12 +160,33 @@ class ProductDB {
   }
 
 
+  Future<int> insertMasterdataV2(MasterDataModelV2 productinfo) async {
+    print("FORM DBPROVIDER: " + productinfo.gtin.toString());
+
+    var db = await masterdataDBproviderV2.database;
+    print("ebar eikhane");
+    print("1");
+    var result = db.insert(
+        masterTABLEV2, productinfo.toMap(), nullColumnHack: master_IdV2);
+    print("2");
+    return result;
+  }
+
+
 
   Future deleteAllMasterdataTable() async {
     final db = await masterdataDBprovider.database;
     var result = await db.delete(
       masterTABLE,
     );
+
+    return result;
+  }
+
+  Future<int> deleteMaterdataV2(int id) async {
+    final db = await masterdataDBproviderV2.database;
+    var result = await db.delete(
+        masterTABLEV2, where: 'id = ?', whereArgs: [id]);
 
     return result;
   }
@@ -176,6 +204,19 @@ class ProductDB {
     return product;
   }
 
+  Future<List<MasterDataModelV2>> getAllMAsterProductV2(
+      {List<String> columns, String query}) async {
+    var db = await masterdataDBproviderV2.database;
+    print("Eikhane");
+    var result = await db.query(masterTABLEV2, orderBy: '$master_IdV2 ASC');
+
+
+    List<MasterDataModelV2> product = result.isNotEmpty
+        ? result.map((item) => MasterDataModelV2.fromJson(item)).toList()
+        : [];
+    return product;
+  }
+
   Future<List<SingleMasterDataModel>> getsinglemasterdatafromDB(String id,
       {List<String> columns, String query}) async {
 
@@ -188,6 +229,22 @@ class ProductDB {
 
     List<SingleMasterDataModel> product = result.isNotEmpty
         ? result.map((item) => SingleMasterDataModel.fromJson(item)).toList()
+        : [];
+    return product;
+  }
+
+  Future<List<SingleMasterDataModelV2>> getsinglemasterdatafromDBV2(String id,
+      {List<String> columns, String query}) async {
+
+    print("ProductID is: "+id.toString());
+
+    var db = await masterdataDBproviderV2.database;
+    print("Eikhane");
+    var result = await db.query(masterTABLEV2, where: "id = ?", whereArgs: [id.toString()], orderBy: '$master_IdV2 ASC');
+
+
+    List<SingleMasterDataModelV2> product = result.isNotEmpty
+        ? result.map((item) => SingleMasterDataModelV2.fromJson(item)).toList()
         : [];
     return product;
   }
@@ -226,6 +283,18 @@ class ProductDB {
     final db = await masterdataDBprovider.database;
 
     var result = await db.update(masterTABLE, product.toMap(),
+        where: "id = ?", whereArgs: [product.id]);
+
+    return result;
+  }
+
+  Future<int> updateMasterV2(MasterDataModelV2 product) async {
+
+    //print("New Flag is :: "+ product.newFlag.toString());
+
+    final db = await masterdataDBproviderV2.database;
+
+    var result = await db.update(masterTABLEV2, product.toMap(),
         where: "id = ?", whereArgs: [product.id]);
 
     return result;
@@ -603,5 +672,47 @@ class ProductDB {
     return result;
   }
 //PACKEGING_MATERIAL DB END
+
+
+//Data Acquisition DB START
+
+  Future<int> insertDataAcquisitiondata(DataAcquisition_model data) async {
+    print("FORM DBPROVIDER: " + data.description.toString());
+
+    var db = await dataAcquiDBprovider.database;
+    print("ebar eikhane");
+    print("1");
+    var result = db.insert(dataAcquiTABLE, data.toMap(), nullColumnHack: dataAcqui_Id);
+    print("2");
+    return result;
+  }
+
+  Future<List<DataAcquisition_model>> getAllDataAcqui({List<String> columns, String query}) async {
+
+    var db = await dataAcquiDBprovider.database;
+    print("Eikhane");
+    var result = await db.query(dataAcquiTABLE, where: "newFlag = ?", whereArgs: [newStatus], orderBy: '$packmat_Id ASC');
+
+
+    List<DataAcquisition_model> product = result.isNotEmpty
+        ? result.map((item) => DataAcquisition_model.fromJson(item)).toList()
+        : [];
+    return product;
+  }// for checking new Pack Mat data list
+
+  Future<List<DataAcquisition_model>> getSingleDataAcquisition(
+      {List<String> columns, String query}) async {
+    var db = await dataAcquiDBprovider.database;
+    print("Eikhane");
+    var result = await db.query(dataAcquiTABLE, orderBy: '$dataAcqui_Id DESC', limit: 1);
+
+
+    List<DataAcquisition_model> products = result.isNotEmpty
+        ? result.map((item) => DataAcquisition_model.fromJson(item)).toList()
+        : [];
+    return products;
+  }
+
+//Data Acquisition DB END
 
 }

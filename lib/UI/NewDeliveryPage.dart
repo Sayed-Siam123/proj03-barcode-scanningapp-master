@@ -8,7 +8,7 @@ import 'package:app/Model/masterdata_model.dart';
 import 'package:app/Resources/SharedPrefer.dart';
 import 'package:app/Resources/database_helper.dart';
 import 'package:app/UI/Deliveries.dart';
-import 'package:app/Widgets/SystemSettings.dart';
+import 'package:app/UI/SystemSettings.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

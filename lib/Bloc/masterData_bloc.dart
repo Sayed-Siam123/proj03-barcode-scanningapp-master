@@ -13,10 +13,15 @@ import 'package:rxdart/rxdart.dart';
 class MasterData_Bloc{
   final _repository = Repository();
   MasterDataModel master;
+  MasterDataModelV2 master2;
+
   bool status = false;
   // ignore: close_sinks
   final _masterdataFetcher = PublishSubject<List<MasterDataModel>>();
+  final _masterdataFetcherV2 = PublishSubject<List<MasterDataModelV2>>();
+
   final _singlemasterdatafetcher = PublishSubject<List<SingleMasterDataModel>>();
+  final _singlemasterdatafetcherV2 = PublishSubject<List<SingleMasterDataModelV2>>();
 
 
   final _MaxIdFetcher = PublishSubject<sublist_getsuccess_model>();
@@ -56,7 +61,10 @@ class MasterData_Bloc{
 
 
   Stream<List<MasterDataModel>> get allMasterData => _masterdataFetcher.stream;
+  Stream<List<MasterDataModelV2>> get allMasterDataV2 => _masterdataFetcherV2.stream;
+
   Stream<List<SingleMasterDataModel>> get singleMasterData => _singlemasterdatafetcher.stream;
+  Stream<List<SingleMasterDataModelV2>> get singleMasterDatav2 => _singlemasterdatafetcherV2.stream;
 
 
 
@@ -70,6 +78,12 @@ class MasterData_Bloc{
     List<MasterDataModel> masterdatadb = await _repository.getAllMAsterProduct();
     _masterdataFetcher.sink.add(masterdatadb);
   }
+
+  fetchAllMasterdatafromDBV2() async{
+    List<MasterDataModelV2> masterdatadbv2 = await _repository.getAllMasterProductV2();
+    _masterdataFetcherV2.sink.add(masterdatadbv2);
+  }
+
 
 
   fetchAllMasterData() async {
@@ -109,6 +123,12 @@ class MasterData_Bloc{
     _singlemasterdatafetcher.sink.add(singlemasterdata);
   } //FETCH FROM DB
 
+  getsinglemasterdatafromDBV2() async{
+    print("ID NUMBER IS :: "+_id.value);
+    List<SingleMasterDataModelV2> singlemasterdata = await _repository.getsinglemasterdatafromDBV2(_id.value);
+    print(singlemasterdata[0].productDescription.toString());
+    _singlemasterdatafetcherV2.sink.add(singlemasterdata);
+  } //FETCH FROM DB
 
 
 
@@ -140,6 +160,21 @@ class MasterData_Bloc{
     print("Product barcode in bloc: "+ master.id.toString());
 
     await _repository.insertMasterdata(master);
+
+    print("FROM BLOC");
+
+  }
+
+  insertProductV2(MasterDataModelV2 productinfo) async{
+    //print("GET: "+ selectedItembarcode.value.toString() + "   " + selectedItemproductname.value.toString()+ "   " + selectedItemquantity.value.toString());
+
+    master2 = MasterDataModelV2(id: productinfo.id.toString(),
+      productDescription: productinfo.productDescription.toString(),gtin: productinfo.gtin.toString(),productPicture: productinfo.productPicture.toString(),listPrice: productinfo.listPrice.toString(),
+      updateFlag: productinfo.updateFlag==null ? "false" : productinfo.updateFlag.toString(), newFlag: productinfo.newFlag==null ? "false" : productinfo.newFlag.toString(),);
+
+    print("Product barcode in bloc: "+ master2.id.toString());
+
+    await _repository.insertMasterdataV2(master2);
 
     print("FROM BLOC");
 
@@ -402,11 +437,19 @@ class MasterData_Bloc{
 
     await _masterdataFetcher.drain();
     _masterdataFetcher.close();
+
+    await _masterdataFetcherV2.drain();
+    _masterdataFetcherV2.close();
+
+
     await _singlemasterdatafetcher.drain();
     _singlemasterdatafetcher.close();
 
     await _MaxIdFetcher.drain();
     _MaxIdFetcher.close();
+
+    await _singlemasterdatafetcherV2.drain();
+    _singlemasterdatafetcherV2.close();
 
 
 

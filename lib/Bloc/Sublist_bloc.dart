@@ -14,6 +14,8 @@ import 'package:rxdart/rxdart.dart';
 class sublist_Bloc {
   final _repository = Repository();
   MasterDataModel master;
+  MasterDataModelV2 master2;
+
   ManufactureModel manufacdata;
   CategoryModel catdata;
   SubCategoryModel subcatdata;
@@ -69,6 +71,8 @@ class sublist_Bloc {
   final _Manufacturer_Pn = BehaviorSubject<String>();
   final _Gtin = BehaviorSubject<String>();
   final _ListPrice = BehaviorSubject<String>();
+  final _productPhoto = BehaviorSubject<String>();
+
 
   final _previousCategory = BehaviorSubject<String>();
   final _previousSubCategory = BehaviorSubject<String>();
@@ -103,6 +107,8 @@ class sublist_Bloc {
   Function(String) get getGtin => _Gtin.sink.add;
 
   Function(String) get getListPrice => _ListPrice.sink.add;
+  Function(String) get getProductPhoto => _productPhoto.sink.add;
+
 
   Function(String) get getProductID => _product_id.sink.add;
 
@@ -688,6 +694,24 @@ class sublist_Bloc {
 //    _CreatePropductSuccessFetcher.sink.add(success);
   }
 
+  createProductMasterDatatoDBV2() async {
+
+    master2 = MasterDataModelV2(
+      id: _product_id.value.toString(),
+      productDescription: _ProductDescription.value.toString(),
+      gtin: _Gtin.value.toString(),
+      listPrice: _ListPrice.value.toString(),
+      updateFlag: "false",
+      newFlag: "true",
+      productPicture: _productPhoto.value.toString(),
+    );
+
+    masterdata_bloc.insertProductV2(master2);
+
+
+//    _CreatePropductSuccessFetcher.sink.add(success);
+  }
+
   UpdateProductMasterDatatoDB(MasterDataModel data) async {
 //    print('id: '+_product_id.value+" CatagoryID: "+_Category.value+" SubID: "+_SubCategory.value+" UnitID: "+_UnitList.value+" ManuID: "+_Manufacturer.value+
 //        "Productname: "+_ProductName.value+" Description: "+_ProductDescription.value+" Manu PN: "+_Manufacturer_Pn.value+" Gtin: "+_Gtin.value+" ListPrice "+_ListPrice.value);
@@ -798,6 +822,30 @@ class sublist_Bloc {
 //    _UpdatePropductSuccessFetcher.sink.add(success);
   }
 
+  UpdateProductMasterDatatoDBV2(MasterDataModelV2 data) async {
+
+    MasterDataModelV2 master = MasterDataModelV2(
+      id: _product_id.value.toString(),
+      productDescription: _ProductDescription.value.toString(),
+      listPrice: _ListPrice.value.toString(),
+      gtin: _Gtin.value.toString(),
+      updateFlag: "true",
+      newFlag: data.newFlag.toString(),
+      productPicture: data.productPicture.toString(),
+    );
+
+
+    await _repository.updateMasterV2(master);
+
+  }
+
+  DeleteProductMasterDatatoDBV2(int id) async {
+
+    //print(id.toString());
+    await _repository.deleteMasterV2(id);
+
+  }
+
   UpdateProductMasterData() async {
 //    print('id: '+_product_id.value+" CatagoryID: "+_Category.value+" SubID: "+_SubCategory.value+" UnitID: "+_UnitList.value+" ManuID: "+_Manufacturer.value+
 //        "Productname: "+_ProductName.value+" Description: "+_ProductDescription.value+" Manu PN: "+_Manufacturer_Pn.value+" Gtin: "+_Gtin.value+" ListPrice "+_ListPrice.value);
@@ -891,7 +939,7 @@ class sublist_Bloc {
 //    _posts.drain();
     _lastID.drain();
     _product_id.drain();
-
+    _productPhoto.drain();
     _unit.drain();
     _unitshort.drain();
     _manufacturer.drain();
@@ -924,6 +972,8 @@ class sublist_Bloc {
     _ManufacturerName.drain();
     _UnitName.drain();
     _packaging_materialName.drain();
+
+    _productPhoto.value = null;
 
     _packaging_materialName.value = null;
     _CategoryName.value = null;

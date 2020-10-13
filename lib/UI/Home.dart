@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:app/Bloc/Sublist_bloc.dart';
@@ -8,7 +9,8 @@ import 'package:app/Resources/SharedPrefer.dart';
 import 'package:app/UI/MasterData.dart';
 import 'package:app/UI/Sublist.dart';
 import 'package:app/Widgets/HomeWidget.dart';
-import 'package:app/Widgets/SystemSettings.dart';
+import 'package:app/UI/SystemSettings.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,6 +19,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:multilevel_drawer/multilevel_drawer.dart';
 
+import 'About.dart';
+import 'BarcodeSettings.dart';
+import 'CustomFunctionSettings.dart';
 import 'Login.dart';
 
 class HomePage extends StatefulWidget {
@@ -26,6 +31,14 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   SessionManager prefs = SessionManager();
+
+  String _fileName;
+  String _path;
+  Map<String, String> _paths;
+  String _extension;
+  bool _multiPick = false;
+  bool _hasValidMime = false;
+  FileType _pickingType;
 
   Color drawer_color = HexColor("#333333");
   DateTime backbuttonpressedTime;
@@ -69,11 +82,75 @@ class _HomePageState extends State<HomePage> {
     duration: snackBarDuration,
   );
 
+  void _openFileExplorer() async {
+    try {
+      _paths = null;
+      _path = await FilePicker.getFilePath(type: FileType.any);
+    }
+    on PlatformException catch (e) {
+      print("Unsupported operation" + e.toString());
+    }
+    if (!mounted) return;
+
+    setState(() {
+      _fileName = _path != null ? _path
+          .split('/')
+          .last : _paths != null ? _paths.keys.toString() : '...';
+    });
+    print(_fileName.toString());
+    print(_path.toString());
+  }
+
+  String language = "";
+
+  void getLang() async {
+    Future<String> lang = prefs.getData("language_code");
+    lang.then((data) async {
+      print('lang status pabo');
+      print("lang status " + data.toString());
+
+      setState(() {
+        language = data.toString();
+      });
+      print(language.toString());
+
+      if(language == "null"){
+        setState(() {
+          language = "en";
+        });
+      }
+
+      else if(language == "en"){
+        setState(() {
+          language = "en";
+        });
+      }
+
+      else if(language == "de"){
+        setState(() {
+          language = "de";
+        });
+      }
+
+//      Future.delayed(const Duration(milliseconds: 1000), () {
+//
+//      });
+    }, onError: (e) {
+      print(e);
+    });
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getUserid();
+
+    Timer(Duration(seconds: 1), () {
+      getLang();
+    });
+    print(language);
+
     masterdata_bloc.fetchAllMasterData();
     masterdata_bloc.fetchAllMasterdatafromDB();
 
@@ -370,10 +447,113 @@ class _HomePageState extends State<HomePage> {
               ],
               onClick: () {}),
           MLMenuItem(
+            subMenuItems: [
+              MLSubmenu(
+                  onClick: () {
+                    Navigator.of(context).pop();
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SystemSettingsPage()));
+                  },
+                  submenuContent: Text(
+                    "Application Settings",
+                    style: GoogleFonts.exo2(
+                      textStyle: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  )
+              ),
+              MLSubmenu(
+                  onClick: () {
+                    Navigator.of(context).pop();
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => BarcodeSettings()));
+                  },
+                  submenuContent: Text(
+                    "Barcode Settings",
+                    style: GoogleFonts.exo2(
+                      textStyle: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  )),
+
+              MLSubmenu(
+                  onClick: () {
+                    Navigator.of(context).pop();
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => CustomFunctionSettingsPage()));
+                  },
+                  submenuContent: Text(
+                    "Custom Application",
+                    style: GoogleFonts.exo2(
+                      textStyle: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  )),
+            ],
             leading: Icon(Icons.settings,color: Colors.white,),
             trailing: Icon(Icons.arrow_right,color: Colors.white,),
             content: Text(
               translate('system_setting'),
+              style: GoogleFonts.exo2(
+                textStyle: TextStyle(
+                  color: Colors.white,
+                ),),
+            ),
+            onClick: () {},
+          ),
+
+          MLMenuItem(
+            leading: Icon(Icons.attach_file,color: Colors.white,),
+            trailing: Icon(Icons.arrow_right,color: Colors.white,),
+            content: Text(
+              translate('file_upload'),
+              style: GoogleFonts.exo2(
+                textStyle: TextStyle(
+                  color: Colors.white,
+                ),),
+            ),
+            onClick: () {
+              Navigator.of(context).pop();
+              _openFileExplorer();
+              // Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //         builder: (context) => SystemSettingsPage()));
+            },
+          ),
+
+          MLMenuItem(
+            leading: Icon(Icons.language,color: Colors.white,),
+            trailing: Icon(Icons.arrow_right,color: Colors.white,),
+            content: Text(
+              "Language",
+              style: GoogleFonts.exo2(
+                textStyle: TextStyle(
+                  color: Colors.white,
+                ),),
+            ),
+            onClick: () {
+              Navigator.of(context).pop();
+              _showDialog(context);
+              // Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //         builder: (context) => SystemSettingsPage()));
+            },
+          ),
+
+          MLMenuItem(
+            leading: Icon(Icons.language,color: Colors.white,),
+            trailing: Icon(Icons.arrow_right,color: Colors.white,),
+            content: Text(
+              "About",
               style: GoogleFonts.exo2(
                 textStyle: TextStyle(
                   color: Colors.white,
@@ -384,9 +564,10 @@ class _HomePageState extends State<HomePage> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => SystemSettingsPage()));
+                      builder: (context) => AboutPage()));
             },
           ),
+
           MLMenuItem(
             leading: Icon(Icons.power_settings_new,color: Colors.white,),
             trailing: Icon(Icons.arrow_right,color: Colors.white,),
@@ -531,4 +712,144 @@ class _HomePageState extends State<HomePage> {
     exit(0);
     return true;
   }
+
+  _showDialog(BuildContext context) async {
+    await showDialog<String>(
+        context: context,
+        builder: (_) =>
+
+            StatefulBuilder(
+              builder: (context, setState) {
+                return new AlertDialog(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                  content: Builder(
+                    builder: (context) {
+                      // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                      var height = MediaQuery
+                          .of(context)
+                          .size
+                          .height;
+                      var width = MediaQuery
+                          .of(context)
+                          .size
+                          .width;
+
+                      return Container(
+                        height: height * 0.3,
+                        width: 400,
+                        child: new Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            Text(
+                              "CHOOSE LANGUAGE",
+                              style: GoogleFonts.exo2(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black54,
+                              ),
+                            ),
+                            Divider(
+                              thickness: 1,
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Container(
+                              child: Column(
+                                children: <Widget>[
+                                  Card(
+                                    child: ListTile(
+                                      title: Text("English",
+                                        style: GoogleFonts.exo2(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                          color: language== "en"? Colors.white: Colors.black54,
+                                        ),),
+                                      leading: Image.asset('assets/images/en.png'),
+                                      onTap:() {
+                                        print("English Lang");
+                                        // appLanguage.changeLanguage(Locale("en"));
+                                        // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                                        setState(() {
+                                          language = "en";
+                                        });
+                                        // });
+                                        // Navigator.of(context).pop();
+                                        // Navigator.pop(context);
+                                        changeLocale(context, "en");
+                                        prefs.setData("language_code", "en");
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                    color: language== "en"? Colors.blue: null,
+                                  ),
+                                  SizedBox(
+                                    height: 2,
+                                  ),
+                                  Card(
+                                    child: ListTile(
+                                      title: Text("German",
+                                        style: GoogleFonts.exo2(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                          color: language== "de"? Colors.white: Colors.black54,
+                                        ),),
+                                      leading: Image.asset('assets/images/de.png'),
+                                      onTap:(){
+                                        print("German Lang");
+
+                                        // appLanguage.changeLanguage(Locale("de"));
+                                        //
+                                        // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                                        setState(() {
+                                          language = "de";
+                                        });
+                                        // });
+                                        // Navigator.of(context).pop();
+                                        //
+                                        // Navigator.pop(context);
+
+                                        changeLocale(context, "de"); //change the language
+                                        prefs.setData("language_code", "de");
+                                        Navigator.pop(context);
+
+                                      },
+                                    ),
+                                    color: language== "de"? Colors.blue: null,
+                                  ),
+                                ],
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                  actions: <Widget>[
+                    new FlatButton(
+                        child: Text(
+                          translate('cancel').toString(),
+                          style: GoogleFonts.exo2(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                          ),
+                        ),
+                        onPressed: () {
+                          //_inputcontrol2.text = "";
+                          Navigator.pop(context);
+                        }),
+                  ],
+                );
+              },
+            )
+
+    );
+  }
+
 }

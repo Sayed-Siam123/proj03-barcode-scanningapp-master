@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:app/Bloc/Sublist_bloc.dart';
 import 'package:app/Bloc/masterData_bloc.dart';
@@ -13,15 +14,23 @@ import 'package:app/Widgets/EditProductManufacturerDropDown.dart';
 import 'package:app/Widgets/EditProductSubCategoryDropDown.dart';
 import 'package:app/Widgets/EditProductUnitDropDown.dart';
 import 'package:barcode_scan/barcode_scan.dart';
+import 'package:camera/camera.dart';
 import 'package:direct_select_flutter/direct_select_container.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_translate/global.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path_provider_ex/path_provider_ex.dart';
 import 'package:responsive_grid/responsive_grid.dart';
+import 'package:responsive_screen/responsive_screen.dart';
 
+import 'Home.dart';
 import 'MasterData.dart';
 
 class ProductEditPage extends StatefulWidget {
@@ -50,7 +59,12 @@ class _ProductEditPageState extends State<ProductEditPage> {
       id;
 
   String pre_name, pre_productdesc, pre_manu_pin = "", pre_gtin, pre_listprice;
-  String propic, newFlag,isTransfertoApp,isOrderableviaApp,productHeight,ProductLength;
+  String propic,
+      newFlag,
+      isTransfertoApp,
+      isOrderableviaApp,
+      productHeight,
+      ProductLength;
 
   CategoryModel CategoryPass;
 
@@ -67,29 +81,109 @@ class _ProductEditPageState extends State<ProductEditPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   HandlerClass handle;
-  List<SingleMasterDataModel> data;
+
+//  List<SingleMasterDataModel> data;
+  List<SingleMasterDataModelV2> data;
+
+  CameraController _controller;
+  Future<void> _initializeControllerFuture;
+  bool isCameraReady = false;
+  bool showCapturedPhoto = true;
+  var ImagePath;
+
+  String _fileName;
+  String _path;
+  Map<String, String> _paths;
+  String _extension;
+  bool _multiPick = false;
+  bool _hasValidMime = false;
+  FileType _pickingType;
+
+  void _openFileExplorer() async {
+    try {
+      _paths = null;
+      _path = await FilePicker.getFilePath(type: FileType.any);
+    } on PlatformException catch (e) {
+      print("Unsupported operation" + e.toString());
+    }
+    if (!mounted) return;
+
+    setState(() {
+      _fileName = _path != null
+          ? _path.split('/').last
+          : _paths != null ? _paths.keys.toString() : '...';
+    });
+    print(_fileName.toString());
+    print(_path.toString());
+  }
+
+  void imagePath() async{
+    List<StorageInfo> storageInfo = await PathProviderEx.getStorageInfo();
+    var root = storageInfo[0].rootDir +
+        "/Indentit/Photos"; //storageInfo[1] for SD card, getting the root directory
+
+    setState(() {
+      ImagePath = root;
+    });
+
+    print(root.toString());
+  }
 
   @override
   void initState() {
     // TODO: implement initState
-    masterdata_bloc.getsinglemasterdatafromDB();
+    masterdata_bloc.getsinglemasterdatafromDBV2();
     //productName.text = widget.productname;
     print(widget.productname);
+    Timer(Duration(),(){
+      imagePath();
+    });
     super.initState();
     sublist_bloc.dispose();
+
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
+    _controller?.dispose();
     sublist_bloc.dispose();
+  }
+
+  Future<void> _initializeCamera() async {
+    final cameras = await availableCameras();
+    final firstCamera = cameras.first;
+    _controller = CameraController(firstCamera, ResolutionPreset.ultraHigh);
+    _initializeControllerFuture = _controller.initialize();
+    if (!mounted) {
+      return;
+    }
+    setState(() {
+      isCameraReady = true;
+    });
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _controller != null
+          ? _initializeControllerFuture = _controller.initialize()
+          : null; //on pause camera is disposed, so we need to call again "issue is only for android"
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    dynamic hp = Screen(context).hp;
+    dynamic wp = Screen(context).wp;
+
+    dynamic size = MediaQuery.of(context).size;
+    dynamic deviceRatio = size.width / size.height;
+
     return Scaffold(
       key: _scaffoldKey,
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         title: Text(
           translate('edit_product').toString(),
@@ -110,7 +204,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
             color: Colors.black54,
           ),
           onPressed: () => Navigator.push(
-              context, MaterialPageRoute(builder: (context) => DetailsPage(product_name: data[0].productName))),
+              context, MaterialPageRoute(builder: (context) => MasterData())),
         ),
         actions: <Widget>[
           new IconButton(
@@ -133,14 +227,13 @@ class _ProductEditPageState extends State<ProductEditPage> {
 //                masterdata_bloc.fetchAllMasterData();
                 sublist_bloc.getProductID(id.toString());
 
-
-                if (ProductName.text.isEmpty) {
-                  print("previous Name: " + pre_name);
-                  sublist_bloc.getProductName(pre_name);
-                } else if (ProductName.text.isNotEmpty) {
-                  print("New Name: " + ProductName.text);
-                  sublist_bloc.getProductName(ProductName.text);
-                }
+                // if (ProductName.text.isEmpty) {
+                //   print("previous Name: " + pre_name);
+                //   sublist_bloc.getProductName(pre_name);
+                // } else if (ProductName.text.isNotEmpty) {
+                //   print("New Name: " + ProductName.text);
+                //   sublist_bloc.getProductName(ProductName.text);
+                // }
 
                 if (ProductDesc.text.isEmpty) {
                   print("previous Desc: " + pre_productdesc);
@@ -150,13 +243,13 @@ class _ProductEditPageState extends State<ProductEditPage> {
                   sublist_bloc.getProductDesc(ProductDesc.text);
                 }
 
-                if (manu_pn.text.isEmpty) {
-                  print("previous ManuPIN: " + "aas");
-                  sublist_bloc.getManufacturerPn(pre_manu_pin);
-                } else if (manu_pn.text.isNotEmpty) {
-                  print("New ManuPin: " + manu_pn.text);
-                  sublist_bloc.getManufacturerPn(manu_pn.text);
-                }
+                // if (manu_pn.text.isEmpty) {
+                //   print("previous ManuPIN: " + "aas");
+                //   sublist_bloc.getManufacturerPn(pre_manu_pin);
+                // } else if (manu_pn.text.isNotEmpty) {
+                //   print("New ManuPin: " + manu_pn.text);
+                //   sublist_bloc.getManufacturerPn(manu_pn.text);
+                // }
 
                 if (gtin.text.isEmpty) {
                   print("previous GTIN: " + pre_gtin);
@@ -174,32 +267,26 @@ class _ProductEditPageState extends State<ProductEditPage> {
                   sublist_bloc.getListPrice(ListPrice.text);
                 }
 
-                print(categoryID.toString());
+                //print(categoryID.toString());
 
-                sublist_bloc.getPreviousCategoryID(categoryID);
-                sublist_bloc.getPreviousManufacturerID(manufacID);
-                sublist_bloc.getPreviousSubCategoryID(sub_categoryID);
-                sublist_bloc.getPreviousUnitID(unitID);
+                // sublist_bloc.getPreviousCategoryID(categoryID);
+                // sublist_bloc.getPreviousManufacturerID(manufacID);
+                // sublist_bloc.getPreviousSubCategoryID(sub_categoryID);
+                // sublist_bloc.getPreviousUnitID(unitID);
+                //
+                // sublist_bloc.getPreviousCategoryName(category);
+                // sublist_bloc.getPreviousManufacturerName(manufac);
+                // sublist_bloc.getPreviousSubCategoryName(sub_category);
+                // sublist_bloc.getPreviousUnitName(unit);
 
-                sublist_bloc.getPreviousCategoryName(category);
-                sublist_bloc.getPreviousManufacturerName(manufac);
-                sublist_bloc.getPreviousSubCategoryName(sub_category);
-                sublist_bloc.getPreviousUnitName(unit);
-
-
-                MasterDataModel data = MasterDataModel(
+                MasterDataModelV2 data = MasterDataModelV2(
                   productPicture: propic.toString(),
                   newFlag: newFlag.toString(),
-                  isTransferToApp: isTransfertoApp.toString(),
-                  isOrderableViaApp: isOrderableviaApp.toString(),
-                  productHeight: productHeight.toString(),
-                  productLength: ProductLength.toString(),
                 );
 
                 print("eikhnane submit");
-                sublist_bloc.UpdateProductMasterDatatoDB(data);
+                sublist_bloc.UpdateProductMasterDatatoDBV2(data);
                 sublist_bloc.dispose();
-
 
                 ProductName.text = "";
                 ProductDesc.text = "";
@@ -216,19 +303,18 @@ class _ProductEditPageState extends State<ProductEditPage> {
                 //     textColor: Colors.white,
                 //     fontSize: 16.0);
 
-                _scaffoldKey.currentState.showSnackBar(
-                    SnackBar(
-                      content: Text('Updated Successfully',style: GoogleFonts.exo2(),),
-                      duration: Duration(seconds: 3),
-                    ));
+                _scaffoldKey.currentState.showSnackBar(SnackBar(
+                  content: Text(
+                    'Updated Successfully',
+                    style: GoogleFonts.exo2(),
+                  ),
+                  duration: Duration(seconds: 3),
+                ));
 
                 Timer(Duration(seconds: 3), () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => MasterData()));
-                });    //TODO:: DELAY EXAMPLE
-
-
-
+                }); //TODO:: DELAY EXAMPLE
               }),
         ],
       ),
@@ -239,165 +325,58 @@ class _ProductEditPageState extends State<ProductEditPage> {
             child: Column(
               children: <Widget>[
                 Container(
-                  child: StreamBuilder<List<SingleMasterDataModel>>(
-                      stream: masterdata_bloc.singleMasterData,
+                  child: StreamBuilder<List<SingleMasterDataModelV2>>(
+                      stream: masterdata_bloc.singleMasterDatav2,
                       builder: (context,
-                          AsyncSnapshot<List<SingleMasterDataModel>> snapshot) {
+                          AsyncSnapshot<List<SingleMasterDataModelV2>>
+                              snapshot) {
                         if (snapshot.hasData) {
                           data = snapshot.data;
                           print("Data gula:: ");
                           print(data.length);
-                          //return masterdataview(data);
-
-//                        TextEditingController _controller = new TextEditingController();
-//                        _controller.value = _controller.value.copyWith(text: snapshot.data[0].categoryName);
-//
-//                        return Stack(
-//                          children: <Widget>[
-//                            TextField(
-//                              decoration: InputDecoration(
-//                                hintText: "Product Name"
-//                              ),
-//                              controller: _controller,
-//                            ),
-//
-//
-//                            Container(
-//                              child: RaisedButton(
-//                                onPressed: (){
-//
-//                                  print(_controller.value);
-//
-//                                },
-//                              ),
-//                              margin: EdgeInsets.only(left: 60),
-//                            ),
-//                          ],
-//                        );
-
-//                        ProductName.value = ProductName.value
-//                            .copyWith(text: data[0].productName);
-//                        ProductDesc.value = ProductDesc.value
-//                            .copyWith(text: data[0].productDescription);
-//                        manu_pn.value = manu_pn.value.copyWith(text: "255");
-//                        gtin.value = gtin.value.copyWith(text: data[0].gtin);
-//                        ListPrice.value =
-//                            ListPrice.value.copyWith(text: data[0].listPrice);
 
                           id = data[0].id;
-
-                          pre_name = data[0].productName;
                           pre_productdesc = data[0].productDescription;
-                          pre_manu_pin = data[0].manufacturerPN;
                           pre_gtin = data[0].gtin;
                           pre_listprice = data[0].listPrice;
-
-                          category = data[0].categoryName;
-                          categoryID = data[0].categoryNameId;
-
-                          sub_category = data[0].subCategoryName;
-                          sub_categoryID = data[0].subCategoryNameId;
-
-                          manufac = data[0].manufacturerName;
-                          manufacID = data[0].manufacturerId;
-
-                          unit = data[0].packagingUnit;
-                          unitID = data[0].unitId;
-
                           propic = data[0].productPicture;
                           newFlag = data[0].newFlag;
-                          isTransfertoApp = data[0].isTransferToApp;
-                          isOrderableviaApp = data[0].isOrderableViaApp;
-                          productHeight = data[0].productHeight;
-                          ProductLength = data[0].productLength;
 
                           return Padding(
-                            padding: const EdgeInsets.all(10.0),
+                            padding: EdgeInsets.all(wp(4)),
                             child: Container(
-                              child: ResponsiveGridRow(
-                                  children: [
-                                    ResponsiveGridCol(
-                                      lg: 12,
+                              height: hp(90),
+                              color: Colors.transparent,
+                              child: Stack(
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        top: hp(1), bottom: hp(2)),
+                                    child: Align(
+                                      alignment: Alignment.topCenter,
                                       child: Container(
-                                        height: 80,
-                                        alignment: Alignment.center,
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Text(translate('product_name').toString(),
-                                            style: TextStyle(
-                                              fontSize: 16
-                                            ),),
-                                             SizedBox(height: 3,),
-                                            Container(
-                                              decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius: BorderRadius.circular(10),
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    color: Colors.grey.withOpacity(0.3),
-                                                    spreadRadius: 2,
-                                                    blurRadius: 5,
-                                                    offset: Offset(1, 1),
-                                                  ),
-                                                ],
-                                              ),
-                                                child: Padding(
-                                                  padding: const EdgeInsets.fromLTRB(8,0,0,0),
-                                                  child: TextField(
-                                                      controller: ProductName,
-                                                      autocorrect: true,
-                                                      style: GoogleFonts.exo2(
-                                                        textStyle: TextStyle(
-                                                          fontSize: 14,
-                                                        ),
-                                                      ),
-                                                      decoration: new InputDecoration(
-                                                        border: InputBorder.none,
-                                                        focusedBorder: InputBorder.none,
-                                                        enabledBorder: InputBorder.none,
-                                                        errorBorder: InputBorder.none,
-                                                        disabledBorder: InputBorder.none,
-                                                        hintStyle: GoogleFonts.exo2(
-                                                          textStyle: TextStyle(
-                                                            fontSize: 14,
-                                                          ),
-                                                        ),
-                                                        labelStyle: GoogleFonts.exo2(
-                                                          textStyle: TextStyle(
-                                                            fontSize: 14,
-                                                          ),
-                                                        ),
-                                                        hintText: data[0].productName,
-                                                      )),
-                                                ),
-                                              ),
-                                          ],
-                                        )
-                                      ),
-                                    ),
-
-
-                                    ResponsiveGridCol(
-                                      lg: 12,
-                                      child: Container(
-                                          height: 80,
-                                          alignment: Alignment.center,
+                                          height: hp(10),
                                           child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: <Widget>[
-                                              Text(translate('product_desc').toString(),
-                                                style: TextStyle(
-                                                    fontSize: 16
-                                                ),),
-                                              SizedBox(height: 3,),
+                                              Text(
+                                                translate('product_desc')
+                                                    .toString(),
+                                                style: TextStyle(fontSize: 16),
+                                              ),
+                                              SizedBox(
+                                                height: 3,
+                                              ),
                                               Container(
                                                 decoration: BoxDecoration(
                                                   color: Colors.white,
-                                                  borderRadius: BorderRadius.circular(10),
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
                                                   boxShadow: [
                                                     BoxShadow(
-                                                      color: Colors.grey.withOpacity(0.3),
+                                                      color: Colors.grey
+                                                          .withOpacity(0.3),
                                                       spreadRadius: 2,
                                                       blurRadius: 5,
                                                       offset: Offset(1, 1),
@@ -405,7 +384,9 @@ class _ProductEditPageState extends State<ProductEditPage> {
                                                   ],
                                                 ),
                                                 child: Padding(
-                                                  padding: const EdgeInsets.fromLTRB(8,0,0,0),
+                                                  padding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          8, 0, 0, 0),
                                                   child: TextField(
                                                       controller: ProductDesc,
                                                       autocorrect: true,
@@ -414,51 +395,67 @@ class _ProductEditPageState extends State<ProductEditPage> {
                                                           fontSize: 14,
                                                         ),
                                                       ),
-                                                      decoration: new InputDecoration(
-                                                        border: InputBorder.none,
-                                                        focusedBorder: InputBorder.none,
-                                                        enabledBorder: InputBorder.none,
-                                                        errorBorder: InputBorder.none,
-                                                        disabledBorder: InputBorder.none,
-                                                        hintStyle: GoogleFonts.exo2(
+                                                      decoration:
+                                                          new InputDecoration(
+                                                        border:
+                                                            InputBorder.none,
+                                                        focusedBorder:
+                                                            InputBorder.none,
+                                                        enabledBorder:
+                                                            InputBorder.none,
+                                                        errorBorder:
+                                                            InputBorder.none,
+                                                        disabledBorder:
+                                                            InputBorder.none,
+                                                        hintStyle:
+                                                            GoogleFonts.exo2(
                                                           textStyle: TextStyle(
                                                             fontSize: 14,
                                                           ),
                                                         ),
-                                                        labelStyle: GoogleFonts.exo2(
+                                                        labelStyle:
+                                                            GoogleFonts.exo2(
                                                           textStyle: TextStyle(
                                                             fontSize: 14,
                                                           ),
                                                         ),
-                                                        hintText: data[0].productDescription,
+                                                        hintText: data[0]
+                                                            .productDescription,
                                                       )),
                                                 ),
                                               ),
                                             ],
-                                          )
-                                      ),
+                                          )),
                                     ),
+                                  ),
 
-                                    ResponsiveGridCol(
-                                      lg: 12,
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        top: hp(11), bottom: hp(2)),
+                                    child: Align(
+                                      alignment: Alignment.topCenter,
                                       child: Container(
-                                          height: 80,
-                                          alignment: Alignment.center,
+                                          height: hp(10),
                                           child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: <Widget>[
-                                              Text(translate('manufac_pn').toString(),
-                                                style: TextStyle(
-                                                    fontSize: 16
-                                                ),),
-                                              SizedBox(height: 3,),
+                                              Text(
+                                                "Barcode",
+                                                style: TextStyle(fontSize: 16),
+                                              ),
+                                              SizedBox(
+                                                height: 3,
+                                              ),
                                               Container(
                                                 decoration: BoxDecoration(
                                                   color: Colors.white,
-                                                  borderRadius: BorderRadius.circular(10),
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
                                                   boxShadow: [
                                                     BoxShadow(
-                                                      color: Colors.grey.withOpacity(0.3),
+                                                      color: Colors.grey
+                                                          .withOpacity(0.3),
                                                       spreadRadius: 2,
                                                       blurRadius: 5,
                                                       offset: Offset(1, 1),
@@ -466,69 +463,9 @@ class _ProductEditPageState extends State<ProductEditPage> {
                                                   ],
                                                 ),
                                                 child: Padding(
-                                                  padding: const EdgeInsets.fromLTRB(8,0,0,0),
-                                                  child: TextField(
-                                                      controller: manu_pn,
-                                                      autocorrect: true,
-                                                      style: GoogleFonts.exo2(
-                                                        textStyle: TextStyle(
-                                                          fontSize: 14,
-                                                        ),
-                                                      ),
-                                                      decoration: new InputDecoration(
-                                                        border: InputBorder.none,
-                                                        focusedBorder: InputBorder.none,
-                                                        enabledBorder: InputBorder.none,
-                                                        errorBorder: InputBorder.none,
-                                                        disabledBorder: InputBorder.none,
-                                                        hintStyle: GoogleFonts.exo2(
-                                                          textStyle: TextStyle(
-                                                            fontSize: 14,
-                                                          ),
-                                                        ),
-                                                        labelStyle: GoogleFonts.exo2(
-                                                          textStyle: TextStyle(
-                                                            fontSize: 14,
-                                                          ),
-                                                        ),
-                                                        hintText: data[0].manufacturerPN,
-                                                      )),
-                                                ),
-                                              ),
-                                            ],
-                                          )
-                                      ),
-                                    ),
-
-
-                                    ResponsiveGridCol(
-                                      lg: 12,
-                                      child: Container(
-                                          height: 80,
-                                          alignment: Alignment.center,
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              Text(translate('gtin').toString(),
-                                                style: TextStyle(
-                                                    fontSize: 16
-                                                ),),
-                                              SizedBox(height: 3,),
-                                              Container(
-                                                decoration: BoxDecoration(
-                                                  color: Colors.white,
-                                                  borderRadius: BorderRadius.circular(10),
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: Colors.grey.withOpacity(0.3),
-                                                      spreadRadius: 2,
-                                                      blurRadius: 5,
-                                                      offset: Offset(1, 1),
-                                                    ),
-                                                  ],
-                                                ),
-                                                child: Padding(
-                                                  padding: const EdgeInsets.fromLTRB(8,0,0,0),
+                                                  padding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          8, 0, 0, 0),
                                                   child: TextField(
                                                       controller: gtin,
                                                       autocorrect: true,
@@ -537,18 +474,26 @@ class _ProductEditPageState extends State<ProductEditPage> {
                                                           fontSize: 14,
                                                         ),
                                                       ),
-                                                      decoration: new InputDecoration(
-                                                        border: InputBorder.none,
-                                                        focusedBorder: InputBorder.none,
-                                                        enabledBorder: InputBorder.none,
-                                                        errorBorder: InputBorder.none,
-                                                        disabledBorder: InputBorder.none,
-                                                        hintStyle: GoogleFonts.exo2(
+                                                      decoration:
+                                                          new InputDecoration(
+                                                        border:
+                                                            InputBorder.none,
+                                                        focusedBorder:
+                                                            InputBorder.none,
+                                                        enabledBorder:
+                                                            InputBorder.none,
+                                                        errorBorder:
+                                                            InputBorder.none,
+                                                        disabledBorder:
+                                                            InputBorder.none,
+                                                        hintStyle:
+                                                            GoogleFonts.exo2(
                                                           textStyle: TextStyle(
                                                             fontSize: 14,
                                                           ),
                                                         ),
-                                                        labelStyle: GoogleFonts.exo2(
+                                                        labelStyle:
+                                                            GoogleFonts.exo2(
                                                           textStyle: TextStyle(
                                                             fontSize: 14,
                                                           ),
@@ -558,31 +503,37 @@ class _ProductEditPageState extends State<ProductEditPage> {
                                                 ),
                                               ),
                                             ],
-                                          )
-                                      ),
+                                          )),
                                     ),
+                                  ),
 
-
-                                    ResponsiveGridCol(
-                                      lg: 12,
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        top: hp(21), bottom: hp(2)),
+                                    child: Align(
+                                      alignment: Alignment.topCenter,
                                       child: Container(
-                                          height: 80,
-                                          alignment: Alignment.center,
+                                          height: hp(10),
                                           child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: <Widget>[
-                                              Text(translate('listprice').toString(),
-                                                style: TextStyle(
-                                                    fontSize: 16
-                                                ),),
-                                              SizedBox(height: 3,),
+                                              Text(
+                                                "Price",
+                                                style: TextStyle(fontSize: 16),
+                                              ),
+                                              SizedBox(
+                                                height: 3,
+                                              ),
                                               Container(
                                                 decoration: BoxDecoration(
                                                   color: Colors.white,
-                                                  borderRadius: BorderRadius.circular(10),
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
                                                   boxShadow: [
                                                     BoxShadow(
-                                                      color: Colors.grey.withOpacity(0.3),
+                                                      color: Colors.grey
+                                                          .withOpacity(0.3),
                                                       spreadRadius: 2,
                                                       blurRadius: 5,
                                                       offset: Offset(1, 1),
@@ -590,7 +541,9 @@ class _ProductEditPageState extends State<ProductEditPage> {
                                                   ],
                                                 ),
                                                 child: Padding(
-                                                  padding: const EdgeInsets.fromLTRB(8,0,0,0),
+                                                  padding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          8, 0, 0, 0),
                                                   child: TextField(
                                                       controller: ListPrice,
                                                       autocorrect: true,
@@ -599,609 +552,325 @@ class _ProductEditPageState extends State<ProductEditPage> {
                                                           fontSize: 14,
                                                         ),
                                                       ),
-                                                      decoration: new InputDecoration(
-                                                        border: InputBorder.none,
-                                                        focusedBorder: InputBorder.none,
-                                                        enabledBorder: InputBorder.none,
-                                                        errorBorder: InputBorder.none,
-                                                        disabledBorder: InputBorder.none,
-                                                        hintStyle: GoogleFonts.exo2(
+                                                      decoration:
+                                                          new InputDecoration(
+                                                        border:
+                                                            InputBorder.none,
+                                                        focusedBorder:
+                                                            InputBorder.none,
+                                                        enabledBorder:
+                                                            InputBorder.none,
+                                                        errorBorder:
+                                                            InputBorder.none,
+                                                        disabledBorder:
+                                                            InputBorder.none,
+                                                        hintStyle:
+                                                            GoogleFonts.exo2(
                                                           textStyle: TextStyle(
                                                             fontSize: 14,
                                                           ),
                                                         ),
-                                                        labelStyle: GoogleFonts.exo2(
+                                                        labelStyle:
+                                                            GoogleFonts.exo2(
                                                           textStyle: TextStyle(
                                                             fontSize: 14,
                                                           ),
                                                         ),
-                                                        hintText: data[0].listPrice,
+                                                        hintText:
+                                                            data[0].listPrice,
                                                       )),
                                                 ),
                                               ),
                                             ],
-                                          )
-                                      ),
+                                          )),
                                     ),
+                                  ),
 
-
-                                    ResponsiveGridCol(
-                                      lg: 12,
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        top: hp(31), bottom: hp(2)),
+                                    child: Align(
+                                      alignment: Alignment.topCenter,
                                       child: Container(
-                                          height: 95,
+                                          height: hp(100),
                                           alignment: Alignment.center,
                                           child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
                                             children: <Widget>[
-                                              Container(
-                                                child: Padding(
-                                                  padding: EdgeInsets.only(top: 0,left: 0.0, right: 0),
-                                                  child: Row(
+                                              Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  Padding(
+                                                    padding: EdgeInsets.only(
+                                                        top: hp(2)),
+                                                    child: Text(
+                                                      "Capture Picture/Add Picture",
+                                                      style: TextStyle(
+                                                          fontSize: 16),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 3,
+                                                  ),
+                                                  Row(
                                                     children: <Widget>[
-                                                      Container(
-                                                        child: EditProductCategoryDropDown(category: category),
+                                                      IconButton(
+                                                          onPressed: () {
+                                                            setState(() {
+                                                              showCapturedPhoto =
+                                                                  false;
+                                                            });
+                                                            _initializeCamera();
+                                                          },
+                                                          icon: Icon(Icons
+                                                              .camera_alt)),
+                                                      SizedBox(
+                                                        width: 3,
                                                       ),
+                                                      IconButton(
+                                                          onPressed: () {
+                                                            _openFileExplorer();
+                                                          },
+                                                          icon: Icon(Icons
+                                                              .attach_file)),
                                                     ],
                                                   ),
-                                                ),
+                                                ],
                                               ),
                                             ],
-                                          )
-                                      ),
+                                          )),
                                     ),
+                                  ),
 
-                                    ResponsiveGridCol(
-                                      lg: 12,
-                                      child: Container(
-                                          height: 95,
-                                          alignment: Alignment.center,
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              Container(
-                                                child: Padding(
-                                                  padding: EdgeInsets.only(top: 0,left: 0.0, right: 0),
-                                                  child: Row(
-                                                    children: <Widget>[
-                                                      Container(
-                                                        child: EditProductSubCategoryDropDown(subcat: sub_category,),
+                                  showCapturedPhoto == false
+                                      ? Padding(
+                                          padding: EdgeInsets.only(
+                                              top: hp(1), bottom: hp(2)),
+                                          child: Align(
+                                            alignment: Alignment.topCenter,
+                                            child: FutureBuilder<void>(
+                                              future:
+                                                  _initializeControllerFuture,
+                                              builder: (context, snapshot) {
+                                                if (snapshot.connectionState ==
+                                                    ConnectionState.done) {
+                                                  // If the Future is complete, display the preview.
+                                                  return Transform.scale(
+                                                      scale: _controller.value
+                                                              .aspectRatio /
+                                                          deviceRatio,
+                                                      child: Stack(
+                                                        children: <Widget>[
+                                                          Align(
+                                                            child: AspectRatio(
+                                                              aspectRatio:
+                                                                  _controller
+                                                                      .value
+                                                                      .aspectRatio,
+                                                              child: CameraPreview(
+                                                                  _controller), //cameraPreview
+                                                            ),
+                                                            alignment: Alignment
+                                                                .topCenter,
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    top: hp(70),
+                                                                    bottom:
+                                                                        hp(2),
+                                                                    right:
+                                                                        wp(7)),
+                                                            child: Align(
+                                                              child: IconButton(
+                                                                icon: Icon(
+                                                                  Icons.camera,
+                                                                  color: Colors
+                                                                      .white,
+                                                                  size: hp(7),
+                                                                ),
+                                                                onPressed: () {
+                                                                  onCaptureButtonPressed();
+                                                                  print(
+                                                                      "Captured");
+                                                                },
+                                                              ),
+                                                              alignment:
+                                                                  Alignment
+                                                                      .topCenter,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ));
+                                                } else {
+                                                  return Center(
+                                                      child: Container(
+                                                    height: 0,
+                                                    width: 0,
+                                                  )); // Otherwise, display a loading indicator.
+                                                }
+                                              },
+                                            ),
+                                          ),
+                                        )
+                                      : showCapturedPhoto == true
+                                          ? Padding(
+                                              padding: EdgeInsets.only(
+                                                  top: hp(40), bottom: hp(2)),
+                                              child: Container(
+                                                height: hp(50),
+                                                width: double.infinity,
+                                                color: Colors.transparent,
+                                                child: Stack(
+                                                  children: <Widget>[
+                                                    Padding(
+                                                      padding: EdgeInsets.only(
+                                                          top: hp(5)),
+                                                      child: Align(
+                                                        child: Image.file(
+                                                          File(ImagePath+"/"+id.toString()+".png"),
+                                                          fit: BoxFit.fill,
+                                                          width: wp(80),
+                                                          height: hp(40),
+                                                        ),
+                                                        alignment:
+                                                            Alignment.topCenter,
                                                       ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          )
-                                      ),
-                                    ),
-
-                                    ResponsiveGridCol(
-                                      lg: 12,
-                                      child: Container(
-                                          height: 95,
-                                          alignment: Alignment.center,
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              Container(
-                                                child: Padding(
-                                                  padding: EdgeInsets.only(top: 0,left: 0.0, right: 0),
-                                                  child: Row(
-                                                    children: <Widget>[
-                                                      Container(
-                                                        child: EditProductManufacturerDropDown(manufac: manufac,),
+                                                    ),
+                                                    Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: wp(85)),
+                                                      child: Align(
+                                                        alignment:
+                                                            Alignment.topCenter,
+                                                        child: IconButton(
+                                                          onPressed: () {
+                                                            print(ImagePath.toString());
+                                                            setState(() {
+                                                              showCapturedPhoto = null;
+                                                              deleteFile(ImagePath+"/"+id.toString()+".png");
+                                                              imageCache.clear();
+                                                            });
+                                                          },
+                                                          icon: Icon(
+                                                            AntDesign.closecircle,
+                                                            color:
+                                                                Colors.black87,
+                                                            size: hp(3),
+                                                          ),
+                                                        ),
                                                       ),
-                                                    ],
-                                                  ),
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
-                                            ],
-                                          )
-                                      ),
-                                    ),
+                                            )
+                                          : Text(""),
 
-                                    ResponsiveGridCol(
-                                      lg: 12,
-                                      child: Container(
-                                          height: 95,
-                                          alignment: Alignment.center,
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              Container(
-                                                child: Padding(
-                                                  padding: EdgeInsets.only(top: 0,left: 0.0, right: 0),
-                                                  child: Row(
-                                                    children: <Widget>[
-                                                      Container(
-                                                        child: EditProductUnitDropDown(unit: unit,),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          )
-                                      ),
-                                    ),
-
-
-                                  ],
+                                  // ResponsiveGridCol(
+                                  //   lg: 12,
+                                  //   child: Container(
+                                  //       height: 95,
+                                  //       alignment: Alignment.center,
+                                  //       child: Column(
+                                  //         crossAxisAlignment: CrossAxisAlignment.start,
+                                  //         children: <Widget>[
+                                  //           Container(
+                                  //             child: Padding(
+                                  //               padding: EdgeInsets.only(top: 0,left: 0.0, right: 0),
+                                  //               child: Row(
+                                  //                 children: <Widget>[
+                                  //                   Container(
+                                  //                     child: EditProductCategoryDropDown(category: category),
+                                  //                   ),
+                                  //                 ],
+                                  //               ),
+                                  //             ),
+                                  //           ),
+                                  //         ],
+                                  //       )
+                                  //   ),
+                                  // ),
+                                  //
+                                  // ResponsiveGridCol(
+                                  //   lg: 12,
+                                  //   child: Container(
+                                  //       height: 95,
+                                  //       alignment: Alignment.center,
+                                  //       child: Column(
+                                  //         crossAxisAlignment: CrossAxisAlignment.start,
+                                  //         children: <Widget>[
+                                  //           Container(
+                                  //             child: Padding(
+                                  //               padding: EdgeInsets.only(top: 0,left: 0.0, right: 0),
+                                  //               child: Row(
+                                  //                 children: <Widget>[
+                                  //                   Container(
+                                  //                     child: EditProductSubCategoryDropDown(subcat: sub_category,),
+                                  //                   ),
+                                  //                 ],
+                                  //               ),
+                                  //             ),
+                                  //           ),
+                                  //         ],
+                                  //       )
+                                  //   ),
+                                  // ),
+                                  //
+                                  // ResponsiveGridCol(
+                                  //   lg: 12,
+                                  //   child: Container(
+                                  //       height: 95,
+                                  //       alignment: Alignment.center,
+                                  //       child: Column(
+                                  //         crossAxisAlignment: CrossAxisAlignment.start,
+                                  //         children: <Widget>[
+                                  //           Container(
+                                  //             child: Padding(
+                                  //               padding: EdgeInsets.only(top: 0,left: 0.0, right: 0),
+                                  //               child: Row(
+                                  //                 children: <Widget>[
+                                  //                   Container(
+                                  //                     child: EditProductManufacturerDropDown(manufac: manufac,),
+                                  //                   ),
+                                  //                 ],
+                                  //               ),
+                                  //             ),
+                                  //           ),
+                                  //         ],
+                                  //       )
+                                  //   ),
+                                  // ),
+                                  //
+                                  // ResponsiveGridCol(
+                                  //   lg: 12,
+                                  //   child: Container(
+                                  //       height: 95,
+                                  //       alignment: Alignment.center,
+                                  //       child: Column(
+                                  //         crossAxisAlignment: CrossAxisAlignment.start,
+                                  //         children: <Widget>[
+                                  //           Container(
+                                  //             child: Padding(
+                                  //               padding: EdgeInsets.only(top: 0,left: 0.0, right: 0),
+                                  //               child: Row(
+                                  //                 children: <Widget>[
+                                  //                   Container(
+                                  //                     child: EditProductUnitDropDown(unit: unit,),
+                                  //                   ),
+                                  //                 ],
+                                  //               ),
+                                  //             ),
+                                  //           ),
+                                  //         ],
+                                  //       )
+                                  //   ),
+                                  // ),
+                                ],
                               ),
-
-//                          child: Column(
-//                            children: <Widget>[
-//                              Column(
-//                                crossAxisAlignment: CrossAxisAlignment.start,
-//                                children: <Widget>[
-//                                  Padding(
-//                                    padding: const EdgeInsets.only(left: 8.0),
-//                                    child: Text(
-//                                      "Product Name",
-//                                      style: GoogleFonts.exo2(
-//                                        textStyle: TextStyle(
-//                                          fontSize: 20,
-//                                          fontWeight: FontWeight.w400,
-//                                        ),
-//                                      ),
-//                                    ),
-//                                  ),
-//                                  SizedBox(
-//                                    height: 3,
-//                                  ),
-//                                  Container(
-//                                    child: Row(
-//                                      mainAxisAlignment:
-//                                          MainAxisAlignment.spaceBetween,
-//                                      children: <Widget>[
-//                                        Container(
-//                                          decoration: BoxDecoration(),
-////                          height: MediaQuery
-////                              .of(context)
-////                              .size
-////                              .height - 740,
-////                          width: MediaQuery
-////                              .of(context)
-////                              .size
-////                              .width - 244,
-//                                          height: 50,
-//                                          width: 370,
-//                                          margin: EdgeInsets.only(left: 3),
-//                                          child: TextField(
-//                                            controller: ProductName,
-//                                            autocorrect: true,
-//                                            autofocus: true,
-//                                            style: GoogleFonts.exo2(
-//                                              textStyle: TextStyle(
-//                                                fontSize: 20,
-//                                              ),
-//                                            ),
-//                                            decoration: new InputDecoration(
-//                                                border: OutlineInputBorder(
-//                                                  borderSide: BorderSide(
-//                                                      color: _hintcolor),
-//                                                ),
-//                                                hintStyle: GoogleFonts.exo2(
-//                                                  textStyle: TextStyle(
-//                                                    fontSize: 20,
-//                                                  ),
-//                                                ),
-//                                                hintText: data[0].productName),
-//                                          ),
-//                                        )
-//                                      ],
-//                                    ),
-//                                  ),
-//                                ],
-//                              ),
-//
-//                              SizedBox(
-//                                height: 7,
-//                              ),
-////
-//                              Container(
-//                                child: Column(
-//                                  crossAxisAlignment: CrossAxisAlignment.start,
-//                                  children: <Widget>[
-//                                    Padding(
-//                                      padding: EdgeInsets.only(left: 4.0),
-//                                      child: Text(
-//                                        "Product Description",
-//                                        style: GoogleFonts.exo2(
-//                                          textStyle: TextStyle(
-//                                            fontSize: 18,
-//                                            fontWeight: FontWeight.w400,
-//                                          ),
-//                                        ),
-//                                      ),
-//                                    ),
-//                                    Container(
-//                                      decoration: BoxDecoration(),
-////                          height: MediaQuery
-////                              .of(context)
-////                              .size
-////                              .height - 740,
-////                          width: MediaQuery
-////                              .of(context)
-////                              .size
-////                              .width - 244,
-//                                      height: 50,
-//                                      width: 370,
-//                                      child: TextField(
-//                                        controller: ProductDesc,
-//                                        autocorrect: true,
-//                                        autofocus: true,
-//                                        style: GoogleFonts.exo2(
-//                                          textStyle: TextStyle(
-//                                            fontSize: 20,
-//                                          ),
-//                                        ),
-//                                        decoration: new InputDecoration(
-//                                          border: OutlineInputBorder(
-//                                            borderSide:
-//                                                BorderSide(color: _hintcolor),
-//                                          ),
-//                                          hintStyle: GoogleFonts.exo2(
-//                                            textStyle: TextStyle(
-//                                              fontSize: 20,
-//                                              color: _hintcolor,
-//                                            ),
-//                                          ),
-//                                          hintText: data[0].productDescription,
-//                                        ),
-//                                      ),
-//                                    )
-//                                  ],
-//                                ),
-//                              ),
-//
-//                              SizedBox(
-//                                height: 7,
-//                              ),
-//
-//                              Container(
-//                                child: Column(
-//                                  crossAxisAlignment: CrossAxisAlignment.start,
-//                                  children: <Widget>[
-//                                    Padding(
-//                                      padding: EdgeInsets.only(left: 3.0),
-//                                      child: Text(
-//                                        "Manufacture PIN",
-//                                        style: GoogleFonts.exo2(
-//                                          textStyle: TextStyle(
-//                                            fontSize: 18,
-//                                            fontWeight: FontWeight.w400,
-//                                          ),
-//                                        ),
-//                                      ),
-//                                    ),
-//                                    Stack(
-//                                      children: <Widget>[
-//                                        Container(
-//                                          child: Padding(
-//                                            padding:
-//                                                const EdgeInsets.only(left: 2),
-//                                            child: Column(
-//                                              crossAxisAlignment:
-//                                                  CrossAxisAlignment.start,
-//                                              children: <Widget>[
-//                                                Container(
-//                                                  decoration: BoxDecoration(),
-////                          height: MediaQuery
-////                              .of(context)
-////                              .size
-////                              .height - 740,
-////                          width: MediaQuery
-////                              .of(context)
-////                              .size
-////                              .width - 244,
-//                                                  height: 50,
-//                                                  width: 370,
-//                                                  child: TextField(
-//                                                    controller: manu_pn,
-//                                                    autocorrect: true,
-//                                                    autofocus: true,
-//                                                    style: GoogleFonts.exo2(
-//                                                      textStyle: TextStyle(
-//                                                        fontSize: 20,
-//                                                      ),
-//                                                    ),
-//                                                    decoration:
-//                                                        new InputDecoration(
-//                                                      border:
-//                                                          OutlineInputBorder(
-//                                                        borderSide: BorderSide(
-//                                                            color: _hintcolor),
-//                                                      ),
-//                                                      hintStyle:
-//                                                          GoogleFonts.exo2(
-//                                                        textStyle: TextStyle(
-//                                                          fontSize: 20,
-//                                                          color: _hintcolor,
-//                                                        ),
-//                                                      ),
-//                                                      hintText: data[0]
-//                                                          .manufacturerPN,
-//                                                      suffixIcon: IconButton(
-//                                                        icon: new Image.asset(
-//                                                            'assets/images/barcode.png',
-//                                                            fit:
-//                                                                BoxFit.contain),
-//                                                        tooltip: 'Scan barcode',
-//                                                        onPressed:
-//                                                            barcodeScanning1,
-//                                                      ),
-//                                                    ),
-//                                                  ),
-//                                                )
-//                                              ],
-//                                            ),
-//                                          ),
-//                                        ),
-//                                      ],
-//                                    ),
-//                                  ],
-//                                ),
-//                              ),
-//
-//                              SizedBox(
-//                                height: 7,
-//                              ),
-//
-//                              Container(
-//                                child: Column(
-//                                  crossAxisAlignment: CrossAxisAlignment.start,
-//                                  children: <Widget>[
-//                                    Padding(
-//                                      padding: EdgeInsets.only(left: 3.0),
-//                                      child: Text(
-//                                        "GTIN",
-//                                        style: GoogleFonts.exo2(
-//                                          textStyle: TextStyle(
-//                                            fontSize: 18,
-//                                            fontWeight: FontWeight.w400,
-//                                          ),
-//                                        ),
-//                                      ),
-//                                    ),
-//                                    Stack(
-//                                      children: <Widget>[
-//                                        Container(
-//                                          decoration: BoxDecoration(),
-////                          height: MediaQuery
-////                              .of(context)
-////                              .size
-////                              .height - 740,
-////                          width: MediaQuery
-////                              .of(context)
-////                              .size
-////                              .width - 244,
-//                                          height: 50,
-//                                          width: 370,
-//                                          child: TextField(
-//                                            controller: gtin,
-//                                            autocorrect: true,
-//                                            style: GoogleFonts.exo2(
-//                                              textStyle: TextStyle(
-//                                                fontSize: 20,
-//                                              ),
-//                                            ),
-//                                            autofocus: true,
-//                                            decoration: new InputDecoration(
-//                                              border: OutlineInputBorder(
-//                                                borderSide: BorderSide(
-//                                                    color: _hintcolor),
-//                                              ),
-//                                              hintStyle: GoogleFonts.exo2(
-//                                                textStyle: TextStyle(
-//                                                  fontSize: 20,
-//                                                  color: _hintcolor,
-//                                                ),
-//                                              ),
-//                                              hintText: data[0].gtin,
-//                                              suffixIcon: IconButton(
-//                                                icon: new Image.asset(
-//                                                    'assets/images/barcode.png',
-//                                                    fit: BoxFit.contain),
-//                                                tooltip: 'Scan barcode',
-//                                                onPressed: barcodeScanning2,
-//                                              ),
-//                                            ),
-//                                          ),
-//                                        ),
-//                                      ],
-//                                    ),
-//                                  ],
-//                                ),
-//                              ),
-//
-//                              SizedBox(
-//                                height: 7,
-//                              ),
-//
-//                              Container(
-//                                child: Column(
-//                                  crossAxisAlignment: CrossAxisAlignment.start,
-//                                  children: <Widget>[
-//                                    Padding(
-//                                      padding: EdgeInsets.only(left: 3.0),
-//                                      child: Text(
-//                                        "Price",
-//                                        style: GoogleFonts.exo2(
-//                                          textStyle: TextStyle(
-//                                            fontSize: 18,
-//                                            fontWeight: FontWeight.w400,
-//                                          ),
-//                                        ),
-//                                      ),
-//                                    ),
-//                                    Container(
-//                                      decoration: BoxDecoration(),
-////                          height: MediaQuery
-////                              .of(context)
-////                              .size
-////                              .height - 740,
-////                          width: MediaQuery
-////                              .of(context)
-////                              .size
-////                              .width - 244,
-//                                      height: 50,
-//                                      width: 370,
-//                                      child: TextField(
-//                                          controller: ListPrice,
-//                                          autocorrect: true,
-//                                          autofocus: true,
-//                                          style: GoogleFonts.exo2(
-//                                            textStyle: TextStyle(
-//                                              fontSize: 20,
-//                                            ),
-//                                          ),
-//                                          decoration: new InputDecoration(
-//                                            border: OutlineInputBorder(
-//                                              borderSide:
-//                                                  BorderSide(color: _hintcolor),
-//                                            ),
-//                                            hintStyle: GoogleFonts.exo2(
-//                                              textStyle: TextStyle(
-//                                                fontSize: 20,
-//                                                color: _hintcolor,
-//                                              ),
-//                                            ),
-//                                            hintText: data[0].listPrice,
-//                                          )),
-//                                    )
-//                                  ],
-//                                ),
-//                              ),
-//
-//                              Divider(),
-//
-//                              FittedBox(
-//                                fit: BoxFit.fitWidth,
-//                                alignment: Alignment.center,
-//                                child: Container(
-//                                  child: Container(
-//                                    child: Row(
-//                                      mainAxisAlignment:
-//                                          MainAxisAlignment.spaceBetween,
-//                                      children: <Widget>[
-//                                        Container(
-////                          height: MediaQuery
-////                              .of(context)
-////                              .size
-////                              .height - 740,
-////                          width: MediaQuery
-////                              .of(context)
-////                              .size
-////                              .width - 244,
-//
-//                                          child: EditProductCategoryDropDown(
-//                                            category: category.toString(),
-//                                            previous_id: categoryID.toString(),
-//                                          ),
-//                                        ),
-//                                      ],
-//                                    ),
-//                                  ),
-//                                ),
-//                              ),
-//
-//                              SizedBox(
-//                                height: 7,
-//                              ),
-//
-//                              FittedBox(
-//                                fit: BoxFit.fitWidth,
-//                                alignment: Alignment.center,
-//                                child: Container(
-//                                  child: Container(
-//                                    child: Row(
-//                                      children: <Widget>[
-//                                        Container(
-////                            height: MediaQuery
-////                                .of(context)
-////                                .size
-////                                .height - 740,
-////                            width: MediaQuery
-////                                .of(context)
-////                                .size
-////                                .width - 244,
-//
-//                                          child: EditProductSubCategoryDropDown(
-//                                            subcat: sub_category.toString(),
-//                                            previous_id:
-//                                                sub_categoryID.toString(),
-//                                          ),
-//                                        ),
-//                                      ],
-//                                    ),
-//                                  ),
-//                                ),
-//                              ),
-//
-//                              SizedBox(
-//                                height: 7,
-//                              ),
-//
-//                              FittedBox(
-//                                fit: BoxFit.fitWidth,
-//                                alignment: Alignment.center,
-//                                child: Container(
-//                                  child: Container(
-//                                    child: Row(
-//                                      children: <Widget>[
-//                                        Container(
-////                            height: MediaQuery
-////                                .of(context)
-////                                .size
-////                                .height - 740,
-////                            width: MediaQuery
-////                                .of(context)
-////                                .size
-////                                .width - 244,
-//
-//                                          child: EditProductUnitDropDown(
-//                                            unit: unit.toString(),
-//                                            previous_id: unitID.toString(),
-//                                          ),
-//                                        ),
-//                                      ],
-//                                    ),
-//                                  ),
-//                                ),
-//                              ),
-//
-//                              SizedBox(
-//                                height: 7,
-//                              ),
-//
-//                              Container(
-//                                child: Container(
-//                                  alignment: Alignment.center,
-//                                  child: Row(
-//                                    children: <Widget>[
-//                                      Container(
-////                          height: MediaQuery
-////                              .of(context)
-////                              .size
-////                              .height - 740,
-////                          width: MediaQuery
-////                              .of(context)
-////                              .size
-////                              .width - 227,
-//                                        child: EditProductManufacturerDropDown(
-//                                          manufac: manufac.toString(),
-//                                          previous_id: manufacID.toString(),
-//                                        ),
-//                                      ),
-//                                    ],
-//                                  ),
-//                                ),
-//                              ),
-//
-//                              //eituk porjonto
-//                            ],
-//                          ),
                             ),
                           );
                         } else if (snapshot.hasError) {
@@ -1298,5 +967,52 @@ class _ProductEditPageState extends State<ProductEditPage> {
 
 //            productName.text = data[index].productDescription;
         });
+  }
+
+  void onCaptureButtonPressed() async {
+    //on camera button press
+    try {
+      List<StorageInfo> storageInfo = await PathProviderEx.getStorageInfo();
+      var root = storageInfo[0].rootDir +
+          "/Indentit/Photos"; //storageInfo[1] for SD card, getting the root directory
+
+      print(root.toString());
+
+      final path = join(
+        (root.toString()),
+        '${(int.parse(id)).toString()}.png',
+      );
+
+      setState(() {
+        ImagePath = root;
+      });
+      await _controller.takePicture(path); //take photo
+
+      setState(() {
+        showCapturedPhoto = true;
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> deleteFile(String file_name) async {
+    List<StorageInfo> storageInfo = await PathProviderEx.getStorageInfo();
+    var root = storageInfo[0].rootDir +
+        "/Indentit/Photos"; //storageInfo[1] for SD card, getting the root directory
+
+    print(root.toString() + " and file is " + file_name.toString());
+
+    try {
+      var file = File(file_name.toString());
+
+      if (await file.exists()) {
+        // file exits, it is safe to call delete on it
+        await file.delete();
+      }
+    } catch (e) {
+      // error in getting access to the file
+      print("Error");
+    }
   }
 }

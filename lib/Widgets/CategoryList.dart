@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_translate/global.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'SystemSettings.dart';
+import '../UI/SystemSettings.dart';
 
 class CategoryList extends StatefulWidget {
   @override

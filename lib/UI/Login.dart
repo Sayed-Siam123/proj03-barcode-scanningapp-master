@@ -38,6 +38,8 @@ class _LoginPageState extends State<LoginPage> {
     userbloc.dispose();
   }
 
+  String language = "";
+
   void getLang() async {
     Future<String> lang = prefs.getData("language_code");
     lang.then((data) async {
@@ -78,7 +80,7 @@ class _LoginPageState extends State<LoginPage> {
 
 
   SessionManager prefs = SessionManager();
-  String language = "";
+
 
   @override
   Widget build(BuildContext context) {

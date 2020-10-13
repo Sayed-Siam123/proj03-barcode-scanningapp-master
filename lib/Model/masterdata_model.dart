@@ -2,12 +2,12 @@ class MasterDataModel{
 
   String id=null;
   String product_id=null,manufacturerName=null,gtin=null,productId=null,productName=null,subCategoryName=null,categoryName=null,productDescription=null,referenceNo=null,listPrice=null,productWeight=null,packagingUnit=null,productPicture=null;
-  String updateFlag=null,newFlag=null;
+  String updateFlag=null,newFlag=null, price_show = null;
   String manufacturerId=null,manufacturerPN=null,unitId=null,categoryNameId=null,subCategoryNameId=null,isTransferToApp=null,isOrderableViaApp=null,productLength=null,productHeight=null,productWidth=null,unitName=null;
 
 
   MasterDataModel({this.gtin,this.product_id,this.categoryName,this.id,this.listPrice,this.manufacturerName,this.packagingUnit,this.productDescription,this.productId,this.productPicture,
-  this.productName,this.productWeight,this.referenceNo,this.subCategoryName,this.updateFlag,this.newFlag,
+  this.productName,this.productWeight,this.referenceNo,this.subCategoryName,this.updateFlag,this.newFlag,this.price_show,
     this.manufacturerId,this.manufacturerPN,this.unitId,this.categoryNameId,this.subCategoryNameId,this.isTransferToApp,this.isOrderableViaApp,this.productLength,this.productHeight,this.productWidth,this.unitName});
 
   MasterDataModel.withID({this.gtin,this.product_id,this.categoryName,this.listPrice,this.manufacturerName,this.packagingUnit,this.productDescription,this.productId,this.productPicture,
@@ -296,5 +296,71 @@ class SingleMasterDataModel{
       
     );
   }
+
+}
+
+class MasterDataModelV2{
+  String id=null,gtin=null,productDescription=null,listPrice=null,productPicture=null,updateFlag=null,newFlag=null,price_show = null;
+
+  MasterDataModelV2({this.id,this.gtin,this.productDescription,this.listPrice,this.productPicture,this.updateFlag,this.newFlag,this.price_show});
+
+  Map<String, dynamic> toMap() => {
+    "id" : this.id,  //product id te id pathabo
+    "gtin" : this.gtin,
+    "productDescription" : this.productDescription,
+    "listPrice" : this.listPrice,
+    "productPicture" : this.productPicture,
+    "updateFlag" : this.updateFlag,
+    "newFlag" : this.newFlag,
+
+  };
+
+
+
+  factory MasterDataModelV2.fromJson(Map<dynamic, dynamic> json) {
+    return MasterDataModelV2(
+      id: json['id'],
+      productPicture: json['productPicture'],
+      gtin: json['gtin'],
+      listPrice: json['listPrice'],
+      productDescription: json['productDescription'],
+      updateFlag: json['updateFlag'],
+      newFlag: json['newFlag'],
+    );
+  }
+
+
+}
+
+class SingleMasterDataModelV2{
+  String id=null,gtin=null,productDescription=null,listPrice=null,productPicture=null,updateFlag=null,newFlag=null,price_show = null;
+
+  SingleMasterDataModelV2({this.id,this.gtin,this.productDescription,this.listPrice,this.productPicture,this.updateFlag,this.newFlag,this.price_show});
+
+  Map<String, dynamic> toMap() => {
+    "id" : this.id,  //product id te id pathabo
+    "gtin" : this.gtin,
+    "productDescription" : this.productDescription,
+    "listPrice" : this.listPrice,
+    "productPicture" : this.productPicture,
+    "updateFlag" : this.updateFlag,
+    "newFlag" : this.newFlag,
+
+  };
+
+
+
+  factory SingleMasterDataModelV2.fromJson(Map<dynamic, dynamic> json) {
+    return SingleMasterDataModelV2(
+      id: json['id'],
+      productPicture: json['productPicture'],
+      gtin: json['gtin'],
+      listPrice: json['listPrice'],
+      productDescription: json['productDescription'],
+      updateFlag: json['updateFlag'],
+      newFlag: json['newFlag'],
+    );
+  }
+
 
 }

@@ -72,6 +72,7 @@
 	"pickup" : "Pick up",
 	"pickup_desc" : "Collect Shipment",
 	"system_setting" : "System Setting",
+	"file_upload" : "File Upload",
 	"masterdata" : "Masterdata",
 	"logout" : "Logout",
 

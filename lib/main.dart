@@ -14,13 +14,14 @@ import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_stetho/flutter_stetho.dart';
 import 'package:get/get.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:beauty_textfield/beauty_textfield.dart';
 import 'package:flutter/gestures.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 import 'dart:async';
@@ -30,6 +31,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:splashscreen/splashscreen.dart';
 import 'package:sweetalert/sweetalert.dart';
 
+import 'dart:io' as Io;
 //importing master data
 import 'Handler/app_localizations.dart';
 import 'Resources/SharedPrefer.dart';
@@ -43,8 +45,6 @@ import 'package:flutter_translate/flutter_translate.dart';
 Future<void> main() async {
   var delegate = await LocalizationDelegate.create(
       fallbackLocale: 'en_US', supportedLocales: ['en_US', 'de']);
-
-  Stetho.initialize();
   WidgetsFlutterBinding.ensureInitialized();
   // AppLanguage appLanguage = AppLanguage();
   // await appLanguage.fetchLocale();
@@ -157,6 +157,7 @@ class _SplashState extends State<Splash> {
   StreamSubscription streamerforIChecker;
   ConnectivityResult result;
 
+
   final _resetKey1 = GlobalKey<FormState>();
   final _resetKey2 = GlobalKey<FormState>();
   bool _resetValidate1 = false;
@@ -222,6 +223,7 @@ class _SplashState extends State<Splash> {
     Timer(Duration(seconds: 2), () {
       getLogin();
       getLoginUserid();
+      _createFolder();
     });
 
     //print(LocaleKeys.msg_named.tr());
@@ -246,6 +248,91 @@ class _SplashState extends State<Splash> {
 
 
   }
+
+
+    void createDir() async {
+    //Directory base = await getExternalStorageDirectory(); //only for Android
+     //Directory base = await getApplicationSupportDirectory(); //works for both iOS and Android
+
+    //Directory base = await getApplicationDocumentsDirectory();
+    // var path = await ExtStorage.getExternalStorageDirectory();
+    // String dirToBeCreated = "identit";
+    // String base = "storage/emulated/0";
+    // String finalDir = path+"/"+dirToBeCreated;
+    // print(path);
+
+    // var dir = Directory(finalDir);
+    // bool dirExists = await dir.exists();
+    // if(!dirExists){
+    //   // final Permission _permissionHandler = Permission();
+    //   // var result = await _permissionHandler.request();
+    //   // if (permissionResult == PermissionStatus.authorized){
+    //   //   dir.create(/*recursive=true*/); //pass recursive as true if directory is recursive
+    //   // }
+    //   var _status;
+    //   var status = await Permission.storage.status;
+    //   if (!status.isGranted) {
+    //     await Permission.storage.request().whenComplete(() async{
+    //       print("Granted");
+    //       Timer(Duration(milliseconds: 50), () {
+    //         new Directory('/storage/emulated/0/identit').create()
+    //         // The created directory is returned as a Future.
+    //             .then((Directory directory) {
+    //           print(directory.path);
+    //         });
+    //       });
+    //       print("Created");
+    //     });
+    //   }
+    //   else{
+    //     print("Permitted");
+    //     print(status.toString());
+    //     new Directory('/storage/emulated/0/identit').create()
+    //     // The created directory is returned as a Future.
+    //         .then((Directory directory) {
+    //       print(directory.path);
+    //     });
+    //   }
+    // }
+    //Now you can use this directory for saving file, etc.
+    //In case you are using external storage, make sure you have storage permissions.
+  }
+
+  // _createFolder()async{
+  //   final folderName="some_name";
+  //   final path= Directory("storage/emulated/0/$folderName");
+  //   if ((await path.exists())){
+  //     // TODO:
+  //     print("exist");
+  //   }else{
+  //     // TODO:
+  //     print("not exist");
+  //     path.create();
+  //   }}
+
+
+  Future<String> _createFolder() async {
+    final folderName = "Indentit";
+    final path = Directory("storage/emulated/0/$folderName");
+    var status = await Permission.storage.status;
+    if (!status.isGranted) {
+      await Permission.storage.request();
+    }
+    if ((await path.exists())) {
+      return path.path;
+    } else {
+      path.create().whenComplete(() {
+        new Directory("storage/emulated/0/$folderName/"+"Masterdata").create();
+        new Directory("storage/emulated/0/$folderName/"+"Photos").create();
+        new Directory("storage/emulated/0/$folderName/"+"Photo documentation").create();
+
+      });
+      return path.path;
+    }
+  }
+
+
+
 
   _showDialog() async {
     await Future.delayed(Duration(seconds: 2));

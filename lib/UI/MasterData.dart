@@ -6,6 +6,7 @@ import 'package:app/Model/masterdata_model.dart';
 import 'package:app/UI/AddProduct.dart';
 import 'package:app/UI/Home.dart';
 import 'package:app/Widgets/MastarDataWidget.dart';
+import 'package:app/resources/SharedPrefer.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:barcode_scan/platform_wrapper.dart';
 import 'package:connectivity/connectivity.dart';
@@ -16,6 +17,7 @@ import 'package:flutter_translate/global.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:multilevel_drawer/multilevel_drawer.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:responsive_screen/responsive_screen.dart';
 import 'package:sweetalert/sweetalert.dart';
 
 class MasterData extends StatefulWidget {
@@ -32,8 +34,12 @@ class _MasterDataState extends State<MasterData> {
   bool _isSearching = false;
   String searchQuery = "Search query";
   ProgressDialog pr;
-  List<MasterDataModel> _newData = [];
-  List<MasterDataModel> fetcheddata = [];
+  // List<MasterDataModel> _newData = [];
+  // List<MasterDataModel> fetcheddata = [];
+
+  List<MasterDataModelV2> _newData = [];
+  List<MasterDataModelV2> fetcheddata = [];
+
 
   StreamSubscription streamerforIChecker;
   ConnectivityResult result;
@@ -42,11 +48,38 @@ class _MasterDataState extends State<MasterData> {
   ScanResult barcode;
 
   //String _scanBarcode = 'Unknown';
+  bool price_status;
+  String _managePricesKey = "_managePrices";
+
+
+  SessionManager prefs = SessionManager();
+
+  void getpriceShowStatus() async {
+    Future<bool> serverip = prefs.getBoolData(_managePricesKey);
+    serverip.then((data) async {
+      print('price show status pabo');
+      print("price show status " + data.toString());
+
+      setState(() {
+        price_status = data;
+      });
+      print(price_status.toString());
+
+//      Future.delayed(const Duration(milliseconds: 1000), () {
+//
+//      });
+    }, onError: (e) {
+      print(e);
+    });
+  }
 
   @override
   initState() {
-    masterdata_bloc.fetchAllMasterdatafromDB();
+    masterdata_bloc.fetchAllMasterdatafromDBV2();
     super.initState();
+    Timer(Duration(microseconds: 50), () {
+      getpriceShowStatus();
+    });
   }
 
   _showDialog(String title) async {
@@ -117,6 +150,10 @@ class _MasterDataState extends State<MasterData> {
   }
 
   Widget build(BuildContext context) {
+
+    dynamic hp = Screen(context).hp;
+    dynamic wp = Screen(context).wp;
+
     _showDialog2(context);
     return WillPopScope(
       onWillPop: () => Navigator.push(
@@ -147,9 +184,9 @@ class _MasterDataState extends State<MasterData> {
         ),
         body: Container(
           color: Theme.of(context).backgroundColor,
-          child: StreamBuilder<List<MasterDataModel>>(
-            stream: masterdata_bloc.allMasterData,
-            builder: (context, AsyncSnapshot<List<MasterDataModel>> snapshot) {
+          child: StreamBuilder<List<MasterDataModelV2>>(
+            stream: masterdata_bloc.allMasterDataV2,
+            builder: (context, AsyncSnapshot<List<MasterDataModelV2>> snapshot) {
               if (snapshot.hasData) {
                 fetcheddata = snapshot.data;
                 //_newData = fetcheddata;
@@ -161,7 +198,7 @@ class _MasterDataState extends State<MasterData> {
                 //TODO::filter amake oi newlist theke kora lagbe search korar jonne
 
                 print(fetcheddata.length);
-                return masterdataview(fetcheddata);
+                return masterdataview(hp(100),wp(100),fetcheddata);
               } else if (snapshot.hasError) {
                 return Text("${snapshot.error}");
               }
@@ -241,14 +278,24 @@ class _MasterDataState extends State<MasterData> {
                   onPressed: () {
                     print("jabs");
 
-                    int lastID = int.parse(fetcheddata.last.id.toString());
+                    //dynamic lastID = int.parse(fetcheddata.last.id.toString())?? 0;
 
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AddProductPage(
-                                  id: lastID,
-                                )));
+                    if(fetcheddata.length == 0){
+                      print("0");
+                      Navigator.push(
+                          context, MaterialPageRoute(
+                                 builder: (context) => AddProductPage(id: 0)));
+                    }
+
+                    else{
+                      print("1");
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AddProductPage(
+                                id: int.parse(fetcheddata.last.id.toString()),
+                              )));
+                    }
                     // Add your onPressed code here!
                   },
                   child: Icon(
@@ -359,9 +406,7 @@ class _MasterDataState extends State<MasterData> {
     }
 
     fetcheddata.forEach((userDetail) {
-      if (userDetail.categoryName.toLowerCase().contains(text.toLowerCase()) ||
-          userDetail.gtin.toLowerCase().contains(text.toLowerCase()) ||
-          userDetail.productName.toLowerCase().contains(text.toLowerCase()))
+      if (userDetail.gtin.toLowerCase().contains(text.toLowerCase()))
         _newData.add(userDetail);
     });
 
@@ -426,14 +471,17 @@ class _MasterDataState extends State<MasterData> {
     }
   }
 
-  Widget masterdataview(data) {
+  Widget masterdataview(height,width,data) {
+    dynamic hp = Hp(height).hp;
+    dynamic wp = Wp(width).wp;
+
     return _newData.length != 0 || _searchQueryController.text.isNotEmpty
         ? RefreshIndicator(
             key: _refreshIndicatorKey,
             // ignore: missing_return
             onRefresh: () {
-              masterdata_bloc.fetchAllMasterData();
-              masterdata_bloc.fetchAllMasterdatafromDB();
+              //masterdata_bloc.fetchAllMasterData();
+              return masterdata_bloc.fetchAllMasterdatafromDBV2();
             },
             child: ListView.builder(
                 scrollDirection: Axis.vertical,
@@ -442,11 +490,16 @@ class _MasterDataState extends State<MasterData> {
                   return Column(
                     children: <Widget>[
                       MasterDataWidget(
+                        height: hp(100),
+                        width: wp(100),
                         gtin: _newData[index].gtin,
-                        product_name: _newData[index].productName,
-                        category: _newData[index].categoryName,
                         product_id: _newData[index].id,
+                        product_desc: _newData[index].productDescription,
                         productPicture: _newData[index].productPicture,
+                        listprice: _newData[index].listPrice,
+                        show_price: price_status.toString(),
+                        newFlag: _newData[index].newFlag,
+                        updateFlag: _newData[index].updateFlag,
                       ),
                       SizedBox(
                         height: 0,
@@ -459,8 +512,8 @@ class _MasterDataState extends State<MasterData> {
             key: _refreshIndicatorKey,
             // ignore: missing_return
             onRefresh: () {
-              masterdata_bloc.fetchAllMasterData();
-              masterdata_bloc.fetchAllMasterdatafromDB();
+              //masterdata_bloc.fetchAllMasterData();
+              return masterdata_bloc.fetchAllMasterdatafromDBV2();
             },
             child: ListView.builder(
                 scrollDirection: Axis.vertical,
@@ -469,11 +522,16 @@ class _MasterDataState extends State<MasterData> {
                   return Column(
                     children: <Widget>[
                       MasterDataWidget(
+                        height: hp(100),
+                        width: wp(100),
+                        product_desc: data[index].productDescription,
                         gtin: data[index].gtin,
-                        product_name: data[index].productName,
-                        category: data[index].categoryName,
                         product_id: data[index].id,
                         productPicture: data[index].productPicture,
+                        listprice: data[index].listPrice,
+                        show_price: price_status.toString(),
+                        newFlag: data[index].newFlag,
+                        updateFlag: data[index].updateFlag,
                       ),
                       SizedBox(
                         height: 0,

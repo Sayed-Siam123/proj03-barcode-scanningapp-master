@@ -14,19 +14,19 @@ class _ProductGeneralPageState extends State<ProductGeneralPage> {
   @override
   void initState() {
     // TODO: implement initState
-    masterdata_bloc.getsinglemasterdatafromDB();
+    masterdata_bloc.getsinglemasterdatafromDBV2();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: StreamBuilder<List<SingleMasterDataModel>>(
-          stream: masterdata_bloc.singleMasterData,
+      child: StreamBuilder<List<SingleMasterDataModelV2>>(
+          stream: masterdata_bloc.singleMasterDatav2,
           builder:
-              (context, AsyncSnapshot<List<SingleMasterDataModel>> snapshot) {
+              (context, AsyncSnapshot<List<SingleMasterDataModelV2>> snapshot) {
             if (snapshot.hasData) {
-              List<SingleMasterDataModel> data = snapshot.data;
+              List<SingleMasterDataModelV2> data = snapshot.data;
               print("Data gula:: ");
               print(data.length);
               return masterdataview(data);
@@ -135,16 +135,6 @@ class _ProductGeneralPageState extends State<ProductGeneralPage> {
                                       md: 3,
                                       child: Column(
                                         children: <Widget>[
-                                          Container(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(data[0].productName,
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                              ),),
-                                          ),
-
-                                          SizedBox(height: 5,),
-
 
                                           Container(
                                             alignment: Alignment.centerLeft,
@@ -165,38 +155,8 @@ class _ProductGeneralPageState extends State<ProductGeneralPage> {
                                               ),),
                                           ),
 
-                                          SizedBox(height: 5,),
-
-
-                                          Container(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(data[0].categoryName,
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                              ),),
-                                          ),
 
                                           SizedBox(height: 5,),
-
-
-                                          Container(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(data[0].subCategoryName,
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                              ),),
-                                          ),
-
-                                          SizedBox(height: 5,),
-
-
-                                          Container(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(data[0].unitId,
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                              ),),
-                                          ),
                                         ],
 
                                       ),
@@ -242,25 +202,6 @@ class _ProductGeneralPageState extends State<ProductGeneralPage> {
                               md: 3,
                               child: Column(
                                 children: <Widget>[
-                                  Container(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text("Manufacturer:",
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                      ),),
-                                  ),
-
-                                  SizedBox(height: 5,),
-
-                                  Container(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text("Manufacturer PN:",
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                      ),),
-                                  ),
-
-                                  SizedBox(height: 5,),
 
                                   Container(
                                     alignment: Alignment.centerLeft,
@@ -274,7 +215,7 @@ class _ProductGeneralPageState extends State<ProductGeneralPage> {
 
                                   Container(
                                     alignment: Alignment.centerLeft,
-                                    child: Text("GTIN:",
+                                    child: Text("Barcode:",
                                       style: TextStyle(
                                         fontSize: 16,
                                       ),),
@@ -284,7 +225,7 @@ class _ProductGeneralPageState extends State<ProductGeneralPage> {
 
                                   Container(
                                     alignment: Alignment.centerLeft,
-                                    child: Text("Listprice:",
+                                    child: Text("Price:",
                                       style: TextStyle(
                                         fontSize: 16,
                                       ),),
@@ -298,28 +239,6 @@ class _ProductGeneralPageState extends State<ProductGeneralPage> {
                               md: 3,
                               child: Column(
                                 children: <Widget>[
-                                  Container(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(data[0].manufacturerName,
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                      ),),
-                                  ),
-
-                                  SizedBox(height: 5,),
-
-
-                                  Container(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text("" ,
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                      ),),
-                                  ),
-
-                                  SizedBox(height: 5,),
-
-
                                   Container(
                                     alignment: Alignment.centerLeft,
                                     child: Text(data[0].id,

@@ -145,9 +145,22 @@ class Repository {
   //TODO:: MASTER DATA DB CONFIG AND OPERATION :: START
 
   Future insertMasterdata(MasterDataModel productinfo) => dbprovider.insertMasterdata(productinfo);
+  Future insertMasterdataV2(MasterDataModelV2 productinfo) => dbprovider.insertMasterdataV2(productinfo);
+
+
   Future<List<MasterDataModel>> getAllMAsterProduct() => dbprovider.getAllMAsterProduct();
+  Future<List<MasterDataModelV2>> getAllMasterProductV2() => dbprovider.getAllMAsterProductV2();
+
   Future<List<SingleMasterDataModel>> getsinglemasterdatafromDB(String id) => dbprovider.getsinglemasterdatafromDB(id);
+  Future<List<SingleMasterDataModelV2>> getsinglemasterdatafromDBV2(String id) => dbprovider.getsinglemasterdatafromDBV2(id);
+
   Future updateMaster(MasterDataModel product) => dbprovider.updateMaster(product);
+  Future updateMasterV2(MasterDataModelV2 product) => dbprovider.updateMasterV2(product);
+
+  Future deleteMasterV2(int id) => dbprovider.deleteMaterdataV2(id);
+
+//deleteMasterV2
+
   Future deleteAllMasterdataTable() => dbprovider.deleteAllMasterdataTable();
   Future<List<MasterDataModel>> getAllMAsterNewProduct() => dbprovider.getAllMAsterNewProduct();
   Future<List<MasterDataModel>> getAllMAsterUpdateProduct() => dbprovider.getAllMAsterUpdateProduct();

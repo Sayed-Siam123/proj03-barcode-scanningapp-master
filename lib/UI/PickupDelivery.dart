@@ -6,7 +6,7 @@ import 'package:app/Resources/SharedPrefer.dart';
 import 'package:app/Resources/database_helper.dart';
 import 'package:app/UI/Home.dart';
 import 'package:app/UI/PickupSummary.dart';
-import 'package:app/Widgets/SystemSettings.dart';
+import 'package:app/UI/SystemSettings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/global.dart';
