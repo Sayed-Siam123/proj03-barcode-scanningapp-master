@@ -713,6 +713,23 @@ class ProductDB {
     return products;
   }
 
+  Future<int> deleteLastDataAcqui(int id) async {
+    final db = await dataAcquiDBprovider.database;
+    var result = await db.delete(
+        dataAcquiTABLE, where: 'id = ?', whereArgs: [id]);
+
+    return result;
+  }
+
+  Future deleteAllDataAcqui() async {
+    final db = await dataAcquiDBprovider.database;
+    var result = await db.delete(
+      dataAcquiTABLE,
+    );
+
+    return result;
+  }
+
 //Data Acquisition DB END
 
 }

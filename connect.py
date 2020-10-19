@@ -10,4 +10,4 @@ os.system("adb tcpip 5555")
 
 os.system("adb connect 192.168.0.100")
 
-#os.system("adb connect 10.239.195.208")
+#os.system("adb connect 10.217.13.104")

@@ -171,13 +171,19 @@ class _CreateDataAcquisitionWidgetState extends State<CreateDataAcquisitionWidge
                   child: RaisedButton(
                     onPressed: (){
 
-                      createFiles(filename.text.toString(),_fileformatValue.toString());
-                      snackbar.snackbarshowNormal(context, filename.text.toString()+"."+_fileformatValue.toString()+" created", 4, Colors.black87);
+                      if(_fileformatValue == "null"){
+                        snackbar.snackbarshowAction(context, "Set the file format first", 4, Colors.black87);
+                      }
 
-                      Timer(Duration(seconds: 2),(){
-                        Navigator.push(
-                            context, MaterialPageRoute(builder: (context) => DataAcquisition_barcodeAddPage(file_name: filename.text.toString())));
-                      });
+                      else{
+                        createFiles(filename.text.toString(),_fileformatValue.toString());
+                        snackbar.snackbarshowNormal(context, filename.text.toString()+"."+_fileformatValue.toString()+" created", 4, Colors.black87);
+
+                        Timer(Duration(seconds: 2),(){
+                          Navigator.push(
+                              context, MaterialPageRoute(builder: (context) => DataAcquisition_barcodeAddPage(file_name: filename.text.toString(),file_format: _fileformatValue.toString(),)));
+                        });
+                      }
 
                       //filename.text = "";
 

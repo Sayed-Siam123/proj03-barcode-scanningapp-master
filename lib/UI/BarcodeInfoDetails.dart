@@ -71,7 +71,7 @@ class _BarcodeInfoDetailsPageState extends State<BarcodeInfoDetailsPage>
     masterdata_bloc.getsinglemasterdatafromDBV2();
     _tabController = new TabController(length: 3, vsync: this);
     super.initState();
-    Timer(Duration(seconds: 1), () {
+    Timer(Duration(milliseconds: 50), () {
       getName();
     });
   }

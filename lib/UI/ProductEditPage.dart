@@ -100,21 +100,58 @@ class _ProductEditPageState extends State<ProductEditPage> {
   FileType _pickingType;
 
   void _openFileExplorer() async {
+
+    setState(() {
+      showCapturedPhoto = false;
+      imageCache.clear();
+    });
+
     try {
       _paths = null;
       _path = await FilePicker.getFilePath(type: FileType.any);
-    } on PlatformException catch (e) {
+    }
+    on PlatformException catch (e) {
       print("Unsupported operation" + e.toString());
     }
     if (!mounted) return;
 
     setState(() {
-      _fileName = _path != null
-          ? _path.split('/').last
-          : _paths != null ? _paths.keys.toString() : '...';
+      _fileName = _path != null ? _path
+          .split('/')
+          .last : _paths != null ? _paths.keys.toString() : '...';
     });
     print(_fileName.toString());
     print(_path.toString());
+    getImagefromStorage(_path.toString(), _fileName.toString());
+  }
+
+  void getImagefromStorage(String path,String fileName) async{
+    print("path is "+path);
+    List<StorageInfo> storageInfo = await PathProviderEx.getStorageInfo();
+    var root = storageInfo[0].rootDir +
+        "/Indentit/Photos"; //storageInfo[1] for SD card, getting the root directory
+
+    print(root.toString());
+
+    moveFile(File(path), root+"/"+'$id.png',root);
+  }
+
+
+  Future<File> moveFile(File sourceFile, String newPath,String root) async {
+    try {
+      /// prefer using rename as it is probably faster
+      /// if same directory path
+
+      setState(() {
+        ImagePath = root;
+        showCapturedPhoto = true;
+      });
+      return await sourceFile.rename(newPath);
+    } catch (e) {
+      /// if rename fails, copy the source file and then delete it
+      final newFile = await sourceFile.copy(newPath);
+      return newFile;
+    }
   }
 
   void imagePath() async{

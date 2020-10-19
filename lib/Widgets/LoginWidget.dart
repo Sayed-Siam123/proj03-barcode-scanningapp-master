@@ -43,12 +43,14 @@ class _LoginWidgetState extends State<LoginWidget> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  bool _validate1;
-  bool _validate2;
+
 
   String deviceID = "", serverIP = "", serverPort = "", serverLog = "";
 
   UserLogin_Success_Model success;
+
+  bool _validate1;
+  bool _validate2;
 
   String errortext1 = "*username can\'t be empty";
   String errortext2 = "*password can\'t be empty";

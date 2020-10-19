@@ -37,9 +37,9 @@ class _BarcodeComparisonWidgetState extends State<BarcodeComparisonWidget> {
 
 
 
-  List<MasterDataModel> fetcheddata= [];
-  List<MasterDataModel> _newData= [];
-  List<MasterDataModel> _newData2= [];
+  List<MasterDataModelV2> fetcheddata= [];
+  List<MasterDataModelV2> _newData= [];
+  List<MasterDataModelV2> _newData2= [];
 
   bool status1 = false;
   bool status2 = false;
@@ -48,7 +48,7 @@ class _BarcodeComparisonWidgetState extends State<BarcodeComparisonWidget> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    masterdata_bloc.fetchAllMasterdatafromDB();
+    masterdata_bloc.fetchAllMasterdatafromDBV2();
   }
 
 
@@ -64,9 +64,9 @@ class _BarcodeComparisonWidgetState extends State<BarcodeComparisonWidget> {
             child: Stack(
               children: <Widget>[
 
-                StreamBuilder<List<MasterDataModel>>(
-                  stream: masterdata_bloc.allMasterData,
-                  builder: (context, AsyncSnapshot<List<MasterDataModel>> snapshot) {
+                StreamBuilder<List<MasterDataModelV2>>(
+                  stream: masterdata_bloc.allMasterDataV2,
+                  builder: (context, AsyncSnapshot<List<MasterDataModelV2>> snapshot) {
                     if (snapshot.hasData) {
                       fetcheddata = snapshot.data;
                       //_newData = fetcheddata;

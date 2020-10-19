@@ -7,8 +7,10 @@ import 'package:responsive_screen/responsive_screen.dart';
 class DataAcquisition_barcodeAddPage extends StatefulWidget {
 
   String file_name;
+  String file_format;
 
-  DataAcquisition_barcodeAddPage({this.file_name});
+
+  DataAcquisition_barcodeAddPage({this.file_name,this.file_format});
 
   @override
   _DataAcquisition_barcodeAddPageState createState() => _DataAcquisition_barcodeAddPageState();
@@ -50,15 +52,8 @@ class _DataAcquisition_barcodeAddPageState extends State<DataAcquisition_barcode
           )
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: (){
-
-        },
-        child: Icon(Icons.description,color: Colors.white),
-        backgroundColor: Colors.green.shade500,
-      ),
       body: OrientationLayoutBuilder(
-        portrait: (context) => DataAcquisition_barcodeAddWidget(height: hp(100),width: wp(100),file_name: widget.file_name,),
+        portrait: (context) => DataAcquisition_barcodeAddWidget(height: hp(100),width: wp(100),file_name: widget.file_name,file_format: widget.file_format,),
       ),
     );
   }

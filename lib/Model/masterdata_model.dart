@@ -1,3 +1,5 @@
+import 'package:app/Model/PhotoDocumentationImageModel.dart';
+
 class MasterDataModel{
 
   String id=null;
@@ -301,8 +303,9 @@ class SingleMasterDataModel{
 
 class MasterDataModelV2{
   String id=null,gtin=null,productDescription=null,listPrice=null,productPicture=null,updateFlag=null,newFlag=null,price_show = null;
+  PhotoDocumentationImageModel photos;
 
-  MasterDataModelV2({this.id,this.gtin,this.productDescription,this.listPrice,this.productPicture,this.updateFlag,this.newFlag,this.price_show});
+  MasterDataModelV2({this.id,this.gtin,this.productDescription,this.listPrice,this.productPicture,this.updateFlag,this.newFlag,this.price_show,this.photos});
 
   Map<String, dynamic> toMap() => {
     "id" : this.id,  //product id te id pathabo
@@ -312,7 +315,6 @@ class MasterDataModelV2{
     "productPicture" : this.productPicture,
     "updateFlag" : this.updateFlag,
     "newFlag" : this.newFlag,
-
   };
 
 

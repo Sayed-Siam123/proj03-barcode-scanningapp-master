@@ -62,6 +62,18 @@ class _AddProductPageState extends State<AddProductPage> {
   bool _hasValidMime = false;
   FileType _pickingType;
 
+
+  bool _validate1_prodDesc;
+  bool _validate2_barcode;
+  bool _validate3_price;
+  bool _validate4_image;
+
+
+  String errortext1_prodDesc = "*Product description can\'t be empty";
+  String errortext2_barcode = "*barcode can\'t be empty";
+  String errortext3_price = "*price can\'t be empty";
+  String errortext4_image = "*Product image not found";
+
   @override
   void initState() {
     // TODO: implement initState
@@ -84,6 +96,12 @@ class _AddProductPageState extends State<AddProductPage> {
   }
 
   void _openFileExplorer() async {
+
+    setState(() {
+      showCapturedPhoto = false;
+      imageCache.clear();
+    });
+
     try {
       _paths = null;
       _path = await FilePicker.getFilePath(type: FileType.any);
@@ -100,6 +118,7 @@ class _AddProductPageState extends State<AddProductPage> {
     });
     print(_fileName.toString());
     print(_path.toString());
+    getImagefromStorage(_path.toString(), _fileName.toString());
   }
 
   @override
@@ -155,6 +174,72 @@ class _AddProductPageState extends State<AddProductPage> {
                 color: Colors.black54,
               ),
               onPressed: () {
+
+//              Fluttertoast.showToast(
+//                  msg: "Product Added!",
+//                  toastLength: Toast.LENGTH_SHORT,
+//                  gravity: ToastGravity.BOTTOM,
+//                  timeInSecForIosWeb: 1,
+//                  backgroundColor: Colors.green,
+//                  textColor: Colors.white,
+//                  fontSize: 16.0);  //TODO:: TOAST EXAMPLE
+
+
+              if(ProductDesc.text.isEmpty &&  ProductDesc.text == ""){
+                setState(() {
+                  _validate1_prodDesc = false;
+                  _validate2_barcode = true;
+                  _validate3_price = true;
+                  _validate4_image = true;
+
+                });
+              }
+
+              else if(gtin.text.isEmpty &&  gtin.text == ""){
+                setState(() {
+                  _validate1_prodDesc = true;
+                  _validate2_barcode = false;
+                  _validate3_price = true;
+                  _validate4_image = true;
+
+                });
+              }
+
+              else if(ListPrice.text.isEmpty && ListPrice.text == ""){
+                setState(() {
+                  _validate1_prodDesc = true;
+                  _validate2_barcode = true;
+                  _validate3_price = false;
+                  _validate4_image = true;
+
+                });
+              }
+
+              else if(ImagePath.toString() == "null"){
+                setState(() {
+                  _validate1_prodDesc = true;
+                  _validate2_barcode = true;
+                  _validate3_price = true;
+                  _validate4_image = false;
+
+                });
+              }
+
+              else{
+                setState(() {
+                  _validate1_prodDesc = true;
+                  _validate2_barcode = true;
+                  _validate3_price = true;
+                  _validate4_image = true;
+
+                });
+              }
+
+              print(ImagePath.toString());
+
+              if(_validate1_prodDesc && _validate2_barcode && _validate3_price){
+               print("all validate");
+
                 sublist_bloc.getProductID((widget.id + 1).toString());
                 sublist_bloc.getProductDesc(ProductDesc.text);
                 sublist_bloc.getGtin(gtin.text);
@@ -166,31 +251,30 @@ class _AddProductPageState extends State<AddProductPage> {
                 sublist_bloc.dispose();
                 masterdata_bloc.fetchAllMasterdatafromDBV2();
 
-//              Fluttertoast.showToast(
-//                  msg: "Product Added!",
-//                  toastLength: Toast.LENGTH_SHORT,
-//                  gravity: ToastGravity.BOTTOM,
-//                  timeInSecForIosWeb: 1,
-//                  backgroundColor: Colors.green,
-//                  textColor: Colors.white,
-//                  fontSize: 16.0);  //TODO:: TOAST EXAMPLE
 
-                _scaffoldKey.currentState.showSnackBar(SnackBar(
-                  content: Text(
-                    'Product Added Succesfully',
-                    style: GoogleFonts.exo2(
-                      textStyle: TextStyle(
-                        fontSize: 14,
-                      ),
-                    ),
-                  ),
-                  duration: Duration(seconds: 3),
-                ));
+               _scaffoldKey.currentState.showSnackBar(SnackBar(
+                 content: Text(
+                   'Product Added Succesfully',
+                   style: GoogleFonts.exo2(
+                     textStyle: TextStyle(
+                       fontSize: 14,
+                     ),
+                   ),
+                 ),
+                 duration: Duration(seconds: 3),
+               ));
 
-                Timer(Duration(seconds: 3), () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => MasterData()));
-                }); //TODO:: DELAY EXAMPLE
+               Timer(Duration(seconds: 3), () {
+                 Navigator.push(context,
+                     MaterialPageRoute(builder: (context) => MasterData()));
+               }); //TODO:: DELAY EXAMPLE
+
+              }
+
+              else{
+                print("Not validate");
+              }
+
               },
             ),
           ],
@@ -247,8 +331,8 @@ class _AddProductPageState extends State<AddProductPage> {
                           Container(
                             height: 50,
                             alignment: Alignment.center,
-                            margin: const EdgeInsets.only(
-                                top: 0, left: 0, right: 0),
+                            margin:  EdgeInsets.only(
+                                top: 0, left: 0, right: 0,bottom: hp(.5)),
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(10),
@@ -292,12 +376,19 @@ class _AddProductPageState extends State<AddProductPage> {
                                   )),
                             ),
                           ),
+
+                          _validate1_prodDesc == false ? Text(errortext1_prodDesc,style: TextStyle(
+                              fontSize: hp(1.5),
+                              color: Colors.red.shade500
+                          ),):Text(""),
+
                         ],
                       ),
                     ),
                   ),
+
                   Padding(
-                    padding: EdgeInsets.only(top: hp(19), bottom: hp(1)),
+                    padding: EdgeInsets.only(top: hp(21), bottom: hp(1)),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Column(
@@ -315,8 +406,8 @@ class _AddProductPageState extends State<AddProductPage> {
                           Container(
                             height: 50,
                             alignment: Alignment.center,
-                            margin: const EdgeInsets.only(
-                                top: 0, left: 0, right: 0),
+                            margin: EdgeInsets.only(
+                                top: 0, left: 0, right: 0,bottom: hp(.5)),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               color: Colors.white,
@@ -366,12 +457,19 @@ class _AddProductPageState extends State<AddProductPage> {
                                   )),
                             ),
                           ),
+
+
+                          _validate2_barcode == false ? Text(errortext2_barcode,style: TextStyle(
+                              fontSize: hp(1.5),
+                              color: Colors.red.shade500
+                          ),):Text(""),
+
                         ],
                       ),
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: hp(30), bottom: hp(1)),
+                    padding: EdgeInsets.only(top: hp(34), bottom: hp(1)),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Column(
@@ -433,56 +531,73 @@ class _AddProductPageState extends State<AddProductPage> {
                                   )),
                             ),
                           ),
+
+                          _validate3_price == false ? Text(errortext3_price,style: TextStyle(
+                              fontSize: hp(1.5),
+                              color: Colors.red.shade500
+                          ),):Text(""),
                         ],
                       ),
                     ),
                   ),
 
                   Padding(
-                    padding: EdgeInsets.only(top: hp(42), bottom: hp(1)),
+                    padding: EdgeInsets.only(top: hp(46), bottom: hp(1)),
                     child: Align(
                       alignment: Alignment.centerLeft,
-                      child: Row(
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.only(top:hp(2)),
-                            child: Text(
-                              "Add Image/Select Image",
-                              style: GoogleFonts.exo2(
-                                fontSize: 14,
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Padding(
+                                padding: EdgeInsets.only(top:hp(2)),
+                                child: Text(
+                                  "Add Image/Select Image",
+                                  style: GoogleFonts.exo2(
+                                    fontSize: 14,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: wp(5),
-                          ),
-                          Container(
-                            child: Row(
-                              children: <Widget>[
-                                IconButton(
-                                  padding: EdgeInsets.all(0),
-                                  onPressed: (){
-                                    setState(() {
-                                      showCapturedPhoto =
-                                      false;
-                                    });
-                                    _initializeCamera();
-                                  },
-                                  icon: Icon(Icons.camera_alt),
+                              SizedBox(
+                                width: wp(5),
+                              ),
+                              Container(
+                                child: Row(
+                                  children: <Widget>[
+                                    IconButton(
+                                      padding: EdgeInsets.all(0),
+                                      onPressed: (){
+                                        setState(() {
+                                          showCapturedPhoto =
+                                          false;
+                                        });
+                                        _initializeCamera();
+                                      },
+                                      icon: Icon(Icons.camera_alt),
+                                    ),
+                                    SizedBox(width: wp(3),),
+                                    IconButton(
+                                      padding: EdgeInsets.all(0),
+                                      onPressed: (){
+                                        _openFileExplorer();
+                                      },
+                                      icon: Icon(Icons.attach_file),
+                                    ),
+                                  ],
                                 ),
-                                SizedBox(width: wp(3),),
-                                IconButton(
-                                  padding: EdgeInsets.all(0),
-                                  onPressed: (){
-                                    _openFileExplorer();
-                                  },
-                                  icon: Icon(Icons.attach_file),
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
+
+
+                          _validate4_image == false ? Text(errortext4_image,style: TextStyle(
+                              fontSize: hp(1.5),
+                              color: Colors.red.shade500
+                          ),):Text(""),
+
                         ],
                       ),
                     ),
@@ -973,20 +1088,58 @@ class _AddProductPageState extends State<AddProductPage> {
 
       print(root.toString());
 
-      final path = join((root.toString()),'${(widget.id + 1).toString()}.png',);
+      final path = join((root.toString()),'${(widget.id+1).toString()}.png',);
 
-      setState(() {
-        ImagePath = path;
-      });
-      await _controller.takePicture(path); //take photo
+      var file = File(path);
 
-      setState(() {
-        showCapturedPhoto = true;
-      });
+      if(file.exists() == null) {
+        print("file not exist");
+        //await file.delete();
+
+        Timer(Duration(milliseconds: 200),() async{
+          print("Got the timer");
+          print(path.toString());
+
+          setState(() {
+            ImagePath = path;
+          });
+          await _controller.takePicture(path); //take photo
+
+          setState(() {
+            showCapturedPhoto = true;
+          });
+
+        });
+      }
+
+
+      else{
+        print("file exist");
+        //await file.delete();
+
+        Timer(Duration(milliseconds: 200),() async{
+          print("Got the timer");
+          print(path.toString());
+
+          setState(() {
+            ImagePath = path;
+          });
+          await _controller.takePicture(path); //take photo
+
+          setState(() {
+            showCapturedPhoto = true;
+          });
+
+        });
+
+      }
+
     } catch (e) {
       print(e);
     }
   }
+
+
 
   Future<void> deleteFile(String file_name) async {
 
@@ -1007,6 +1160,35 @@ class _AddProductPageState extends State<AddProductPage> {
     } catch (e) {
       // error in getting access to the file
       print("Error");
+    }
+  }
+
+  void getImagefromStorage(String path,String fileName) async{
+    print("path is "+path);
+    List<StorageInfo> storageInfo = await PathProviderEx.getStorageInfo();
+    var root = storageInfo[0].rootDir +
+        "/Indentit/Photos"; //storageInfo[1] for SD card, getting the root directory
+
+    print(root.toString());
+
+    moveFile(File(path), root+"/"+'${(widget.id + 1).toString()}.png');
+  }
+
+
+  Future<File> moveFile(File sourceFile, String newPath) async {
+    try {
+      /// prefer using rename as it is probably faster
+      /// if same directory path
+
+      setState(() {
+        ImagePath = newPath;
+        showCapturedPhoto = true;
+      });
+      return await sourceFile.rename(newPath);
+    } catch (e) {
+      /// if rename fails, copy the source file and then delete it
+      final newFile = await sourceFile.copy(newPath);
+      return newFile;
     }
   }
 }

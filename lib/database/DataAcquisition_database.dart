@@ -43,7 +43,7 @@ class DatabaseProvider_dataAcquisition {
   }
 
   void initDB(Database database, int version) async {
-    await database.execute('CREATE TABLE $dataAcquiTABLE($dataAcqui_Id TEXT, $dataAcqui_barcode TEXT, '
+    await database.execute('CREATE TABLE $dataAcquiTABLE($dataAcqui_Id INTEGER PRIMARY KEY AUTOINCREMENT, $dataAcqui_barcode TEXT UNIQUE, '
         '$dataAcqui_description TEXT, $dataAcqui_quantity INTEGER, $dataAcqui_newFlag TEXT, $dataAcqui_updateFlag TEXT)');
   }
 }

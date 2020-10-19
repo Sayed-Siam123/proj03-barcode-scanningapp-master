@@ -1,5 +1,6 @@
 class DataAcquisition_model{
-  String id=null,description=null,barcode=null;
+  int id=null;
+  String description=null,barcode=null;
   int quantity=null;
   String updateFlag=null,newFlag=null;
 

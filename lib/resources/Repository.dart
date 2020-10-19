@@ -1,4 +1,5 @@
 import 'package:app/Model/CatagoryModel.dart';
+import 'package:app/Model/DataAcquisition_model.dart';
 import 'package:app/Model/DeliveriesListModel.dart';
 import 'package:app/Model/GetSuccess_Model.dart';
 import 'package:app/Model/ManufactureModel.dart';
@@ -159,7 +160,7 @@ class Repository {
 
   Future deleteMasterV2(int id) => dbprovider.deleteMaterdataV2(id);
 
-//deleteMasterV2
+//deleteLastDataAcqui
 
   Future deleteAllMasterdataTable() => dbprovider.deleteAllMasterdataTable();
   Future<List<MasterDataModel>> getAllMAsterNewProduct() => dbprovider.getAllMAsterNewProduct();
@@ -228,5 +229,17 @@ class Repository {
 
   //TODO:: PACKAGING MATERIAL DB CONFIG AND OPERATION :: END
 
+
+//TODO:: DATA ACQUISITION DB CONFIG AND OPERATION :: START
+  Future insertDataAcquisitiondata(DataAcquisition_model productinfo) => dbprovider.insertDataAcquisitiondata(productinfo);
+  Future<List<DataAcquisition_model>> getAllDataAcqui() => dbprovider.getAllDataAcqui();
+  Future<List<DataAcquisition_model>> getSingleDataAcquisition() => dbprovider.getSingleDataAcquisition();
+  Future deleteLastDataAcqui(int id) => dbprovider.deleteLastDataAcqui(id);
+  Future deleteAllDataAcqui() => dbprovider.deleteAllDataAcqui();
+
+  //deleteAllDataAcqui
+
+
+//TODO:: DATA ACQUISITION DB CONFIG AND OPERATION :: END
 
 }

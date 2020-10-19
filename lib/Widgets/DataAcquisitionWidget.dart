@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:app/Bloc/DataAcquisition_bloc.dart';
+import 'package:app/UI/DataAcquitisionView.dart';
 import 'package:app/resources/SnackbarHelper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_file_manager/flutter_file_manager.dart';
@@ -80,6 +82,7 @@ class _DataAcquisitionWidgetState extends State<DataAcquisitionWidget> {
   void initState() {
     print("asas");
     super.initState();
+    data_acquisition_bloc.deleteFullDataAcquiTable();
     Timer(Duration(microseconds: 50), () {
       getFiles(); //call getFiles() function on initial state.
     });
@@ -151,6 +154,10 @@ class _DataAcquisitionWidgetState extends State<DataAcquisitionWidget> {
                                           .split('/')
                                           .last
                                           .toString());
+
+                                      Navigator.push(
+                                          context, MaterialPageRoute(builder: (context) => DataAcquisitionViewPage()));
+
                                     },
                                     contentPadding: EdgeInsets.only(left: wp(5)),
                                     title: Text(files[index].path

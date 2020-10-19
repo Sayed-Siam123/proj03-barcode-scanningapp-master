@@ -1,8 +1,5 @@
-import 'dart:io';
-
-import 'package:app/UI/CreateDataAcquisition.dart';
-import 'package:app/UI/SystemSettings.dart';
-import 'package:app/Widgets/DataAcquisitionWidget.dart';
+import 'package:app/UI/DataAcquisition.dart';
+import 'package:app/Widgets/DataAcquisitionVIewWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:responsive_screen/responsive_screen.dart';
@@ -10,17 +7,16 @@ import 'package:responsive_screen/responsive_screen.dart';
 import 'DataAcquisitionSystemSettings.dart';
 import 'Home.dart';
 
-class DataAcquisition extends StatefulWidget {
+class DataAcquisitionViewPage extends StatefulWidget {
   @override
-  _DataAcquisitionState createState() => _DataAcquisitionState();
+  _DataAcquisitionViewPageState createState() => _DataAcquisitionViewPageState();
 }
 
-class _DataAcquisitionState extends State<DataAcquisition> {
+class _DataAcquisitionViewPageState extends State<DataAcquisitionViewPage> {
   @override
   Widget build(BuildContext context) {
     dynamic hp = Screen(context).hp;
     dynamic wp = Screen(context).wp;
-
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -38,7 +34,7 @@ class _DataAcquisitionState extends State<DataAcquisition> {
           ),
           onPressed: () {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => HomePage()));
+                context, MaterialPageRoute(builder: (context) => DataAcquisition()));
           },
         ),
         actions: <Widget>[
@@ -56,17 +52,8 @@ class _DataAcquisitionState extends State<DataAcquisition> {
       ),
 
       body: OrientationLayoutBuilder(
-        portrait: (context) => DataAcquisitionWidget(height: hp(100),width: wp(100)),
+        portrait: (context) => DataAcquisitionViewWidget(height: hp(100),width: wp(100)),
 
-      ),
-
-      floatingActionButton: FloatingActionButton(
-        onPressed: (){
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => CreateDataAcquisitionPage()));
-        },
-        child: Icon(Icons.add,color: Colors.white),
-        backgroundColor: Colors.green.shade500,
       ),
     );
   }

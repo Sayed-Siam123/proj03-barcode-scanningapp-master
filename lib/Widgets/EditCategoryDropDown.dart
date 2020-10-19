@@ -213,7 +213,8 @@ class _EditCategoryDropDownState extends State<EditCategoryDropDown> {
                                             child: Padding(
                                               padding: const EdgeInsets.fromLTRB(0,0,0,0),
                                               child: Text(item.categoryName),
-                                            ), value: item);
+                                            ),
+                                            value: item);
                                       }).toList(),
                                       value: categorySelect,
                                       hint: widget.category.toString(),
@@ -233,8 +234,7 @@ class _EditCategoryDropDownState extends State<EditCategoryDropDown> {
                                       underline: Container(
                                         height: 0.0,
                                         decoration: BoxDecoration(
-                                            border:
-                                            Border(bottom: BorderSide(color: Colors.transparent, width: 0.0))),
+                                            border: Border(bottom: BorderSide(color: Colors.transparent, width: 0.0))),
                                       ),
                                     ),
                                   ),

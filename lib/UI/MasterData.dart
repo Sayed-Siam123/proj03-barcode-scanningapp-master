@@ -188,17 +188,12 @@ class _MasterDataState extends State<MasterData> {
             stream: masterdata_bloc.allMasterDataV2,
             builder: (context, AsyncSnapshot<List<MasterDataModelV2>> snapshot) {
               if (snapshot.hasData) {
+
                 fetcheddata = snapshot.data;
+
                 //_newData = fetcheddata;
-                print("Data gula:: ");
-
-                //TODO::eikhan theke kaj shuru hbe ashar por
-                //TODO::fetched data new datay copy hoise
-                //TODO::normally ja fetch hoye ashbe oitai new data list e dhuke jabe
-                //TODO::filter amake oi newlist theke kora lagbe search korar jonne
-
                 print(fetcheddata.length);
-                return masterdataview(hp(100),wp(100),fetcheddata);
+                return fetcheddata.length > 0 ? masterdataview(hp(100),wp(100),fetcheddata): Center(child: Text("No data"));
               } else if (snapshot.hasError) {
                 return Text("${snapshot.error}");
               }
