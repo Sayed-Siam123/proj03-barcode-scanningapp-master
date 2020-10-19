@@ -170,20 +170,20 @@ class _PhotoDocumentationPageState extends State<PhotoDocumentationPage> {
               ),
 
 
-              Container(
-                margin: EdgeInsets.fromLTRB(hp(0),hp(4),hp(0),hp(2)),
-                width: wp(100),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Search Result",style: TextStyle(
-                      fontSize: hp(2),
-                    ),),
-                    SizedBox(height: hp(6)),
-                    Center(child: Text("No data")),
-                  ],
-                ),
-              ),
+              // Container(
+              //   margin: EdgeInsets.fromLTRB(hp(0),hp(4),hp(0),hp(2)),
+              //   width: wp(100),
+              //   child: Column(
+              //     crossAxisAlignment: CrossAxisAlignment.start,
+              //     children: [
+              //       Text("Search Result",style: TextStyle(
+              //         fontSize: hp(2),
+              //       ),),
+              //       SizedBox(height: hp(6)),
+              //       Center(child: Text("No data")),
+              //     ],
+              //   ),
+              // ),
 
             ],
           ),
@@ -241,9 +241,9 @@ class _PhotoDocumentationPageState extends State<PhotoDocumentationPage> {
   }
 
   void checkData(BuildContext context){
-    if(_newData.isEmpty){
+    if(_newData.isEmpty || barcode.text != _newData[0].gtin.toString() ){
       print("not got it");
-      snack.snackbarshowNormal(context, "No product found!", 3, Colors.black87);
+      snack.snackbarshowNormal(context, "No product found!", 1, Colors.black87);
     }
     else if(_newData.isNotEmpty && barcode.text == _newData[0].gtin.toString()){
       print("got it");

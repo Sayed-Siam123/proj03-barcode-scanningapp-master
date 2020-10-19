@@ -66,6 +66,8 @@ dependencies:
   change_app_package_name: ^0.1.2 # to change package name (flutter pub run change_app_package_name:main com.identit_warehouse.identit)
   csv: ^4.0.3
   fxpoi:
+  signature: ^3.2.0
+
 
 
   #provider: ^4.0.0

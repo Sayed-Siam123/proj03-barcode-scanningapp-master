@@ -1088,13 +1088,15 @@ class _AddProductPageState extends State<AddProductPage> {
 
       print(root.toString());
 
-      final path = join((root.toString()),'${(widget.id+1).toString()}.png',);
 
-      var file = File(path);
+      var file = File(root+"/"+(widget.id+1).toString()+".png");
 
       if(file.exists() == null) {
         print("file not exist");
         //await file.delete();
+
+        final path = join((root.toString()),'${(widget.id+1).toString()}.png',);
+
 
         Timer(Duration(milliseconds: 200),() async{
           print("Got the timer");
@@ -1115,7 +1117,10 @@ class _AddProductPageState extends State<AddProductPage> {
 
       else{
         print("file exist");
-        //await file.delete();
+        await file.delete();
+
+        final path = join((root.toString()),'${(widget.id+1).toString()}.png',);
+
 
         Timer(Duration(milliseconds: 200),() async{
           print("Got the timer");

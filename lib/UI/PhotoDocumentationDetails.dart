@@ -2,8 +2,10 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:app/Bloc/masterData_bloc.dart';
+import 'package:app/Model/PhotoDocumentationImageModel.dart';
 import 'package:app/Model/masterdata_model.dart';
 import 'package:app/UI/Home.dart';
+import 'package:app/Widgets/PhotoDocumentationComment.dart';
 import 'package:app/Widgets/PhotoDocumentationSettings.dart';
 import 'package:app/resources/SnackbarHelper.dart';
 import 'package:camera/camera.dart';
@@ -16,21 +18,20 @@ import 'package:path_provider_ex/path_provider_ex.dart';
 import 'package:responsive_screen/responsive_screen.dart';
 
 class PhotoDocumentationDetailsPage extends StatefulWidget {
-
   String id;
 
   PhotoDocumentationDetailsPage({this.id});
 
-
   @override
-  _PhotoDocumentationDetailsPageState createState() => _PhotoDocumentationDetailsPageState();
+  _PhotoDocumentationDetailsPageState createState() =>
+      _PhotoDocumentationDetailsPageState();
 }
 
-class _PhotoDocumentationDetailsPageState extends State<PhotoDocumentationDetailsPage> {
-
+class _PhotoDocumentationDetailsPageState
+    extends State<PhotoDocumentationDetailsPage> {
   List<SingleMasterDataModelV2> fetcheddata = [];
 
-  String barcode,description,id;
+  String barcode, description, id;
 
   int counter = 0;
 
@@ -54,74 +55,98 @@ class _PhotoDocumentationDetailsPageState extends State<PhotoDocumentationDetail
 
   bool status = true;
 
+  Map<String, String> _images_file = Map();
 
-  Map<int,String> _images_file = {1 : null,2: null,3: null};
-
+  PhotoDocumentationImageModel images_data;
 
   void onCaptureButtonPressed() async {
     //on camera button press
     try {
       List<StorageInfo> storageInfo = await PathProviderEx.getStorageInfo();
-      var root = storageInfo[0].rootDir+"/Indentit/Photos"; //storageInfo[1] for SD card, getting the root directory
+      var root = storageInfo[0].rootDir +
+          "/Indentit/Photos"; //storageInfo[1] for SD card, getting the root directory
 
       print(root.toString());
+      var newcounter = counter;
 
-      final path = join((root.toString()),'${(id).toString()}.png',);
+      var file = File(root+"/"+id+"_"+newcounter.toString()+".png");
 
-      var file = File(path);
-
-      if(file.exists() == null) {
+      if (file.exists() == null) {
         print("file not exist");
         //await file.delete();
 
-        Timer(Duration(milliseconds: 200),() async{
+        final path = join(
+          (root.toString()),
+          '${(id+"_"+newcounter.toString()).toString()}.png',
+        );
+
+        Timer(Duration(milliseconds: 200), () async {
           print("Got the timer");
           print(path.toString());
 
           setState(() {
             ImagePath = path;
           });
+
+
+          _images_file[id.toString()+"_"+counter.toString()] = path;
+
+          //print(_images_file.keys);
+
           await _controller.takePicture(path); //take photo
 
           _images_file.forEach((key, value) {
-            print(key.toString());
+            print("values are "+value.toString());
           });
 
           setState(() {
             showCapturedPhoto = true;
+            status = true;
             counter++;
+            imageCache.clear();
           });
-
         });
-      }
-
-
-      else{
+      } else {
         print("file exist");
-        //await file.delete();
+        await file.delete();
 
-        Timer(Duration(milliseconds: 200),() async{
+        final path = join(
+          (root.toString()),
+          '${(id+"_"+newcounter.toString()).toString()}.png',
+        );
+
+        Timer(Duration(milliseconds: 200), () async {
           print("Got the timer");
           print(path.toString());
 
           setState(() {
             ImagePath = path;
           });
+
+          _images_file[id.toString()+"_"+counter.toString()] = path;
+
+          //print(_images_file.keys);
+
           await _controller.takePicture(path); //take photo
+
+          _images_file.forEach((key, value) {
+            print("values are "+value.toString());
+          });
+
+          print(_images_file[id.toString()+"_"+counter.toString()]);
 
           setState(() {
             showCapturedPhoto = true;
+            status = true;
+            counter++;
+            imageCache.clear();
           });
-
         });
-
       }
-
     } catch (e) {
       print(e);
     }
   }
-
 
   Future<void> _initializeCamera() async {
     final cameras = await availableCameras();
@@ -137,7 +162,6 @@ class _PhotoDocumentationDetailsPageState extends State<PhotoDocumentationDetail
   }
 
   void _openFileExplorer() async {
-
     setState(() {
       showCapturedPhoto = false;
       imageCache.clear();
@@ -146,16 +170,17 @@ class _PhotoDocumentationDetailsPageState extends State<PhotoDocumentationDetail
     try {
       _paths = null;
       _path = await FilePicker.getFilePath(type: FileType.any);
-    }
-    on PlatformException catch (e) {
+    } on PlatformException catch (e) {
       print("Unsupported operation" + e.toString());
     }
     if (!mounted) return;
 
     setState(() {
-      _fileName = _path != null ? _path
-          .split('/')
-          .last : _paths != null ? _paths.keys.toString() : '...';
+      _fileName = _path != null
+          ? _path.split('/').last
+          : _paths != null
+              ? _paths.keys.toString()
+              : '...';
     });
     print(_fileName.toString());
     print(_path.toString());
@@ -167,6 +192,7 @@ class _PhotoDocumentationDetailsPageState extends State<PhotoDocumentationDetail
     super.initState();
     // masterdata_bloc.getId(widget.id);
     masterdata_bloc.getsinglemasterdatafromDBV2();
+    _images_file.clear();
     Timer(Duration(seconds: 1), () {
       getName();
     });
@@ -214,9 +240,11 @@ class _PhotoDocumentationDetailsPageState extends State<PhotoDocumentationDetail
         ),
         actions: <Widget>[
           IconButton(
-            onPressed: (){
+            onPressed: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => PhotoDocumetationSettings()));
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => PhotoDocumetationSettings()));
             },
             icon: Icon(
               Icons.settings,
@@ -225,6 +253,17 @@ class _PhotoDocumentationDetailsPageState extends State<PhotoDocumentationDetail
           ),
         ],
       ),
+
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+          print("Next");
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => PhotoDocumentationCommentsPage()));
+        },
+        child: Icon(Icons.arrow_forward_ios),
+        backgroundColor: Colors.green.shade500,
+      ),
+
       body: SingleChildScrollView(
         child: Container(
           width: wp(100),
@@ -232,7 +271,8 @@ class _PhotoDocumentationDetailsPageState extends State<PhotoDocumentationDetail
             children: [
               StreamBuilder<List<SingleMasterDataModelV2>>(
                 stream: masterdata_bloc.singleMasterDatav2,
-                builder: (context, AsyncSnapshot<List<SingleMasterDataModelV2>> snapshot) {
+                builder: (context,
+                    AsyncSnapshot<List<SingleMasterDataModelV2>> snapshot) {
                   if (snapshot.hasData) {
                     fetcheddata = snapshot.data;
                     //_newData = fetcheddata;
@@ -247,242 +287,320 @@ class _PhotoDocumentationDetailsPageState extends State<PhotoDocumentationDetail
                 },
               ),
 
-              fetcheddata.isNotEmpty && status == true ?
+              fetcheddata.isNotEmpty && status == true
+                  ? Padding(
+                      padding: EdgeInsets.only(left: wp(10), top: hp(2)),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                "Barcode",
+                                style: TextStyle(
+                                  fontSize: hp(2),
+                                ),
+                              ),
+                              SizedBox(
+                                width: wp(14),
+                              ),
+                              Text(
+                                barcode.toString(),
+                                style: TextStyle(
+                                  fontSize: hp(2),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: hp(2),
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                "Description",
+                                style: TextStyle(
+                                  fontSize: hp(2),
+                                ),
+                              ),
+                              SizedBox(
+                                width: wp(10),
+                              ),
+                              Text(
+                                description.toString(),
+                                style: TextStyle(
+                                  fontSize: hp(2),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    )
+                  : fetcheddata.isEmpty
+                      ? Padding(
+                          padding: EdgeInsets.fromLTRB(0, hp(40), 0, 0),
+                          child: Text("No Data"))
+                      : Container(
+                          width: 0,
+                          height: 0,
+                        ),
 
-              Padding(
-                padding: EdgeInsets.only(left: wp(10),top: hp(2)),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Text("Barcode",style: TextStyle(
-                          fontSize: hp(2),
-                        ),),
-                        SizedBox(width: wp(14),),
-                        Text(barcode.toString(),style: TextStyle(
-                          fontSize: hp(2),
-                        ),),
-                      ],
+              status == true
+                  ? SizedBox(
+                      height: hp(1),
+                    )
+                  : Container(
+                      width: 0,
+                      height: 0,
+                    ),
+              status == true
+                  ? Divider()
+                  : Container(
+                      width: 0,
+                      height: 0,
+                    ),
+              status == true
+                  ? SizedBox(
+                      height: hp(1),
+                    )
+                  : Container(
+                      width: 0,
+                      height: 0,
                     ),
 
-                    SizedBox(height: hp(2),),
-
-                    Row(
-                      children: [
-                        Text("Description",style: TextStyle(
-                          fontSize: hp(2),
-                        ),),
-                        SizedBox(width: wp(10),),
-                        Text(description.toString(),style: TextStyle(
-                          fontSize: hp(2),
-                        ),),
-                      ],
-                    ),
-                  ],
-                ),
-              )
-
-              : fetcheddata.isEmpty ? Padding(
-                padding: EdgeInsets.fromLTRB(0,hp(40),0,0),
-                  child: Text("No Data"))
-
-              :Text(""),
-
-              status == true ? SizedBox(height: hp(1),) : Text(""),
-              status == true ? Divider() : Text(""),
-              status == true ? SizedBox(height: hp(1),): Text(""),
-
-              status == true ? Builder(
-                builder: (context) => Padding(
-                  padding: EdgeInsets.only(left: wp(10),top: hp(2)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Add photos",style: TextStyle(
-                        fontSize: hp(2)
-                      ),),
-
-                      Padding(
-                        padding: EdgeInsets.only(right: wp(10)),
+              status == true
+                  ? Builder(
+                      builder: (context) => Padding(
+                        padding: EdgeInsets.only(left: wp(10), top: hp(2)),
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            IconButton(
-                                icon: Icon(Icons.camera_alt),
-                                onPressed: (){
-                                  // setState(() {
-                                  //   if(counter > 0 ){
-                                  //     counter--;
-                                  //   }
-                                  // });
-
-                                  setState(() {
-                                    showCapturedPhoto =
-                                    false;
-                                    if(counter < 3){
-                                      //counter++;
-                                      setState(() {
-                                        showCapturedPhoto = false;
-                                        status = false;
-                                      });
-                                      _initializeCamera();
-
-                                    }
-
-                                    else{
-                                      snack.snackbarshowNormal(context, "More than 3 is selected!", 3, Colors.black87);
-                                      print("More than 3 is selected");
-                                    }
-                                  });
-                                }
+                            Text(
+                              "Add photos",
+                              style: TextStyle(fontSize: hp(2)),
                             ),
+                            Padding(
+                              padding: EdgeInsets.only(right: wp(10)),
+                              child: Row(
+                                children: [
+                                  IconButton(
+                                      icon: Icon(Icons.camera_alt),
+                                      onPressed: () {
+                                        // setState(() {
+                                        //   if(counter > 0 ){
+                                        //     counter--;
+                                        //   }
+                                        // });
 
-                            IconButton(
-                                icon: Icon(Icons.attach_file),
-                                onPressed: (){
-                                    setState(() {
-                                      if(counter < 3){
-                                        //counter++;
-                                        _openFileExplorer();
-                                      }
-
-                                      else{
-                                        snack.snackbarshowNormal(context, "More than 3 is selected!", 3, Colors.black87);
-                                        print("More than 3 is selected");
-                                      }
-                                    });
-                                }
+                                        setState(() {
+                                          if (counter < 3) {
+                                            //counter++;
+                                            setState(() {
+                                              showCapturedPhoto = false;
+                                              status = false;
+                                            });
+                                            _initializeCamera();
+                                          } else {
+                                            snack.snackbarshowNormal(
+                                                context,
+                                                "More than 3 is selected!",
+                                                3,
+                                                Colors.black87);
+                                            print("More than 3 is selected");
+                                          }
+                                        });
+                                      }),
+                                  IconButton(
+                                      icon: Icon(Icons.attach_file),
+                                      onPressed: () {
+                                        setState(() {
+                                          if (counter < 3) {
+                                            //counter++;
+                                            _openFileExplorer();
+                                          } else {
+                                            snack.snackbarshowNormal(
+                                                context,
+                                                "More than 3 is selected!",
+                                                3,
+                                                Colors.black87);
+                                            print("More than 3 is selected");
+                                          }
+                                        });
+                                      }),
+                                ],
+                              ),
                             ),
                           ],
                         ),
                       ),
-                    ],
-                  ),
-                ),
-              ) : Text(""),
-
+                    )
+                  : Container(
+                      width: 0,
+                      height: 0,
+                    ),
 
               //counter > 0 ? Text(counter.toString()): Text("No Data"),
 
-              status == true ? SizedBox(
-                height: hp(2),
-              ) : SizedBox(
-                height: hp(0),
-              ),
-
+              status == true
+                  ? SizedBox(
+                      height: hp(2),
+                    )
+                  : SizedBox(
+                      height: hp(0),
+                    ),
 
               showCapturedPhoto == false
                   ? Padding(
-                padding: EdgeInsets.only(
-                    top: hp(1), bottom: hp(2)),
-                child: Align(
-                  alignment: Alignment.topCenter,
-                  child: FutureBuilder<void>(
-                    future: _initializeControllerFuture,
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState ==
-                          ConnectionState.done) {
-                        // If the Future is complete, display the preview.
-                        return Transform.scale(
-                            scale: _controller.value
-                                .aspectRatio /
-                                deviceRatio,
-                            child: Stack(
-                              children: <Widget>[
-                                Align(
-                                  child: AspectRatio(
-                                    aspectRatio:
-                                    _controller
-                                        .value
-                                        .aspectRatio,
-                                    child: CameraPreview(_controller), //cameraPreview
-                                  ),
-                                  alignment: Alignment.topCenter,
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                      top: hp(80), bottom: hp(2),right: wp(7)),
-                                  child: Align(
-                                    child: IconButton(
-                                      icon: Icon(
-                                        Icons.camera,color: Colors.white,size: hp(7),),
-                                      onPressed: () {
-                                        onCaptureButtonPressed();
-                                        print("Captured");
+                      padding: EdgeInsets.only(top: hp(1), bottom: hp(2)),
+                      child: Align(
+                        alignment: Alignment.topCenter,
+                        child: FutureBuilder<void>(
+                          future: _initializeControllerFuture,
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.done) {
+                              // If the Future is complete, display the preview.
+                              return Transform.scale(
+                                  scale: _controller.value.aspectRatio /
+                                      deviceRatio,
+                                  child: Stack(
+                                    children: <Widget>[
+                                      Align(
+                                        child: AspectRatio(
+                                          aspectRatio:
+                                          _controller
+                                              .value
+                                              .aspectRatio,
+                                          child: CameraPreview(
+                                              _controller), //cameraPreview
+                                        ),
+                                        alignment: Alignment.topCenter,
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                            top: hp(70),
+                                            bottom: hp(2),
+                                            right: wp(7)),
+                                        child: Align(
+                                          child: IconButton(
+                                            icon: Icon(
+                                              Icons.camera,
+                                              color: Colors.white,
+                                              size: hp(7),
+                                            ),
+                                            onPressed: () {
+                                              onCaptureButtonPressed();
+                                              print("Captured");
+                                            },
+                                          ),
+                                          alignment: Alignment.topCenter,
+                                        ),
+                                      ),
+                                      status == false
+                                          ? Padding(
+                                              padding: EdgeInsets.only(
+                                                  top: hp(3),
+                                                  bottom: hp(2),
+                                                  right: wp(10)),
+                                              child: Align(
+                                                child: IconButton(
+                                                  icon: Icon(
+                                                    AntDesign.closecircle,
+                                                    color: Colors.red,
+                                                    size: hp(3),
+                                                  ),
+                                                  onPressed: () {
+                                                    _controller.dispose();
+                                                    setState(() {
+                                                      status = true;
+                                                      showCapturedPhoto = true;
+                                                    });
+                                                  },
+                                                ),
+                                                alignment:
+                                                    Alignment.centerRight,
+                                              ),
+                                            )
+                                          : Container(
+                                              height: 0,
+                                              width: 0,
 
-                                      },
-                                    ),
-                                    alignment: Alignment.topCenter,
+                                      ),
+                                    ],
+                                  ));
+                            } else {
+                              return Center(
+                                  child: Container(
+                                height: 0,
+                                width: 0,
+                              )); // Otherwise, display a loading indicator.
+                            }
+                          },
+                        ),
+                      ),
+                    )
+                  //   : showCapturedPhoto == true ?  Padding(
+                  // padding: EdgeInsets.only(top: hp(52), bottom: hp(2)),
+                  // child: Container(
+                  //   height: hp(50),
+                  //   width: double.infinity,
+                  //   color: Colors.transparent,
+                  //   child: Stack(
+                  //     children: <Widget>[
+                  //       Padding(
+                  //         padding: EdgeInsets.only(top: hp(5)),
+                  //         child: Align(
+                  //           child: Image.file(File(ImagePath),fit: BoxFit.fill,width: wp(80),height: hp(40),),
+                  //           alignment: Alignment.topCenter,
+                  //         ),
+                  //       ),
+                  : counter == 0 && showCapturedPhoto == false
+                      ? Text("Nothing selected")
+                      : GridView.builder(
+                          padding: EdgeInsets.all(wp(5)),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount:
+                                      (orientation == Orientation.portrait)
+                                          ? 2
+                                          : 3),
+                          itemCount: _images_file.length,
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index){
+                            print('map length:${_images_file.length}');
+                            print (index.toString());
+                            print('map id and index:${_images_file[id.toString()+"_"+index.toString()]}<><><><>');
+
+
+                            return Container(
+                            margin: EdgeInsets.all(wp(1)),
+                            height: hp(2),
+                            width: wp(2),
+                            color: Colors.transparent,
+                            child: Stack(
+                              children: [
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Image.file(File(_images_file[id.toString()+"_"+index.toString()]),fit: BoxFit.fill,width: wp(80),height: hp(40),),
+                                ),
+                                Align(
+                                  child: IconButton(
+                                    icon: Icon(AntDesign.closecircle,color: Colors.white),
+                                    onPressed: () {
+                                      setState(() {
+                                        //counter--;
+                                        print(id.toString()+"_"+index.toString());
+                                        print(_images_file.length.toString());
+                                      });
+                                    },
                                   ),
+                                  alignment: Alignment.topRight,
                                 ),
                               ],
-                            ));
-                      } else {
-                        return Center(
-                            child: Container(
-                              height: 0,
-                              width: 0,
-                            )); // Otherwise, display a loading indicator.
-                      }
-                    },
-                  ),
-                ),
-              )
-                //   : showCapturedPhoto == true ?  Padding(
-                // padding: EdgeInsets.only(top: hp(52), bottom: hp(2)),
-                // child: Container(
-                //   height: hp(50),
-                //   width: double.infinity,
-                //   color: Colors.transparent,
-                //   child: Stack(
-                //     children: <Widget>[
-                //       Padding(
-                //         padding: EdgeInsets.only(top: hp(5)),
-                //         child: Align(
-                //           child: Image.file(File(ImagePath),fit: BoxFit.fill,width: wp(80),height: hp(40),),
-                //           alignment: Alignment.topCenter,
-                //         ),
-                //       ),
-              : counter == 0 && showCapturedPhoto == false ? Text("Nothing selected")
-                  :GridView.builder(
-                padding: EdgeInsets.all(wp(5)),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: (orientation == Orientation.portrait) ? 2 : 3),
-                itemCount: counter,
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemBuilder: (context, index) =>
-                    Container(
-                      margin: EdgeInsets.all(wp(1)),
-                      height: hp(2),
-                      width: wp(2),
-                      color: Colors.red,
-                      child: Stack(
-                        children: [
-                          Align(
-                            child: Text("Index: "+index.toString()),
-                            alignment: Alignment.topLeft,
-                          ),
-
-                          Align(
-                            alignment: Alignment.center,
-                            //child: Image.file(file)
-                          ),
-
-                          Align(
-                            child: IconButton(
-                              icon: Icon(AntDesign.closecircle),
-                              onPressed: (){
-                                setState(() {
-                                  counter--;
-                                });
-                              },
                             ),
-                            alignment: Alignment.topRight,
-                          ),
-                        ],
-                      ),
-                    ),
-              ),
+                          );}
+                        ),
             ],
           ),
         ),

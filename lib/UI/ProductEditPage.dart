@@ -1015,19 +1015,41 @@ class _ProductEditPageState extends State<ProductEditPage> {
 
       print(root.toString());
 
-      final path = join(
-        (root.toString()),
-        '${(int.parse(id)).toString()}.png',
-      );
+      var file = File(root+"/"+(int.parse(id)).toString()+".png");
 
-      setState(() {
-        ImagePath = root;
-      });
-      await _controller.takePicture(path); //take photo
+      if(file.exists() !=null){
+        final path = join(
+          (root.toString()),
+          '${(int.parse(id)).toString()}.png',
+        );
 
-      setState(() {
-        showCapturedPhoto = true;
-      });
+        setState(() {
+          ImagePath = root;
+        });
+        await _controller.takePicture(path); //take photo
+
+        setState(() {
+          showCapturedPhoto = true;
+        });
+      }
+
+      else{
+        await file.delete();
+
+        final path = join(
+          (root.toString()),
+          '${(int.parse(id)).toString()}.png',
+        );
+
+        setState(() {
+          ImagePath = root;
+        });
+        await _controller.takePicture(path); //take photo
+
+        setState(() {
+          showCapturedPhoto = true;
+        });
+      }
     } catch (e) {
       print(e);
     }
