@@ -52,8 +52,10 @@ class _PhotoDocumentationDetailsPageState extends State<PhotoDocumentationDetail
   bool _hasValidMime = false;
   FileType _pickingType;
 
+  bool status = true;
 
-  Map<int,String> _images_file = {1 : "empty",2: "empty",3: "empty"};
+
+  Map<int,String> _images_file = {1 : null,2: null,3: null};
 
 
   void onCaptureButtonPressed() async {
@@ -87,6 +89,7 @@ class _PhotoDocumentationDetailsPageState extends State<PhotoDocumentationDetail
 
           setState(() {
             showCapturedPhoto = true;
+            counter++;
           });
 
         });
@@ -244,7 +247,7 @@ class _PhotoDocumentationDetailsPageState extends State<PhotoDocumentationDetail
                 },
               ),
 
-              fetcheddata.isNotEmpty ?
+              fetcheddata.isNotEmpty && status == true ?
 
               Padding(
                 padding: EdgeInsets.only(left: wp(10),top: hp(2)),
@@ -279,15 +282,17 @@ class _PhotoDocumentationDetailsPageState extends State<PhotoDocumentationDetail
                 ),
               )
 
-              :Padding(
+              : fetcheddata.isEmpty ? Padding(
                 padding: EdgeInsets.fromLTRB(0,hp(40),0,0),
-                  child: Text("No Data")),
+                  child: Text("No Data"))
 
-              SizedBox(height: hp(1),),
-              Divider(),
-              SizedBox(height: hp(1),),
+              :Text(""),
 
-              Builder(
+              status == true ? SizedBox(height: hp(1),) : Text(""),
+              status == true ? Divider() : Text(""),
+              status == true ? SizedBox(height: hp(1),): Text(""),
+
+              status == true ? Builder(
                 builder: (context) => Padding(
                   padding: EdgeInsets.only(left: wp(10),top: hp(2)),
                   child: Row(
@@ -317,6 +322,7 @@ class _PhotoDocumentationDetailsPageState extends State<PhotoDocumentationDetail
                                       //counter++;
                                       setState(() {
                                         showCapturedPhoto = false;
+                                        status = false;
                                       });
                                       _initializeCamera();
 
@@ -352,55 +358,15 @@ class _PhotoDocumentationDetailsPageState extends State<PhotoDocumentationDetail
                     ],
                   ),
                 ),
-              ),
+              ) : Text(""),
 
 
               //counter > 0 ? Text(counter.toString()): Text("No Data"),
 
-              SizedBox(
+              status == true ? SizedBox(
                 height: hp(2),
-              ),
-
-              counter == 0  ? Text("Nothing selected")
-                  :GridView.builder(
-                padding: EdgeInsets.all(wp(5)),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: (orientation == Orientation.portrait) ? 2 : 3),
-                  itemCount: counter,
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) =>
-                      Container(
-                        margin: EdgeInsets.all(wp(1)),
-                        height: hp(2),
-                        width: wp(2),
-                        color: Colors.red,
-                        child: Stack(
-                          children: [
-                            Align(
-                              child: Text("Index: "+index.toString()),
-                              alignment: Alignment.topLeft,
-                            ),
-
-                            Align(
-                              alignment: Alignment.center,
-                                //child: Image.file(file)
-                            ),
-
-                            Align(
-                              child: IconButton(
-                                icon: Icon(AntDesign.closecircle),
-                                onPressed: (){
-                                  setState(() {
-                                    counter--;
-                                  });
-                                },
-                             ),
-                              alignment: Alignment.topRight,
-                            ),
-                          ],
-                        ),
-                      ),
+              ) : SizedBox(
+                height: hp(0),
               ),
 
 
@@ -434,7 +400,7 @@ class _PhotoDocumentationDetailsPageState extends State<PhotoDocumentationDetail
                                 ),
                                 Padding(
                                   padding: EdgeInsets.only(
-                                      top: hp(70), bottom: hp(2),right: wp(7)),
+                                      top: hp(80), bottom: hp(2),right: wp(7)),
                                   child: Align(
                                     child: IconButton(
                                       icon: Icon(
@@ -442,6 +408,7 @@ class _PhotoDocumentationDetailsPageState extends State<PhotoDocumentationDetail
                                       onPressed: () {
                                         onCaptureButtonPressed();
                                         print("Captured");
+
                                       },
                                     ),
                                     alignment: Alignment.topCenter,
@@ -460,45 +427,62 @@ class _PhotoDocumentationDetailsPageState extends State<PhotoDocumentationDetail
                   ),
                 ),
               )
-                  : showCapturedPhoto == true ?  Padding(
-                padding: EdgeInsets.only(top: hp(52), bottom: hp(2)),
-                child: Container(
-                  height: hp(50),
-                  width: double.infinity,
-                  color: Colors.transparent,
-                  child: Stack(
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(top: hp(5)),
-                        child: Align(
-                          child: Image.file(File(ImagePath),fit: BoxFit.fill,width: wp(80),height: hp(40),),
-                          alignment: Alignment.topCenter,
-                        ),
-                      ),
-
-                      Padding(
-                        padding: EdgeInsets.only(left: wp(85)),
-                        child: Align(
-                          alignment: Alignment.topCenter,
-                          child: IconButton(
-                            onPressed: (){
-                              print(ImagePath.toString());
-                              setState(() {
-                                showCapturedPhoto = null;
-                                //deleteFile(ImagePath.toString());
-                                imageCache.clear();
-                              });
-                            },
-                            icon: Icon(AntDesign.closecircle,color: Colors.black87,size: hp(3),),
+                //   : showCapturedPhoto == true ?  Padding(
+                // padding: EdgeInsets.only(top: hp(52), bottom: hp(2)),
+                // child: Container(
+                //   height: hp(50),
+                //   width: double.infinity,
+                //   color: Colors.transparent,
+                //   child: Stack(
+                //     children: <Widget>[
+                //       Padding(
+                //         padding: EdgeInsets.only(top: hp(5)),
+                //         child: Align(
+                //           child: Image.file(File(ImagePath),fit: BoxFit.fill,width: wp(80),height: hp(40),),
+                //           alignment: Alignment.topCenter,
+                //         ),
+                //       ),
+              : counter == 0 && showCapturedPhoto == false ? Text("Nothing selected")
+                  :GridView.builder(
+                padding: EdgeInsets.all(wp(5)),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: (orientation == Orientation.portrait) ? 2 : 3),
+                itemCount: counter,
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemBuilder: (context, index) =>
+                    Container(
+                      margin: EdgeInsets.all(wp(1)),
+                      height: hp(2),
+                      width: wp(2),
+                      color: Colors.red,
+                      child: Stack(
+                        children: [
+                          Align(
+                            child: Text("Index: "+index.toString()),
+                            alignment: Alignment.topLeft,
                           ),
-                        ),
+
+                          Align(
+                            alignment: Alignment.center,
+                            //child: Image.file(file)
+                          ),
+
+                          Align(
+                            child: IconButton(
+                              icon: Icon(AntDesign.closecircle),
+                              onPressed: (){
+                                setState(() {
+                                  counter--;
+                                });
+                              },
+                            ),
+                            alignment: Alignment.topRight,
+                          ),
+                        ],
                       ),
-
-                    ],
-                  ),
-                ),
-              ) : Text(""),
-
+                    ),
+              ),
             ],
           ),
         ),

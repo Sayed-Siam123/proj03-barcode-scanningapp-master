@@ -245,7 +245,7 @@ class _PhotoDocumentationPageState extends State<PhotoDocumentationPage> {
       print("not got it");
       snack.snackbarshowNormal(context, "No product found!", 3, Colors.black87);
     }
-    else{
+    else if(_newData.isNotEmpty && barcode.text == _newData[0].gtin.toString()){
       print("got it");
       snack.snackbarshowNormal(context, "Product found!", 3, Colors.black87);
       Timer(Duration(seconds: 2),(){
