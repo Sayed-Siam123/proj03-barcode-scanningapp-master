@@ -3,6 +3,7 @@ import 'package:app/UI/BarcodeCompare.dart';
 import 'package:app/UI/BarcodeInfo.dart';
 import 'package:app/UI/DataAcquisition.dart';
 import 'package:app/UI/Deliveries.dart';
+import 'package:app/UI/LevelPrinting.dart';
 import 'package:app/UI/PhotoDocumentation.dart';
 import 'package:app/UI/PickupDelivery.dart';
 import 'package:flutter/cupertino.dart';
@@ -309,8 +310,10 @@ class _HomeWidgetState extends State<HomeWidget> {
                   Image.asset('assets/images/barcode-info.jpeg', fit: BoxFit.cover),
                 ),
                 onTap: () {
-                  // Navigator.push(context,
-                  //     MaterialPageRoute(builder: (context) => BarcodeComparePage()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => LevelPrintingPage()));
                 },
               )),
 
