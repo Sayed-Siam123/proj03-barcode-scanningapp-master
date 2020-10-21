@@ -374,7 +374,7 @@ class _SplashState extends State<Splash> {
       backgroundColor: Colors.white,
       seconds: 6,
       navigateAfterSeconds: loginStatus == "false" || loginStatus == "null" || userid == "null" || userid == "-1"
-          ? LoginPage()
+          ? HomePage()
           : HomePage(),
       //title: new Text('IDENTIT',textScaleFactor: 2,),
       image: new Image.asset('assets/images/logo.png'),

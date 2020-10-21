@@ -94,7 +94,7 @@ class _LevelPrintingPageState extends State<LevelPrintingPage> {
         floatingActionButton: status == true
             ? FloatingActionButton(
                 onPressed: () {
-                  _printDocument();
+                  _printDocument(hp(100),wp(100));
                 },
                 child: Icon(FontAwesome.print),
                 backgroundColor: Colors.green.shade500,
@@ -523,7 +523,10 @@ class _LevelPrintingPageState extends State<LevelPrintingPage> {
     }
   }
 
-  void _printDocument() async {
+  void _printDocument(height,width) async {
+
+    dynamic hp = Hp(height).hp;
+    dynamic wp = Wp(width).wp;
 
     Printing.layoutPdf(
       onLayout: (pageFormat) async {
@@ -612,8 +615,8 @@ class _LevelPrintingPageState extends State<LevelPrintingPage> {
 
                   pw.Center(
                     child: pw.Container(
-                        height: 200,
-                        width: 500,
+                        height: hp(20),
+                        width: wp(90),
                         decoration: pw.BoxDecoration(
                             shape: pw.BoxShape.rectangle,
                             border: pw.BoxBorder(
@@ -625,10 +628,10 @@ class _LevelPrintingPageState extends State<LevelPrintingPage> {
                             )),
                         child: pw.Column(children: [
                           pw.Image(assetImage,
-                              width: 280, height: 55, fit: pw.BoxFit.fill),
+                              width: wp(70), height: hp(7), fit: pw.BoxFit.fill),
                           pw.Divider(),
                           pw.Padding(
-                            padding: pw.EdgeInsets.only(top: 10,left: 20),
+                            padding: pw.EdgeInsets.only(top: hp(1),left: wp(8)),
                             child: pw.Row(
                                 mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                                 children: [
@@ -636,18 +639,20 @@ class _LevelPrintingPageState extends State<LevelPrintingPage> {
                                       crossAxisAlignment: pw.CrossAxisAlignment.start,
                                       children: [
                                         pw.Text(desc.toString(),style: pw.TextStyle(
-                                          fontSize: 20,
+                                          fontSize: hp(2),
                                         )),
                                         pw.Text(price.toString(),style: pw.TextStyle(
-                                          fontSize: 16,
+                                          fontSize: hp(1.5),
                                         )),
                                       ]
                                   ),
                                   pw.BarcodeWidget(
-                                    height: 70,
-                                    width: 170,
+                                    padding: pw.EdgeInsets.only(right: wp(10),top: hp(1)),
+                                    height: hp(7),
+                                    width: wp(30),
                                     data: barcode_c == null ? "0" : barcode_c,
-                                    barcode: pw.Barcode.qrCode(),
+                                    //barcode: pw.Barcode.qrCode(),
+                                    barcode: pw.Barcode.code128(),
                                   ),
                                 ]),
                           )

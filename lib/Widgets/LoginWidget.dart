@@ -1,10 +1,5 @@
 import 'dart:async';
-import 'dart:convert';
-
-import 'package:app/Bloc/user_bloc.dart';
 import 'package:app/ColorLibrary/HexColor.dart';
-import 'package:app/Handler/app_localizations.dart';
-import 'package:app/Model/GetSuccess_Model.dart';
 import 'package:app/Model/UserLogin_Success_Model.dart';
 import 'package:app/Resources/SharedPrefer.dart';
 import 'package:app/UI/Home.dart';
@@ -17,8 +12,6 @@ import 'package:flutter_translate/global.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:responsive_grid/responsive_grid.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sweetalert/sweetalert.dart';
 
 class LoginWidget extends StatefulWidget {
   @override

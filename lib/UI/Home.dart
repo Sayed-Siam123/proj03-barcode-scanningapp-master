@@ -568,23 +568,23 @@ class _HomePageState extends State<HomePage> {
             },
           ),
 
-          MLMenuItem(
-            leading: Icon(Icons.power_settings_new,color: Colors.white,),
-            trailing: Icon(Icons.arrow_right,color: Colors.white,),
-            content: Text(
-              translate('logout'),
-              style: GoogleFonts.exo2(
-                textStyle: TextStyle(
-                  color: Colors.white,
-                ),),
-            ),
-            onClick: () {
-              logout();
-
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => LoginPage()));
-            },
-          ),
+          // MLMenuItem(
+          //   leading: Icon(Icons.power_settings_new,color: Colors.white,),
+          //   trailing: Icon(Icons.arrow_right,color: Colors.white,),
+          //   content: Text(
+          //     translate('logout'),
+          //     style: GoogleFonts.exo2(
+          //       textStyle: TextStyle(
+          //         color: Colors.white,
+          //       ),),
+          //   ),
+          //   onClick: () {
+          //     logout();
+          //
+          //     Navigator.push(context,
+          //         MaterialPageRoute(builder: (context) => LoginPage()));
+          //   },
+          // ),
         ],
       ),
       appBar: AppBar(
