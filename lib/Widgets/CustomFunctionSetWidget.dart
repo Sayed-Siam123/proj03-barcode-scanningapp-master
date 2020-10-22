@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:app/Model/CustomFunctionModel.dart';
 import 'package:app/Model/CustomFunctionlistModel.dart';
 import 'package:app/UI/Home.dart';
+import 'package:app/resources/SharedPrefer.dart';
 import 'package:app/resources/SnackbarHelper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -52,7 +53,8 @@ class _CustomFunctionSetWidgetState extends State<CustomFunctionSetWidget> {
 
   var counter = 0;
 
-
+  SnackbarHelper snack = new SnackbarHelper();
+  SessionManager prefs = new SessionManager();
 
   List<TextEditingController> _controller = [];
 
@@ -99,20 +101,32 @@ class _CustomFunctionSetWidgetState extends State<CustomFunctionSetWidget> {
             onPressed: () {
               print(custom.field_list.length.toString());
 
+              custom = CustomFunctionModel(
+                name: _name.text,
+                desc: _description.text,
+                separator: _separator.text,
+              );
+
+
+              print(custom.name.toString());
 
               for(int i = 0; i < counter ; i++){
-                // setState(() {
-                //   list_item.add(CustomFunctionListModel(
-                //     name: _controller[i].text,
-                //   ));
-                //   custom = CustomFunctionModel(
-                //       field_list: list_item
-                //   );
-                // });
+                setState(() {
+
+                  list_item.add(CustomFunctionListModel(
+                    name: _controller[i].text,
+                  ));
+                  custom = CustomFunctionModel(
+                      field_list: list_item
+                  );
+                });
 
                 print("Name: "+_controller[i].text);
                 print("Type: "+custom.field_list[i].type);
               }
+
+
+
             },
           ),
         ],
@@ -590,23 +604,31 @@ class _CustomFunctionSetWidgetState extends State<CustomFunctionSetWidget> {
                                               );
                                             }).toList(),
                                             onChanged: (value) {
-                                              setState(() {
+                                                // setState(() {
                                                 // if(list_item[index].type.isNotEmpty){
                                                 //   print("Got it");
                                                 //   list_item.removeAt(index);
                                                 // }
                                                 // list_item[index].type = value;
                                                 // print(list_item[index].type);
-                                              });
 
-                                              // setState(() {
-                                              //   list_item.add(CustomFunctionListModel(
-                                              //     type: _controller[index].text,
-                                              //   ));
-                                              //   custom = CustomFunctionModel(
-                                              //       field_list: list_item
-                                              //   );
-                                              // });
+                                                // });
+
+                                              setState(() {
+                                                if(list_item.asMap().containsKey(index)){
+                                                  print("got it");
+                                                  list_item[index].type = value;
+                                                }
+
+                                                else{
+                                                  list_item.add(CustomFunctionListModel(
+                                                    type: value,
+                                                  ));
+                                                  custom = CustomFunctionModel(
+                                                      field_list: list_item
+                                                  );
+                                                }
+                                              });
 
                                             },
                                           ),
@@ -684,16 +706,23 @@ class _CustomFunctionSetWidgetState extends State<CustomFunctionSetWidget> {
                                                 ),
                                               onChanged: (value){
 
-                                                  // print(list_item[index].name);
-                                                  // //list_item[index].name = "";
-                                                  // setState(() {
-                                                  //   list_item.add(CustomFunctionListModel(
-                                                  //     name: value,
-                                                  //   ));
-                                                  //   custom = CustomFunctionModel(
-                                                  //       field_list: list_item
-                                                  //   );
-                                                  // });
+                                                setState(() {
+                                                  if(list_item.asMap().containsKey(index)){
+                                                    print("got it");
+                                                    list_item[index].name = value;
+                                                  }
+
+                                                  else{
+                                                    list_item.add(CustomFunctionListModel(
+                                                      name: value,
+                                                    ));
+                                                    custom = CustomFunctionModel(
+                                                        field_list: list_item
+                                                    );
+                                                  }
+                                                });
+
+                                                // });
                                               },
                                             ),
                                           ),
