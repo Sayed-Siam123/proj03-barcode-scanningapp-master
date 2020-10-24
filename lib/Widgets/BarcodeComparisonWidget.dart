@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:app/Bloc/masterData_bloc.dart';
 import 'package:app/Model/masterdata_model.dart';
 import 'package:app/UI/MasterData.dart';
+import 'package:app/resources/SharedPrefer.dart';
+import 'package:app/resources/SnackbarHelper.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -35,7 +39,12 @@ class _BarcodeComparisonWidgetState extends State<BarcodeComparisonWidget> {
 
   bool status = null;
 
+  String _quantityKey = "_quantityKey";
+  var _quantity = 0;
+  var _quantityFound = 0;
 
+  SnackbarHelper snack = new SnackbarHelper();
+  SessionManager prefs = new SessionManager();
 
   List<MasterDataModelV2> fetcheddata= [];
   List<MasterDataModelV2> _newData= [];
@@ -44,11 +53,28 @@ class _BarcodeComparisonWidgetState extends State<BarcodeComparisonWidget> {
   bool status1 = false;
   bool status2 = false;
 
+  void getQuantity() async{
+    Future<String> quantity = prefs.getData(_quantityKey);
+    quantity.then((data) async {
+
+      print(data);
+      setState(() {
+        _quantity = int.parse(data);
+      });
+
+    }, onError: (e) {
+      print(e);
+    });
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     masterdata_bloc.fetchAllMasterdatafromDBV2();
+    Timer(Duration(milliseconds: 500),(){
+      getQuantity();
+    });
   }
 
 
@@ -56,6 +82,10 @@ class _BarcodeComparisonWidgetState extends State<BarcodeComparisonWidget> {
   Widget build(BuildContext context) {
     dynamic hp = Hp(widget.height).hp;
     dynamic wp = Wp(widget.width).wp;
+
+    print(_quantity.toString());
+
+
     return SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(hp(3)),
@@ -81,8 +111,19 @@ class _BarcodeComparisonWidgetState extends State<BarcodeComparisonWidget> {
                   },
                 ),
 
+                Align(
+                  alignment: Alignment.topRight,
+                  child: Container(
+                    width: wp(20),
+                    color: Colors.transparent,
+                    child: Center(child: Text('$_quantityFound/$_quantity',style: TextStyle(
+                       fontSize: hp(4),
+                    ))),
+                  ),
+                ),
+
                 Padding(
-                  padding: EdgeInsets.only(top: hp(6), bottom: hp(1)),
+                  padding: EdgeInsets.only(top: hp(7), bottom: hp(1)),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Row(
@@ -189,7 +230,7 @@ class _BarcodeComparisonWidgetState extends State<BarcodeComparisonWidget> {
 
                         Padding(
                           padding: EdgeInsets.only(top: hp(3)),
-                          child: status1 == false ? Text(
+                          child: _newData.length == 0 ? Text(
                             "No Data",
                             style: GoogleFonts.exo2(
                               fontSize: 14,
@@ -503,27 +544,34 @@ class _BarcodeComparisonWidgetState extends State<BarcodeComparisonWidget> {
   }
 
   Future barcodeScanning2() async {
-    try {
-      barcode2 = await BarcodeScanner.scan();
-      print(barcode2);
-      setState(() {
-        //status2 = false;
-        this.barcode2 = barcode2;
-        secondBarcode.text = barcode2.rawContent.toString();
-      });
-      onChangeBarcode(barcode2.rawContent.toString());
-    } on PlatformException catch (e) {
-      if (e.code == BarcodeScanner.cameraAccessDenied) {
+
+    if(_quantity == 0){
+      snack.snackbarshowAction2(context, "Set the quantity first!", 2, Colors.black87);
+    }
+
+    else{
+      try {
+        barcode2 = await BarcodeScanner.scan();
+        print(barcode2);
         setState(() {
-          this.barcode2 = 'No camera permission!' as ScanResult;
+          //status2 = false;
+          this.barcode2 = barcode2;
+          secondBarcode.text = barcode2.rawContent.toString();
         });
-      } else {
+        onChangeBarcode(barcode2.rawContent.toString());
+      } on PlatformException catch (e) {
+        if (e.code == BarcodeScanner.cameraAccessDenied) {
+          setState(() {
+            this.barcode2 = 'No camera permission!' as ScanResult;
+          });
+        } else {
+          setState(() => this.barcode2 = 'Unknown error: $e' as ScanResult);
+        }
+      } on FormatException {
+        setState(() => this.barcode2 = 'Nothing captured.' as ScanResult);
+      } catch (e) {
         setState(() => this.barcode2 = 'Unknown error: $e' as ScanResult);
       }
-    } on FormatException {
-      setState(() => this.barcode2 = 'Nothing captured.' as ScanResult);
-    } catch (e) {
-      setState(() => this.barcode2 = 'Unknown error: $e' as ScanResult);
     }
   }
 
@@ -540,8 +588,7 @@ class _BarcodeComparisonWidgetState extends State<BarcodeComparisonWidget> {
     }
 
     fetcheddata.forEach((userDetail) {
-      if (userDetail.gtin.toLowerCase().contains(text.toLowerCase()) ||
-          userDetail.id.toLowerCase().contains(text.toLowerCase()))
+      if (userDetail.gtin.toLowerCase().contains(text.toLowerCase()))
         _newData.add(userDetail);
     });
 
@@ -550,41 +597,62 @@ class _BarcodeComparisonWidgetState extends State<BarcodeComparisonWidget> {
       status1 = true;
     });
 
+    Timer(Duration(milliseconds: 50),(){
+      middleCheck(text);
+    });
 
+
+  }
+
+  void middleCheck(String text) {
+    if(_newData.isEmpty || text != _newData[0].gtin.toString() ){
+      print("not got it");
+      snack.snackbarshowNormal(context, "No product found!", 1, Colors.black87);
+    }
+    else if(_newData.isNotEmpty && text == _newData[0].gtin.toString()){
+      print("got it");
+      snack.snackbarshowNormal(context, "Product Exists!", 1, Colors.black87);
+    }
   }
 
   void onChangeBarcode(String text){
     print(text);
 
-    // _newData2.clear();
-    // if (text.isEmpty) {
-    //   setState(() {});
-    //   return;
-    // }
-    //
-    // fetcheddata.forEach((userDetail) {
-    //   if (userDetail.gtin.toLowerCase().contains(text.toLowerCase()) ||
-    //       userDetail.id.toLowerCase().contains(text.toLowerCase()))
-    //     _newData2.add(userDetail);
-    // });
-    //
-    //   setState(() {
-    //     status2 = true;
-    //   });
 
+    if(_newData.isEmpty || text != _newData[0].gtin.toString()){
+      print("not got it");
+      status = false;
+      snack.snackbarshowNormal(context, "No matched product found!", 1, Colors.black87);
+    }
+    else if(_newData.isNotEmpty && text == _newData[0].gtin.toString()){
+      print("got it");
 
-      if(int.parse(_newData[0].gtin.toString()) == int.parse(text)){
-        print("same");
-        setState(() {
-          status = true;
-        });
+      if(_quantityFound == _quantity){
+        snack.snackbarshowNormal(context, "Matching done with all of $_quantity items !", 1, Colors.black87);
       }
 
       else{
-        print("diff");
         setState(() {
-          status = false;
+          _quantityFound++;
+          status = true;
         });
+        snack.snackbarshowNormal(context, "Product matched!", 1, Colors.black87);
       }
+    }
+
+      // if(int.parse(_newData[0].gtin.toString()) == int.parse(text)){
+      //   print("same");
+      //   setState(() {
+      //     status = true;
+      //
+      //   });
+      // }
+      //
+      // else{
+      //   print("diff");
+      //   setState(() {
+      //     status = false;
+      //   });
+      // }
     }
   }
