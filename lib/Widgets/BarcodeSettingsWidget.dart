@@ -73,7 +73,6 @@ class _BarcodeSettingsWidgetState extends State<BarcodeSettingsWidget> {
                           putShared(_code39Key, _code39);
                         });
                       },
-                      secondary: const Icon(Icons.view_week),
                     );
                   },
                 ),
@@ -99,7 +98,6 @@ class _BarcodeSettingsWidgetState extends State<BarcodeSettingsWidget> {
                           putShared(_code128Key, _code128);
                         });
                       },
-                      secondary: const Icon(Icons.view_week),
                     );
                   },
                 ),
@@ -122,7 +120,6 @@ class _BarcodeSettingsWidgetState extends State<BarcodeSettingsWidget> {
                           putShared(_ean13Key, _ean13);
                         });
                       },
-                      secondary: const Icon(Icons.view_week),
                     );
                   },
                 ),
@@ -145,7 +142,6 @@ class _BarcodeSettingsWidgetState extends State<BarcodeSettingsWidget> {
                           putShared(_datamatrixKey, _datamatrix);
                         });
                       },
-                      secondary: const Icon(Icons.view_week),
                     );
                   },
                 ),
@@ -168,7 +164,6 @@ class _BarcodeSettingsWidgetState extends State<BarcodeSettingsWidget> {
                           putShared(_qrcodeKey, _qrcode);
                         });
                       },
-                      secondary: const Icon(Icons.view_week),
                     );
                   },
                 ),

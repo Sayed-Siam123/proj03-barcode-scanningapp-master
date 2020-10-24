@@ -18,6 +18,7 @@ import 'package:flutter_translate/global.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:multilevel_drawer/multilevel_drawer.dart';
+import 'package:responsive_screen/responsive_screen.dart';
 
 import 'About.dart';
 import 'BarcodeSettings.dart';
@@ -69,7 +70,9 @@ class _HomePageState extends State<HomePage> {
 
   DateTime backButtonPressTime;
 
-  bool status = false;
+  bool status = true;
+  bool status1 = false;
+
   final snackBar = SnackBar(
     content: Text(
       'Double Click to exit app',
@@ -168,7 +171,7 @@ class _HomePageState extends State<HomePage> {
 
     sublist_bloc.fetchAllMateralPackData();
     sublist_bloc.fetchAllMateralPackDatafromDB();
-    status = false;
+    status = true;
   }
 
   @override
@@ -179,414 +182,318 @@ class _HomePageState extends State<HomePage> {
 //        SystemNavigator.pop();
 //        exit(0);
 //      },
-    return Scaffold(
+
+  dynamic hp = Screen(context).hp;
+  dynamic wp = Screen(context).wp;
+
+  return Scaffold(
       key: _scaffoldKey,
-      // drawer: new Drawer(
-      //   child: ListView(
-      //     // Important: Remove any padding from the ListView.
-      //     padding: EdgeInsets.zero,
-      //     children: <Widget>[
-      //       Container(
-      //         padding: EdgeInsets.only(top: 35,left:10),
-      //         child: Container(
-      //           padding: EdgeInsets.only(bottom: 15),
-      //           child: status == false
-      //               ? InkWell(
-      //                   child: Row(
-      //                     children: <Widget>[
-      //                       Icon(Icons.arrow_back),
-      //                       SizedBox(
-      //                         width: 5,
-      //                       ),
-      //                       Text(
-      //                         "Back",
-      //                         style: GoogleFonts.exo2(
-      //                           textStyle: TextStyle(
-      //                             fontSize: 20,
-      //                             color: Colors.black,
-      //                           ),
-      //                         ),
-      //                       ),
-      //                     ],
-      //                   ),
-      //                   onTap: () {
-      //                     if (_scaffoldKey.currentState.isDrawerOpen) {
-      //                       _scaffoldKey.currentState.openEndDrawer();
-      //                     };
-      //                   })
-      //               : InkWell(
-      //                   child: Row(
-      //                     children: <Widget>[
-      //                       Icon(Icons.arrow_back),
-      //                       SizedBox(
-      //                         width: 5,
-      //                       ),
-      //                       Text(
-      //                         "Back",
-      //                         style: GoogleFonts.exo2(
-      //                           textStyle: TextStyle(
-      //                             fontSize: 20,
-      //                             color: Colors.black,
-      //                           ),
-      //                         ),
-      //                       ),
-      //                     ],
-      //                   ),
-      //                   onTap: () {
-      //                     setState(() {
-      //                       status = false;
-      //                     });
-      //                   }),
-      //           margin: EdgeInsets.only(top: 0),
+      drawer: new Drawer(
+        child: Container(
+          color: Colors.black87,
+          child: ListView(
+            // Important: Remove any padding from the ListView.
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              Container(
+                color: Colors.black87,
+                child: Container(
+                  margin: EdgeInsets.only(top: hp(5)),
+                  padding: EdgeInsets.only(bottom: hp(1),left: wp(1)),
+                  child: status == true ? InkWell(
+                          child: Row(
+                            children: <Widget>[
+                              Icon(Icons.arrow_back,size: hp(2),color: Colors.white,),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                "Back",
+                                style: GoogleFonts.exo2(
+                                  textStyle: TextStyle(
+                                    fontSize: hp(2),
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          onTap: () {
+                            if (_scaffoldKey.currentState.isDrawerOpen) {
+                              _scaffoldKey.currentState.openEndDrawer();
+                            }
+                          }): status1 == true ? InkWell(
+                      child: Row(
+                        children: <Widget>[
+                          Icon(Icons.arrow_back,size: hp(2),color: Colors.white,),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text(
+                            "Back",
+                            style: GoogleFonts.exo2(
+                              textStyle: TextStyle(
+                                fontSize: hp(2),
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      onTap: () {
+                        setState(() {
+                          status = true;
+                          status1 = false;
+                        });
+
+                      }) : InkWell(
+                      child: Row(
+                        children: <Widget>[
+                          Icon(Icons.arrow_back,size: hp(2),color: Colors.white,),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text(
+                            "Back",
+                            style: GoogleFonts.exo2(
+                              textStyle: TextStyle(
+                                fontSize: hp(2),
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      onTap: () {
+
+                      }),
+                ),
+              ),
+
+              status == true ? main_options(hp(100),wp(100)): Container(width: 0,height: 0,),
+              status1 == true ? settings_options(hp(100),wp(100)): Container(width: 0,height: 0,),
+            ],
+          ),
+        ),
+      ),
+
+
+
+
+
+      // drawer: MultiLevelDrawer(
+      //   backgroundColor: drawer_color,
+      //   rippleColor: Colors.white,
+      //   subMenuBackgroundColor: drawer_color,
+      //   divisionColor: Colors.grey,
+      //   header: Container(
+      //     height: MediaQuery.of(context).size.height * 0.30,
+      //     child: Center(
+      //         child: Column(
+      //       mainAxisAlignment: MainAxisAlignment.center,
+      //       children: <Widget>[
+      //         Image.asset(
+      //           "assets/images/logo.png",
+      //           width: 100,
+      //           height: 100,
       //         ),
-      //         color: Colors.amberAccent,
-      //       ),
-      //       status
-      //           ? ListTile(
-      //               title: Text(
-      //                 translate('product').toString(),
-      //                 style: GoogleFonts.exo2(
-      //                   textStyle: TextStyle(
-      //                     fontSize: 20,
-      //                     color: Colors.black,
-      //                   ),
-      //                 ),
-      //               ),
-      //               trailing: new Icon(Icons.arrow_forward),
-      //               onTap: () {
-      //                 // Update the state of the app.
-      //                 // ...
+      //         SizedBox(
+      //           height: 10,
+      //         ),
+      //         Text("Version 1.0.1",style: GoogleFonts.exo2(
+      //           textStyle: TextStyle(
+      //             color: Colors.white,
+      //           ),),),
+      //       ],
+      //     )),
+      //   ),
+      //   children: [
+      //     MLMenuItem(
+      //         leading: Icon(Icons.table_chart,color: Colors.white,),
+      //         trailing: Icon(Icons.arrow_right,color: Colors.white,),
+      //         content: Text(
+      //           translate('masterdata'),
+      //           style: GoogleFonts.exo2(
+      //         textStyle: TextStyle(
+      //         color: Colors.white,
+      //         ),),
+      //         ),
+      //         subMenuItems: [
+      //           MLSubmenu(
+      //               onClick: () {
+      //                 Navigator.of(context).pop();
       //                 Navigator.push(
       //                   context,
       //                   MaterialPageRoute(builder: (context) => MasterData()),
       //                 );
       //               },
-      //             )
-      //           : Text(""),
-      //       status
-      //           ? ListTile(
-      //               title: Text(
-      //                 translate('sublist').toString(),
+      //               submenuContent: Text(
+      //                 translate('product'),
       //                 style: GoogleFonts.exo2(
       //                   textStyle: TextStyle(
-      //                     fontSize: 20,
-      //                     color: Colors.black,
+      //                     color: Colors.white,
       //                   ),
       //                 ),
       //               ),
-      //               trailing: new Icon(Icons.arrow_forward),
-      //               onTap: () {
-      //                 // Update the state of the app.
-      //                 // ...
+      //           ),
+      //           MLSubmenu(
+      //               onClick: () {
+      //                 Navigator.of(context).pop();
       //                 Navigator.push(
-      //                   context,
-      //                   MaterialPageRoute(builder: (context) => SublistPage()),
-      //                 );
+      //                     context,
+      //                     MaterialPageRoute(builder: (context) => SublistPage()));
       //               },
-      //             )
-      //           : Text(""),
-      //       status == false
-      //           ? ListTile(
-      //               title: Text(
-      //                 translate('system_setting').toString(),
+      //               submenuContent: Text(
+      //                 translate('sublist'),
       //                 style: GoogleFonts.exo2(
       //                   textStyle: TextStyle(
-      //                     fontSize: 20,
-      //                     color: Colors.black,
+      //                     color: Colors.white,
       //                   ),
       //                 ),
-      //               ),
-      //               trailing: new Icon(Icons.arrow_forward),
-      //               onTap: () {
-      //                 // Update the state of the app.
-      //                 // ...
-      //                 Navigator.push(
+      //               )),
+      //         ],
+      //         onClick: () {}),
+      //     MLMenuItem(
+      //       subMenuItems: [
+      //         MLSubmenu(
+      //             onClick: () {
+      //               Navigator.of(context).pop();
+      //               Navigator.push(
       //                   context,
       //                   MaterialPageRoute(
-      //                       builder: (context) => SystemSettingsPage()),
-      //                 );
-      //               },
-      //             )
-      //           : Text(""),
-      //       status == false
-      //           ? ListTile(
-      //               title: Text(
-      //                 translate('masterdata').toString(),
-      //                 style: GoogleFonts.exo2(
-      //                   textStyle: TextStyle(
-      //                     fontSize: 20,
-      //                     color: Colors.black,
-      //                   ),
-      //                 ),
-      //               ),
-      //               trailing: new Icon(Icons.arrow_forward),
-      //               onTap: () {
-      //                 // Update the state of the app.
-      //                 // ...
-      //                 // Navigator.push(
-      //                 //   context,
-      //                 //   MaterialPageRoute(builder: (context) => MasterData()),
-      //                 // );
-      //
-      //                 setState(() {
-      //                   status = true;
-      //                 });
-      //               },
-      //             )
-      //           : Text(""),
-      //       status == false
-      //           ? ListTile(
-      //               title: Text(
-      //                 translate('logout').toString(),
-      //                 style: GoogleFonts.exo2(
-      //                   textStyle: TextStyle(
-      //                     fontSize: 20,
-      //                     color: Colors.black,
-      //                   ),
-      //                 ),
-      //               ),
-      //               trailing: new Icon(Icons.power_settings_new),
-      //               onTap: () {
-      //                 // Update the state of the app.
-      //                 // ...
-      //
-      //                 logout();
-      //
-      //                 Navigator.push(
-      //                   context,
-      //                   MaterialPageRoute(builder: (context) => LoginPage()),
-      //                 );
-      //               },
-      //             )
-      //           : Text(""),
-      //       status ==true ? Divider(): Text(""),
-      //       status ==false
-      //           ? Text(
-      //               "Version 1.0.1",
+      //                       builder: (context) => SystemSettingsPage()));
+      //             },
+      //             submenuContent: Text(
+      //               "Application Settings",
       //               style: GoogleFonts.exo2(
       //                 textStyle: TextStyle(
-      //                   fontSize: 20,
-      //                   color: Colors.black,
+      //                   color: Colors.white,
       //                 ),
       //               ),
       //             )
-      //           : Text(""),
-      //     ],
-      //   ),
+      //         ),
+      //         MLSubmenu(
+      //             onClick: () {
+      //               Navigator.of(context).pop();
+      //               Navigator.push(
+      //                   context,
+      //                   MaterialPageRoute(builder: (context) => BarcodeSettings()));
+      //             },
+      //             submenuContent: Text(
+      //               "Barcode Settings",
+      //               style: GoogleFonts.exo2(
+      //                 textStyle: TextStyle(
+      //                   color: Colors.white,
+      //                 ),
+      //               ),
+      //             )),
+      //
+      //         MLSubmenu(
+      //             onClick: () {
+      //               Navigator.of(context).pop();
+      //               Navigator.push(
+      //                   context,
+      //                   MaterialPageRoute(builder: (context) => CustomFunctionSettingsPage()));
+      //             },
+      //             submenuContent: Text(
+      //               "Custom Application",
+      //               style: GoogleFonts.exo2(
+      //                 textStyle: TextStyle(
+      //                   color: Colors.white,
+      //                 ),
+      //               ),
+      //             )),
+      //       ],
+      //       leading: Icon(Icons.settings,color: Colors.white,),
+      //       trailing: Icon(Icons.arrow_right,color: Colors.white,),
+      //       content: Text(
+      //         translate('system_setting'),
+      //         style: GoogleFonts.exo2(
+      //           textStyle: TextStyle(
+      //             color: Colors.white,
+      //           ),),
+      //       ),
+      //       onClick: () {},
+      //     ),
+      //
+      //     MLMenuItem(
+      //       leading: Icon(Icons.attach_file,color: Colors.white,),
+      //       trailing: Icon(Icons.arrow_right,color: Colors.white,),
+      //       content: Text(
+      //         translate('file_upload'),
+      //         style: GoogleFonts.exo2(
+      //           textStyle: TextStyle(
+      //             color: Colors.white,
+      //           ),),
+      //       ),
+      //       onClick: () {
+      //         Navigator.of(context).pop();
+      //         _openFileExplorer();
+      //         // Navigator.push(
+      //         //     context,
+      //         //     MaterialPageRoute(
+      //         //         builder: (context) => SystemSettingsPage()));
+      //       },
+      //     ),
+      //
+      //     MLMenuItem(
+      //       leading: Icon(Icons.language,color: Colors.white,),
+      //       trailing: Icon(Icons.arrow_right,color: Colors.white,),
+      //       content: Text(
+      //         "Language",
+      //         style: GoogleFonts.exo2(
+      //           textStyle: TextStyle(
+      //             color: Colors.white,
+      //           ),),
+      //       ),
+      //       onClick: () {
+      //         Navigator.of(context).pop();
+      //         _showDialog(context);
+      //         // Navigator.push(
+      //         //     context,
+      //         //     MaterialPageRoute(
+      //         //         builder: (context) => SystemSettingsPage()));
+      //       },
+      //     ),
+      //
+      //     MLMenuItem(
+      //       leading: Icon(Icons.language,color: Colors.white,),
+      //       trailing: Icon(Icons.arrow_right,color: Colors.white,),
+      //       content: Text(
+      //         "About",
+      //         style: GoogleFonts.exo2(
+      //           textStyle: TextStyle(
+      //             color: Colors.white,
+      //           ),),
+      //       ),
+      //       onClick: () {
+      //         Navigator.of(context).pop();
+      //         Navigator.push(
+      //             context,
+      //             MaterialPageRoute(
+      //                 builder: (context) => AboutPage()));
+      //       },
+      //     ),
+      //
+      //     // MLMenuItem(
+      //     //   leading: Icon(Icons.power_settings_new,color: Colors.white,),
+      //     //   trailing: Icon(Icons.arrow_right,color: Colors.white,),
+      //     //   content: Text(
+      //     //     translate('logout'),
+      //     //     style: GoogleFonts.exo2(
+      //     //       textStyle: TextStyle(
+      //     //         color: Colors.white,
+      //     //       ),),
+      //     //   ),
+      //     //   onClick: () {
+      //     //     logout();
+      //     //
+      //     //     Navigator.push(context,
+      //     //         MaterialPageRoute(builder: (context) => LoginPage()));
+      //     //   },
+      //     // ),
+      //   ],
       // ),
-      drawer: MultiLevelDrawer(
-        backgroundColor: drawer_color,
-        rippleColor: Colors.white,
-        subMenuBackgroundColor: drawer_color,
-        divisionColor: Colors.grey,
-        header: Container(
-          height: MediaQuery.of(context).size.height * 0.30,
-          child: Center(
-              child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Image.asset(
-                "assets/images/logo.png",
-                width: 100,
-                height: 100,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Text("Version 1.0.1",style: GoogleFonts.exo2(
-                textStyle: TextStyle(
-                  color: Colors.white,
-                ),),),
-            ],
-          )),
-        ),
-        children: [
-          MLMenuItem(
-              leading: Icon(Icons.table_chart,color: Colors.white,),
-              trailing: Icon(Icons.arrow_right,color: Colors.white,),
-              content: Text(
-                translate('masterdata'),
-                style: GoogleFonts.exo2(
-              textStyle: TextStyle(
-              color: Colors.white,
-              ),),
-              ),
-              subMenuItems: [
-                MLSubmenu(
-                    onClick: () {
-                      Navigator.of(context).pop();
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => MasterData()),
-                      );
-                    },
-                    submenuContent: Text(
-                      translate('product'),
-                      style: GoogleFonts.exo2(
-                        textStyle: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                ),
-                MLSubmenu(
-                    onClick: () {
-                      Navigator.of(context).pop();
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => SublistPage()));
-                    },
-                    submenuContent: Text(
-                      translate('sublist'),
-                      style: GoogleFonts.exo2(
-                        textStyle: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                    )),
-              ],
-              onClick: () {}),
-          MLMenuItem(
-            subMenuItems: [
-              MLSubmenu(
-                  onClick: () {
-                    Navigator.of(context).pop();
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => SystemSettingsPage()));
-                  },
-                  submenuContent: Text(
-                    "Application Settings",
-                    style: GoogleFonts.exo2(
-                      textStyle: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                  )
-              ),
-              MLSubmenu(
-                  onClick: () {
-                    Navigator.of(context).pop();
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => BarcodeSettings()));
-                  },
-                  submenuContent: Text(
-                    "Barcode Settings",
-                    style: GoogleFonts.exo2(
-                      textStyle: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                  )),
-
-              MLSubmenu(
-                  onClick: () {
-                    Navigator.of(context).pop();
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => CustomFunctionSettingsPage()));
-                  },
-                  submenuContent: Text(
-                    "Custom Application",
-                    style: GoogleFonts.exo2(
-                      textStyle: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                  )),
-            ],
-            leading: Icon(Icons.settings,color: Colors.white,),
-            trailing: Icon(Icons.arrow_right,color: Colors.white,),
-            content: Text(
-              translate('system_setting'),
-              style: GoogleFonts.exo2(
-                textStyle: TextStyle(
-                  color: Colors.white,
-                ),),
-            ),
-            onClick: () {},
-          ),
-
-          MLMenuItem(
-            leading: Icon(Icons.attach_file,color: Colors.white,),
-            trailing: Icon(Icons.arrow_right,color: Colors.white,),
-            content: Text(
-              translate('file_upload'),
-              style: GoogleFonts.exo2(
-                textStyle: TextStyle(
-                  color: Colors.white,
-                ),),
-            ),
-            onClick: () {
-              Navigator.of(context).pop();
-              _openFileExplorer();
-              // Navigator.push(
-              //     context,
-              //     MaterialPageRoute(
-              //         builder: (context) => SystemSettingsPage()));
-            },
-          ),
-
-          MLMenuItem(
-            leading: Icon(Icons.language,color: Colors.white,),
-            trailing: Icon(Icons.arrow_right,color: Colors.white,),
-            content: Text(
-              "Language",
-              style: GoogleFonts.exo2(
-                textStyle: TextStyle(
-                  color: Colors.white,
-                ),),
-            ),
-            onClick: () {
-              Navigator.of(context).pop();
-              _showDialog(context);
-              // Navigator.push(
-              //     context,
-              //     MaterialPageRoute(
-              //         builder: (context) => SystemSettingsPage()));
-            },
-          ),
-
-          MLMenuItem(
-            leading: Icon(Icons.language,color: Colors.white,),
-            trailing: Icon(Icons.arrow_right,color: Colors.white,),
-            content: Text(
-              "About",
-              style: GoogleFonts.exo2(
-                textStyle: TextStyle(
-                  color: Colors.white,
-                ),),
-            ),
-            onClick: () {
-              Navigator.of(context).pop();
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => AboutPage()));
-            },
-          ),
-
-          // MLMenuItem(
-          //   leading: Icon(Icons.power_settings_new,color: Colors.white,),
-          //   trailing: Icon(Icons.arrow_right,color: Colors.white,),
-          //   content: Text(
-          //     translate('logout'),
-          //     style: GoogleFonts.exo2(
-          //       textStyle: TextStyle(
-          //         color: Colors.white,
-          //       ),),
-          //   ),
-          //   onClick: () {
-          //     logout();
-          //
-          //     Navigator.push(context,
-          //         MaterialPageRoute(builder: (context) => LoginPage()));
-          //   },
-          // ),
-        ],
-      ),
       appBar: AppBar(
 //        title: Text("Home", style: GoogleFonts.exo2(
 //          textStyle: TextStyle(
@@ -852,4 +759,198 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Widget main_options(height,width) {
+    dynamic hp = Hp(height).hp;
+    dynamic wp = Wp(width).wp;
+    return Container(
+      child: Column(
+        children: [
+          ListTile(
+            title: Text(
+              translate('masterdata').toString(),
+              style: GoogleFonts.exo2(
+                textStyle: TextStyle(
+                  fontSize: hp(2),
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            trailing: new Icon(Icons.arrow_forward,color: Colors.white,size: hp(2),),
+            onTap: () {
+              // Update the state of the app.
+              // ...
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MasterData()),
+              );
+            },
+          ),
+
+          ListTile(
+            title: Text(
+              "Settings",
+              style: GoogleFonts.exo2(
+                textStyle: TextStyle(
+                  fontSize: hp(2),
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            trailing: new Icon(Icons.arrow_forward,color: Colors.white,size: hp(2),),
+            onTap: () {
+              // Update the state of the app.
+              // ...
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => MasterData()),
+              // );
+              setState(() {
+                status = false;
+                status1 = true;
+              });
+            },
+          ),
+
+          ListTile(
+            title: Text(
+              "File upload",
+              style: GoogleFonts.exo2(
+                textStyle: TextStyle(
+                  fontSize: hp(2),
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            trailing: new Icon(Icons.arrow_forward,color: Colors.white,size: hp(2),),
+            onTap: () {
+              // Update the state of the app.
+              // ...
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => MasterData()),
+              // );
+
+              Navigator.of(context).pop();
+              _openFileExplorer();
+            },
+          ),
+
+
+          ListTile(
+            title: Text(
+              "Language",
+              style: GoogleFonts.exo2(
+                textStyle: TextStyle(
+                  fontSize: hp(2),
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            trailing: new Icon(Icons.arrow_forward,color: Colors.white,size: hp(2),),
+            onTap: () {
+              // Update the state of the app.
+              // ...
+              Navigator.of(context).pop();
+              _showDialog(context);
+            },
+          ),
+          Divider(color: Colors.white70,),
+          SizedBox(height: hp(1),),
+          ListTile(
+            title: Text(
+              "About",
+              style: GoogleFonts.exo2(
+                textStyle: TextStyle(
+                  fontSize: hp(2),
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            trailing: new Icon(Icons.arrow_forward,color: Colors.white,size: hp(2),),
+            onTap: () {
+              // Update the state of the app.
+              // ...
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AboutPage()),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget settings_options(height,width){
+    dynamic hp = Hp(height).hp;
+    dynamic wp = Wp(width).wp;
+    return Container(
+      child: Column(
+        children: [
+          ListTile(
+            title: Text(
+              "Barcode settings",
+              style: GoogleFonts.exo2(
+                textStyle: TextStyle(
+                  fontSize: hp(2),
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            trailing: new Icon(Icons.arrow_forward,color: Colors.white,size: hp(2),),
+            onTap: () {
+              // Update the state of the app.
+              // ...
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => BarcodeSettings()),
+              );
+            },
+          ),
+
+          ListTile(
+            title: Text(
+              "Application Settings",
+              style: GoogleFonts.exo2(
+                textStyle: TextStyle(
+                  fontSize: hp(2),
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            trailing: new Icon(Icons.arrow_forward,color: Colors.white,size: hp(2),),
+            onTap: () {
+              // Update the state of the app.
+              // ...
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SystemSettingsPage()),
+              );
+            },
+          ),
+
+          ListTile(
+            title: Text(
+              "Custom settings",
+              style: GoogleFonts.exo2(
+                textStyle: TextStyle(
+                  fontSize: hp(2),
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            trailing: new Icon(Icons.arrow_forward,color: Colors.white,size: hp(2),),
+            onTap: () {
+              // Update the state of the app.
+              // ...
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CustomFunctionSettingsPage()),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
 }

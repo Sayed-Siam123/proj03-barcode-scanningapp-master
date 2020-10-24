@@ -35,7 +35,7 @@ class _BarcodeSettingsState extends State<BarcodeSettings> {
             color: Colors.black54,
           ),
           onPressed: () {
-            Navigator.push(
+            Navigator.pop(
                 context, MaterialPageRoute(builder: (context) => HomePage()));
           },
         ),

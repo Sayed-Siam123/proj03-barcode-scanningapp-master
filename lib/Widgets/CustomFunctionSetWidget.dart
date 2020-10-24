@@ -136,7 +136,7 @@ class _CustomFunctionSetWidgetState extends State<CustomFunctionSetWidget> {
             color: Colors.black54,
           ),
           onPressed: () {
-            Navigator.push(context,
+            Navigator.pop(context,
                 MaterialPageRoute(builder: (context) => HomePage()));
           },
         ),
@@ -196,7 +196,6 @@ class _CustomFunctionSetWidgetState extends State<CustomFunctionSetWidget> {
                             putShared(_activateKey, _activate);
                           });
                         },
-                        secondary: const Icon(Icons.view_week),
                       );
                     },
                   ),
@@ -208,10 +207,6 @@ class _CustomFunctionSetWidgetState extends State<CustomFunctionSetWidget> {
                         padding: EdgeInsets.only(left: hp(2.5)),
                         child: Row(
                           children: [
-                            Icon(Icons.view_week,color: Colors.black45,),
-                            SizedBox(
-                              width: wp(7.5),
-                            ),
                             Text(
                               "Name",
                               style: GoogleFonts.exo2(
@@ -283,10 +278,6 @@ class _CustomFunctionSetWidgetState extends State<CustomFunctionSetWidget> {
                         padding: EdgeInsets.only(left: hp(2.5)),
                         child: Row(
                           children: [
-                            Icon(Icons.view_week,color: Colors.black45,),
-                            SizedBox(
-                              width: wp(7.5),
-                            ),
                             Text(
                               "Description",
                               style: GoogleFonts.exo2(
@@ -374,7 +365,6 @@ class _CustomFunctionSetWidgetState extends State<CustomFunctionSetWidget> {
                             putShared(_timestampKey, _timestamp);
                           });
                         },
-                        secondary: const Icon(Icons.view_week),
                       );
                     },
                   ),
@@ -390,10 +380,6 @@ class _CustomFunctionSetWidgetState extends State<CustomFunctionSetWidget> {
                         padding: EdgeInsets.only(left: hp(2.5)),
                         child: Row(
                           children: [
-                            Icon(Icons.view_week,color: Colors.black45,),
-                            SizedBox(
-                              width: wp(7.5),
-                            ),
                             Text(
                               "Separator",
                               style: GoogleFonts.exo2(
@@ -465,10 +451,6 @@ class _CustomFunctionSetWidgetState extends State<CustomFunctionSetWidget> {
                             padding: EdgeInsets.only(left: hp(2.5)),
                             child: Row(
                               children: [
-                                Icon(Icons.view_week,color: Colors.black45,),
-                                SizedBox(
-                                  width: wp(7.5),
-                                ),
                                 Text(
                                   "File format",
                                   style: GoogleFonts.exo2(

@@ -618,7 +618,6 @@ class _BarcodeComparisonWidgetState extends State<BarcodeComparisonWidget> {
   void onChangeBarcode(String text){
     print(text);
 
-
     if(_newData.isEmpty || text != _newData[0].gtin.toString()){
       print("not got it");
       status = false;
@@ -639,20 +638,5 @@ class _BarcodeComparisonWidgetState extends State<BarcodeComparisonWidget> {
         snack.snackbarshowNormal(context, "Product matched!", 1, Colors.black87);
       }
     }
-
-      // if(int.parse(_newData[0].gtin.toString()) == int.parse(text)){
-      //   print("same");
-      //   setState(() {
-      //     status = true;
-      //
-      //   });
-      // }
-      //
-      // else{
-      //   print("diff");
-      //   setState(() {
-      //     status = false;
-      //   });
-      // }
-    }
+   }
   }

@@ -144,31 +144,31 @@ class _SystemSettingsWidgetState extends State<SystemSettingsWidget> {
                 //   children: <Widget>[
                 //languageDropDown(hp(10), wp(100), context),
                 //Divider(),
-                FutureBuilder(
-                  future: getShared(_cameraKey),
-                  initialData: false,
-                  builder: (context, snapshot) {
-                    return SwitchListTile(
-                      title: const Text(
-                        'Camera',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 12.00,
-                            fontWeight: FontWeight.w600),
-                      ),
-                      value: snapshot.data == null ? _camera : snapshot.data,
-                      onChanged: (bool value) {
-                        print("Current value" + " " + value.toString());
-                        setState(() {
-                          _camera = value;
-                          putShared(_cameraKey, _camera);
-                        });
-                      },
-                      secondary: const Icon(Icons.photo_camera),
-                    );
-                  },
-                ),
-                Divider(),
+                // FutureBuilder(
+                //   future: getShared(_cameraKey),
+                //   initialData: false,
+                //   builder: (context, snapshot) {
+                //     return SwitchListTile(
+                //       title: const Text(
+                //         'Camera',
+                //         style: TextStyle(
+                //             color: Colors.black,
+                //             fontSize: 12.00,
+                //             fontWeight: FontWeight.w600),
+                //       ),
+                //       value: snapshot.data == null ? _camera : snapshot.data,
+                //       onChanged: (bool value) {
+                //         print("Current value" + " " + value.toString());
+                //         setState(() {
+                //           _camera = value;
+                //           putShared(_cameraKey, _camera);
+                //         });
+                //       },
+                //       secondary: const Icon(Icons.photo_camera),
+                //     );
+                //   },
+                // ),
+                // Divider(),
 
                 BarcodeInfo(hp(20), wp(100), context),
                 DataAcquisition(hp(20), wp(100), context),
@@ -223,7 +223,6 @@ class _SystemSettingsWidgetState extends State<SystemSettingsWidget> {
                       putShared(_showDescriptionKey, _showDescription);
                     });
                   },
-                  secondary: const Icon(Icons.view_week),
                 );
               },
             ),
@@ -253,7 +252,6 @@ class _SystemSettingsWidgetState extends State<SystemSettingsWidget> {
                       putShared(_showPriceKey, _showPrice);
                     });
                   },
-                  secondary: const Icon(Icons.view_week),
                 );
               },
             ),
@@ -283,7 +281,6 @@ class _SystemSettingsWidgetState extends State<SystemSettingsWidget> {
                       putShared(_showPicturesKey, _showPictures);
                     });
                   },
-                  secondary: const Icon(Icons.view_week),
                 );
               },
             ),
@@ -314,7 +311,6 @@ class _SystemSettingsWidgetState extends State<SystemSettingsWidget> {
                       putShared(_showBarcodeKey, _showBarcodetype);
                     });
                   },
-                  secondary: const Icon(Icons.view_week),
                 );
               },
             ),
@@ -346,7 +342,6 @@ class _SystemSettingsWidgetState extends State<SystemSettingsWidget> {
                       putShared(_showNumberofDigitsKey, _showNumberofDigits);
                     });
                   },
-                  secondary: const Icon(Icons.view_week),
                 );
               },
             ),
@@ -397,7 +392,6 @@ class _SystemSettingsWidgetState extends State<SystemSettingsWidget> {
                       putShared(_quantityFieldKey, _quantityField);
                     });
                   },
-                  secondary: const Icon(Icons.view_week),
                 );
               },
             ),
@@ -429,7 +423,6 @@ class _SystemSettingsWidgetState extends State<SystemSettingsWidget> {
                       putShared(_allowDuplicateCodesKey, _allowDuplicateCodes);
                     });
                   },
-                  secondary: const Icon(Icons.view_week),
                 );
               },
             ),
@@ -459,7 +452,6 @@ class _SystemSettingsWidgetState extends State<SystemSettingsWidget> {
                       putShared(_timeStampKey, _timeStamp);
                     });
                   },
-                  secondary: const Icon(Icons.view_week),
                 );
               },
             ),
@@ -711,7 +703,6 @@ class _SystemSettingsWidgetState extends State<SystemSettingsWidget> {
                       putShared(_documentationKey, _documentation);
                     });
                   },
-                  secondary: const Icon(Icons.view_week),
                 );
               },
             ),
@@ -762,7 +753,6 @@ class _SystemSettingsWidgetState extends State<SystemSettingsWidget> {
                       putShared(_managePricesKey, _managePrices);
                     });
                   },
-                  secondary: const Icon(Icons.view_week),
                 );
               },
             ),

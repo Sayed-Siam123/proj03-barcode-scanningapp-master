@@ -71,7 +71,7 @@ class _BarcodeInfoDetailsPageState extends State<BarcodeInfoDetailsPage>
     masterdata_bloc.getsinglemasterdatafromDBV2();
     _tabController = new TabController(length: 3, vsync: this);
     super.initState();
-    Timer(Duration(milliseconds: 50), () {
+    Timer(Duration(milliseconds: 500), () {
       getName();
     });
   }
@@ -84,7 +84,7 @@ class _BarcodeInfoDetailsPageState extends State<BarcodeInfoDetailsPage>
         proPic = singledata[0].productPicture.toString();
       });
     }
-    print(productName);
+    print(barcode);
     print(proPic.toString());
     print("Flag Status: "+ widget.newFlag.toString());
   }

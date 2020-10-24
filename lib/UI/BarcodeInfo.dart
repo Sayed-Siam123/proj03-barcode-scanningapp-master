@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app/Bloc/NewDelivery_bloc.dart';
 import 'package:app/Bloc/Sublist_bloc.dart';
 import 'package:app/Bloc/masterData_bloc.dart';
@@ -10,10 +12,12 @@ import 'package:app/UI/SystemSettings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_translate/global.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:barcode_scan/platform_wrapper.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:responsive_screen/responsive_screen.dart';
 import 'BarcodeInfoDetails.dart';
 import 'BarcodeinfoSystemSettings.dart';
 import 'Details.dart';
@@ -36,8 +40,8 @@ class _BarcodeInfoState extends State<BarcodeInfo> {
   String searchQuery = "Search query";
   String cameraStatus;
   String _cameraKey = "_camera";
-  List<MasterDataModel> _newData = [];
-  List<MasterDataModel> _fetcheddata = [];
+  List<MasterDataModelV2> _newData = [];
+  List<MasterDataModelV2> _fetcheddata = [];
 
   var qrText = "";
   var controller;
@@ -68,8 +72,8 @@ class _BarcodeInfoState extends State<BarcodeInfo> {
   }
 
   initState() {
-    getCamera();
-    masterdata_bloc.fetchAllMasterdatafromDB();
+    //getCamera();
+    masterdata_bloc.fetchAllMasterdatafromDBV2();
     super.initState();
   }
 
@@ -83,6 +87,8 @@ class _BarcodeInfoState extends State<BarcodeInfo> {
 
   @override
   Widget build(BuildContext context) {
+    dynamic hp = Screen(context).hp;
+    dynamic wp = Screen(context).wp;
     return WillPopScope(
       onWillPop: () {
         return Navigator.push(
@@ -147,43 +153,67 @@ class _BarcodeInfoState extends State<BarcodeInfo> {
               color: Theme.of(context).backgroundColor,
               child: Column(
                 children: <Widget>[
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(left: 15.0, top: 5),
-                        child: Text(
-                          translate('search').toString(),
-                          style: GoogleFonts.exo2(
-                            textStyle: TextStyle(
-                                fontSize: 20,
-                                color: Theme.of(context).accentColor),
-                          ),
+                  Padding(
+                    padding: EdgeInsets.only(top: hp(3)),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+
+                        StreamBuilder<List<MasterDataModelV2>>(
+                          stream: masterdata_bloc.allMasterDataV2,
+                          builder: (context,
+                              AsyncSnapshot<List<MasterDataModelV2>>
+                              snapshot) {
+                            if (snapshot.hasData) {
+                              _fetcheddata = snapshot.data;
+                              //_newData = fetcheddata;
+                              print("Data eikhane koyta dekho to:: ");
+
+                              print(_fetcheddata.length);
+                              //return masterdataview(_fetcheddata, context);
+                            } else if (snapshot.hasError) {
+                              return Text("${snapshot.error}");
+                            }
+
+                            return Center(child: Text(""));
+                            //return masterdataview(_fetcheddata); //it should be changed
+                          },
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 5, left: 15.0),
-                        child: Text(
-                          translate('search_desc').toString(),
-                          style: GoogleFonts.exo2(
-                            textStyle: TextStyle(
-                                fontSize: 15,
-                                color: Theme.of(context).accentColor),
-                          ),
-                        ),
-                      ),
-                    ],
+
+                        // Padding(
+                        //   padding: const EdgeInsets.only(left: 15.0, top: 5),
+                        //   child: Text(
+                        //     translate('search').toString(),
+                        //     style: GoogleFonts.exo2(
+                        //       textStyle: TextStyle(
+                        //           fontSize: 20,
+                        //           color: Theme.of(context).accentColor),
+                        //     ),
+                        //   ),
+                        // ),
+                        // Padding(
+                        //   padding: const EdgeInsets.only(top: 5, left: 15.0),
+                        //   child: Text(
+                        //     translate('search_desc').toString(),
+                        //     style: GoogleFonts.exo2(
+                        //       textStyle: TextStyle(
+                        //           fontSize: 15,
+                        //           color: Theme.of(context).accentColor),
+                        //     ),
+                        //   ),
+                        // ),
+                      ],
+                    ),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       Container(
-                        height: 58,
-                        width: MediaQuery.of(context).size.width - 87,
+                        height: hp(10),
+                        width: wp(95),
                         alignment: Alignment.center,
-                        margin:
-                            const EdgeInsets.only(top: 10, left: 13, right: 10),
+                        margin: EdgeInsets.only(top: 0, left: hp(1.5), right: 0,bottom: hp(1)),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -201,12 +231,13 @@ class _BarcodeInfoState extends State<BarcodeInfo> {
                           child: TextField(
                               controller: _searchQueryController,
                               onChanged: onSearchTextChanged,
-                              onTap: () {
-                                setState(() {
-                                  qr_request = false;
-                                });
-                              },
-                              autocorrect: true,
+                              // onTap: () {
+                              //   setState(() {
+                              //     qr_request = false;
+                              //   });
+                              // },
+                              autofocus: true,
+                              keyboardType: TextInputType.number,
                               style: GoogleFonts.exo2(
                                 textStyle: TextStyle(
                                   fontSize: 20,
@@ -232,196 +263,192 @@ class _BarcodeInfoState extends State<BarcodeInfo> {
                                     fontSize: 16,
                                   ),
                                 ),
-                                hintText: translate('barcode_hint').toString(),
+                                hintText: "Enter barcode to search",
                               )),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).buttonColor,
-                            borderRadius: BorderRadius.all(Radius.circular(5)),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.white60,
-                                spreadRadius: 1,
-                                blurRadius: 1,
-                                offset: Offset(1, 1),
-                              ),
-                            ],
-                          ),
-                          child: SizedBox(
-                            height: 55,
-                            width: 55,
-                            child: Container(
-                              child: IconButton(
-                                icon: new Image.asset(
-                                  'assets/images/barcode.png',
-                                  fit: BoxFit.contain,
-                                  color: Colors.white,
-                                ),
-                                tooltip: 'Scan barcode',
-                                onPressed: () {
-                                  if (cameraStatus == "true") {
-                                    setState(() {
-                                      qr_request = true;
-                                    });
-
-                                    setState(() {
-                                      qrText = "";
-                                    });
-                                  } else {
-                                    Scaffold.of(context).showSnackBar(SnackBar(
-                                      action: SnackBarAction(
-                                        label: 'Settings',
-                                        textColor: Colors.blue,
-                                        onPressed: () {
-                                          // some code
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      SystemSettingsPage()));
-                                        },
-                                      ),
-                                      content: Text(
-                                        'Turn on Camera from System Settings First!',
-                                        style: GoogleFonts.exo2(
-                                          textStyle: TextStyle(
-                                            fontSize: 16,
-                                          ),
-                                        ),
-                                      ),
-                                      duration: Duration(seconds: 4),
-                                    ));
-                                  }
-                                },
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
+                      // Padding(
+                      //   padding: const EdgeInsets.only(top: 10.0),
+                      //   child: Container(
+                      //     decoration: BoxDecoration(
+                      //       color: Theme.of(context).buttonColor,
+                      //       borderRadius: BorderRadius.all(Radius.circular(5)),
+                      //       boxShadow: [
+                      //         BoxShadow(
+                      //           color: Colors.white60,
+                      //           spreadRadius: 1,
+                      //           blurRadius: 1,
+                      //           offset: Offset(1, 1),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //     child: SizedBox(
+                      //       height: 55,
+                      //       width: 55,
+                      //       child: Container(
+                      //         child: IconButton(
+                      //           icon: Icon(Entypo.keyboard),
+                      //           tooltip: 'Enter Keypad entry',
+                      //           onPressed: () {
+                      //             // if (cameraStatus == "true") {
+                      //             //   setState(() {
+                      //             //     qr_request = true;
+                      //             //   });
+                      //             //
+                      //             //   setState(() {
+                      //             //     qrText = "";
+                      //             //   });
+                      //             // } else {
+                      //             //   Scaffold.of(context).showSnackBar(SnackBar(
+                      //             //     action: SnackBarAction(
+                      //             //       label: 'Settings',
+                      //             //       textColor: Colors.blue,
+                      //             //       onPressed: () {
+                      //             //         // some code
+                      //             //         Navigator.push(
+                      //             //             context,
+                      //             //             MaterialPageRoute(
+                      //             //                 builder: (context) =>
+                      //             //                     SystemSettingsPage()));
+                      //             //       },
+                      //             //     ),
+                      //             //     content: Text(
+                      //             //       'Turn on Camera from System Settings First!',
+                      //             //       style: GoogleFonts.exo2(
+                      //             //         textStyle: TextStyle(
+                      //             //           fontSize: 16,
+                      //             //         ),
+                      //             //       ),
+                      //             //     ),
+                      //             //     duration: Duration(seconds: 4),
+                      //             //   ));
+                      //             // }
+                      //           },
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ),
+                      // )
                     ],
                   ),
-                  qr_request
-                      ? Column(
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(top: 170.0),
-                              child: Container(
-                                width: MediaQuery.of(context).size.width *.97,
-                                height: 300,
-                                // ignore: unrelated_type_equality_checks
-                                child: qrText.isEmpty && cameraStatus == "true"
-                                    ? QRView(
-                                        key: qrKey,
-                                        onQRViewCreated: _onQRViewCreated,
-                                        overlay: QrScannerOverlayShape(
-                                          borderColor: Colors.green,
-                                          borderRadius: 10,
-                                          borderLength: 150,
-                                          borderWidth: 10,
-                                          cutOutSize: 300,
-                                        ),
-                                      )
-                                    : Container(),
-                              ),
-                            ),
-                            Container(
-                              height: 110,
-                              width: MediaQuery.of(context).size.width - 30,
-                              margin: EdgeInsets.only(top: 10),
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).backgroundColor,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Theme.of(context)
-                                        .backgroundColor
-                                        .withOpacity(0.5),
-                                    spreadRadius: 2,
-                                    blurRadius: 5,
-                                    //TODO:: eikhane master data load khabe!
-                                    offset: Offset(0, 3),
-                                  ),
-                                ],
-                              ),
-                              child: StreamBuilder<List<MasterDataModel>>(
-                                stream: masterdata_bloc.allMasterData,
-                                builder: (context,
-                                    AsyncSnapshot<List<MasterDataModel>>
-                                        snapshot) {
-                                  if (snapshot.hasData) {
-                                    _fetcheddata = snapshot.data;
-                                    //_newData = fetcheddata;
-                                    print("Data eikhane koyta dekho to:: ");
-
-                                    print(_fetcheddata.length);
-                                    //return masterdataview(_fetcheddata, context);
-                                  } else if (snapshot.hasError) {
-                                    return Text("${snapshot.error}");
-                                  }
-
-                                  return Center(child: Text(""));
-                                  //return masterdataview(_fetcheddata); //it should be changed
-                                },
-                              ),
-                            ),
-                          ],
-                        )
-
-                      // : qr_complete ? Container(
-                      //   height: 200,
-                      //     width: 200,
-                      //     child: Text("Complete hoyeche"))
-
-                      : qr_complete
-                          ? WillPopScope(
-                              // ignore: missing_return
-                              onWillPop: () {},
-                              child: SingleChildScrollView(
-                                child: Container(
-                                  child: Column(
-                                    children: <Widget>[
-                                      Container(
-                                        margin: EdgeInsets.only(top: 10),
-                                        height: 100,
-                                        width: double.infinity,
-                                        color:
-                                            Theme.of(context).backgroundColor,
-                                        child: ListView.builder(
-                                            scrollDirection: Axis.vertical,
-                                            itemCount: _newData.length,
-                                            itemBuilder: (BuildContext context,
-                                                int index) {
-                                              return Column(
-                                                children: <Widget>[
-                                                  MasterDataWidget(
-                                                    gtin: _newData[index].gtin,
-                                                    product_name:
-                                                        _newData[index]
-                                                            .productName,
-                                                    category: _newData[index]
-                                                        .categoryName,
-                                                    product_id:
-                                                        _newData[index].id,
-                                                    productPicture:
-                                                        _newData[index]
-                                                            .productPicture,
-                                                  ),
-                                                  SizedBox(
-                                                    height: 6,
-                                                  )
-                                                ],
-                                              );
-                                            }),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            )
-                          : Container(height: 200, width: 200, child: Text("")),
+                  // qr_request
+                  //     ? Column(
+                  //         children: <Widget>[
+                  //           Padding(
+                  //             padding: EdgeInsets.only(top: 170.0),
+                  //             child: Container(
+                  //               width: MediaQuery.of(context).size.width *.97,
+                  //               height: 300,
+                  //               // ignore: unrelated_type_equality_checks
+                  //               child: qrText.isEmpty && cameraStatus == "true"
+                  //                   ? QRView(
+                  //                       key: qrKey,
+                  //                       onQRViewCreated: _onQRViewCreated,
+                  //                       overlay: QrScannerOverlayShape(
+                  //                         borderColor: Colors.green,
+                  //                         borderRadius: 10,
+                  //                         borderLength: 150,
+                  //                         borderWidth: 10,
+                  //                         cutOutSize: 300,
+                  //                       ),
+                  //                     )
+                  //                   : Container(),
+                  //             ),
+                  //           ),
+                  //           Container(
+                  //             height: 110,
+                  //             width: MediaQuery.of(context).size.width - 30,
+                  //             margin: EdgeInsets.only(top: 10),
+                  //             decoration: BoxDecoration(
+                  //               color: Theme.of(context).backgroundColor,
+                  //               boxShadow: [
+                  //                 BoxShadow(
+                  //                   color: Theme.of(context)
+                  //                       .backgroundColor
+                  //                       .withOpacity(0.5),
+                  //                   spreadRadius: 2,
+                  //                   blurRadius: 5,
+                  //                   //TODO:: eikhane master data load khabe!
+                  //                   offset: Offset(0, 3),
+                  //                 ),
+                  //               ],
+                  //             ),
+                  //             child: StreamBuilder<List<MasterDataModel>>(
+                  //               stream: masterdata_bloc.allMasterData,
+                  //               builder: (context,
+                  //                   AsyncSnapshot<List<MasterDataModel>>
+                  //                       snapshot) {
+                  //                 if (snapshot.hasData) {
+                  //                   _fetcheddata = snapshot.data;
+                  //                   //_newData = fetcheddata;
+                  //                   print("Data eikhane koyta dekho to:: ");
+                  //
+                  //                   print(_fetcheddata.length);
+                  //                   //return masterdataview(_fetcheddata, context);
+                  //                 } else if (snapshot.hasError) {
+                  //                   return Text("${snapshot.error}");
+                  //                 }
+                  //
+                  //                 return Center(child: Text(""));
+                  //                 //return masterdataview(_fetcheddata); //it should be changed
+                  //               },
+                  //             ),
+                  //           ),
+                  //         ],
+                  //       )
+                  //
+                  //     // : qr_complete ? Container(
+                  //     //   height: 200,
+                  //     //     width: 200,
+                  //     //     child: Text("Complete hoyeche"))
+                  //
+                  //     : qr_complete
+                  //         ? WillPopScope(
+                  //             // ignore: missing_return
+                  //             onWillPop: () {},
+                  //             child: SingleChildScrollView(
+                  //               child: Container(
+                  //                 child: Column(
+                  //                   children: <Widget>[
+                  //                     Container(
+                  //                       margin: EdgeInsets.only(top: 10),
+                  //                       height: 100,
+                  //                       width: double.infinity,
+                  //                       color:
+                  //                           Theme.of(context).backgroundColor,
+                  //                       child: ListView.builder(
+                  //                           scrollDirection: Axis.vertical,
+                  //                           itemCount: _newData.length,
+                  //                           itemBuilder: (BuildContext context,
+                  //                               int index) {
+                  //                             return Column(
+                  //                               children: <Widget>[
+                  //                                 MasterDataWidget(
+                  //                                   gtin: _newData[index].gtin,
+                  //                                   product_name:
+                  //                                       _newData[index]
+                  //                                           .productName,
+                  //                                   category: _newData[index]
+                  //                                       .categoryName,
+                  //                                   product_id:
+                  //                                       _newData[index].id,
+                  //                                   productPicture:
+                  //                                       _newData[index]
+                  //                                           .productPicture,
+                  //                                 ),
+                  //                                 SizedBox(
+                  //                                   height: 6,
+                  //                                 )
+                  //                               ],
+                  //                             );
+                  //                           }),
+                  //                     ),
+                  //                   ],
+                  //                 ),
+                  //               ),
+                  //             ),
+                  //           )
+                  //         : Container(height: 200, width: 200, child: Text("")),
                 ],
               ),
             );
@@ -455,7 +482,8 @@ class _BarcodeInfoState extends State<BarcodeInfo> {
     }
   }
 
-  onSearchTextChanged(String text) async {
+  void onSearchTextChanged(String text) async {
+    print(text);
     _newData.clear();
     if (text.isEmpty) {
       setState(() {});
@@ -463,26 +491,29 @@ class _BarcodeInfoState extends State<BarcodeInfo> {
     }
 
     _fetcheddata.forEach((userDetail) {
-      if (userDetail.gtin.toLowerCase().contains(text.toLowerCase()) ||
-          userDetail.id.toLowerCase().contains(text.toLowerCase()))
+      if (userDetail.gtin.toLowerCase().contains(text.toLowerCase()))
         _newData.add(userDetail);
     });
 
-    if (_newData[0].gtin.toString() == _searchQueryController.text) {
-      print(_newData[0].id.toString());
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => BarcodeInfoDetailsPage()));
-      masterdata_bloc.getId(_newData[0].id.toString());
-      masterdata_bloc.getsinglemasterdatafromDB();
-    } else if (_newData[0].gtin.toString() == qrText.toString()) {
-      print(_newData[0].id.toString());
-      print("Barcode paisi");
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => BarcodeInfoDetailsPage()));
-      masterdata_bloc.getId(_newData[0].id.toString());
-      masterdata_bloc.getsinglemasterdatafromDB();
-    }
+    Timer(Duration(milliseconds: 100),(){
+      checkData();
+    });
+
     setState(() {});
+  }
+
+  void checkData(){
+    if (_newData.isNotEmpty && _newData[0].gtin.toString() == _searchQueryController.text) {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => BarcodeInfoDetailsPage()));
+      masterdata_bloc.getId(_newData[0].id.toString());
+      masterdata_bloc.getsinglemasterdatafromDB();
+    } else {
+      print("not found");
+    }
+
+    //print(_searchQueryController.text.toString());
+
   }
 
   void _onQRViewCreated(QRViewController controller) {

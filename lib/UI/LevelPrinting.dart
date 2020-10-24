@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:flutter_blue/flutter_blue.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:app/Bloc/masterData_bloc.dart';
@@ -33,11 +34,38 @@ class _LevelPrintingPageState extends State<LevelPrintingPage> {
   int counter = 1;
   String barcode_c, desc, price;
 
+  final FlutterBlue flutterBlue = FlutterBlue.instance;
+  final List<BluetoothDevice> devicesList = new List<BluetoothDevice>();
+
+  _addDeviceTolist(final BluetoothDevice device) {
+    if (!devicesList.contains(device)) {
+      setState(() {
+        devicesList.add(device);
+      });
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     masterdata_bloc.fetchAllMasterdatafromDBV2();
+
+    flutterBlue.connectedDevices
+        .asStream()
+        .listen((List<BluetoothDevice> devices) {
+      for (BluetoothDevice device in devices) {
+        _addDeviceTolist(device);
+      }
+    });
+    flutterBlue.scanResults.listen((List<ScanResult> results) {
+      for (ScanResult result in results) {
+        _addDeviceTolist(result.device);
+      }
+    });
+    flutterBlue.startScan();
+
+
   }
 
   @override
@@ -55,6 +83,13 @@ class _LevelPrintingPageState extends State<LevelPrintingPage> {
 
     dynamic size = MediaQuery.of(context).size;
     dynamic deviceRatio = size.width / size.height;
+
+
+    for(int i = 0; i< devicesList.length; i++){
+      print("Device:: "+devicesList[i].name.toString());
+    }
+
+    //TODO:: BLUETOOTH CODE WILL BE FIXED AFTER SOMETIMES
 
     return Scaffold(
         appBar: AppBar(
