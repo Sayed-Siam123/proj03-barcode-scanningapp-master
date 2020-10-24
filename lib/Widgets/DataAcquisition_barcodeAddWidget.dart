@@ -36,7 +36,7 @@ class _DataAcquisition_barcodeAddWidgetState
 
   final gtin = new TextEditingController();
   bool listShowstatus = false;
-  bool listStream = false;
+  bool listStream = true;
   bool listStream2 = false;
 
   List<MasterDataModelV2> fetcheddata = [];
@@ -325,8 +325,7 @@ class _DataAcquisition_barcodeAddWidgetState
                     height: hp(.8),
                   ),
                   Divider(),
-                  listShowstatus == true
-                      ? Column(
+                  Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Padding(
@@ -353,7 +352,7 @@ class _DataAcquisition_barcodeAddWidgetState
                                       if (snapshot.hasData) {
                                         acquiData = snapshot.data;
                                         //_newData = fetcheddata;
-                                        print("Data eikhane koyta dekho to:: ");
+                                        print("Data:: ");
 
                                         print(acquiData.length);
 
@@ -407,8 +406,7 @@ class _DataAcquisition_barcodeAddWidgetState
                             //           ),
                             //         ),
                           ],
-                        )
-                      : Text(""),
+                        ),
                 ],
               ),
             ),
@@ -419,19 +417,19 @@ class _DataAcquisition_barcodeAddWidgetState
               alignment: Alignment.bottomCenter,
               child: FloatingActionButton(
                 onPressed: () {
-                  if (listShowstatus == false) {
-                    setState(() {
-                      listShowstatus = true;
-                      listStream = true;
-                    });
-                    data_acquisition_bloc.fetchSingleDataAcquisition();
-                    data_acquisition_bloc.fetchAllDataAcquisition();
-                  } else {
-                    setState(() {
-                      listShowstatus = false;
-                      listStream = false;
-                    });
-                  }
+                  // if (listShowstatus == false) {
+                  //   setState(() {
+                  //     listShowstatus = true;
+                  //     listStream = true;
+                  //   });
+                  //   data_acquisition_bloc.fetchSingleDataAcquisition();
+                  //   data_acquisition_bloc.fetchAllDataAcquisition();
+                  // } else {
+                  //   setState(() {
+                  //     listShowstatus = false;
+                  //     listStream = false;
+                  //   });
+                  // }
                 },
                 child: Icon(Icons.description, color: Colors.white),
                 backgroundColor: Colors.green.shade500,
