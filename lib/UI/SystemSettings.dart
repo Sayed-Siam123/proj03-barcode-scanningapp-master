@@ -112,7 +112,7 @@ class _SystemSettingsPageState extends State<SystemSettingsPage> {
             color: Colors.black54,
           ),
           onPressed: () {
-            Navigator.pop(
+            Navigator.push(
                 context, MaterialPageRoute(builder: (context) => HomePage()));
           },
         ),

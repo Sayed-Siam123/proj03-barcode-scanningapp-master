@@ -34,38 +34,54 @@ class _LevelPrintingPageState extends State<LevelPrintingPage> {
   int counter = 1;
   String barcode_c, desc, price;
 
-  final FlutterBlue flutterBlue = FlutterBlue.instance;
-  final List<BluetoothDevice> devicesList = new List<BluetoothDevice>();
 
-  _addDeviceTolist(final BluetoothDevice device) {
-    if (!devicesList.contains(device)) {
-      setState(() {
-        devicesList.add(device);
-      });
-    }
-  }
+  FlutterBlue flutterBlue = FlutterBlue.instance;
+
+
+  // _addDeviceTolist(final BluetoothDevice device) {
+  //   if (!devicesList.contains(device)) {
+  //     setState(() {
+  //       devicesList.add(device);
+  //     });
+  //   }
+  // }
 
   @override
-  void initState() {
+  void initState(){
     // TODO: implement initState
     super.initState();
     masterdata_bloc.fetchAllMasterdatafromDBV2();
+//     stopScanning();
+//     flutterBlue.startScan(timeout: Duration(seconds: 4));
+//
+// // Listen to scan results
+//     flutterBlue.scanResults.listen((results) {
+//       // do something with scan results
+//       for (ScanResult r in results) {
+//         print('${r.device.name.toString()} found! rssi: ${r.rssi}');
+//       }
+//     });
+//
+// // Stop scanning
+//     flutterBlue.stopScan();
 
-    flutterBlue.connectedDevices
-        .asStream()
-        .listen((List<BluetoothDevice> devices) {
-      for (BluetoothDevice device in devices) {
-        _addDeviceTolist(device);
+    flutterBlue.startScan(timeout: Duration(seconds: 1));
+
+    flutterBlue.scanResults.listen((scanResult) {
+      for (ScanResult scan in scanResult) {
+        BluetoothDevice device = scan.device;
+        print('${device.name} found! rssi: ${scan.rssi}dBm');
       }
     });
-    flutterBlue.scanResults.listen((List<ScanResult> results) {
-      for (ScanResult result in results) {
-        _addDeviceTolist(result.device);
-      }
-    });
-    flutterBlue.startScan();
+
+    flutterBlue.stopScan();
+
+  }
 
 
+  void stopScanning() {
+    FlutterBlue.instance.stopScan();
+    //scanSubscription.cancel();
   }
 
   @override
@@ -85,9 +101,11 @@ class _LevelPrintingPageState extends State<LevelPrintingPage> {
     dynamic deviceRatio = size.width / size.height;
 
 
-    for(int i = 0; i< devicesList.length; i++){
-      print("Device:: "+devicesList[i].name.toString());
-    }
+    // for(int i = 0; i< devicesList.length; i++){
+    //
+    //   print("Device Count:: "+devicesList.length.toString());
+    //   print("Device:: "+devicesList[i].name.toString());
+    // }
 
     //TODO:: BLUETOOTH CODE WILL BE FIXED AFTER SOMETIMES
 

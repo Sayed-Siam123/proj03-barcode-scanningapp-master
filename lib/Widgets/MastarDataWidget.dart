@@ -52,6 +52,7 @@ class _MasterDataWidgetState extends State<MasterDataWidget> {
 
   var root;
 
+
   void source() async{
     Timer(Duration(microseconds: 50),() async{
       List<StorageInfo> storageInfo = await PathProviderEx.getStorageInfo();
@@ -110,10 +111,11 @@ class _MasterDataWidgetState extends State<MasterDataWidget> {
             onTap: () {
               sublist_bloc.DeleteProductMasterDatatoDBV2(int.parse(this.widget.product_id.toString()));
               sublist_bloc.dispose();
-
-              SnackbarHelper snackbar = new SnackbarHelper();
-
-              snackbar.snackbarshowNormal(context, "Deleted Successfully", 4, Colors.black87);
+              File file = File(root.toString()+"/"+widget.productPicture.toString());
+              file.delete();
+              // SnackbarHelper snackbar = new SnackbarHelper();
+              //
+              // snackbar.snackbarshowNormal(context, "Deleted Successfully", 4, Colors.black87);
 
               Timer(Duration(seconds: 1),(){
                 setState(() {

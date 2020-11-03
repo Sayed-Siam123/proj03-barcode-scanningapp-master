@@ -23,8 +23,8 @@ class _BarcodeComparisonSettingsWidgetState extends State<BarcodeComparisonSetti
   String _referenceCodeKey = "_referneceCode";
   String _quantityKey = "_quantityKey";
 
-  bool _activate = true;
-  bool _referenceCode = true;
+  bool _activate = false;
+  bool _referenceCode = false;
 
   final quantity = new TextEditingController();
 
@@ -124,7 +124,7 @@ class _BarcodeComparisonSettingsWidgetState extends State<BarcodeComparisonSetti
                                 return Container(
                                   margin: EdgeInsets.fromLTRB(wp(2), hp(0), wp(4), 0),
                                   padding: EdgeInsets.fromLTRB(wp(3), hp(1), wp(1), 0),
-                                  width: wp(50),
+                                  width: wp(45),
                                   height: hp(6.5),
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(

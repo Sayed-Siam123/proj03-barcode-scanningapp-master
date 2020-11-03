@@ -172,7 +172,7 @@ class _CreateDataAcquisitionWidgetState extends State<CreateDataAcquisitionWidge
                     onPressed: (){
 
                       if(_fileformatValue == "null"){
-                        snackbar.snackbarshowAction(context, "Set the file format first", 4, Colors.black87);
+                        //snackbar.snackbarshowAction(context, "Set the file format first", 4, Colors.black87);
                       }
 
                       else{

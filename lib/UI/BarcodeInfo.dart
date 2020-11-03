@@ -16,7 +16,6 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_translate/global.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:barcode_scan/platform_wrapper.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:responsive_screen/responsive_screen.dart';
 import 'BarcodeInfoDetails.dart';
 import 'BarcodeinfoSystemSettings.dart';
@@ -47,6 +46,13 @@ class _BarcodeInfoState extends State<BarcodeInfo> {
   var controller;
   bool qr_request = true;
   bool qr_complete = false;
+
+
+  var isEditable = false;
+  FocusNode _focusNode = new FocusNode();
+
+
+
 
   //Barcode scan implement
   ScanResult barcode;
@@ -236,7 +242,6 @@ class _BarcodeInfoState extends State<BarcodeInfo> {
                               //     qr_request = false;
                               //   });
                               // },
-                              autofocus: true,
                               keyboardType: TextInputType.number,
                               style: GoogleFonts.exo2(
                                 textStyle: TextStyle(
@@ -245,8 +250,28 @@ class _BarcodeInfoState extends State<BarcodeInfo> {
                               ),
                               decoration: new InputDecoration(
                                 suffixIcon: IconButton(
-                                  icon: Icon(Icons.search),
-                                  onPressed: () {},
+                                  icon: Icon(isEditable == false ? MaterialIcons.touch_app : AntDesign.barcode,color: Colors.black54,),
+                                  onPressed: () {
+
+                                    if(isEditable){
+                                      setState(() {
+                                        //during qr mode
+                                        isEditable = false;
+                                        _focusNode.unfocus();
+                                      });
+                                    }
+
+                                    else{
+                                      setState(() {
+                                        //during keyboard mode
+                                        isEditable = true;
+                                        _focusNode.requestFocus();
+                                      });
+                                    }
+
+                                    print(isEditable.toString());
+
+                                  },
                                 ),
                                 border: InputBorder.none,
                                 focusedBorder: InputBorder.none,
@@ -264,7 +289,9 @@ class _BarcodeInfoState extends State<BarcodeInfo> {
                                   ),
                                 ),
                                 hintText: "Enter barcode to search",
-                              )),
+                              ),
+                            focusNode: _focusNode,
+                          ),
                         ),
                       ),
                       // Padding(
@@ -516,24 +543,24 @@ class _BarcodeInfoState extends State<BarcodeInfo> {
 
   }
 
-  void _onQRViewCreated(QRViewController controller) {
-    this.controller = controller;
-    controller.scannedDataStream.listen((scanData) {
-      setState(() {
-        qrText = scanData;
-        _searchQueryController.text = qrText;
-      });
-
-      print("Scanned DATA: " + qrText.toString());
-      setState(() {
-        qr_complete = true;
-      });
-
-      onSearchTextChanged(qrText.toString());
-      setState(() {
-        controller.dispose();
-        qr_request = false;
-      });
-    });
-  }
+  // void _onQRViewCreated(QRViewController controller) {
+  //   this.controller = controller;
+  //   controller.scannedDataStream.listen((scanData) {
+  //     setState(() {
+  //       qrText = scanData;
+  //       _searchQueryController.text = qrText;
+  //     });
+  //
+  //     print("Scanned DATA: " + qrText.toString());
+  //     setState(() {
+  //       qr_complete = true;
+  //     });
+  //
+  //     onSearchTextChanged(qrText.toString());
+  //     setState(() {
+  //       controller.dispose();
+  //       qr_request = false;
+  //     });
+  //   });
+  // }
 }

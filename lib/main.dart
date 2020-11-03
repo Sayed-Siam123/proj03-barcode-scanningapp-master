@@ -11,6 +11,7 @@ import 'package:app/UI/MasterData.dart';
 import 'package:app/UI/Details.dart';
 import 'package:app/UI/Settings.dart';
 import 'package:connectivity/connectivity.dart';
+import 'package:custom_progress_dialog/custom_progress_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -178,6 +179,9 @@ class _SplashState extends State<Splash> {
 
   String loginStatus = '';
 
+  ProgressDialog _progressDialog = ProgressDialog();
+
+
   void getLogin() async {
     Future<String> serverip = prefs.getData(loginKey);
     serverip.then((data) async {
@@ -238,7 +242,7 @@ class _SplashState extends State<Splash> {
         .listen((ConnectivityResult resnow) {
       if (resnow == ConnectivityResult.none) {
         print("No Connection");
-        _showDialog();
+        //_showDialog();
         //Get.snackbar("Hi", "I'm modern snackbar"); //TODO::EASY SNACKBAR EXAMPLE
       } else if (resnow == ConnectivityResult.mobile ||
           resnow == ConnectivityResult.wifi) {
@@ -337,13 +341,15 @@ class _SplashState extends State<Splash> {
   _showDialog() async {
     await Future.delayed(Duration(seconds: 2));
 
-    SweetAlert.show(
-      context,
-      title: "Info!",
-      subtitle: "No internet! OFFLINE MODE loading....",
-      //TODO:: SWEET ALERT EXAMPLE
-      style: SweetAlertStyle.loading,
-     );
+    // SweetAlert.show(
+    //   context,
+    //   title: "Info!",
+    //   subtitle: "No internet! OFFLINE MODE loading....",
+    //   //TODO:: SWEET ALERT EXAMPLE
+    //   style: SweetAlertStyle.loading,
+    //  );
+
+    _progressDialog.showProgressDialog(context,dismissAfter: Duration(seconds: 4));
 
     // Scaffold.of(context).showSnackBar(SnackBar(
     //   content: Text(
@@ -368,6 +374,7 @@ class _SplashState extends State<Splash> {
     );
   }
 
+
   @override
   Widget build(BuildContext context) {
     return SplashScreen(
@@ -376,7 +383,7 @@ class _SplashState extends State<Splash> {
       navigateAfterSeconds: loginStatus == "false" || loginStatus == "null" || userid == "null" || userid == "-1"
           ? HomePage()
           : HomePage(),
-      //title: new Text('IDENTIT',textScaleFactor: 2,),
+      //title: Text("ToolBox"),
       image: new Image.asset('assets/images/logo.png'),
       loadingText: Text("Loading"),
       photoSize: 150.0,

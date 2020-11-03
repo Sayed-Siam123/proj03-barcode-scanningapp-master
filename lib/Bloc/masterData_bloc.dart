@@ -80,6 +80,7 @@ class MasterData_Bloc{
   }
 
   fetchAllMasterdatafromDBV2() async{
+    print("OK");
     List<MasterDataModelV2> masterdatadbv2 = await _repository.getAllMasterProductV2();
     _masterdataFetcherV2.sink.add(masterdatadbv2);
   }

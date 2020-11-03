@@ -191,7 +191,7 @@ class _DataAcquisition_barcodeAddWidgetState
                                     fontSize: 14,
                                   ),
                                 ),
-                                keyboardType: TextInputType.text,
+                                keyboardType: TextInputType.number,
                                 controller: gtin,
                                 onChanged: (String text) =>
                                     onChangeMastercode(text),
@@ -215,11 +215,9 @@ class _DataAcquisition_barcodeAddWidgetState
                                   ),
                                   hintText: "Enter or Scan barcode",
                                   suffixIcon: IconButton(
-                                    icon: new Image.asset(
-                                        'assets/images/barcode.png',
-                                        fit: BoxFit.contain),
-                                    tooltip: 'Scan barcode',
-                                    onPressed: barcodeScanning2,
+                                    icon: Icon(Icons.keyboard),
+                                    tooltip: 'Enter barcode',
+                                    onPressed: (){},
                                   ),
                                 )),
                           ),
@@ -270,9 +268,9 @@ class _DataAcquisition_barcodeAddWidgetState
                                           color: Colors.red,
                                           icon: Icons.delete,
                                           onTap: () {
-                                            SnackbarHelper snackbar = new SnackbarHelper();
-
-                                            snackbar.snackbarshowNormal(context, "Deleted Successfully", 4, Colors.black87);
+                                            // SnackbarHelper snackbar = new SnackbarHelper();
+                                            //
+                                            // snackbar.snackbarshowNormal(context, "Deleted Successfully", 4, Colors.black87);
 
                                             Timer(Duration(seconds: 1),(){
                                               setState(() {

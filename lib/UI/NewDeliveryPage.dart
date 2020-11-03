@@ -15,7 +15,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_translate/global.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:http/http.dart' show Client;
 
 import 'DeliveryProductList.dart';
@@ -411,129 +410,129 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
                     )
                   ],
                 ),
-                qr_request
-                    ? Padding(
-                  padding: EdgeInsets.only(top: 170.0),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width *.97,
-                    height: 300,
-                    // ignore: unrelated_type_equality_checks
-                    child: qrText.isEmpty && cameraStatus == "true"
-                        ? QRView(
-                      key: qrKey,
-                      onQRViewCreated: _onQRViewCreated,
-                      overlay: QrScannerOverlayShape(
-                        borderColor: Colors.green,
-                        borderRadius: 10,
-                        borderLength: 150,
-                        borderWidth: 10,
-                        cutOutSize: 300,
-                      ),
-                    )
-                        : Container(),
-                  ),
-                )
-                    : WillPopScope(
-                  // ignore: missing_return
-                  onWillPop: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => DeliveriesPage()));
-                    ndelivery_bloc.deleteTable();
-                  },
-                  child: SingleChildScrollView(
-                    child: Container(
-
-                      child: Column(
-                        children: <Widget>[
-                          Container(
-                            height: 110,
-                            width: MediaQuery
-                                .of(context)
-                                .size
-                                .width - 30,
-                            margin: EdgeInsets.only(top: 10),
-                            decoration: BoxDecoration(
-                              color: Theme
-                                  .of(context)
-                                  .backgroundColor,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Theme
-                                      .of(context)
-                                      .backgroundColor
-                                      .withOpacity(0.5),
-                                  spreadRadius: 2,
-                                  blurRadius: 5,
-                                  offset: Offset(0, 3),
-                                ),
-                              ],
-                            ),
-                            child: StatefulBuilder(
-                              builder: (context, setState) {
-                                return StreamBuilder(
-                                    stream: ndelivery_bloc.allProductData,
-                                    builder: (BuildContext context, AsyncSnapshot<
-                                        List<NewDeliveryModel>>snapshot) {
-                                      return newproductdata(snapshot);
-                                    });
-                              },
-                            ),
-                          ),
-
-                          SizedBox(height: 20,),
-
-                          Container(
-                            height: 110,
-                            width: MediaQuery
-                                .of(context)
-                                .size
-                                .width - 30,
-                            margin: EdgeInsets.only(top: 10),
-                            decoration: BoxDecoration(
-                              color: Theme
-                                  .of(context)
-                                  .backgroundColor,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Theme
-                                      .of(context)
-                                      .backgroundColor
-                                      .withOpacity(0.5),
-                                  spreadRadius: 2,
-                                  blurRadius: 5,
-                                  //TODO:: eikhane master data load khabe!
-                                  offset: Offset(0, 3),
-                                ),
-                              ],
-                            ),
-                            child: StreamBuilder<List<MasterDataModel>>(
-                              stream: masterdata_bloc.allMasterData,
-                              builder: (context,
-                                  AsyncSnapshot<List<MasterDataModel>> snapshot) {
-                                if (snapshot.hasData) {
-                                  _fetcheddata = snapshot.data;
-                                  //_newData = fetcheddata;
-                                  print("Data eikhane:: ");
-
-                                  print(_fetcheddata.length);
-                                }
-
-                                else if (snapshot.hasError) {
-                                  return Text("${snapshot.error}");
-                                }
-
-                                return Center(child: Text(""));
-                                //return masterdataview(_fetcheddata); //it should be changed
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+                // qr_request
+                //     ? Padding(
+                //   padding: EdgeInsets.only(top: 170.0),
+                //   child: Container(
+                //     width: MediaQuery.of(context).size.width *.97,
+                //     height: 300,
+                //     // ignore: unrelated_type_equality_checks
+                //     child: qrText.isEmpty && cameraStatus == "true"
+                //         ? QRView(
+                //       key: qrKey,
+                //       onQRViewCreated: _onQRViewCreated,
+                //       overlay: QrScannerOverlayShape(
+                //         borderColor: Colors.green,
+                //         borderRadius: 10,
+                //         borderLength: 150,
+                //         borderWidth: 10,
+                //         cutOutSize: 300,
+                //       ),
+                //     )
+                //         : Container(),
+                //   ),
+                // )
+                //     : WillPopScope(
+                //   // ignore: missing_return
+                //   onWillPop: () {
+                //     Navigator.push(
+                //         context,
+                //         MaterialPageRoute(
+                //             builder: (context) => DeliveriesPage()));
+                //     ndelivery_bloc.deleteTable();
+                //   },
+                //   child: SingleChildScrollView(
+                //     child: Container(
+                //
+                //       child: Column(
+                //         children: <Widget>[
+                //           Container(
+                //             height: 110,
+                //             width: MediaQuery
+                //                 .of(context)
+                //                 .size
+                //                 .width - 30,
+                //             margin: EdgeInsets.only(top: 10),
+                //             decoration: BoxDecoration(
+                //               color: Theme
+                //                   .of(context)
+                //                   .backgroundColor,
+                //               boxShadow: [
+                //                 BoxShadow(
+                //                   color: Theme
+                //                       .of(context)
+                //                       .backgroundColor
+                //                       .withOpacity(0.5),
+                //                   spreadRadius: 2,
+                //                   blurRadius: 5,
+                //                   offset: Offset(0, 3),
+                //                 ),
+                //               ],
+                //             ),
+                //             child: StatefulBuilder(
+                //               builder: (context, setState) {
+                //                 return StreamBuilder(
+                //                     stream: ndelivery_bloc.allProductData,
+                //                     builder: (BuildContext context, AsyncSnapshot<
+                //                         List<NewDeliveryModel>>snapshot) {
+                //                       return newproductdata(snapshot);
+                //                     });
+                //               },
+                //             ),
+                //           ),
+                //
+                //           SizedBox(height: 20,),
+                //
+                //           Container(
+                //             height: 110,
+                //             width: MediaQuery
+                //                 .of(context)
+                //                 .size
+                //                 .width - 30,
+                //             margin: EdgeInsets.only(top: 10),
+                //             decoration: BoxDecoration(
+                //               color: Theme
+                //                   .of(context)
+                //                   .backgroundColor,
+                //               boxShadow: [
+                //                 BoxShadow(
+                //                   color: Theme
+                //                       .of(context)
+                //                       .backgroundColor
+                //                       .withOpacity(0.5),
+                //                   spreadRadius: 2,
+                //                   blurRadius: 5,
+                //                   //TODO:: eikhane master data load khabe!
+                //                   offset: Offset(0, 3),
+                //                 ),
+                //               ],
+                //             ),
+                //             child: StreamBuilder<List<MasterDataModel>>(
+                //               stream: masterdata_bloc.allMasterData,
+                //               builder: (context,
+                //                   AsyncSnapshot<List<MasterDataModel>> snapshot) {
+                //                 if (snapshot.hasData) {
+                //                   _fetcheddata = snapshot.data;
+                //                   //_newData = fetcheddata;
+                //                   print("Data eikhane:: ");
+                //
+                //                   print(_fetcheddata.length);
+                //                 }
+                //
+                //                 else if (snapshot.hasError) {
+                //                   return Text("${snapshot.error}");
+                //                 }
+                //
+                //                 return Center(child: Text(""));
+                //                 //return masterdataview(_fetcheddata); //it should be changed
+                //               },
+                //             ),
+                //           ),
+                //         ],
+                //       ),
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           );
@@ -1106,44 +1105,44 @@ class _NewDeliveryPageState extends State<NewDeliveryPage> {
     setState(() {});
   }
 
-  void _onQRViewCreated(QRViewController controller) {
-    this.controller = controller;
-    controller.scannedDataStream.listen((scanData) {
-      setState(() {
-        qrText = scanData;
-        _searchQueryController.text = qrText;
-
-
-
-        onSearchTextChanged(qrText.toString());
-
-//        ndelivery_bloc.getselecteditemProductName("ProductsNameHere");
-//        ndelivery_bloc.getselecteditemBarcode(_searchQueryController.text.toString());
-//        ndelivery_bloc.getselecteditemQuantity(1);
-
-//        newdelivery = NewDeliveryModel(
-//          barcode_: _searchQueryController.text.toString(),
-//          product_name_: "Product",
-//          quantity_: 1,
-//        );
-      });
-
-//      newdelivery.productName = qrText;
-//      newdelivery.Barcode = qrText;
-//      newdelivery.Quantity = 1;
-
-      setState(() {
-        controller.dispose();
-        qr_request = false;
-        //count++;
-//        print(newdelivery.barcode.toString());
-//        //print(newdelivery.productName.toString());
-//        ndelivery_bloc.insertProduct(newdelivery);
-//        ndelivery_bloc.dispose();
-//        ndelivery_bloc.getProduct();
-      });
-    });
-  }
+//   void _onQRViewCreated(QRViewController controller) {
+//     this.controller = controller;
+//     controller.scannedDataStream.listen((scanData) {
+//       setState(() {
+//         qrText = scanData;
+//         _searchQueryController.text = qrText;
+//
+//
+//
+//         onSearchTextChanged(qrText.toString());
+//
+// //        ndelivery_bloc.getselecteditemProductName("ProductsNameHere");
+// //        ndelivery_bloc.getselecteditemBarcode(_searchQueryController.text.toString());
+// //        ndelivery_bloc.getselecteditemQuantity(1);
+//
+// //        newdelivery = NewDeliveryModel(
+// //          barcode_: _searchQueryController.text.toString(),
+// //          product_name_: "Product",
+// //          quantity_: 1,
+// //        );
+//       });
+//
+// //      newdelivery.productName = qrText;
+// //      newdelivery.Barcode = qrText;
+// //      newdelivery.Quantity = 1;
+//
+//       setState(() {
+//         controller.dispose();
+//         qr_request = false;
+//         //count++;
+// //        print(newdelivery.barcode.toString());
+// //        //print(newdelivery.productName.toString());
+// //        ndelivery_bloc.insertProduct(newdelivery);
+// //        ndelivery_bloc.dispose();
+// //        ndelivery_bloc.getProduct();
+//       });
+//     });
+//   }
 
 
 }

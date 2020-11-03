@@ -138,9 +138,7 @@ class _PhotoDocumentationPageState extends State<PhotoDocumentationPage> {
                       ),
                       decoration: new InputDecoration(
                         suffixIcon: IconButton(
-                          icon: new Image.asset(
-                              'assets/images/barcode.png',
-                              fit: BoxFit.contain),
+                          icon: Icon(Icons.keyboard),
                           tooltip: 'Scan barcode',
                           onPressed:() => barcodeScanning1(context),
                         ),

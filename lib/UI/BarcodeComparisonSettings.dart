@@ -20,7 +20,7 @@ class _BarcodeComparisonSettingsPageState extends State<BarcodeComparisonSetting
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Barcode Comparison Settings",
+          "Settings Barcode comparison",
           style: new TextStyle(color: Colors.black54),
         ),
         backgroundColor: Colors.white,

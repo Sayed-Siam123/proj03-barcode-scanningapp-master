@@ -12,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_translate/global.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:barcode_scan/barcode_scan.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 
 class PickupDelivery extends StatefulWidget {
@@ -96,42 +95,42 @@ class _PickupDeliveryState extends State<PickupDelivery> {
   }
 
 
-  void _onQRViewCreated(QRViewController controller) {
-    this.controller = controller;
-    controller.scannedDataStream.listen((scanData) {
-      setState(() {
-        qrText = scanData;
-        _searchQueryController.text = qrText;
-
-        onChangedValue(qrText);
-        controller.dispose();
-
-//        ndelivery_bloc.getselecteditemProductName("ProductsNameHere");
-//        ndelivery_bloc.getselecteditemBarcode(_searchQueryController.text.toString());
-//        ndelivery_bloc.getselecteditemQuantity(1);
-
-//        newdelivery = NewDeliveryModel(
-//          barcode_: _searchQueryController.text.toString(),
-//          product_name_: "Product",
-//          quantity_: 1,
-//        );
-//      });
-
-//      newdelivery.productName = qrText;
-//      newdelivery.Barcode = qrText;
-//      newdelivery.Quantity = 1;
-
-      setState(() {
-        qr_request = false;
-        //print(newdelivery.barcode.toString());
-        //print(newdelivery.productName.toString());
-//        ndelivery_bloc.insertProduct(newdelivery);
-//        ndelivery_bloc.dispose();
-//        ndelivery_bloc.getProduct();
-      });
-    });
-  });
-  }
+//   void _onQRViewCreated(QRViewController controller) {
+//     this.controller = controller;
+//     controller.scannedDataStream.listen((scanData) {
+//       setState(() {
+//         qrText = scanData;
+//         _searchQueryController.text = qrText;
+//
+//         onChangedValue(qrText);
+//         controller.dispose();
+//
+// //        ndelivery_bloc.getselecteditemProductName("ProductsNameHere");
+// //        ndelivery_bloc.getselecteditemBarcode(_searchQueryController.text.toString());
+// //        ndelivery_bloc.getselecteditemQuantity(1);
+//
+// //        newdelivery = NewDeliveryModel(
+// //          barcode_: _searchQueryController.text.toString(),
+// //          product_name_: "Product",
+// //          quantity_: 1,
+// //        );
+// //      });
+//
+// //      newdelivery.productName = qrText;
+// //      newdelivery.Barcode = qrText;
+// //      newdelivery.Quantity = 1;
+//
+//       setState(() {
+//         qr_request = false;
+//         //print(newdelivery.barcode.toString());
+//         //print(newdelivery.productName.toString());
+// //        ndelivery_bloc.insertProduct(newdelivery);
+// //        ndelivery_bloc.dispose();
+// //        ndelivery_bloc.getProduct();
+//       });
+//     });
+//   });
+//   }
 
   void getCamera() async {
     Future<bool> serverip = prefs.getBoolData(_cameraKey);
@@ -406,137 +405,137 @@ class _PickupDeliveryState extends State<PickupDelivery> {
                 ),
 
 
-                qr_request
-                    ? Padding(
-                  padding: EdgeInsets.only(top: 170.0),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width *.97,
-                    height: 300,
-                    // ignore: unrelated_type_equality_checks
-                    child: qrText.isEmpty && cameraStatus == "true"
-                        ? QRView(
-                      key: qrKey,
-                      onQRViewCreated: _onQRViewCreated,
-                      overlay: QrScannerOverlayShape(
-                        borderColor: Colors.green,
-                        borderRadius: 10,
-                        borderLength: 150,
-                        borderWidth: 10,
-                        cutOutSize: 300,
-                      ),
-                    )
-                        : Container(),
-                  ),
-                )
-                    : WillPopScope(
-                  // ignore: missing_return
-                  onWillPop: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => HomePage()));
-                    //ndelivery_bloc.deleteTable();
-                  },
-                  child: SingleChildScrollView(
-                    child: Container(
-                      height: 80,
-                      width: MediaQuery.of(context).size.width - 20,
-                      margin: EdgeInsets.only(top: 10),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).backgroundColor,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Theme.of(context)
-                                .backgroundColor
-                                .withOpacity(0.5),
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                            offset: Offset(0, 3),
-                          ),
-                        ],
-                      ),
-//                  child: StatefulBuilder(
-//                    builder: (context, setState) {
-//                      return StreamBuilder(
-//                          stream: ndelivery_bloc.allProductData,
-//                          builder: (BuildContext context,
-//                              AsyncSnapshot<List<NewDeliveryModel>>
-//                              snapshot) {
-//                            return newproductdata(snapshot);
-//                          });
-//                    },
-//                  ),
-
-                      child: StreamBuilder<SinglePickupDataModel>(
-                        stream: pickupdelivery_bloc.singlePickupData,
-                        builder: (context, AsyncSnapshot<SinglePickupDataModel> snapshot) {
-                          if (snapshot.hasData) {
-                            fetcheddata = snapshot.data;
-                            //_newData = fetcheddata;
-                            print("Data gula:: ");
-
-                            print(fetcheddata.deliveryCode);
-
-                            //TODO:: Here is the problem
-
-
-//                      pickupDelivery = PickupDeliveryModel(
-//                        delivery_id_: fetcheddata.deliveryCode,
-//                        huid_: fetcheddata.huType=="" || fetcheddata.huType==null ? "HU01" : fetcheddata.huType,
-//                        pos_: fetcheddata.position,
-//                        qnty_: fetcheddata.quantity,
-//                      );
-
-                            products.add(PickupDeliveryModel(
-                              delivery_id_: fetcheddata.deliveryCode,
-                              huid_: fetcheddata.huType=="" || fetcheddata.huType==null ? "HU01" : fetcheddata.huType,
-                              pos_: fetcheddata.position,
-                              qnty_: fetcheddata.quantity,
-                            ));
+//                 qr_request
+//                     ? Padding(
+//                   padding: EdgeInsets.only(top: 170.0),
+//                   child: Container(
+//                     width: MediaQuery.of(context).size.width *.97,
+//                     height: 300,
+//                     // ignore: unrelated_type_equality_checks
+//                     child: qrText.isEmpty && cameraStatus == "true"
+//                         ? QRView(
+//                       key: qrKey,
+//                       onQRViewCreated: _onQRViewCreated,
+//                       overlay: QrScannerOverlayShape(
+//                         borderColor: Colors.green,
+//                         borderRadius: 10,
+//                         borderLength: 150,
+//                         borderWidth: 10,
+//                         cutOutSize: 300,
+//                       ),
+//                     )
+//                         : Container(),
+//                   ),
+//                 )
+//                     : WillPopScope(
+//                   // ignore: missing_return
+//                   onWillPop: () {
+//                     Navigator.push(
+//                         context,
+//                         MaterialPageRoute(
+//                             builder: (context) => HomePage()));
+//                     //ndelivery_bloc.deleteTable();
+//                   },
+//                   child: SingleChildScrollView(
+//                     child: Container(
+//                       height: 80,
+//                       width: MediaQuery.of(context).size.width - 20,
+//                       margin: EdgeInsets.only(top: 10),
+//                       decoration: BoxDecoration(
+//                         color: Theme.of(context).backgroundColor,
+//                         boxShadow: [
+//                           BoxShadow(
+//                             color: Theme.of(context)
+//                                 .backgroundColor
+//                                 .withOpacity(0.5),
+//                             spreadRadius: 2,
+//                             blurRadius: 5,
+//                             offset: Offset(0, 3),
+//                           ),
+//                         ],
+//                       ),
+// //                  child: StatefulBuilder(
+// //                    builder: (context, setState) {
+// //                      return StreamBuilder(
+// //                          stream: ndelivery_bloc.allProductData,
+// //                          builder: (BuildContext context,
+// //                              AsyncSnapshot<List<NewDeliveryModel>>
+// //                              snapshot) {
+// //                            return newproductdata(snapshot);
+// //                          });
+// //                    },
+// //                  ),
 //
-////                      pickupdelivery_bloc.insertPickupProduct(pickupDelivery);
-////                      pickupdelivery_bloc.dispose();
-////                      pickupdelivery_bloc.getAllpickupdatafromDB();
+//                       child: StreamBuilder<SinglePickupDataModel>(
+//                         stream: pickupdelivery_bloc.singlePickupData,
+//                         builder: (context, AsyncSnapshot<SinglePickupDataModel> snapshot) {
+//                           if (snapshot.hasData) {
+//                             fetcheddata = snapshot.data;
+//                             //_newData = fetcheddata;
+//                             print("Data gula:: ");
 //
-                            return Card(
-                              margin: EdgeInsets.all(5),
-                              child: Container(
-                                height: 20,
-                                width: MediaQuery
-                                    .of(context)
-                                    .size
-                                    .width - 20,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                ),
-                                child: ListTile(
-                                  onTap: () {
-                                    print("Asche");
-                                  },
-                                  title: Text(fetcheddata.deliveryCode.toString(), style: GoogleFonts.exo2(
-                                    fontSize: 20,
-                                  ),),
-                                  subtitle: Text(
-                                    fetcheddata.huType=="" || fetcheddata.huType==null ? "HU01" : fetcheddata.huType,
-                                    style: GoogleFonts.exo2(
-
-                                    ),),
-                                ),
-                              ),
-                            );
-
-                            //return Text("ajskas");
-
-                          } else if (snapshot.hasError) {
-                            return Text("${snapshot.error}");
-                          }
-
-                          return Center(child: Text("No Match"));
-                        },
-                      ),
-                    ),
-                  ),
-                ),
+//                             print(fetcheddata.deliveryCode);
+//
+//                             //TODO:: Here is the problem
+//
+//
+// //                      pickupDelivery = PickupDeliveryModel(
+// //                        delivery_id_: fetcheddata.deliveryCode,
+// //                        huid_: fetcheddata.huType=="" || fetcheddata.huType==null ? "HU01" : fetcheddata.huType,
+// //                        pos_: fetcheddata.position,
+// //                        qnty_: fetcheddata.quantity,
+// //                      );
+//
+//                             products.add(PickupDeliveryModel(
+//                               delivery_id_: fetcheddata.deliveryCode,
+//                               huid_: fetcheddata.huType=="" || fetcheddata.huType==null ? "HU01" : fetcheddata.huType,
+//                               pos_: fetcheddata.position,
+//                               qnty_: fetcheddata.quantity,
+//                             ));
+// //
+// ////                      pickupdelivery_bloc.insertPickupProduct(pickupDelivery);
+// ////                      pickupdelivery_bloc.dispose();
+// ////                      pickupdelivery_bloc.getAllpickupdatafromDB();
+// //
+//                             return Card(
+//                               margin: EdgeInsets.all(5),
+//                               child: Container(
+//                                 height: 20,
+//                                 width: MediaQuery
+//                                     .of(context)
+//                                     .size
+//                                     .width - 20,
+//                                 decoration: BoxDecoration(
+//                                   color: Colors.white,
+//                                 ),
+//                                 child: ListTile(
+//                                   onTap: () {
+//                                     print("Asche");
+//                                   },
+//                                   title: Text(fetcheddata.deliveryCode.toString(), style: GoogleFonts.exo2(
+//                                     fontSize: 20,
+//                                   ),),
+//                                   subtitle: Text(
+//                                     fetcheddata.huType=="" || fetcheddata.huType==null ? "HU01" : fetcheddata.huType,
+//                                     style: GoogleFonts.exo2(
+//
+//                                     ),),
+//                                 ),
+//                               ),
+//                             );
+//
+//                             //return Text("ajskas");
+//
+//                           } else if (snapshot.hasError) {
+//                             return Text("${snapshot.error}");
+//                           }
+//
+//                           return Center(child: Text("No Match"));
+//                         },
+//                       ),
+//                     ),
+//                   ),
+//                 ),
 
               ],
             ),

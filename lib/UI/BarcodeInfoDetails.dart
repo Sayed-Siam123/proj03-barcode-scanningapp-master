@@ -17,7 +17,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/global.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:responsive_screen/responsive_screen.dart';
 
 import 'Home.dart';
@@ -45,6 +44,15 @@ class _BarcodeInfoDetailsPageState extends State<BarcodeInfoDetailsPage>
   bool _isSearching = false;
   String searchQuery = "Search query";
   String cameraStatus;
+
+  String desc;
+  String price;
+  String picture;
+
+  String barcode_type_stat;
+  String num_of_digits;
+
+
   String _cameraKey = "_camera";
   List<MasterDataModelV2> _newData = [];
   List<MasterDataModelV2> _fetcheddata = [];
@@ -55,6 +63,15 @@ class _BarcodeInfoDetailsPageState extends State<BarcodeInfoDetailsPage>
   String barcode_type = "";
   String digits = "";
   String proPic = "";
+  String price_data = "";
+
+
+
+  String _showDescriptionKey = "_showDescription";
+  String _showPriceKey = "_showPrice";
+  String _showPicturesKey = "_showPictures";
+  String _showBarcodeKey = "_showBarcode";
+  String _showNumberofDigitsKey = "_showNumberofDigits";
 
 
 
@@ -71,8 +88,13 @@ class _BarcodeInfoDetailsPageState extends State<BarcodeInfoDetailsPage>
     masterdata_bloc.getsinglemasterdatafromDBV2();
     _tabController = new TabController(length: 3, vsync: this);
     super.initState();
-    Timer(Duration(milliseconds: 500), () {
+    Timer(Duration(milliseconds: 200), () {
       getName();
+      getDesc();
+      getPic();
+      getPrice();
+      getBarType();
+      getNumofDigits();
     });
   }
 
@@ -82,6 +104,7 @@ class _BarcodeInfoDetailsPageState extends State<BarcodeInfoDetailsPage>
         barcode = singledata[0].gtin.toString();
         description = singledata[0].productDescription.toString();
         proPic = singledata[0].productPicture.toString();
+        price_data = singledata[0].listPrice.toString();
       });
     }
     print(barcode);
@@ -114,6 +137,96 @@ class _BarcodeInfoDetailsPageState extends State<BarcodeInfoDetailsPage>
     });
   }
 
+  void getDesc() async {
+    Future<bool> descrip = prefs.getBoolData(_showDescriptionKey);
+    descrip.then((data) async {
+      print("desc status " + data.toString());
+
+      setState(() {
+        desc = data.toString();
+      });
+      print(desc.toString());
+
+//      Future.delayed(const Duration(milliseconds: 1000), () {
+//
+//      });
+    }, onError: (e) {
+      print(e);
+    });
+  }
+
+  void getPrice() async {
+    Future<bool> descrip = prefs.getBoolData(_showPriceKey);
+    descrip.then((data) async {
+      print("camera status " + data.toString());
+
+      setState(() {
+        price = data.toString();
+      });
+      print(price.toString());
+
+//      Future.delayed(const Duration(milliseconds: 1000), () {
+//
+//      });
+    }, onError: (e) {
+      print(e);
+    });
+  }
+
+  void getPic() async {
+    Future<bool> descrip = prefs.getBoolData(_showPicturesKey);
+    descrip.then((data) async {
+      print("Picture status " + data.toString());
+
+      setState(() {
+        picture = data.toString();
+      });
+      print(picture.toString());
+
+//      Future.delayed(const Duration(milliseconds: 1000), () {
+//
+//      });
+    }, onError: (e) {
+      print(e);
+    });
+  }
+
+  void getBarType() async {
+    Future<bool> barType = prefs.getBoolData(_showBarcodeKey);
+    barType.then((data) async {
+      print("barcode type status " + data.toString());
+
+      setState(() {
+        barcode_type_stat = data.toString();
+      });
+      print(barcode_type_stat.toString());
+
+//      Future.delayed(const Duration(milliseconds: 1000), () {
+//
+//      });
+    }, onError: (e) {
+      print(e);
+    });
+  }
+
+  void getNumofDigits() async {
+    Future<bool> numDigits = prefs.getBoolData(_showNumberofDigitsKey);
+    numDigits.then((data) async {
+      print("barcode type status " + data.toString());
+
+      setState(() {
+        num_of_digits = data.toString();
+      });
+      print(num_of_digits.toString());
+
+//      Future.delayed(const Duration(milliseconds: 1000), () {
+//
+//      });
+    }, onError: (e) {
+      print(e);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     dynamic hp = Screen(context).hp;
@@ -127,7 +240,7 @@ class _BarcodeInfoDetailsPageState extends State<BarcodeInfoDetailsPage>
         backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           title: Text(
-            description.toString(),
+            "Barcode Information",
             style: GoogleFonts.exo2(
               color: Colors.black,
             ),
@@ -218,9 +331,11 @@ class _BarcodeInfoDetailsPageState extends State<BarcodeInfoDetailsPage>
                                       child: Column(
                                         children: <Widget>[
                                           Text("Barcode"),
-                                          Text("Description"),
-                                          Text("Barcode type"),
-                                          Text("Number of digits"),
+                                          desc == "null" || desc == "false" ? Text("") : Text("Description"),
+                                          price == "null" || price == "false" ? Text("") : Text("Price"),
+                                          barcode_type_stat == "null" || barcode_type_stat == "false" ? Text("") : Text("Barcode type"),
+                                          num_of_digits == "null" || num_of_digits == "false" ? Text("") : Text("Number of digits"),
+
                                         ],
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -241,9 +356,10 @@ class _BarcodeInfoDetailsPageState extends State<BarcodeInfoDetailsPage>
                                       child: Column(
                                         children: <Widget>[
                                           Text(barcode.toString()),
-                                          Text(description == "" ? "No Data" : description.toString()),
-                                          Text("No Data"),
-                                          Text("No Data"),
+                                          desc == "null" || desc == "false" ? Text("") : Text(description == "" ? "No Data" : description.toString()),
+                                          price == "null" || price == "false" ? Text("") : Text(price_data.toString()),
+                                          barcode_type_stat == "null" || barcode_type_stat == "false" ? Text("") : Text("No Data"),
+                                          num_of_digits == "null" || num_of_digits == "false" ? Text("") : Text("No Data"),
                                         ],
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -282,7 +398,8 @@ class _BarcodeInfoDetailsPageState extends State<BarcodeInfoDetailsPage>
                           padding: EdgeInsets.fromLTRB(hp(3),hp(8),hp(3),hp(3)),
                           child: Align(
                             alignment: Alignment.center,
-                            child: Container(
+                            child: picture == "null" || picture == "false" ?  Container(height: 0,width: 0,) :
+                            Container(
                               height: hp(30),
                               width: wp(50),
                               color: Colors.transparent,
@@ -309,19 +426,19 @@ class _BarcodeInfoDetailsPageState extends State<BarcodeInfoDetailsPage>
                           child: Container(
                             width: MediaQuery.of(context).size.width - 60,
                             height: 300,
-                            child: qrText.isEmpty
-                                ? QRView(
-                                    key: qrKey,
-                                    onQRViewCreated: _onQRViewCreated,
-                                    overlay: QrScannerOverlayShape(
-                                      borderColor: Colors.green,
-                                      borderRadius: 10,
-                                      borderLength: 30,
-                                      borderWidth: 10,
-                                      cutOutSize: 300,
-                                    ),
-                                  )
-                                : Container(),
+                            // child: qrText.isEmpty
+                            //     ? QRView(
+                            //         key: qrKey,
+                            //         onQRViewCreated: _onQRViewCreated,
+                            //         overlay: QrScannerOverlayShape(
+                            //           borderColor: Colors.green,
+                            //           borderRadius: 10,
+                            //           borderLength: 30,
+                            //           borderWidth: 10,
+                            //           cutOutSize: 300,
+                            //         ),
+                            //       )
+                            //     : Container(),
                           ),
                         ),
                       ],
@@ -458,40 +575,40 @@ class _BarcodeInfoDetailsPageState extends State<BarcodeInfoDetailsPage>
     setState(() {});
   }
 
-  void _onQRViewCreated(QRViewController controller) {
-    this.controller = controller;
-    controller.scannedDataStream.listen((scanData) {
-      setState(() {
-        qrText = scanData;
-        _searchQueryController.text = qrText;
-
-        onSearchTextChanged(qrText.toString());
-
-//        ndelivery_bloc.getselecteditemProductName("ProductsNameHere");
-//        ndelivery_bloc.getselecteditemBarcode(_searchQueryController.text.toString());
-//        ndelivery_bloc.getselecteditemQuantity(1);
-
-//        newdelivery = NewDeliveryModel(
-//          barcode_: _searchQueryController.text.toString(),
-//          product_name_: "Product",
-//          quantity_: 1,
-//        );
-      });
-
-//      newdelivery.productName = qrText;
-//      newdelivery.Barcode = qrText;
-//      newdelivery.Quantity = 1;
-
-      setState(() {
-        controller.dispose();
-        qr_request = false;
-        //count++;
-//        print(newdelivery.barcode.toString());
-//        //print(newdelivery.productName.toString());
-//        ndelivery_bloc.insertProduct(newdelivery);
-//        ndelivery_bloc.dispose();
-//        ndelivery_bloc.getProduct();
-      });
-    });
-  }
+//   void _onQRViewCreated(QRViewController controller) {
+//     this.controller = controller;
+//     controller.scannedDataStream.listen((scanData) {
+//       setState(() {
+//         qrText = scanData;
+//         _searchQueryController.text = qrText;
+//
+//         onSearchTextChanged(qrText.toString());
+//
+// //        ndelivery_bloc.getselecteditemProductName("ProductsNameHere");
+// //        ndelivery_bloc.getselecteditemBarcode(_searchQueryController.text.toString());
+// //        ndelivery_bloc.getselecteditemQuantity(1);
+//
+// //        newdelivery = NewDeliveryModel(
+// //          barcode_: _searchQueryController.text.toString(),
+// //          product_name_: "Product",
+// //          quantity_: 1,
+// //        );
+//       });
+//
+// //      newdelivery.productName = qrText;
+// //      newdelivery.Barcode = qrText;
+// //      newdelivery.Quantity = 1;
+//
+//       setState(() {
+//         controller.dispose();
+//         qr_request = false;
+//         //count++;
+// //        print(newdelivery.barcode.toString());
+// //        //print(newdelivery.productName.toString());
+// //        ndelivery_bloc.insertProduct(newdelivery);
+// //        ndelivery_bloc.dispose();
+// //        ndelivery_bloc.getProduct();
+//       });
+//     });
+//   }
 }

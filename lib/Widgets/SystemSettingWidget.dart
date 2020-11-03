@@ -30,35 +30,38 @@ class _SystemSettingsWidgetState extends State<SystemSettingsWidget> {
 
   bool _camera = true;
 
-  bool _showDescription = true;
+  bool _showDescription = false;
   String _showDescriptionKey = "_showDescription";
-  bool _showPrice = true;
+  bool _showPrice = false;
   String _showPriceKey = "_showPrice";
-  bool _showPictures = true;
+  bool _showPictures = false;
   String _showPicturesKey = "_showPictures";
-  bool _showBarcodetype = true;
+  bool _showBarcodetype = false;
   String _showBarcodeKey = "_showBarcode";
-  bool _showNumberofDigits = true;
+  bool _showNumberofDigits = false;
   String _showNumberofDigitsKey = "_showNumberofDigits";
 
-  bool _quantityField = true;
+  bool _quantityField = false;
   String _quantityFieldKey = "_quantityField";
-  bool _allowDuplicateCodes = true;
+  bool _allowDuplicateCodes = false;
   String _allowDuplicateCodesKey = "_allowDuplicateCodes";
-  bool _timeStamp = true;
+  bool _timeStamp = false;
   String _timeStampKey = "_timeStamp";
-  bool _separator = true;
+  bool _separator = false;
   String _separatorKey = "_separator";
-  bool _fileformat = true;
+  bool _fileformat = false;
   String _fileformatKey = "_fileformat";
-  bool _name_id = true;
+  bool _name_id = false;
   String _name_idKey = "_name_id";
 
-  bool _documentation = true;
+  bool _documentation = false;
   String _documentationKey = "_documentation";
 
-  bool _managePrices = true;
+  bool _managePrices = false;
   String _managePricesKey = "_managePrices";
+
+  bool _showPrices = false;
+  String _showPricesKey = "_showPrices";
 
   var currentSelectedValue;
   final langtype = ["English", "German"];
@@ -490,6 +493,7 @@ class _SystemSettingsWidgetState extends State<SystemSettingsWidget> {
                     underline: Icon(null),
                     isExpanded: true,
                     iconSize: 30,
+                    hint: Text(_sepratorValue == "null" ? "Select one" : _sepratorValue.toString()),
                     value: _sepratorValue != "null" ? _sepratorValue : null,
                     items: <String>['/', '-', '|'].map((String value) {
                       return new DropdownMenuItem<String>(
@@ -545,6 +549,7 @@ class _SystemSettingsWidgetState extends State<SystemSettingsWidget> {
                     underline: Icon(null),
                     isExpanded: true,
                     iconSize: 30,
+                    hint: Text(_fileformatValue == "null" ? "Select one" : _fileformatValue.toString()),
                     value: _fileformatValue != "null" ? _fileformatValue : null,
                     items: <String>['pdf', 'csv', 'doc'].map((String value) {
                       return new DropdownMenuItem<String>(
@@ -739,7 +744,7 @@ class _SystemSettingsWidgetState extends State<SystemSettingsWidget> {
               builder: (context, snapshot) {
                 return SwitchListTile(
                   title: const Text(
-                    'Show Prices',
+                    'Manage Prices',
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 12.00,
@@ -758,93 +763,122 @@ class _SystemSettingsWidgetState extends State<SystemSettingsWidget> {
             ),
           ),
         ),
+        Padding(
+          padding: EdgeInsets.only(top: hp(1)),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: FutureBuilder(
+              future: getShared(_showPricesKey),
+              initialData: false,
+              builder: (context, snapshot) {
+                return SwitchListTile(
+                  title: const Text(
+                    'Show Price',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 12.00,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  value: snapshot.data == null ? _showPrices : snapshot.data,
+                  onChanged: (bool value) {
+                    print("Current value" + " " + value.toString());
+                    setState(() {
+                      _showPrices = value;
+                      putShared(_showPricesKey, _showPrices);
+                    });
+                  },
+                );
+              },
+            ),
+          ),
+        ),
         Divider(),
       ],
     );
   }
 
-  Widget languageDropDown(height, width, BuildContext context) {
-    //var appLanguage = Provider.of<AppLanguage>(context);
-
-    dynamic hp = Hp(height).hp;
-    dynamic wp = Wp(width).wp;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.only(top: hp(15), left: wp(2)),
-          child: Text(
-            "Select Language",
-            style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
-          ),
-        ),
-        Container(
-          height: hp(100),
-          padding: EdgeInsets.all(wp(1)),
-          margin: EdgeInsets.fromLTRB(wp(2), hp(3), wp(2), 0),
-          child: FormField<String>(
-            builder: (FormFieldState<String> state) {
-              return Builder(
-                builder: (context) {
-                  return InputDecorator(
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0))),
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton<String>(
-                        hint: Text(
-                          translate('select_language').toString(),
-                        ),
-                        value: currentSelectedValue,
-                        isDense: true,
-                        onChanged: (newValue) async {
-                          // setState(() {
-                          //   currentSelectedValue = newValue;
-                          // });
-                          print(newValue);
-
-                          if (newValue == "English") {
-                            print("English here");
-                            // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-                            //   appLanguage.changeLanguage(Locale("en"));
-                            // });
-                            setState(() {
-                              currentSelectedValue = "English";
-                            });
-                            changeLocale(context, "en"); //change the language
-                            prefs.setData("language_code", "en");
-                          }
-
-                          if (newValue == "German") {
-                            print("German here");
-                            // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-                            //   appLanguage.changeLanguage(Locale("de"));
-                            // });
-                            setState(() {
-                              currentSelectedValue = "German";
-                            });
-                            changeLocale(context, "de"); //change the language
-                            prefs.setData("language_code", "de");
-                          }
-                        },
-                        items: langtype.map((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                  );
-                },
-              );
-            },
-          ),
-        ),
-      ],
-    );
-  }
+  // Widget languageDropDown(height, width, BuildContext context) {
+  //   //var appLanguage = Provider.of<AppLanguage>(context);
+  //
+  //   dynamic hp = Hp(height).hp;
+  //   dynamic wp = Wp(width).wp;
+  //
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: <Widget>[
+  //       Padding(
+  //         padding: EdgeInsets.only(top: hp(15), left: wp(2)),
+  //         child: Text(
+  //           "Select Language",
+  //           style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+  //         ),
+  //       ),
+  //       Container(
+  //         height: hp(100),
+  //         padding: EdgeInsets.all(wp(1)),
+  //         margin: EdgeInsets.fromLTRB(wp(2), hp(3), wp(2), 0),
+  //         child: FormField<String>(
+  //           builder: (FormFieldState<String> state) {
+  //             return Builder(
+  //               builder: (context) {
+  //                 return InputDecorator(
+  //                   decoration: InputDecoration(
+  //                       border: OutlineInputBorder(
+  //                           borderRadius: BorderRadius.circular(5.0))),
+  //                   child: DropdownButtonHideUnderline(
+  //                     child: DropdownButton<String>(
+  //                       hint: Text(
+  //                         translate('select_language').toString(),
+  //                       ),
+  //                       value: currentSelectedValue,
+  //                       isDense: true,
+  //                       onChanged: (newValue) async {
+  //                         // setState(() {
+  //                         //   currentSelectedValue = newValue;
+  //                         // });
+  //                         print(newValue);
+  //
+  //                         if (newValue == "English") {
+  //                           print("English here");
+  //                           // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+  //                           //   appLanguage.changeLanguage(Locale("en"));
+  //                           // });
+  //                           setState(() {
+  //                             currentSelectedValue = "English";
+  //                           });
+  //                           changeLocale(context, "en"); //change the language
+  //                           prefs.setData("language_code", "en");
+  //                         }
+  //
+  //                         if (newValue == "German") {
+  //                           print("German here");
+  //                           // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+  //                           //   appLanguage.changeLanguage(Locale("de"));
+  //                           // });
+  //                           setState(() {
+  //                             currentSelectedValue = "German";
+  //                           });
+  //                           changeLocale(context, "de"); //change the language
+  //                           prefs.setData("language_code", "de");
+  //                         }
+  //                       },
+  //                       items: langtype.map((String value) {
+  //                         return DropdownMenuItem<String>(
+  //                           value: value,
+  //                           child: Text(value),
+  //                         );
+  //                       }).toList(),
+  //                     ),
+  //                   ),
+  //                 );
+  //               },
+  //             );
+  //           },
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   void putShared(String key, bool val) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

@@ -10,6 +10,8 @@ import 'package:app/UI/MasterData.dart';
 import 'package:app/UI/Sublist.dart';
 import 'package:app/Widgets/HomeWidget.dart';
 import 'package:app/UI/SystemSettings.dart';
+import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -143,6 +145,15 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  // void play() async {
+  //
+  //   final AudioCache cache = AudioCache();
+  //   AudioPlayer player;
+  //
+  //   player = await cache.play('audios/Tone_1.ogg');
+  //
+  // }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -154,23 +165,23 @@ class _HomePageState extends State<HomePage> {
     });
     print(language);
 
-    masterdata_bloc.fetchAllMasterData();
-    masterdata_bloc.fetchAllMasterdatafromDB();
-
-    sublist_bloc.fetchAllManufacData();
-    sublist_bloc.fetchAllManufacDatafromDB();
-
-    sublist_bloc.fetchAllCatagoryData();
-    sublist_bloc.fetchAllCatDatafromDB();
-
-    sublist_bloc.fetchAllSubCatagoryData();
-    sublist_bloc.fetchAllSubCatDatafromDB();
-
-    sublist_bloc.fetchAllUnitData();
-    sublist_bloc.fetchAllUnitDatafromDB();
-
-    sublist_bloc.fetchAllMateralPackData();
-    sublist_bloc.fetchAllMateralPackDatafromDB();
+    // masterdata_bloc.fetchAllMasterData();
+    // masterdata_bloc.fetchAllMasterdatafromDB();
+    //
+    // sublist_bloc.fetchAllManufacData();
+    // sublist_bloc.fetchAllManufacDatafromDB();
+    //
+    // sublist_bloc.fetchAllCatagoryData();
+    // sublist_bloc.fetchAllCatDatafromDB();
+    //
+    // sublist_bloc.fetchAllSubCatagoryData();
+    // sublist_bloc.fetchAllSubCatDatafromDB();
+    //
+    // sublist_bloc.fetchAllUnitData();
+    // sublist_bloc.fetchAllUnitDatafromDB();
+    //
+    // sublist_bloc.fetchAllMateralPackData();
+    // sublist_bloc.fetchAllMateralPackDatafromDB();
     status = true;
   }
 
@@ -512,9 +523,7 @@ class _HomePageState extends State<HomePage> {
             ),
             Container(
                 padding: const EdgeInsets.all(15.0),
-                child: Text(
-                  translate('home'),
-                ))
+            )
           ],
         ),
 
@@ -870,7 +879,7 @@ class _HomePageState extends State<HomePage> {
             onTap: () {
               // Update the state of the app.
               // ...
-              Navigator.push(
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => AboutPage()),
               );
@@ -901,7 +910,7 @@ class _HomePageState extends State<HomePage> {
             onTap: () {
               // Update the state of the app.
               // ...
-              Navigator.push(
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => BarcodeSettings()),
               );
@@ -922,7 +931,7 @@ class _HomePageState extends State<HomePage> {
             onTap: () {
               // Update the state of the app.
               // ...
-              Navigator.push(
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => SystemSettingsPage()),
               );
@@ -943,7 +952,7 @@ class _HomePageState extends State<HomePage> {
             onTap: () {
               // Update the state of the app.
               // ...
-              Navigator.push(
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => CustomFunctionSettingsPage()),
               );

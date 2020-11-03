@@ -5,6 +5,7 @@ import 'package:app/Handler/app_localizations.dart';
 import 'package:app/Model/masterdata_model.dart';
 import 'package:app/UI/AddProduct.dart';
 import 'package:app/UI/Home.dart';
+import 'package:app/UI/SystemSettings.dart';
 import 'package:app/Widgets/MastarDataWidget.dart';
 import 'package:app/resources/SharedPrefer.dart';
 import 'package:barcode_scan/barcode_scan.dart';
@@ -13,6 +14,7 @@ import 'package:connectivity/connectivity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_translate/global.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:multilevel_drawer/multilevel_drawer.dart';
@@ -43,6 +45,9 @@ class _MasterDataState extends State<MasterData> {
 
   StreamSubscription streamerforIChecker;
   ConnectivityResult result;
+  var isEditable = false;
+  FocusNode _focusNode = new FocusNode();
+
 
   //Barcode scan implement
   ScanResult barcode;
@@ -162,7 +167,19 @@ class _MasterDataState extends State<MasterData> {
         key: _scaffoldKey,
         appBar: AppBar(
           leading: _isSearching
-              ? const BackButton()
+              ? new IconButton(
+              icon: new Icon(
+                Icons.arrow_back,
+                color: Colors.black45,
+              ),
+              color: Colors.black54,
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => HomePage()));
+
+                //
+                // _scaffoldKey.currentState.openDrawer();
+              })
               : new IconButton(
                   icon: new Icon(
                     Icons.arrow_back,
@@ -220,53 +237,53 @@ class _MasterDataState extends State<MasterData> {
           width: MediaQuery.of(context).size.width - 30,
           child: Stack(
             children: <Widget>[
-              Align(
-                alignment: Alignment.bottomLeft,
-                child: FloatingActionButton(
-                  heroTag: null,
-                  tooltip: "Backup data",
-                  backgroundColor: Colors.green,
-                  onPressed: () async {
-                    print("jabs");
-
-                    var connectivityResult =
-                        await (Connectivity().checkConnectivity());
-                    if (connectivityResult == ConnectivityResult.mobile) {
-                      //_showDialog1("Mobile Internet OK");
-                      pr.show();
-                      masterdata_bloc.syncAddDatatoAPI(); //sync the data to api
-                      masterdata_bloc.syncUpdateDatatoAPI();
-                      Future.delayed(Duration(seconds: 3)).then((value) {
-                        pr.hide().whenComplete(() {
-//                        Navigator.of(context).push(CupertinoPageRoute(
-//                            builder: (BuildContext context) => SecondScreen()));
-                          print("COmpleted");
-                        });
-                      });
-                    } else if (connectivityResult == ConnectivityResult.wifi) {
-                      //_showDialog1("WiFi Internet OK");
-                      pr.show();
-                      masterdata_bloc.syncAddDatatoAPI(); //sync the data to api
-                      masterdata_bloc.syncUpdateDatatoAPI();
-                      Future.delayed(Duration(seconds: 3)).then((value) {
-                        pr.hide().whenComplete(() {
-//                        Navigator.of(context).push(CupertinoPageRoute(
-//                            builder: (BuildContext context) => SecondScreen()));
-                          print("COmpleted");
-                        });
-                      });
-                    } else {
-                      print("No internet");
-                      _showDialog("No Internet");
-                    }
-                  },
-                  child: Icon(
-                    Icons.cloud_upload,
-                    color: Colors.white,
-                    size: 30,
-                  ),
-                ),
-              ),
+//               Align(
+//                 alignment: Alignment.bottomLeft,
+//                 child: FloatingActionButton(
+//                   heroTag: null,
+//                   tooltip: "Backup data",
+//                   backgroundColor: Colors.green,
+//                   onPressed: () async {
+//                     print("jabs");
+//
+//                     var connectivityResult =
+//                         await (Connectivity().checkConnectivity());
+//                     if (connectivityResult == ConnectivityResult.mobile) {
+//                       //_showDialog1("Mobile Internet OK");
+//                       pr.show();
+//                       masterdata_bloc.syncAddDatatoAPI(); //sync the data to api
+//                       masterdata_bloc.syncUpdateDatatoAPI();
+//                       Future.delayed(Duration(seconds: 3)).then((value) {
+//                         pr.hide().whenComplete(() {
+// //                        Navigator.of(context).push(CupertinoPageRoute(
+// //                            builder: (BuildContext context) => SecondScreen()));
+//                           print("COmpleted");
+//                         });
+//                       });
+//                     } else if (connectivityResult == ConnectivityResult.wifi) {
+//                       //_showDialog1("WiFi Internet OK");
+//                       pr.show();
+//                       masterdata_bloc.syncAddDatatoAPI(); //sync the data to api
+//                       masterdata_bloc.syncUpdateDatatoAPI();
+//                       Future.delayed(Duration(seconds: 3)).then((value) {
+//                         pr.hide().whenComplete(() {
+// //                        Navigator.of(context).push(CupertinoPageRoute(
+// //                            builder: (BuildContext context) => SecondScreen()));
+//                           print("COmpleted");
+//                         });
+//                       });
+//                     } else {
+//                       print("No internet");
+//                       _showDialog("No Internet");
+//                     }
+//                   },
+//                   child: Icon(
+//                     Icons.cloud_upload,
+//                     color: Colors.white,
+//                     size: 30,
+//                   ),
+//                 ),
+//               ),
               Align(
                 alignment: Alignment.bottomRight,
                 child: FloatingActionButton(
@@ -289,6 +306,7 @@ class _MasterDataState extends State<MasterData> {
                           MaterialPageRoute(
                               builder: (context) => AddProductPage(
                                 id: int.parse(fetcheddata.last.id.toString()),
+                                context: context,
                               )));
                     }
                     // Add your onPressed code here!
@@ -311,7 +329,7 @@ class _MasterDataState extends State<MasterData> {
   Widget _buildSearchField() {
     return TextField(
       controller: _searchQueryController,
-      autofocus: true,
+
       decoration: InputDecoration(
         hintText: "Search Data...",
         border: InputBorder.none,
@@ -323,6 +341,7 @@ class _MasterDataState extends State<MasterData> {
         textStyle: TextStyle(fontSize: 16, color: Colors.black),
       ),
       onChanged: onSearchTextChanged,
+      focusNode: _focusNode,
     );
   }
 
@@ -330,17 +349,37 @@ class _MasterDataState extends State<MasterData> {
     if (_isSearching) {
       return <Widget>[
         IconButton(
-          icon: const Icon(
-            Icons.clear,
+          icon: Icon(
+            isEditable == false ? MaterialIcons.touch_app : AntDesign.barcode,
             color: Colors.black45,
           ),
           onPressed: () {
-            if (_searchQueryController == null ||
-                _searchQueryController.text.isEmpty) {
-              Navigator.pop(context);
-              return;
+            // if (_searchQueryController == null ||
+            //     _searchQueryController.text.isEmpty) {
+            //   Navigator.pop(context);
+            //   return;
+            // }
+            // _clearSearchQuery();
+
+            if(isEditable){
+              setState(() {
+                //during qr mode
+                isEditable = false;
+                _focusNode.unfocus();
+              });
             }
-            _clearSearchQuery();
+
+            else{
+              setState(() {
+                //during keyboard mode
+                isEditable = true;
+                _focusNode.requestFocus();
+              });
+            }
+
+            print(isEditable.toString());
+
+
           },
         ),
       ];
@@ -354,11 +393,14 @@ class _MasterDataState extends State<MasterData> {
         ),
         onPressed: _startSearch,
       ),
-      IconButton(
-        icon: new Image.asset('assets/images/barcode.png', fit: BoxFit.contain),
-        tooltip: 'Scan barcode',
-        onPressed: barcodeScanning,
-      ),
+      // IconButton(
+      //   icon: Icon(Icons.settings,color: Colors.black54,),
+      //   tooltip: 'Settings',
+      //   onPressed: (){
+      //     Navigator.push(context,
+      //         MaterialPageRoute(builder: (context) => SystemSettingsPage()));
+      //   },
+      // ),
     ];
   }
 

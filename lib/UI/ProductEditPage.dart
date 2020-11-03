@@ -99,8 +99,10 @@ class _ProductEditPageState extends State<ProductEditPage> {
   bool _hasValidMime = false;
   FileType _pickingType;
 
-  void _openFileExplorer() async {
+  var isEditable = false;
+  FocusNode _focusNode = new FocusNode();
 
+  void _openFileExplorer() async {
     setState(() {
       showCapturedPhoto = false;
       imageCache.clear();
@@ -109,35 +111,35 @@ class _ProductEditPageState extends State<ProductEditPage> {
     try {
       _paths = null;
       _path = await FilePicker.getFilePath(type: FileType.any);
-    }
-    on PlatformException catch (e) {
+    } on PlatformException catch (e) {
       print("Unsupported operation" + e.toString());
     }
     if (!mounted) return;
 
     setState(() {
-      _fileName = _path != null ? _path
-          .split('/')
-          .last : _paths != null ? _paths.keys.toString() : '...';
+      _fileName = _path != null
+          ? _path.split('/').last
+          : _paths != null
+              ? _paths.keys.toString()
+              : '...';
     });
     print(_fileName.toString());
     print(_path.toString());
     getImagefromStorage(_path.toString(), _fileName.toString());
   }
 
-  void getImagefromStorage(String path,String fileName) async{
-    print("path is "+path);
+  void getImagefromStorage(String path, String fileName) async {
+    print("path is " + path);
     List<StorageInfo> storageInfo = await PathProviderEx.getStorageInfo();
     var root = storageInfo[0].rootDir +
         "/Indentit/Photos"; //storageInfo[1] for SD card, getting the root directory
 
     print(root.toString());
 
-    moveFile(File(path), root+"/"+'$id.png',root);
+    moveFile(File(path), root + "/" + '$id.png', root);
   }
 
-
-  Future<File> moveFile(File sourceFile, String newPath,String root) async {
+  Future<File> moveFile(File sourceFile, String newPath, String root) async {
     try {
       /// prefer using rename as it is probably faster
       /// if same directory path
@@ -154,7 +156,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
     }
   }
 
-  void imagePath() async{
+  void imagePath() async {
     List<StorageInfo> storageInfo = await PathProviderEx.getStorageInfo();
     var root = storageInfo[0].rootDir +
         "/Indentit/Photos"; //storageInfo[1] for SD card, getting the root directory
@@ -172,12 +174,11 @@ class _ProductEditPageState extends State<ProductEditPage> {
     masterdata_bloc.getsinglemasterdatafromDBV2();
     //productName.text = widget.productname;
     print(widget.productname);
-    Timer(Duration(),(){
+    Timer(Duration(), () {
       imagePath();
     });
     super.initState();
     sublist_bloc.dispose();
-
   }
 
   @override
@@ -388,7 +389,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
                                 children: [
                                   Padding(
                                     padding: EdgeInsets.only(
-                                        top: hp(1), bottom: hp(2)),
+                                        top: hp(12), bottom: hp(2)),
                                     child: Align(
                                       alignment: Alignment.topCenter,
                                       child: Container(
@@ -400,7 +401,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
                                               Text(
                                                 translate('product_desc')
                                                     .toString(),
-                                                style: TextStyle(fontSize: 16),
+                                                style: TextStyle(fontSize: hp(2)),
                                               ),
                                               SizedBox(
                                                 height: 3,
@@ -468,7 +469,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
 
                                   Padding(
                                     padding: EdgeInsets.only(
-                                        top: hp(11), bottom: hp(2)),
+                                        top: hp(1), bottom: hp(2)),
                                     child: Align(
                                       alignment: Alignment.topCenter,
                                       child: Container(
@@ -479,7 +480,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
                                             children: <Widget>[
                                               Text(
                                                 "Barcode",
-                                                style: TextStyle(fontSize: 16),
+                                                style: TextStyle(fontSize: hp(2)),
                                               ),
                                               SizedBox(
                                                 height: 3,
@@ -504,39 +505,71 @@ class _ProductEditPageState extends State<ProductEditPage> {
                                                       const EdgeInsets.fromLTRB(
                                                           8, 0, 0, 0),
                                                   child: TextField(
-                                                      controller: gtin,
-                                                      autocorrect: true,
-                                                      style: GoogleFonts.exo2(
+                                                    controller: gtin,
+                                                    focusNode: _focusNode,
+                                                    autocorrect: true,
+                                                    style: GoogleFonts.exo2(
+                                                      textStyle: TextStyle(
+                                                        fontSize: 14,
+                                                      ),
+                                                    ),
+                                                    decoration:
+                                                        new InputDecoration(
+                                                      border: InputBorder.none,
+                                                      focusedBorder:
+                                                          InputBorder.none,
+                                                      enabledBorder:
+                                                          InputBorder.none,
+                                                      errorBorder:
+                                                          InputBorder.none,
+                                                      disabledBorder:
+                                                          InputBorder.none,
+                                                      hintStyle:
+                                                          GoogleFonts.exo2(
                                                         textStyle: TextStyle(
                                                           fontSize: 14,
                                                         ),
                                                       ),
-                                                      decoration:
-                                                          new InputDecoration(
-                                                        border:
-                                                            InputBorder.none,
-                                                        focusedBorder:
-                                                            InputBorder.none,
-                                                        enabledBorder:
-                                                            InputBorder.none,
-                                                        errorBorder:
-                                                            InputBorder.none,
-                                                        disabledBorder:
-                                                            InputBorder.none,
-                                                        hintStyle:
-                                                            GoogleFonts.exo2(
-                                                          textStyle: TextStyle(
-                                                            fontSize: 14,
-                                                          ),
+                                                      labelStyle:
+                                                          GoogleFonts.exo2(
+                                                        textStyle: TextStyle(
+                                                          fontSize: 14,
                                                         ),
-                                                        labelStyle:
-                                                            GoogleFonts.exo2(
-                                                          textStyle: TextStyle(
-                                                            fontSize: 14,
-                                                          ),
+                                                      ),
+                                                      hintText: data[0].gtin,
+                                                      suffixIcon: IconButton(
+                                                        icon: Icon(
+                                                          isEditable == false
+                                                              ? MaterialIcons
+                                                                  .touch_app
+                                                              : AntDesign
+                                                                  .barcode,
+                                                          color: Colors.black54,
                                                         ),
-                                                        hintText: data[0].gtin,
-                                                      )),
+                                                        onPressed: () {
+                                                          if (isEditable) {
+                                                            setState(() {
+                                                              //during qr mode
+                                                              isEditable =
+                                                                  false;
+                                                              _focusNode
+                                                                  .unfocus();
+                                                            });
+                                                          } else {
+                                                            setState(() {
+                                                              //during keyboard mode
+                                                              isEditable = true;
+                                                              _focusNode
+                                                                  .requestFocus();
+                                                            });
+                                                          }
+
+                                                          print(isEditable
+                                                              .toString());
+                                                        },
+                                                      ),
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
                                             ],
@@ -546,7 +579,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
 
                                   Padding(
                                     padding: EdgeInsets.only(
-                                        top: hp(21), bottom: hp(2)),
+                                        top: hp(23), bottom: hp(3)),
                                     child: Align(
                                       alignment: Alignment.topCenter,
                                       child: Container(
@@ -557,7 +590,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
                                             children: <Widget>[
                                               Text(
                                                 "Price",
-                                                style: TextStyle(fontSize: 16),
+                                                style: TextStyle(fontSize: hp(2)),
                                               ),
                                               SizedBox(
                                                 height: 3,
@@ -625,7 +658,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
 
                                   Padding(
                                     padding: EdgeInsets.only(
-                                        top: hp(31), bottom: hp(2)),
+                                        top: hp(33), bottom: hp(2)),
                                     child: Align(
                                       alignment: Alignment.topCenter,
                                       child: Container(
@@ -756,7 +789,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
                                       : showCapturedPhoto == true
                                           ? Padding(
                                               padding: EdgeInsets.only(
-                                                  top: hp(40), bottom: hp(2)),
+                                                  top: hp(42), bottom: hp(2)),
                                               child: Container(
                                                 height: hp(50),
                                                 width: double.infinity,
@@ -768,7 +801,10 @@ class _ProductEditPageState extends State<ProductEditPage> {
                                                           top: hp(5)),
                                                       child: Align(
                                                         child: Image.file(
-                                                          File(ImagePath+"/"+id.toString()+".png"),
+                                                          File(ImagePath +
+                                                              "/" +
+                                                              id.toString() +
+                                                              ".png"),
                                                           fit: BoxFit.fill,
                                                           width: wp(80),
                                                           height: hp(40),
@@ -785,15 +821,22 @@ class _ProductEditPageState extends State<ProductEditPage> {
                                                             Alignment.topCenter,
                                                         child: IconButton(
                                                           onPressed: () {
-                                                            print(ImagePath.toString());
+                                                            print(ImagePath
+                                                                .toString());
                                                             setState(() {
-                                                              showCapturedPhoto = null;
-                                                              deleteFile(ImagePath+"/"+id.toString()+".png");
-                                                              imageCache.clear();
+                                                              showCapturedPhoto =
+                                                                  null;
+                                                              deleteFile(ImagePath +
+                                                                  "/" +
+                                                                  id.toString() +
+                                                                  ".png");
+                                                              imageCache
+                                                                  .clear();
                                                             });
                                                           },
                                                           icon: Icon(
-                                                            AntDesign.closecircle,
+                                                            AntDesign
+                                                                .closecircle,
                                                             color:
                                                                 Colors.black87,
                                                             size: hp(3),
@@ -1015,9 +1058,9 @@ class _ProductEditPageState extends State<ProductEditPage> {
 
       print(root.toString());
 
-      var file = File(root+"/"+(int.parse(id)).toString()+".png");
+      var file = File(root + "/" + (int.parse(id)).toString() + ".png");
 
-      if(file.exists() !=null){
+      if (file.exists() != null) {
         final path = join(
           (root.toString()),
           '${(int.parse(id)).toString()}.png',
@@ -1031,9 +1074,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
         setState(() {
           showCapturedPhoto = true;
         });
-      }
-
-      else{
+      } else {
         await file.delete();
 
         final path = join(
