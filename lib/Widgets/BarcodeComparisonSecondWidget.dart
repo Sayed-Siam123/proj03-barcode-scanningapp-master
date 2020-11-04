@@ -7,6 +7,7 @@ import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_screen/responsive_screen.dart';
 
@@ -45,6 +46,7 @@ class _BarcodeComparisonSecondWidgetState
   String barcode;
 
   bool status = null;
+  bool matchedStatus = false;
 
   String _quantityKey = "_quantityKey";
   var _quantity = 0;
@@ -57,6 +59,10 @@ class _BarcodeComparisonSecondWidgetState
 
   SnackbarHelper snack = new SnackbarHelper();
   SessionManager prefs = new SessionManager();
+
+
+  var isEditable = false;
+  FocusNode _focusNode = new FocusNode();
 
   List<MasterDataModelV2> fetcheddata = [];
   List<MasterDataModelV2> _newData = [];
@@ -219,6 +225,7 @@ class _BarcodeComparisonSecondWidgetState
                       child: Padding(
                         padding: const EdgeInsets.only(left: 8.0, top: 3),
                         child: TextField(
+                          focusNode: _focusNode,
                           controller: secondBarcode,
                           autocorrect: true,
                           style: GoogleFonts.exo2(
@@ -228,12 +235,27 @@ class _BarcodeComparisonSecondWidgetState
                           ),
                           decoration: new InputDecoration(
                             suffixIcon: IconButton(
-                              icon: new Image.asset('assets/images/barcode.png',
-                                  fit: BoxFit.contain),
+                              icon: Icon(isEditable == false ? MaterialIcons.touch_app : AntDesign.barcode,color: Colors.black54),
                               tooltip: 'Scan barcode',
-                              onPressed: () => refernece == "true"
-                                  ? barcodeScanning2_Mode1()
-                                  : barcodeScanning2_mode2(),
+                              onPressed: (){
+                                if(isEditable){
+                                  setState(() {
+                                    //during qr mode
+                                    isEditable = false;
+                                    _focusNode.unfocus();
+                                  });
+                                }
+
+                                else{
+                                  setState(() {
+                                    //during keyboard mode
+                                    isEditable = true;
+                                    _focusNode.requestFocus();
+                                  });
+                                }
+
+                                print(isEditable.toString());
+                              },
                             ),
                             border: InputBorder.none,
                             focusedBorder: InputBorder.none,
@@ -268,7 +290,7 @@ class _BarcodeComparisonSecondWidgetState
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        barcode_type == "" ? "No Data" : barcode_type,
+                        matchedStatus ==false ? "Unknown" : widget.type,
                         style: TextStyle(
                           fontSize: hp(3.7),
                         ),
@@ -277,9 +299,7 @@ class _BarcodeComparisonSecondWidgetState
                         width: wp(40),
                       ),
                       Text(
-                        barcode_digits == ""
-                            ? "No data"
-                            : barcode_digits + " Digits",
+                        matchedStatus == false ? "Unknown" : widget.digits + " Digits",
                         style: TextStyle(
                           fontSize: hp(3.7),
                         ),
@@ -365,8 +385,8 @@ class _BarcodeComparisonSecondWidgetState
         setState(() {
           //status2 = false;
           this.barcode2 = barcode2;
-          barcode_type = barcode2.format.toString();
-          barcode_digits = barcode2.rawContent.length.toString();
+          // barcode_type = barcode2.format.toString();
+          // barcode_digits = barcode2.rawContent.length.toString();
           secondBarcode.text = barcode2.rawContent.toString();
         });
         onChangeBarcode_Mode2(barcode2.rawContent.toString());
@@ -393,6 +413,7 @@ class _BarcodeComparisonSecondWidgetState
       print("not got it");
       setState(() {
         status = false;
+        matchedStatus = false;
       });
       //snack.snackbarshowNormal(context, "No matched product found!", 1, Colors.black87);
     } else if (text == widget.mastercode.toString()) {
@@ -400,6 +421,7 @@ class _BarcodeComparisonSecondWidgetState
 
       setState(() {
         status = true;
+        matchedStatus = true;
       });
 
       // if(_quantityFound == _quantity){
@@ -451,6 +473,7 @@ class _BarcodeComparisonSecondWidgetState
       print("not got it");
       setState(() {
         status = false;
+        matchedStatus = false;
       });
       //snack.snackbarshowNormal(context, "No matched product found!", 1, Colors.black87);
     } else if (text == widget.mastercode.toString()) {
@@ -460,6 +483,7 @@ class _BarcodeComparisonSecondWidgetState
         setState(() {
           _quantityFound++;
           status = true;
+          matchedStatus = true;
         });
         //snack.snackbarshowNormal(context, "Product matched!", 1, Colors.black87);
       }

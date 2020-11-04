@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:honeywell_scanner/honeywell_scanner.dart';
 import 'package:intl/intl.dart';
 import 'package:app/Bloc/Sublist_bloc.dart';
 import 'package:app/Bloc/masterData_bloc.dart';
@@ -43,7 +44,7 @@ class AddProductPage extends StatefulWidget {
   _AddProductPageState createState() => _AddProductPageState();
 }
 
-class _AddProductPageState extends State<AddProductPage> {
+class _AddProductPageState extends State<AddProductPage> with WidgetsBindingObserver implements ScannerCallBack{
   ScanResult barcode1;
   ScanResult barcode2;
 
@@ -100,6 +101,14 @@ class _AddProductPageState extends State<AddProductPage> {
   String errortext3_price = "*price can\'t be empty";
   String errortext4_image = "*Product image not found";
 
+
+  HoneywellScanner honeywellScanner = HoneywellScanner();
+  String scannedCode = 'Empty';
+  bool scannerEnabled = false;
+  bool scan1DFormats = true;
+  bool scan2DFormats = true;
+
+
   @override
   void initState() {
     // TODO: implement initState
@@ -110,7 +119,54 @@ class _AddProductPageState extends State<AddProductPage> {
     _newData.clear();
     masterdata_bloc.fetchAllMasterdatafromDBV2();
     getPricestatus();
+    WidgetsBinding.instance.addObserver(this);
+    honeywellScanner.setScannerCallBack(this);
+    updateScanProperties();
     //barcodeScanning2();
+  }
+
+
+  updateScanProperties() {
+    List<CodeFormat> codeFormats = [];
+    if (scan1DFormats ?? false)
+      codeFormats.addAll(CodeFormatUtils.ALL_1D_FORMATS);
+    if (scan2DFormats ?? false)
+      codeFormats.addAll(CodeFormatUtils.ALL_2D_FORMATS);
+
+//    codeFormats.add(CodeFormat.AZTEC);
+//    codeFormats.add(CodeFormat.CODABAR);
+//    codeFormats.add(CodeFormat.CODE_39);
+//    codeFormats.add(CodeFormat.CODE_93);
+//    codeFormats.add(CodeFormat.CODE_128);
+//    codeFormats.add(CodeFormat.DATA_MATRIX);
+//    codeFormats.add(CodeFormat.EAN_8);
+//    codeFormats.add(CodeFormat.EAN_13);
+////    codeFormats.add(CodeFormat.ITF);
+//    codeFormats.add(CodeFormat.MAXICODE);
+//    codeFormats.add(CodeFormat.PDF_417);
+//    codeFormats.add(CodeFormat.QR_CODE);
+//    codeFormats.add(CodeFormat.RSS_14);
+//    codeFormats.add(CodeFormat.RSS_EXPANDED);
+//    codeFormats.add(CodeFormat.UPC_A);
+//    codeFormats.add(CodeFormat.UPC_E);
+////    codeFormats.add(CodeFormat.UPC_EAN_EXTENSION);
+
+    honeywellScanner.setProperties(
+        CodeFormatUtils.getAsPropertiesComplement(codeFormats));
+  }
+
+  @override
+  void onDecoded(String result) {
+    setState(() {
+      scannedCode = result;
+    });
+  }
+
+  @override
+  void onError(Exception error) {
+    setState(() {
+      scannedCode = error.toString();
+    });
   }
 
   Future<void> _initializeCamera() async {
@@ -172,6 +228,7 @@ class _AddProductPageState extends State<AddProductPage> {
     // TODO: implement dispose
     super.dispose();
     _controller?.dispose();
+    if(honeywellScanner != null) honeywellScanner.stopScanner();
   }
 
   @override
@@ -181,7 +238,24 @@ class _AddProductPageState extends State<AddProductPage> {
           ? _initializeControllerFuture = _controller.initialize()
           : null; //on pause camera is disposed, so we need to call again "issue is only for android"
     }
-  }
+
+    if(state == null) return;
+    switch(state){
+      case AppLifecycleState.resumed:
+        if(honeywellScanner != null) honeywellScanner.resumeScanner();
+        break;
+      case AppLifecycleState.inactive:
+        if(honeywellScanner != null) honeywellScanner.pauseScanner();
+        break;
+      case AppLifecycleState.paused://AppLifecycleState.paused is used as stopped state because deactivate() works more as a pause for lifecycle
+        if(honeywellScanner != null) honeywellScanner.pauseScanner();
+        break;
+      case AppLifecycleState.detached:
+        if(honeywellScanner != null) honeywellScanner.pauseScanner();
+        break;
+      default:
+        break;
+    }  }
 
   @override
   Widget build(BuildContext context) {
@@ -289,6 +363,10 @@ class _AddProductPageState extends State<AddProductPage> {
                     sublist_bloc.getGtin(gtin.text);
                     sublist_bloc.getListPrice(ListPrice.text);
                     sublist_bloc.getProductPhoto((widget.id + 1).toString() + ".png");
+                    sublist_bloc.getBarcode_type("Code 128");
+                    sublist_bloc.getBarcode_digits(gtin.text.length.toString());
+
+                    print(gtin.text.length.toString());
 
                     sublist_bloc.createProductMasterDatatoDBV2();
                     sublist_bloc.dispose();
@@ -324,24 +402,28 @@ class _AddProductPageState extends State<AddProductPage> {
                     sublist_bloc.getProductDesc(ProductDesc.text);
                     sublist_bloc.getGtin(gtin.text);
                     sublist_bloc.getListPrice("0");
-                    sublist_bloc
-                        .getProductPhoto((widget.id + 1).toString() + ".png");
+                    sublist_bloc.getProductPhoto((widget.id + 1).toString() + ".png");
+                    sublist_bloc.getBarcode_type("Code 39");
+                    sublist_bloc.getBarcode_digits(gtin.text.length.toString());
 
                     sublist_bloc.createProductMasterDatatoDBV2();
                     sublist_bloc.dispose();
                     masterdata_bloc.fetchAllMasterdatafromDBV2();
 
-                    // _scaffoldKey.currentState.showSnackBar(SnackBar(
-                    //   content: Text(
-                    //     'Product Added Succesfully',
-                    //     style: GoogleFonts.exo2(
-                    //       textStyle: TextStyle(
-                    //         fontSize: 14,
-                    //       ),
-                    //     ),
-                    //   ),
-                    //   duration: Duration(seconds: 3),
-                    // ));
+                    _scaffoldKey.currentState.showSnackBar(SnackBar(
+                      content: Text(
+                        'Product Added Succesfully',
+                        style: GoogleFonts.exo2(
+                          textStyle: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      duration: Duration(seconds: 3),
+                    ));
+
+                    print("Data " +gtin.text.length.toString());
+
 
                     Timer(Duration(seconds: 3), () {
                       Navigator.push(
@@ -366,255 +448,126 @@ class _AddProductPageState extends State<AddProductPage> {
           child: SingleChildScrollView(
             child: Container(
               width: wp(100),
-              child: Stack(
-                children: <Widget>[
-                  StreamBuilder<List<MasterDataModelV2>>(
-                    stream: masterdata_bloc.allMasterDataV2,
-                    builder: (context,
-                        AsyncSnapshot<List<MasterDataModelV2>> snapshot) {
-                      if (snapshot.hasData) {
-                        fetcheddata = snapshot.data;
-                        //_newData = fetcheddata;
-                        print("From Add product page");
-                        print(fetcheddata.length);
-                        //return masterdataview(hp(100),wp(100),fetcheddata);
-                      } else if (snapshot.hasError) {
-                        return Text("${snapshot.error}");
-                      }
+              child: Column(
+                children: [
+                  // Text('Scanner: ${scannerEnabled ? "Started" : "Stopped"}',
+                  //   style: TextStyle(color: scannerEnabled ? Colors.blue : Colors.red),),
+                  //
+                  // Text('Scanner: ${scannerEnabled ? "Started" : "Stopped"}',
+                  //   style: TextStyle(color: scannerEnabled ? Colors.blue : Colors.red),),
+                  // Divider(
+                  //   color: Colors.transparent,
+                  // ),
+                  // Text('Scanned code: $scannedCode'),
+                  // Divider(
+                  //   color: Colors.transparent,
+                  // ),
+                  //
+                  // SwitchListTile(
+                  //   title: Text("Scan 1D Codes"),
+                  //   subtitle: Text("like Code-128, Code-39, Code-93, etc"),
+                  //   value: scan1DFormats,
+                  //   onChanged: (value) {
+                  //     scan1DFormats = value;
+                  //     updateScanProperties();
+                  //     setState(() {});
+                  //   },
+                  // ),
+                  // SwitchListTile(
+                  //   title: Text("Scan 2D Codes"),
+                  //   subtitle: Text("like QR, Data Matrix, Aztec, etc"),
+                  //   value: scan2DFormats,
+                  //   onChanged: (value) {
+                  //     scan2DFormats = value;
+                  //     updateScanProperties();
+                  //     setState(() {});
+                  //   },
+                  // ),
+                  //
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: [
+                  //     RaisedButton(
+                  //       onPressed: (){
+                  //         honeywellScanner.startScanner();
+                  //         setState(() {
+                  //           scannerEnabled = true;
+                  //         });
+                  //       },
+                  //       child: Text("Enable"),
+                  //     ),
+                  //
+                  //     SizedBox(width: wp(10),),
+                  //
+                  //     RaisedButton(
+                  //       onPressed: (){
+                  //           honeywellScanner.stopScanner();
+                  //           setState(() {
+                  //             scannerEnabled = false;
+                  //           });
+                  //       },
+                  //       child: Text("Disable"),
+                  //     ),
+                  //   ],
+                  // ),
 
-                      return Center(child: Text(""));
-                    },
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: hp(15), bottom: hp(1)),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            translate('product_desc').toString(),
-                            style: GoogleFonts.exo2(
-                              fontSize: 14,
-                            ),
-                          ),
-                          SizedBox(
-                            height: hp(1),
-                          ),
-                          Container(
-                            height: 50,
-                            alignment: Alignment.center,
-                            margin: EdgeInsets.only(
-                                top: 0, left: 0, right: 0, bottom: hp(.5)),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.3),
-                                  spreadRadius: 2,
-                                  blurRadius: 5,
-                                  offset: Offset(1, 1),
-                                ),
-                              ],
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 8.0, top: 3),
-                              child: TextField(
-                                  maxLength: maxLength,
-                                  controller: ProductDesc,
-                                  style: GoogleFonts.exo2(
-                                    textStyle: TextStyle(
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                  decoration: new InputDecoration(
-                                    border: InputBorder.none,
-                                    focusedBorder: InputBorder.none,
-                                    enabledBorder: InputBorder.none,
-                                    errorBorder: InputBorder.none,
-                                    disabledBorder: InputBorder.none,
-                                    hintStyle: GoogleFonts.exo2(
-                                      textStyle: TextStyle(
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                    labelStyle: GoogleFonts.exo2(
-                                      textStyle: TextStyle(
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                    hintText:
-                                        translate('product_desc').toString(),
-                                  ),
-                                  onChanged: (value) {
-                                    if (value.length <= maxLength) {
-                                      desc_text = value;
-                                    } else {
-                                      ProductDesc.value = new TextEditingValue(
-                                          text: desc_text,
-                                          composing: new TextRange(
-                                              start: 1, end: maxLength));
-                                      ProductDesc.text = desc_text;
-                                    }
-                                  }),
-                            ),
-                          ),
-                          _validate1_prodDesc == false
-                              ? Text(
-                                  errortext1_prodDesc,
-                                  style: TextStyle(
-                                      fontSize: hp(1.5),
-                                      color: Colors.red.shade500),
-                                )
-                              : Text(""),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: hp(2), bottom: hp(1)),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            "Barcode",
-                            style: GoogleFonts.exo2(
-                              fontSize: 14,
-                            ),
-                          ),
-                          SizedBox(
-                            height: hp(1),
-                          ),
-                          Container(
-                            height: 50,
-                            alignment: Alignment.center,
-                            margin: EdgeInsets.only(
-                                top: 0, left: 0, right: 0, bottom: hp(.5)),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.3),
-                                  spreadRadius: 2,
-                                  blurRadius: 5,
-                                  offset: Offset(1, 1),
-                                ),
-                              ],
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 8.0, top: 3),
-                              child: TextField(
-                                  keyboardType: TextInputType.number,
-                                  controller: gtin,
-                                  autocorrect: true,
-                                  focusNode: _focusNode,
-                                  style: GoogleFonts.exo2(
-                                    textStyle: TextStyle(
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                  decoration: new InputDecoration(
-                                    suffixIcon: IconButton(
-                                      icon: Icon(
-                                        isEditable == false
-                                            ? MaterialIcons.touch_app
-                                            : AntDesign.barcode,
-                                        color: Colors.black54,
-                                      ),
-                                      onPressed: () {
-                                        if (isEditable) {
-                                          setState(() {
-                                            //during qr mode
-                                            isEditable = false;
-                                            _focusNode.unfocus();
-                                          });
-                                        } else {
-                                          setState(() {
-                                            //during keyboard mode
-                                            isEditable = true;
-                                            _focusNode.requestFocus();
-                                          });
-                                        }
+                  Stack(
+                    children: <Widget>[
+                      StreamBuilder<List<MasterDataModelV2>>(
+                        stream: masterdata_bloc.allMasterDataV2,
+                        builder: (context,
+                            AsyncSnapshot<List<MasterDataModelV2>> snapshot) {
+                          if (snapshot.hasData) {
+                            fetcheddata = snapshot.data;
+                            //_newData = fetcheddata;
+                            print("From Add product page");
+                            print(fetcheddata.length);
+                            //return masterdataview(hp(100),wp(100),fetcheddata);
+                          } else if (snapshot.hasError) {
+                            return Text("${snapshot.error}");
+                          }
 
-                                        print(isEditable.toString());
-                                      },
-                                    ),
-                                    border: InputBorder.none,
-                                    focusedBorder: InputBorder.none,
-                                    enabledBorder: InputBorder.none,
-                                    errorBorder: InputBorder.none,
-                                    disabledBorder: InputBorder.none,
-                                    hintStyle: GoogleFonts.exo2(
-                                      textStyle: TextStyle(
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                    labelStyle: GoogleFonts.exo2(
-                                      textStyle: TextStyle(
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                    hintText: "Enter barcode",
-                                  )),
-                            ),
-                          ),
-                          _validate2_barcode == false
-                              ? Text(
-                                  errortext2_barcode,
-                                  style: TextStyle(
-                                      fontSize: hp(1.5),
-                                      color: Colors.red.shade500),
-                                )
-                              : Text(""),
-                        ],
+                          return Center(child: Text(""));
+                        },
                       ),
-                    ),
-                  ),
-                  _managePrices
-                      ? Padding(
-                          padding: EdgeInsets.only(top: hp(28), bottom: hp(1)),
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  "Price",
-                                  style: GoogleFonts.exo2(
-                                    fontSize: 14,
-                                  ),
+                      Padding(
+                        padding: EdgeInsets.only(top: hp(15), bottom: hp(1)),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                translate('product_desc').toString(),
+                                style: GoogleFonts.exo2(
+                                  fontSize: 14,
                                 ),
-                                SizedBox(
-                                  height: hp(1),
+                              ),
+                              SizedBox(
+                                height: hp(1),
+                              ),
+                              Container(
+                                height: 50,
+                                alignment: Alignment.center,
+                                margin: EdgeInsets.only(
+                                    top: 0, left: 0, right: 0, bottom: hp(.5)),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.3),
+                                      spreadRadius: 2,
+                                      blurRadius: 5,
+                                      offset: Offset(1, 1),
+                                    ),
+                                  ],
                                 ),
-                                Container(
-                                  height: 50,
-                                  alignment: Alignment.center,
-                                  margin: const EdgeInsets.only(
-                                      top: 0, left: 0, right: 0),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.3),
-                                        spreadRadius: 2,
-                                        blurRadius: 5,
-                                        offset: Offset(1, 1),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 8.0, top: 3),
-                                    child: TextField(
-                                      keyboardType: TextInputType.number,
-                                      controller: ListPrice,
-                                      autocorrect: true,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 8.0, top: 3),
+                                  child: TextField(
+                                      maxLength: maxLength,
+                                      controller: ProductDesc,
                                       style: GoogleFonts.exo2(
                                         textStyle: TextStyle(
                                           fontSize: 14,
@@ -636,273 +589,467 @@ class _AddProductPageState extends State<AddProductPage> {
                                             fontSize: 14,
                                           ),
                                         ),
-                                        hintText: "Enter price",
+                                        hintText:
+                                            translate('product_desc').toString(),
                                       ),
-                                      onChanged: (string) {
-                                        string =
-                                            '${_formatNumber(string.replaceAll(',', ''))}';
-                                        ListPrice.text = string;
-                                        Timer(Duration(milliseconds: 1), () {
-                                          ListPrice.selection =
-                                              TextSelection.fromPosition(
-                                                  TextPosition(
-                                                      offset: string.length));
-                                        });
-                                      },
-                                    ),
-                                  ),
+                                      onChanged: (value) {
+                                        if (value.length <= maxLength) {
+                                          desc_text = value;
+                                        } else {
+                                          ProductDesc.value = new TextEditingValue(
+                                              text: desc_text,
+                                              composing: new TextRange(
+                                                  start: 1, end: maxLength));
+                                          ProductDesc.text = desc_text;
+                                        }
+                                      }),
                                 ),
-                                _validate3_price == false
-                                    ? Text(
-                                        errortext3_price,
-                                        style: TextStyle(
-                                            fontSize: hp(1.5),
-                                            color: Colors.red.shade500),
-                                      )
-                                    : Text(""),
-                              ],
-                            ),
+                              ),
+                              _validate1_prodDesc == false
+                                  ? Text(
+                                      errortext1_prodDesc,
+                                      style: TextStyle(
+                                          fontSize: hp(1.5),
+                                          color: Colors.red.shade500),
+                                    )
+                                  : Text(""),
+                            ],
                           ),
-                        )
-                      : Container(
-                          height: 0,
-                          width: 0,
                         ),
-                  _managePrices
-                      ? Padding(
-                          padding: EdgeInsets.only(top: hp(40), bottom: hp(1)),
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: EdgeInsets.only(top: hp(2)),
-                                      child: Text(
-                                        "Add Image/Select Image",
-                                        style: GoogleFonts.exo2(
-                                          fontSize: 14,
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: wp(5),
-                                    ),
-                                    Container(
-                                      child: Row(
-                                        children: <Widget>[
-                                          IconButton(
-                                            padding: EdgeInsets.all(0),
-                                            onPressed: () {
-                                              setState(() {
-                                                showCapturedPhoto = false;
-                                              });
-                                              _initializeCamera();
-                                            },
-                                            icon: Icon(Icons.camera_alt),
-                                          ),
-                                          SizedBox(
-                                            width: wp(3),
-                                          ),
-                                          IconButton(
-                                            padding: EdgeInsets.all(0),
-                                            onPressed: () {
-                                              _openFileExplorer();
-                                            },
-                                            icon: Icon(Icons.attach_file),
-                                          ),
-                                        ],
-                                      ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: hp(2), bottom: hp(1)),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                "Barcode",
+                                style: GoogleFonts.exo2(
+                                  fontSize: 14,
+                                ),
+                              ),
+                              SizedBox(
+                                height: hp(1),
+                              ),
+                              Container(
+                                height: 50,
+                                alignment: Alignment.center,
+                                margin: EdgeInsets.only(
+                                    top: 0, left: 0, right: 0, bottom: hp(.5)),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.3),
+                                      spreadRadius: 2,
+                                      blurRadius: 5,
+                                      offset: Offset(1, 1),
                                     ),
                                   ],
                                 ),
-                                _validate4_image == false
-                                    ? Text(
-                                        errortext4_image,
-                                        style: TextStyle(
-                                            fontSize: hp(1.5),
-                                            color: Colors.red.shade500),
-                                      )
-                                    : Text(""),
-                              ],
-                            ),
-                          ),
-                        )
-                      : Padding(
-                          padding: EdgeInsets.only(top: hp(28), bottom: hp(1)),
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: EdgeInsets.only(top: hp(2)),
-                                      child: Text(
-                                        "Add Image/Select Image",
-                                        style: GoogleFonts.exo2(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 8.0, top: 3),
+                                  child: TextField(
+                                      keyboardType: TextInputType.text,
+                                      controller: gtin,
+                                      autocorrect: true,
+                                      focusNode: _focusNode,
+                                      style: GoogleFonts.exo2(
+                                        textStyle: TextStyle(
                                           fontSize: 14,
                                         ),
                                       ),
-                                    ),
-                                    SizedBox(
-                                      width: wp(5),
-                                    ),
-                                    Container(
-                                      child: Row(
-                                        children: <Widget>[
-                                          IconButton(
-                                            padding: EdgeInsets.all(0),
-                                            onPressed: () {
-                                              setState(() {
-                                                showCapturedPhoto = false;
-                                              });
-                                              _initializeCamera();
-                                            },
-                                            icon: Icon(Icons.camera_alt),
+                                      decoration: new InputDecoration(
+                                        suffixIcon: IconButton(
+                                          icon: Icon(
+                                            isEditable == false
+                                                ? MaterialIcons.touch_app
+                                                : AntDesign.barcode,
+                                            color: Colors.black54,
                                           ),
-                                          SizedBox(
-                                            width: wp(3),
-                                          ),
-                                          IconButton(
-                                            padding: EdgeInsets.all(0),
-                                            onPressed: () {
-                                              _openFileExplorer();
-                                            },
-                                            icon: Icon(Icons.attach_file),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                _validate4_image == false
-                                    ? Text(
-                                        errortext4_image,
-                                        style: TextStyle(
-                                            fontSize: hp(1.5),
-                                            color: Colors.red.shade500),
-                                      )
-                                    : Text(""),
-                              ],
-                            ),
-                          ),
-                        ),
-                  showCapturedPhoto == false
-                      ? Padding(
-                          padding: EdgeInsets.only(top: hp(1), bottom: hp(2)),
-                          child: Align(
-                            alignment: Alignment.topCenter,
-                            child: FutureBuilder<void>(
-                              future: _initializeControllerFuture,
-                              builder: (context, snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.done) {
-                                  // If the Future is complete, display the preview.
-                                  return Transform.scale(
-                                      scale: _controller.value.aspectRatio /
-                                          deviceRatio,
-                                      child: Stack(
-                                        children: <Widget>[
-                                          Align(
-                                            child: AspectRatio(
-                                              aspectRatio:
-                                                  _controller.value.aspectRatio,
-                                              child: CameraPreview(
-                                                  _controller), //cameraPreview
-                                            ),
-                                            alignment: Alignment.topCenter,
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                                top: hp(70),
-                                                bottom: hp(2),
-                                                right: wp(7)),
-                                            child: Align(
-                                              child: IconButton(
-                                                icon: Icon(
-                                                  Icons.camera,
-                                                  color: Colors.white,
-                                                  size: hp(7),
-                                                ),
-                                                onPressed: () {
-                                                  onCaptureButtonPressed();
-                                                  print("Captured");
-                                                },
-                                              ),
-                                              alignment: Alignment.topCenter,
-                                            ),
-                                          ),
-                                        ],
-                                      ));
-                                } else {
-                                  return Center(
-                                      child: Container(
-                                    height: 0,
-                                    width: 0,
-                                  )); // Otherwise, display a loading indicator.
-                                }
-                              },
-                            ),
-                          ),
-                        )
-                      : showCapturedPhoto == true
-                          ? Padding(
-                              padding:
-                                  EdgeInsets.only(top: hp(52), bottom: hp(2)),
-                              child: Container(
-                                height: hp(50),
-                                width: double.infinity,
-                                color: Colors.transparent,
-                                child: Stack(
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: EdgeInsets.only(top: hp(5)),
-                                      child: Align(
-                                        child: Image.file(
-                                          File(ImagePath),
-                                          fit: BoxFit.fill,
-                                          width: wp(80),
-                                          height: hp(40),
-                                        ),
-                                        alignment: Alignment.topCenter,
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(left: wp(85)),
-                                      child: Align(
-                                        alignment: Alignment.topCenter,
-                                        child: IconButton(
                                           onPressed: () {
-                                            print(ImagePath.toString());
-                                            setState(() {
-                                              showCapturedPhoto = null;
-                                              deleteFile(ImagePath.toString());
-                                              imageCache.clear();
+                                            if (isEditable) {
+                                              setState(() {
+                                                //during qr mode
+                                                isEditable = false;
+                                                _focusNode.unfocus();
+                                              });
+                                            } else {
+                                              setState(() {
+                                                //during keyboard mode
+                                                isEditable = true;
+                                                _focusNode.requestFocus();
+                                              });
+                                            }
+
+                                            print(isEditable.toString());
+                                          },
+                                        ),
+                                        border: InputBorder.none,
+                                        focusedBorder: InputBorder.none,
+                                        enabledBorder: InputBorder.none,
+                                        errorBorder: InputBorder.none,
+                                        disabledBorder: InputBorder.none,
+                                        hintStyle: GoogleFonts.exo2(
+                                          textStyle: TextStyle(
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                        labelStyle: GoogleFonts.exo2(
+                                          textStyle: TextStyle(
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                        hintText: "Enter barcode",
+                                      )),
+                                ),
+                              ),
+                              _validate2_barcode == false
+                                  ? Text(
+                                      errortext2_barcode,
+                                      style: TextStyle(
+                                          fontSize: hp(1.5),
+                                          color: Colors.red.shade500),
+                                    )
+                                  : Text(""),
+                            ],
+                          ),
+                        ),
+                      ),
+                      _managePrices
+                          ? Padding(
+                              padding: EdgeInsets.only(top: hp(28), bottom: hp(1)),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      "Price",
+                                      style: GoogleFonts.exo2(
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: hp(1),
+                                    ),
+                                    Container(
+                                      height: 50,
+                                      alignment: Alignment.center,
+                                      margin: const EdgeInsets.only(
+                                          top: 0, left: 0, right: 0),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(10),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.3),
+                                            spreadRadius: 2,
+                                            blurRadius: 5,
+                                            offset: Offset(1, 1),
+                                          ),
+                                        ],
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 8.0, top: 3),
+                                        child: TextField(
+                                          keyboardType: TextInputType.number,
+                                          controller: ListPrice,
+                                          autocorrect: true,
+                                          style: GoogleFonts.exo2(
+                                            textStyle: TextStyle(
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                          decoration: new InputDecoration(
+                                            border: InputBorder.none,
+                                            focusedBorder: InputBorder.none,
+                                            enabledBorder: InputBorder.none,
+                                            errorBorder: InputBorder.none,
+                                            disabledBorder: InputBorder.none,
+                                            hintStyle: GoogleFonts.exo2(
+                                              textStyle: TextStyle(
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                            labelStyle: GoogleFonts.exo2(
+                                              textStyle: TextStyle(
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                            hintText: "Enter price",
+                                          ),
+                                          onChanged: (string) {
+                                            string =
+                                                '${_formatNumber(string.replaceAll(',', ''))}';
+                                            ListPrice.text = string;
+                                            Timer(Duration(milliseconds: 1), () {
+                                              ListPrice.selection =
+                                                  TextSelection.fromPosition(
+                                                      TextPosition(
+                                                          offset: string.length));
                                             });
                                           },
-                                          icon: Icon(
-                                            AntDesign.closecircle,
-                                            color: Colors.black87,
-                                            size: hp(3),
-                                          ),
                                         ),
                                       ),
                                     ),
+                                    _validate3_price == false
+                                        ? Text(
+                                            errortext3_price,
+                                            style: TextStyle(
+                                                fontSize: hp(1.5),
+                                                color: Colors.red.shade500),
+                                          )
+                                        : Text(""),
                                   ],
                                 ),
                               ),
                             )
-                          : Text(""),
+                          : Container(
+                              height: 0,
+                              width: 0,
+                            ),
+                      _managePrices
+                          ? Padding(
+                              padding: EdgeInsets.only(top: hp(40), bottom: hp(1)),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: EdgeInsets.only(top: hp(2)),
+                                          child: Text(
+                                            "Add Image/Select Image",
+                                            style: GoogleFonts.exo2(
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: wp(5),
+                                        ),
+                                        Container(
+                                          child: Row(
+                                            children: <Widget>[
+                                              IconButton(
+                                                padding: EdgeInsets.all(0),
+                                                onPressed: () {
+                                                  setState(() {
+                                                    showCapturedPhoto = false;
+                                                  });
+                                                  _initializeCamera();
+                                                },
+                                                icon: Icon(Icons.camera_alt),
+                                              ),
+                                              SizedBox(
+                                                width: wp(3),
+                                              ),
+                                              IconButton(
+                                                padding: EdgeInsets.all(0),
+                                                onPressed: () {
+                                                  _openFileExplorer();
+                                                },
+                                                icon: Icon(Icons.attach_file),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    _validate4_image == false
+                                        ? Text(
+                                            errortext4_image,
+                                            style: TextStyle(
+                                                fontSize: hp(1.5),
+                                                color: Colors.red.shade500),
+                                          )
+                                        : Text(""),
+                                  ],
+                                ),
+                              ),
+                            )
+                          : Padding(
+                              padding: EdgeInsets.only(top: hp(28), bottom: hp(1)),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: EdgeInsets.only(top: hp(2)),
+                                          child: Text(
+                                            "Add Image/Select Image",
+                                            style: GoogleFonts.exo2(
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: wp(5),
+                                        ),
+                                        Container(
+                                          child: Row(
+                                            children: <Widget>[
+                                              IconButton(
+                                                padding: EdgeInsets.all(0),
+                                                onPressed: () {
+                                                  setState(() {
+                                                    showCapturedPhoto = false;
+                                                  });
+                                                  _initializeCamera();
+                                                },
+                                                icon: Icon(Icons.camera_alt),
+                                              ),
+                                              SizedBox(
+                                                width: wp(3),
+                                              ),
+                                              IconButton(
+                                                padding: EdgeInsets.all(0),
+                                                onPressed: () {
+                                                  _openFileExplorer();
+                                                },
+                                                icon: Icon(Icons.attach_file),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    _validate4_image == false
+                                        ? Text(
+                                            errortext4_image,
+                                            style: TextStyle(
+                                                fontSize: hp(1.5),
+                                                color: Colors.red.shade500),
+                                          )
+                                        : Text(""),
+                                  ],
+                                ),
+                              ),
+                            ),
+                      showCapturedPhoto == false
+                          ? Padding(
+                              padding: EdgeInsets.only(top: hp(1), bottom: hp(2)),
+                              child: Align(
+                                alignment: Alignment.topCenter,
+                                child: FutureBuilder<void>(
+                                  future: _initializeControllerFuture,
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.done) {
+                                      // If the Future is complete, display the preview.
+                                      return Transform.scale(
+                                          scale: _controller.value.aspectRatio /
+                                              deviceRatio,
+                                          child: Stack(
+                                            children: <Widget>[
+                                              Align(
+                                                child: AspectRatio(
+                                                  aspectRatio:
+                                                      _controller.value.aspectRatio,
+                                                  child: CameraPreview(
+                                                      _controller), //cameraPreview
+                                                ),
+                                                alignment: Alignment.topCenter,
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsets.only(
+                                                    top: hp(70),
+                                                    bottom: hp(2),
+                                                    right: wp(7)),
+                                                child: Align(
+                                                  child: IconButton(
+                                                    icon: Icon(
+                                                      Icons.camera,
+                                                      color: Colors.white,
+                                                      size: hp(7),
+                                                    ),
+                                                    onPressed: () {
+                                                      onCaptureButtonPressed();
+                                                      print("Captured");
+                                                    },
+                                                  ),
+                                                  alignment: Alignment.topCenter,
+                                                ),
+                                              ),
+                                            ],
+                                          ));
+                                    } else {
+                                      return Center(
+                                          child: Container(
+                                        height: 0,
+                                        width: 0,
+                                      )); // Otherwise, display a loading indicator.
+                                    }
+                                  },
+                                ),
+                              ),
+                            )
+                          : showCapturedPhoto == true
+                              ? Padding(
+                                  padding:
+                                      EdgeInsets.only(top: hp(52), bottom: hp(2)),
+                                  child: Container(
+                                    height: hp(50),
+                                    width: double.infinity,
+                                    color: Colors.transparent,
+                                    child: Stack(
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: EdgeInsets.only(top: hp(5)),
+                                          child: Align(
+                                            child: Image.file(
+                                              File(ImagePath),
+                                              fit: BoxFit.fill,
+                                              width: wp(80),
+                                              height: hp(40),
+                                            ),
+                                            alignment: Alignment.topCenter,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(left: wp(85)),
+                                          child: Align(
+                                            alignment: Alignment.topCenter,
+                                            child: IconButton(
+                                              onPressed: () {
+                                                print(ImagePath.toString());
+                                                setState(() {
+                                                  showCapturedPhoto = null;
+                                                  deleteFile(ImagePath.toString());
+                                                  imageCache.clear();
+                                                });
+                                              },
+                                              icon: Icon(
+                                                AntDesign.closecircle,
+                                                color: Colors.black87,
+                                                size: hp(3),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              : Text(""),
+                    ],
+                  ),
                 ],
               ),
               color: Colors.transparent,

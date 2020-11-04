@@ -593,8 +593,8 @@ class _BarcodeComparisonWidgetState extends State<BarcodeComparisonWidget> {
         //status1 = false;
         this.barcode1 = barcode1;
         masterBarcode.text = barcode1.rawContent.toString();
-        barcode_type = barcode1.format.toString();
-        barcode_digits = barcode1.rawContent.length.toString();
+        //barcode_type = barcode1.format.toString();
+        //barcode_digits = barcode1.rawContent.length.toString();
       });
       onChangeMastercode(barcode1.rawContent.toString());
     } on PlatformException catch (e) {
@@ -652,9 +652,9 @@ class _BarcodeComparisonWidgetState extends State<BarcodeComparisonWidget> {
       Timer(Duration(seconds: 1),(){
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => BarcodeComparisonSecond(
-             mastercode: text,
-             type: barcode_type == "" ? "No data" : barcode_type,
-             digits: barcode_digits == "" ? "No data" : barcode_digits,)));
+             mastercode: _newData[0].gtin.toString(),
+             type: _newData[0].code_type.toString(),
+             digits: _newData[0].code_digits.toString())));
       });
     }
   }

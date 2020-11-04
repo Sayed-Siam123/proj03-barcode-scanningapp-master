@@ -70,6 +70,8 @@ dependencies:
   audioplayers: ^0.15.1
   custom_progress_dialog: ^1.0.5
   flutter_snackbar: ^0.0.3
+  honeywell_scanner: ^2.0.0+4
+
 
   #provider: ^4.0.0
 

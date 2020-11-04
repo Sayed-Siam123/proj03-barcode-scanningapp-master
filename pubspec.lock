@@ -420,6 +420,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.2.2"
+  honeywell_scanner:
+    dependency: "direct main"
+    description:
+      name: honeywell_scanner
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0+4"
   http:
     dependency: "direct main"
     description:

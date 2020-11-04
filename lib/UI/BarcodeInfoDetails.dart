@@ -88,7 +88,7 @@ class _BarcodeInfoDetailsPageState extends State<BarcodeInfoDetailsPage>
     masterdata_bloc.getsinglemasterdatafromDBV2();
     _tabController = new TabController(length: 3, vsync: this);
     super.initState();
-    Timer(Duration(milliseconds: 200), () {
+    Timer(Duration(milliseconds: 300), () {
       getName();
       getDesc();
       getPic();
@@ -105,6 +105,8 @@ class _BarcodeInfoDetailsPageState extends State<BarcodeInfoDetailsPage>
         description = singledata[0].productDescription.toString();
         proPic = singledata[0].productPicture.toString();
         price_data = singledata[0].listPrice.toString();
+        barcode_type = singledata[0].code_type.toString();
+        digits = singledata[0].code_digits.toString();
       });
     }
     print(barcode);
@@ -358,8 +360,8 @@ class _BarcodeInfoDetailsPageState extends State<BarcodeInfoDetailsPage>
                                           Text(barcode.toString()),
                                           desc == "null" || desc == "false" ? Text("") : Text(description == "" ? "No Data" : description.toString()),
                                           price == "null" || price == "false" ? Text("") : Text(price_data.toString()),
-                                          barcode_type_stat == "null" || barcode_type_stat == "false" ? Text("") : Text("No Data"),
-                                          num_of_digits == "null" || num_of_digits == "false" ? Text("") : Text("No Data"),
+                                          barcode_type_stat == "null" || barcode_type_stat == "false" ? Text("") : Text(barcode_type == "" ? "No Data" : barcode_type.toString()),
+                                          num_of_digits == "null" || num_of_digits == "false" ? Text("") : Text(digits == "" ? "No Data" : digits.toString()),
                                         ],
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

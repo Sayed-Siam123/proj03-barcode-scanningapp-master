@@ -392,7 +392,7 @@ class _HomeWidgetState extends State<HomeWidget> {
 
 
 
-          name.isNotEmpty && status == true ? Column(
+          name != "" && status == true ? Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Divider(

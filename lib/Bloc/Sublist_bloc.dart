@@ -72,6 +72,8 @@ class sublist_Bloc {
   final _Gtin = BehaviorSubject<String>();
   final _ListPrice = BehaviorSubject<String>();
   final _productPhoto = BehaviorSubject<String>();
+  final _barcode_type = BehaviorSubject<String>();
+  final _barcode_digits = BehaviorSubject<String>();
 
 
   final _previousCategory = BehaviorSubject<String>();
@@ -108,6 +110,9 @@ class sublist_Bloc {
 
   Function(String) get getListPrice => _ListPrice.sink.add;
   Function(String) get getProductPhoto => _productPhoto.sink.add;
+
+  Function(String) get getBarcode_type => _barcode_type.sink.add;
+  Function(String) get getBarcode_digits => _barcode_digits.sink.add;
 
 
   Function(String) get getProductID => _product_id.sink.add;
@@ -700,6 +705,8 @@ class sublist_Bloc {
       id: _product_id.value.toString(),
       productDescription: _ProductDescription.value.toString(),
       gtin: _Gtin.value.toString(),
+      code_digits: _barcode_digits.value.toString(),
+      code_type: _barcode_type.value.toString(),
       listPrice: _ListPrice.value.toString(),
       updateFlag: "false",
       newFlag: "true",
@@ -972,7 +979,14 @@ class sublist_Bloc {
     _ManufacturerName.drain();
     _UnitName.drain();
     _packaging_materialName.drain();
+    _barcode_digits.drain();
+    _barcode_type.drain();
 
+
+
+
+    _barcode_digits.value = null;
+    _barcode_type.value = null;
     _productPhoto.value = null;
 
     _packaging_materialName.value = null;

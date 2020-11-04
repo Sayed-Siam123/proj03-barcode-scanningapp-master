@@ -171,11 +171,12 @@ class MasterData_Bloc{
 
     master2 = MasterDataModelV2(id: productinfo.id.toString(),
       productDescription: productinfo.productDescription.toString(),gtin: productinfo.gtin.toString(),productPicture: productinfo.productPicture.toString(),listPrice: productinfo.listPrice.toString(),
-      updateFlag: productinfo.updateFlag==null ? "false" : productinfo.updateFlag.toString(), newFlag: productinfo.newFlag==null ? "false" : productinfo.newFlag.toString(),);
+      updateFlag: productinfo.updateFlag==null ? "false" : productinfo.updateFlag.toString(), newFlag: productinfo.newFlag==null ? "false" : productinfo.newFlag.toString(),
+      code_digits: productinfo.code_digits.toString(),code_type: productinfo.code_type.toString());
 
     print("Product barcode in bloc: "+ master2.id.toString());
 
-    //await _repository.insertMasterdataV2(master2);
+    await _repository.insertMasterdataV2(master2);
 
     print("FROM BLOC");
 

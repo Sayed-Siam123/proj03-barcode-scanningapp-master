@@ -20,10 +20,12 @@
 
 
     <application
+        android:usesCleartextTraffic="true"
         android:label="ToolBOX"
         android:icon="@mipmap/logo"
         android:requestLegacyExternalStorage="true"
-        tools:targetApi="q">
+        tools:targetApi="q"
+        tools:replace="android:label">
 
         <activity
             android:name=".MainActivity"
