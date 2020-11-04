@@ -11,6 +11,8 @@ String masterProd_gtinV2 = 'gtin';
 String masterproductDescriptionV2 = 'productDescription';
 String masterlistPriceV2 = 'listPrice';
 String masterproductPictureV2 = 'productPicture';
+String masterlistbarcode_typeV2 = 'type';
+String masterproductbarcode_digitsV2 = 'digits';
 String masterupdateFlagV2 = 'updateFlag';
 String masternewFlagV2 = 'newFlag';
 
@@ -44,6 +46,7 @@ class DatabaseProvider_MasterdataV2 {
 
   void initDB(Database database, int version) async {
     await database.execute('CREATE TABLE $masterTABLEV2($master_IdV2 TEXT,$masterproductDescriptionV2 TEXT, $masterlistPriceV2 TEXT,'
-        '$masterproductPictureV2 TEXT,$masterProd_gtinV2 TEXT,$masterupdateFlagV2 TEXT,$masternewFlagV2 TEXT)');
+        '$masterproductPictureV2 TEXT,$masterProd_gtinV2 TEXT,$masterlistbarcode_typeV2 TEXT,'
+        '$masterproductbarcode_digitsV2 TEXT,$masterupdateFlagV2 TEXT,$masternewFlagV2 TEXT)');
   }
 }

@@ -302,10 +302,12 @@ class SingleMasterDataModel{
 }
 
 class MasterDataModelV2{
-  String id=null,gtin=null,productDescription=null,listPrice=null,productPicture=null,updateFlag=null,newFlag=null,price_show = null;
+  String id=null,gtin=null,productDescription=null,listPrice=null,productPicture=null,
+      updateFlag=null,newFlag=null,price_show = null,code_type=null,code_digits=null;
   PhotoDocumentationImageModel photos;
 
-  MasterDataModelV2({this.id,this.gtin,this.productDescription,this.listPrice,this.productPicture,this.updateFlag,this.newFlag,this.price_show,this.photos});
+  MasterDataModelV2({this.id,this.gtin,this.productDescription,this.listPrice,this.productPicture,
+    this.updateFlag,this.newFlag,this.price_show,this.photos,this.code_digits,this.code_type});
 
   Map<String, dynamic> toMap() => {
     "id" : this.id,  //product id te id pathabo
@@ -313,6 +315,8 @@ class MasterDataModelV2{
     "productDescription" : this.productDescription,
     "listPrice" : this.listPrice,
     "productPicture" : this.productPicture,
+    "type" : this.code_type,
+    "digits" : this.code_digits,
     "updateFlag" : this.updateFlag,
     "newFlag" : this.newFlag,
   };
@@ -326,6 +330,8 @@ class MasterDataModelV2{
       gtin: json['gtin'],
       listPrice: json['listPrice'],
       productDescription: json['productDescription'],
+      code_type: json['type'],
+      code_digits: json['digits'],
       updateFlag: json['updateFlag'],
       newFlag: json['newFlag'],
     );
@@ -335,9 +341,11 @@ class MasterDataModelV2{
 }
 
 class SingleMasterDataModelV2{
-  String id=null,gtin=null,productDescription=null,listPrice=null,productPicture=null,updateFlag=null,newFlag=null,price_show = null;
+  String id=null,gtin=null,productDescription=null,listPrice=null,productPicture=null,updateFlag=null,newFlag=null,
+      price_show = null,code_type=null,code_digits=null;
 
-  SingleMasterDataModelV2({this.id,this.gtin,this.productDescription,this.listPrice,this.productPicture,this.updateFlag,this.newFlag,this.price_show});
+  SingleMasterDataModelV2({this.id,this.gtin,this.productDescription,this.listPrice,this.productPicture,
+    this.updateFlag,this.newFlag,this.price_show,this.code_digits,this.code_type});
 
   Map<String, dynamic> toMap() => {
     "id" : this.id,  //product id te id pathabo
@@ -345,6 +353,8 @@ class SingleMasterDataModelV2{
     "productDescription" : this.productDescription,
     "listPrice" : this.listPrice,
     "productPicture" : this.productPicture,
+    "type" : this.code_type,
+    "digits" : this.code_digits,
     "updateFlag" : this.updateFlag,
     "newFlag" : this.newFlag,
 
@@ -359,6 +369,8 @@ class SingleMasterDataModelV2{
       gtin: json['gtin'],
       listPrice: json['listPrice'],
       productDescription: json['productDescription'],
+      code_type: json['type'],
+      code_digits: json['digits'],
       updateFlag: json['updateFlag'],
       newFlag: json['newFlag'],
     );

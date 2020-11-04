@@ -175,7 +175,7 @@ class MasterData_Bloc{
 
     print("Product barcode in bloc: "+ master2.id.toString());
 
-    await _repository.insertMasterdataV2(master2);
+    //await _repository.insertMasterdataV2(master2);
 
     print("FROM BLOC");
 

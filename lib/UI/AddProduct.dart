@@ -288,8 +288,7 @@ class _AddProductPageState extends State<AddProductPage> {
                     sublist_bloc.getProductDesc(ProductDesc.text);
                     sublist_bloc.getGtin(gtin.text);
                     sublist_bloc.getListPrice(ListPrice.text);
-                    sublist_bloc
-                        .getProductPhoto((widget.id + 1).toString() + ".png");
+                    sublist_bloc.getProductPhoto((widget.id + 1).toString() + ".png");
 
                     sublist_bloc.createProductMasterDatatoDBV2();
                     sublist_bloc.dispose();

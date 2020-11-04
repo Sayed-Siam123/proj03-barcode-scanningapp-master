@@ -118,7 +118,7 @@ class _AboutPageWidgetState extends State<AboutPageWidget> {
                               children: <Widget>[
                                 Column(
                                   children: <Widget>[
-                                    Text("V1.02"),
+                                    Text("V2.00"),
                                     SizedBox(height: hp(2)),
                                     Text("2020.10.20"),
                                   ],
