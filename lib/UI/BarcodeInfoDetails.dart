@@ -195,7 +195,7 @@ class _BarcodeInfoDetailsPageState extends State<BarcodeInfoDetailsPage>
   getName() {
     if (singledata.isNotEmpty) {
       setState(() {
-        barcode_text.text = singledata[0].gtin.toString();
+        barcode = singledata[0].gtin.toString();
         description = singledata[0].productDescription.toString();
         proPic = singledata[0].productPicture.toString();
         price_data = singledata[0].listPrice.toString();
@@ -444,55 +444,55 @@ class _BarcodeInfoDetailsPageState extends State<BarcodeInfoDetailsPage>
                                       color: Colors.transparent,
                                       child: Column(
                                         children: <Widget>[
-                                          //Text(barcode.toString()),
-                                          Container(
-                                            height: hp(2.5),
-                                            width: wp(40),
-                                            color: Colors.transparent,
-                                            child: TextField(
-                                                autofocus: true,
-                                                controller: barcode_text,
-                                                focusNode: _focusNode,
-                                                decoration: InputDecoration(
-                                                  suffixIcon: IconButton(
-                                                    icon: Icon(
-                                                      isEditable == false
-                                                          ? MaterialIcons.touch_app
-                                                          : AntDesign.barcode,
-                                                      color: Colors.black54,
-                                                    ),
-                                                    onPressed: () {
-                                                      if (isEditable) {
-                                                        setState(() {
-                                                          //during qr mode
-                                                          isEditable = false;
-                                                          _focusNode.unfocus();
-                                                        });
-                                                      } else {
-                                                        setState(() {
-                                                          //during keyboard mode
-                                                          isEditable = true;
-                                                          _focusNode.requestFocus();
-                                                        });
-                                                      }
-
-                                                      print(isEditable.toString());
-                                                    },
-                                                    iconSize: hp(2),
-                                                    padding: EdgeInsets.fromLTRB(wp(5), 0, 0, hp(1)),
-                                                  ),
-                                                  enabledBorder: UnderlineInputBorder(
-                                                    borderSide: BorderSide(color: Colors.black87),
-                                                  ),
-                                                  focusedBorder: UnderlineInputBorder(
-                                                    borderSide: BorderSide(color: Colors.black87),
-                                                  ),
-                                                ),
-                                              onChanged: (String value){
-                                                  onSearchTextChanged(value);
-                                              },
-                                            ),
-                                          ),
+                                          Text(barcode.toString()),
+                                          // Container(
+                                          //   height: hp(2.5),
+                                          //   width: wp(40),
+                                          //   color: Colors.transparent,
+                                          //   child: TextField(
+                                          //       autofocus: true,
+                                          //       controller: barcode_text,
+                                          //       focusNode: _focusNode,
+                                          //       decoration: InputDecoration(
+                                          //         suffixIcon: IconButton(
+                                          //           icon: Icon(
+                                          //             isEditable == false
+                                          //                 ? MaterialIcons.touch_app
+                                          //                 : AntDesign.barcode,
+                                          //             color: Colors.black54,
+                                          //           ),
+                                          //           onPressed: () {
+                                          //             if (isEditable) {
+                                          //               setState(() {
+                                          //                 //during qr mode
+                                          //                 isEditable = false;
+                                          //                 _focusNode.unfocus();
+                                          //               });
+                                          //             } else {
+                                          //               setState(() {
+                                          //                 //during keyboard mode
+                                          //                 isEditable = true;
+                                          //                 _focusNode.requestFocus();
+                                          //               });
+                                          //             }
+                                          //
+                                          //             print(isEditable.toString());
+                                          //           },
+                                          //           iconSize: hp(2),
+                                          //           padding: EdgeInsets.fromLTRB(wp(5), 0, 0, hp(1)),
+                                          //         ),
+                                          //         enabledBorder: UnderlineInputBorder(
+                                          //           borderSide: BorderSide(color: Colors.black87),
+                                          //         ),
+                                          //         focusedBorder: UnderlineInputBorder(
+                                          //           borderSide: BorderSide(color: Colors.black87),
+                                          //         ),
+                                          //       ),
+                                          //     onChanged: (String value){
+                                          //         onSearchTextChanged(value);
+                                          //     },
+                                          //   ),
+                                          // ),
                                           desc == "null" || desc == "false" ? Text("") : Text(description == "" ? "No Data" : description.toString()),
                                           price == "null" || price == "false" ? Text("") : Text(price_data.toString()),
                                           barcode_type_stat == "null" || barcode_type_stat == "false" ? Text("") : Text(barcode_type == "" ? "No Data" : barcode_type.toString()),

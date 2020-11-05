@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:honeywell_scanner/honeywell_scanner.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:app/Bloc/Sublist_bloc.dart';
 import 'package:app/Bloc/masterData_bloc.dart';
@@ -61,6 +62,8 @@ class _AddProductPageState extends State<AddProductPage> with WidgetsBindingObse
   bool isCameraReady = false;
   bool showCapturedPhoto = false;
   var ImagePath;
+  File _image;
+
 
   var isEditable = false;
   FocusNode _focusNode = new FocusNode();
@@ -180,43 +183,40 @@ class _AddProductPageState extends State<AddProductPage> with WidgetsBindingObse
     });
   }
 
-  Future<void> _initializeCamera() async {
-    final cameras = await availableCameras();
-    final firstCamera = cameras.first;
-    _controller = CameraController(firstCamera, ResolutionPreset.ultraHigh);
-    _initializeControllerFuture = _controller.initialize();
-    if (!mounted) {
-      return;
+
+  _imgFromCamera(BuildContext context) async {
+    // ignore: deprecated_member_use
+    File image = await ImagePicker.pickImage(
+        source: ImageSource.camera, imageQuality: 50);
+
+    if (image != null) {
+      setState(() {
+        _image = image;
+        print(_image.toString());
+        getImagefromStorage('${_image.path}', 'fileName');
+        showCapturedPhoto = true;
+      });
+      print(_image.path.toString());
+      //getImagefromStorage(_image.path.toString(),widget.id.toString());
+
     }
-    setState(() {
-      isCameraReady = true;
-    });
   }
 
-  void _openFileExplorer() async {
-    setState(() {
-      showCapturedPhoto = false;
-      imageCache.clear();
-    });
+  _imgFromGallery(BuildContext context) async {
+    // ignore: deprecated_member_use
+    File image = await ImagePicker.pickImage(
+        source: ImageSource.gallery, imageQuality: 50);
 
-    try {
-      _paths = null;
-      _path = await FilePicker.getFilePath(type: FileType.any);
-    } on PlatformException catch (e) {
-      print("Unsupported operation" + e.toString());
+    if (image != null) {
+      setState(() {
+        _image = image;
+        print(_image.toString());
+        getImagefromStorage('${_image.toString()}', 'fileName');
+        showCapturedPhoto = true;
+      });
+      print("picked " + _image.path.toString());
+      //getImagefromStorage(_image.path.toString(),widget.id.toString());
     }
-    if (!mounted) return;
-
-    setState(() {
-      _fileName = _path != null
-          ? _path.split('/').last
-          : _paths != null
-              ? _paths.keys.toString()
-              : '...';
-    });
-    print(_fileName.toString());
-    print(_path.toString());
-    getImagefromStorage(_path.toString(), _fileName.toString());
   }
 
   void getPricestatus() async {
@@ -343,7 +343,7 @@ class _AddProductPageState extends State<AddProductPage> with WidgetsBindingObse
                       _validate4_image = true;
                     });
                   }
-                } else if (ImagePath.toString() == "null") {
+                } else if (_image.path.toString() == "null") {
                   setState(() {
                     _validate1_prodDesc = true;
                     _validate2_barcode = true;
@@ -368,6 +368,9 @@ class _AddProductPageState extends State<AddProductPage> with WidgetsBindingObse
                     print("all validate");
 
                     print(ListPrice.text);
+
+                    //getImagefromStorage(_image.path.toString(),widget.id.toString());
+                    imageCache.clear();
 
                     sublist_bloc.getProductID((widget.id + 1).toString());
                     sublist_bloc.getProductDesc(ProductDesc.text);
@@ -861,7 +864,9 @@ class _AddProductPageState extends State<AddProductPage> with WidgetsBindingObse
                                                   setState(() {
                                                     showCapturedPhoto = false;
                                                   });
-                                                  _initializeCamera();
+                                                  print("Camera OK??");
+                                                  _imgFromCamera(context);
+
                                                 },
                                                 icon: Icon(Icons.camera_alt),
                                               ),
@@ -871,7 +876,10 @@ class _AddProductPageState extends State<AddProductPage> with WidgetsBindingObse
                                               IconButton(
                                                 padding: EdgeInsets.all(0),
                                                 onPressed: () {
-                                                  _openFileExplorer();
+                                                  setState(() {
+                                                    showCapturedPhoto = false;
+                                                  });
+                                                  _imgFromGallery(context);
                                                 },
                                                 icon: Icon(Icons.attach_file),
                                               ),
@@ -922,10 +930,16 @@ class _AddProductPageState extends State<AddProductPage> with WidgetsBindingObse
                                               IconButton(
                                                 padding: EdgeInsets.all(0),
                                                 onPressed: () {
+                                                  // setState(() {
+                                                  //   showCapturedPhoto = false;
+                                                  // });
+                                                  // _initializeCamera();
                                                   setState(() {
                                                     showCapturedPhoto = false;
                                                   });
-                                                  _initializeCamera();
+                                                  print("Camera OK??");
+                                                  _imgFromCamera(context);
+
                                                 },
                                                 icon: Icon(Icons.camera_alt),
                                               ),
@@ -935,7 +949,10 @@ class _AddProductPageState extends State<AddProductPage> with WidgetsBindingObse
                                               IconButton(
                                                 padding: EdgeInsets.all(0),
                                                 onPressed: () {
-                                                  _openFileExplorer();
+                                                  setState(() {
+                                                    showCapturedPhoto = false;
+                                                  });
+                                                  _imgFromGallery(context);
                                                 },
                                                 icon: Icon(Icons.attach_file),
                                               ),
@@ -956,68 +973,10 @@ class _AddProductPageState extends State<AddProductPage> with WidgetsBindingObse
                                 ),
                               ),
                             ),
-                      showCapturedPhoto == false
-                          ? Padding(
-                              padding: EdgeInsets.only(top: hp(1), bottom: hp(2)),
-                              child: Align(
-                                alignment: Alignment.topCenter,
-                                child: FutureBuilder<void>(
-                                  future: _initializeControllerFuture,
-                                  builder: (context, snapshot) {
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.done) {
-                                      // If the Future is complete, display the preview.
-                                      return Transform.scale(
-                                          scale: _controller.value.aspectRatio /
-                                              deviceRatio,
-                                          child: Stack(
-                                            children: <Widget>[
-                                              Align(
-                                                child: AspectRatio(
-                                                  aspectRatio:
-                                                      _controller.value.aspectRatio,
-                                                  child: CameraPreview(
-                                                      _controller), //cameraPreview
-                                                ),
-                                                alignment: Alignment.topCenter,
-                                              ),
-                                              Padding(
-                                                padding: EdgeInsets.only(
-                                                    top: hp(70),
-                                                    bottom: hp(2),
-                                                    right: wp(7)),
-                                                child: Align(
-                                                  child: IconButton(
-                                                    icon: Icon(
-                                                      Icons.camera,
-                                                      color: Colors.white,
-                                                      size: hp(7),
-                                                    ),
-                                                    onPressed: () {
-                                                      onCaptureButtonPressed();
-                                                      print("Captured");
-                                                    },
-                                                  ),
-                                                  alignment: Alignment.topCenter,
-                                                ),
-                                              ),
-                                            ],
-                                          ));
-                                    } else {
-                                      return Center(
-                                          child: Container(
-                                        height: 0,
-                                        width: 0,
-                                      )); // Otherwise, display a loading indicator.
-                                    }
-                                  },
-                                ),
-                              ),
-                            )
-                          : showCapturedPhoto == true
+
+                      showCapturedPhoto == true
                               ? Padding(
-                                  padding:
-                                      EdgeInsets.only(top: hp(52), bottom: hp(2)),
+                                  padding: _managePrices ? EdgeInsets.only(top: hp(52), bottom: hp(2)) : EdgeInsets.only(top: hp(35), bottom: hp(2)),
                                   child: Container(
                                     height: hp(50),
                                     width: double.infinity,
@@ -1121,67 +1080,6 @@ class _AddProductPageState extends State<AddProductPage> with WidgetsBindingObse
     }
   }
 
-  void onCaptureButtonPressed() async {
-    //on camera button press
-    try {
-      List<StorageInfo> storageInfo = await PathProviderEx.getStorageInfo();
-      var root = storageInfo[0].rootDir +
-          "/Indentit/Photos"; //storageInfo[1] for SD card, getting the root directory
-
-      print(root.toString());
-
-      var file = File(root + "/" + (widget.id + 1).toString() + ".png");
-
-      if (file.exists() == null) {
-        print("file not exist");
-        //await file.delete();
-
-        final path = join(
-          (root.toString()),
-          '${(widget.id + 1).toString()}.png',
-        );
-
-        Timer(Duration(milliseconds: 200), () async {
-          print("Got the timer");
-          print(path.toString());
-
-          setState(() {
-            ImagePath = path;
-          });
-          await _controller.takePicture(path); //take photo
-
-          setState(() {
-            showCapturedPhoto = true;
-          });
-        });
-      } else {
-        print("file exist");
-        //await file.delete();
-
-        final path = join(
-          (root.toString()),
-          '${(widget.id + 1).toString()}.png',
-        );
-
-        Timer(Duration(milliseconds: 200), () async {
-          print("Got the timer");
-          print(path.toString());
-
-          setState(() {
-            ImagePath = path;
-          });
-          await _controller.takePicture(path); //take photo
-
-          setState(() {
-            showCapturedPhoto = true;
-          });
-        });
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
-
   Future<void> deleteFile(String file_name) async {
     List<StorageInfo> storageInfo = await PathProviderEx.getStorageInfo();
     var root = storageInfo[0].rootDir +
@@ -1205,10 +1103,9 @@ class _AddProductPageState extends State<AddProductPage> with WidgetsBindingObse
   void getImagefromStorage(String path, String fileName) async {
     print("path is " + path);
     List<StorageInfo> storageInfo = await PathProviderEx.getStorageInfo();
-    var root = storageInfo[0].rootDir +
-        "/Indentit/Photos"; //storageInfo[1] for SD card, getting the root directory
+    var root = storageInfo[0].appFilesDir +"/Indentit/Photos"; //storageInfo[1] for SD card, getting the root directory
 
-    print(root.toString());
+    print(root.toString()+" && " + path.toString());
 
     moveFile(File(path), root + "/" + '${(widget.id + 1).toString()}.png');
   }
@@ -1225,7 +1122,7 @@ class _AddProductPageState extends State<AddProductPage> with WidgetsBindingObse
       return await sourceFile.rename(newPath);
     } catch (e) {
       /// if rename fails, copy the source file and then delete it
-      final newFile = await sourceFile.copy(newPath);
+      final newFile = sourceFile.copy(newPath);
       return newFile;
     }
   }

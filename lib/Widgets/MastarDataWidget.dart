@@ -54,13 +54,15 @@ class _MasterDataWidgetState extends State<MasterDataWidget> {
 
 
   void source() async{
-    Timer(Duration(microseconds: 50),() async{
+    Timer(Duration(milliseconds: 50),() async{
       List<StorageInfo> storageInfo = await PathProviderEx.getStorageInfo();
 
       setState(() {
-        root = storageInfo[0].rootDir+"/Indentit/Photos"; //storageInfo[1] for SD card, getting the root directory
+        root = storageInfo[0].appFilesDir+"/Indentit/Photos"; //storageInfo[1] for SD card, getting the root directory
       });
       print(root.toString());
+      print(root.toString()+"/"+widget.productPicture);
+
     });
   }
 
@@ -74,6 +76,7 @@ class _MasterDataWidgetState extends State<MasterDataWidget> {
 
   @override
   Widget build(BuildContext context) {
+    print("File is ::"+ File(root.toString()+"/"+widget.productPicture.toString()).path.toString());
     dynamic hp = Hp(widget.height).hp;
     dynamic wp = Wp(widget.width).wp;
     return Slidable(
@@ -111,7 +114,7 @@ class _MasterDataWidgetState extends State<MasterDataWidget> {
             onTap: () {
               sublist_bloc.DeleteProductMasterDatatoDBV2(int.parse(this.widget.product_id.toString()));
               sublist_bloc.dispose();
-              File file = File(root.toString()+"/"+widget.productPicture.toString());
+              File file = File(root+"/"+widget.productPicture.toString());
               file.delete();
               // SnackbarHelper snackbar = new SnackbarHelper();
               //
@@ -141,15 +144,8 @@ class _MasterDataWidgetState extends State<MasterDataWidget> {
             leading: CircleAvatar(
               radius: 30,
               backgroundColor: Colors.transparent,
-              child: widget.newFlag == "false" ? CircleAvatar(
-                //backgroundImage: AssetImage('assets/images/Cart.png'),
-                backgroundImage: NetworkImage(
-                  'http://202.164.212.238:8054' +
-                      this.widget.productPicture.toString(),
-                ),
-                backgroundColor: Colors.transparent,
-              ) : Image.file(File(root.toString()+"/"+widget.productPicture.toString()),
-                height: hp(10),width: wp(90),fit: BoxFit.fill,),
+              child: root != null ? Image.file(File(root.toString()+"/"+widget.productPicture.toString()),
+                height: hp(10),width: wp(90),fit: BoxFit.fill,) : Text(""),
             ),
             title: Text(
               this.widget.product_desc.toString(),

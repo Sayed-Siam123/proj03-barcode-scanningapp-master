@@ -22,6 +22,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:beauty_textfield/beauty_textfield.dart';
 import 'package:flutter/gestures.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:path_provider_ex/path_provider_ex.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_grid/responsive_grid.dart';
@@ -316,23 +317,28 @@ class _SplashState extends State<Splash> {
 
 
   Future<String> _createFolder() async {
-    final folderName = "Indentit";
-    final path = Directory("storage/emulated/0/$folderName");
+    final folderName = "/Indentit";
+
+    List<StorageInfo> storageInfo = await PathProviderEx.getStorageInfo();
+    print(storageInfo[0].appFilesDir);
+    final path = Directory(storageInfo[0].appFilesDir+folderName);
     var status = await Permission.storage.status;
     if (!status.isGranted) {
       await Permission.storage.request();
     }
-    if ((await path.exists())) {
-      return path.path;
+    if ((await path.exists())) {                                                //TODO:: File create
+      return storageInfo[0].appFilesDir;
     } else {
       path.create().whenComplete(() {
-        new Directory("storage/emulated/0/$folderName/"+"Masterdata").create();
-        new Directory("storage/emulated/0/$folderName/"+"Photos").create();
-        new Directory("storage/emulated/0/$folderName/"+"Photo documentation").create();
+        print("sasas");
+        new Directory(path.path+"/"+"Masterdata").create();
+        new Directory(path.path+"/"+"Photos").create();
+        new Directory(path.path+"/"+"Photo documentation").create();
 
       });
       return path.path;
     }
+
   }
 
 
