@@ -53,37 +53,17 @@ class _MasterDataState extends State<MasterData> {
   ScanResult barcode;
 
   //String _scanBarcode = 'Unknown';
-  bool price_status;
   String _managePricesKey = "_managePrices";
 
 
   SessionManager prefs = SessionManager();
-
-  void getpriceShowStatus() async {
-    Future<bool> serverip = prefs.getBoolData(_managePricesKey);
-    serverip.then((data) async {
-      print('price show status pabo');
-      print("price show status " + data.toString());
-
-      setState(() {
-        price_status = data;
-      });
-      print(price_status.toString());
-
-//      Future.delayed(const Duration(milliseconds: 1000), () {
-//
-//      });
-    }, onError: (e) {
-      print(e);
-    });
-  }
 
   @override
   initState() {
     masterdata_bloc.fetchAllMasterdatafromDBV2();
     super.initState();
     Timer(Duration(microseconds: 50), () {
-      getpriceShowStatus();
+      print("sasas");
     });
   }
 
@@ -534,7 +514,6 @@ class _MasterDataState extends State<MasterData> {
                         product_desc: _newData[index].productDescription,
                         productPicture: _newData[index].productPicture,
                         listprice: _newData[index].listPrice,
-                        show_price: price_status.toString(),
                         newFlag: _newData[index].newFlag,
                         updateFlag: _newData[index].updateFlag,
                       ),
@@ -566,7 +545,6 @@ class _MasterDataState extends State<MasterData> {
                         product_id: data[index].id,
                         productPicture: data[index].productPicture,
                         listprice: data[index].listPrice,
-                        show_price: price_status.toString(),
                         newFlag: data[index].newFlag,
                         updateFlag: data[index].updateFlag,
                       ),

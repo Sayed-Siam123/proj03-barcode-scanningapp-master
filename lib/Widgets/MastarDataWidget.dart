@@ -174,10 +174,10 @@ class _MasterDataWidgetState extends State<MasterDataWidget> {
                 SizedBox(
                   height: 5,
                 ),
-                this.widget.show_price == "true"? Text(
+                Text(
                   "Price: " + this.widget.listprice.toString(),
                   style: GoogleFonts.exo2(),
-                ): Text(""),
+                ),
                 SizedBox(
                   height: 15,
                 ),

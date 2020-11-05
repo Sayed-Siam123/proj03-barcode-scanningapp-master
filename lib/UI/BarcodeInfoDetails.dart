@@ -15,8 +15,10 @@ import 'package:app/UI/SystemSettings.dart';
 import 'package:app/resources/SharedPrefer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_translate/global.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:honeywell_scanner/honeywell_scanner.dart';
 import 'package:responsive_screen/responsive_screen.dart';
 
 import 'Home.dart';
@@ -32,7 +34,7 @@ class BarcodeInfoDetailsPage extends StatefulWidget {
 }
 
 class _BarcodeInfoDetailsPageState extends State<BarcodeInfoDetailsPage>
-    with SingleTickerProviderStateMixin {
+    with WidgetsBindingObserver implements ScannerCallBack {
   //TODO:: eikhane Product Details ashbe
 
   SessionManager prefs = SessionManager();
@@ -65,6 +67,7 @@ class _BarcodeInfoDetailsPageState extends State<BarcodeInfoDetailsPage>
   String proPic = "";
   String price_data = "";
 
+  TextEditingController barcode_text = TextEditingController();
 
 
   String _showDescriptionKey = "_showDescription";
@@ -81,12 +84,24 @@ class _BarcodeInfoDetailsPageState extends State<BarcodeInfoDetailsPage>
 
   TabController _tabController;
 
+
+  var isEditable = true;
+  FocusNode _focusNode = new FocusNode();
+
+  HoneywellScanner honeywellScanner = HoneywellScanner();
+  String scannedCode = 'Empty';
+  bool scannerEnabled = false;
+  bool scan1DFormats = true;
+  bool scan2DFormats = true;
+
   @override
   void initState() {
     getCamera();
     masterdata_bloc.fetchAllMasterdatafromDBV2();
     masterdata_bloc.getsinglemasterdatafromDBV2();
-    _tabController = new TabController(length: 3, vsync: this);
+    WidgetsBinding.instance.addObserver(this);
+    honeywellScanner.setScannerCallBack(this);
+    updateScanProperties();
     super.initState();
     Timer(Duration(milliseconds: 300), () {
       getName();
@@ -98,10 +113,89 @@ class _BarcodeInfoDetailsPageState extends State<BarcodeInfoDetailsPage>
     });
   }
 
+
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    if(honeywellScanner != null) honeywellScanner.stopScanner();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if(state == null) return;
+    switch(state){
+      case AppLifecycleState.resumed:
+        if(honeywellScanner != null) honeywellScanner.resumeScanner();
+        break;
+      case AppLifecycleState.inactive:
+        if(honeywellScanner != null) honeywellScanner.pauseScanner();
+        break;
+      case AppLifecycleState.paused://AppLifecycleState.paused is used as stopped state because deactivate() works more as a pause for lifecycle
+        if(honeywellScanner != null) honeywellScanner.pauseScanner();
+        break;
+      case AppLifecycleState.detached:
+        if(honeywellScanner != null) honeywellScanner.pauseScanner();
+        break;
+      default:
+        break;
+    }  }
+
+  updateScanProperties() {
+    List<CodeFormat> codeFormats = [];
+    if (scan1DFormats ?? false)
+      codeFormats.addAll(CodeFormatUtils.ALL_1D_FORMATS);
+    if (scan2DFormats ?? false)
+      codeFormats.addAll(CodeFormatUtils.ALL_2D_FORMATS);
+
+//    codeFormats.add(CodeFormat.AZTEC);
+//    codeFormats.add(CodeFormat.CODABAR);
+//    codeFormats.add(CodeFormat.CODE_39);
+//    codeFormats.add(CodeFormat.CODE_93);
+//    codeFormats.add(CodeFormat.CODE_128);
+//    codeFormats.add(CodeFormat.DATA_MATRIX);
+//    codeFormats.add(CodeFormat.EAN_8);
+//    codeFormats.add(CodeFormat.EAN_13);
+////    codeFormats.add(CodeFormat.ITF);
+//    codeFormats.add(CodeFormat.MAXICODE);
+//    codeFormats.add(CodeFormat.PDF_417);
+//    codeFormats.add(CodeFormat.QR_CODE);
+//    codeFormats.add(CodeFormat.RSS_14);
+//    codeFormats.add(CodeFormat.RSS_EXPANDED);
+//    codeFormats.add(CodeFormat.UPC_A);
+//    codeFormats.add(CodeFormat.UPC_E);
+////    codeFormats.add(CodeFormat.UPC_EAN_EXTENSION);
+
+    honeywellScanner.setProperties(
+        CodeFormatUtils.getAsPropertiesComplement(codeFormats));
+  }
+
+
+  @override
+  void onDecoded(String result) {
+    setState(() {
+      scannedCode = result;
+      barcode_text.text = scannedCode;
+      onSearchTextChanged(scannedCode.toString());
+    });
+    honeywellScanner.stopScanner();
+    setState(() {
+      scannerEnabled = false;
+    });
+  }
+
+  @override
+  void onError(Exception error) {
+    setState(() {
+      scannedCode = error.toString();
+    });
+  }
+
   getName() {
     if (singledata.isNotEmpty) {
       setState(() {
-        barcode = singledata[0].gtin.toString();
+        barcode_text.text = singledata[0].gtin.toString();
         description = singledata[0].productDescription.toString();
         proPic = singledata[0].productPicture.toString();
         price_data = singledata[0].listPrice.toString();
@@ -112,13 +206,6 @@ class _BarcodeInfoDetailsPageState extends State<BarcodeInfoDetailsPage>
     print(barcode);
     print(proPic.toString());
     print("Flag Status: "+ widget.newFlag.toString());
-  }
-
-  void dispose() {
-    // TODO: implement dispose
-    // sublist_bloc.dispose();
-    // masterdata_bloc.dispose();
-    super.dispose();
   }
 
   void getCamera() async {
@@ -357,7 +444,55 @@ class _BarcodeInfoDetailsPageState extends State<BarcodeInfoDetailsPage>
                                       color: Colors.transparent,
                                       child: Column(
                                         children: <Widget>[
-                                          Text(barcode.toString()),
+                                          //Text(barcode.toString()),
+                                          Container(
+                                            height: hp(2.5),
+                                            width: wp(40),
+                                            color: Colors.transparent,
+                                            child: TextField(
+                                                autofocus: true,
+                                                controller: barcode_text,
+                                                focusNode: _focusNode,
+                                                decoration: InputDecoration(
+                                                  suffixIcon: IconButton(
+                                                    icon: Icon(
+                                                      isEditable == false
+                                                          ? MaterialIcons.touch_app
+                                                          : AntDesign.barcode,
+                                                      color: Colors.black54,
+                                                    ),
+                                                    onPressed: () {
+                                                      if (isEditable) {
+                                                        setState(() {
+                                                          //during qr mode
+                                                          isEditable = false;
+                                                          _focusNode.unfocus();
+                                                        });
+                                                      } else {
+                                                        setState(() {
+                                                          //during keyboard mode
+                                                          isEditable = true;
+                                                          _focusNode.requestFocus();
+                                                        });
+                                                      }
+
+                                                      print(isEditable.toString());
+                                                    },
+                                                    iconSize: hp(2),
+                                                    padding: EdgeInsets.fromLTRB(wp(5), 0, 0, hp(1)),
+                                                  ),
+                                                  enabledBorder: UnderlineInputBorder(
+                                                    borderSide: BorderSide(color: Colors.black87),
+                                                  ),
+                                                  focusedBorder: UnderlineInputBorder(
+                                                    borderSide: BorderSide(color: Colors.black87),
+                                                  ),
+                                                ),
+                                              onChanged: (String value){
+                                                  onSearchTextChanged(value);
+                                              },
+                                            ),
+                                          ),
                                           desc == "null" || desc == "false" ? Text("") : Text(description == "" ? "No Data" : description.toString()),
                                           price == "null" || price == "false" ? Text("") : Text(price_data.toString()),
                                           barcode_type_stat == "null" || barcode_type_stat == "false" ? Text("") : Text(barcode_type == "" ? "No Data" : barcode_type.toString()),
@@ -540,7 +675,8 @@ class _BarcodeInfoDetailsPageState extends State<BarcodeInfoDetailsPage>
     );
   }
 
-  onSearchTextChanged(String text) async {
+  void onSearchTextChanged(String text) async {
+    print(text);
     _newData.clear();
     if (text.isEmpty) {
       setState(() {});
@@ -548,33 +684,38 @@ class _BarcodeInfoDetailsPageState extends State<BarcodeInfoDetailsPage>
     }
 
     _fetcheddata.forEach((userDetail) {
-      if (userDetail.gtin.toLowerCase().contains(text.toLowerCase()) ||
-          userDetail.id.toLowerCase().contains(text.toLowerCase()))
+      if (userDetail.gtin.toLowerCase().contains(text.toLowerCase()))
         _newData.add(userDetail);
     });
 
-    if (_newData[0].gtin.toString() == _searchQueryController.text) {
-      //print(_newData[0].id.toString());
-      // Navigator.push(context,
-      //     MaterialPageRoute(builder: (context) => DetailsPage(product_name: _newData[0].productName.toString())));
-      masterdata_bloc.getId(_newData[0].id.toString());
-      masterdata_bloc.getsinglemasterdata();
-    } else if (_newData[0].gtin.toString() == qrText.toString()) {
-      print("Barcode paisi");
-      // Navigator.push(context,
-      //     MaterialPageRoute(builder: (context) => DetailsPage(product_name: _newData[0].productName.toString())));
-      masterdata_bloc.getId(_newData[0].id.toString());
-      masterdata_bloc.getsinglemasterdata();
-    }
-
-//    print(_newData[0].productName.toString());
-//    print("ID is::::: "+_newData[0].id.toString());
-
-//    Navigator.of(context).pushNamed('/details');
-//    masterdata_bloc.getId(_newData[0].productId.toString());
-//    masterdata_bloc.getsinglemasterdata();
+    Timer(Duration(milliseconds: 500), () {
+      checkData();
+    });
 
     setState(() {});
+  }
+
+  void checkData() {
+
+    if (_newData.isNotEmpty && _newData[0].gtin.toString() == barcode_text.text) {
+      print("found");
+      Timer(Duration(milliseconds: 300),(){
+        setState(() {
+          barcode_text.text = _newData[0].gtin.toString();
+          description = _newData[0].productDescription.toString();
+          proPic = _newData[0].productPicture.toString();
+          price_data = _newData[0].listPrice.toString();
+          barcode_type = _newData[0].code_type.toString();
+          digits = _newData[0].code_digits.toString();
+        });
+      });
+    }
+
+    else {
+      print("not found");
+    }
+
+    //print(_searchQueryController.text.toString());
   }
 
 //   void _onQRViewCreated(QRViewController controller) {

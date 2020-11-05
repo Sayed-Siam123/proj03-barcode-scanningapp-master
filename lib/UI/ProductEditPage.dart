@@ -507,7 +507,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
                                                   child: TextField(
                                                     controller: gtin,
                                                     focusNode: _focusNode,
-                                                    autocorrect: true,
+                                                    autofocus: true,
                                                     style: GoogleFonts.exo2(
                                                       textStyle: TextStyle(
                                                         fontSize: 14,

@@ -30,6 +30,11 @@ class _SystemSettingsWidgetState extends State<SystemSettingsWidget> {
 
   bool _camera = true;
 
+
+
+  bool _barcodeInfoActivation = false;
+  String _barcodeInfoActivationKey = "barcodeInfoActivationKey";
+
   bool _showDescription = false;
   String _showDescriptionKey = "_showDescription";
   bool _showPrice = false;
@@ -201,6 +206,38 @@ class _SystemSettingsWidgetState extends State<SystemSettingsWidget> {
             ),
           ),
         ),
+
+        Padding(
+          padding: EdgeInsets.only(top: hp(1)),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: FutureBuilder(
+              future: getShared(_barcodeInfoActivationKey),
+              initialData: false,
+              builder: (context, snapshot) {
+                return SwitchListTile(
+                  title: const Text(
+                    'Function is active',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 12.00,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  value:
+                  snapshot.data == null ? _barcodeInfoActivation : snapshot.data,
+                  onChanged: (bool value) {
+                    print("Current value" + " " + value.toString());
+                    setState(() {
+                      _barcodeInfoActivation = value;
+                      putShared(_barcodeInfoActivationKey, _barcodeInfoActivation);
+                    });
+                  },
+                );
+              },
+            ),
+          ),
+        ),
+
         Padding(
           padding: EdgeInsets.only(top: hp(1)),
           child: Align(
@@ -763,35 +800,35 @@ class _SystemSettingsWidgetState extends State<SystemSettingsWidget> {
             ),
           ),
         ),
-        Padding(
-          padding: EdgeInsets.only(top: hp(1)),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: FutureBuilder(
-              future: getShared(_showPricesKey),
-              initialData: false,
-              builder: (context, snapshot) {
-                return SwitchListTile(
-                  title: const Text(
-                    'Show Price',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 12.00,
-                        fontWeight: FontWeight.w600),
-                  ),
-                  value: snapshot.data == null ? _showPrices : snapshot.data,
-                  onChanged: (bool value) {
-                    print("Current value" + " " + value.toString());
-                    setState(() {
-                      _showPrices = value;
-                      putShared(_showPricesKey, _showPrices);
-                    });
-                  },
-                );
-              },
-            ),
-          ),
-        ),
+        // Padding(
+        //   padding: EdgeInsets.only(top: hp(1)),
+        //   child: Align(
+        //     alignment: Alignment.centerLeft,
+        //     child: FutureBuilder(
+        //       future: getShared(_showPricesKey),
+        //       initialData: false,
+        //       builder: (context, snapshot) {
+        //         return SwitchListTile(
+        //           title: const Text(
+        //             'Show Price',
+        //             style: TextStyle(
+        //                 color: Colors.black,
+        //                 fontSize: 12.00,
+        //                 fontWeight: FontWeight.w600),
+        //           ),
+        //           value: snapshot.data == null ? _showPrices : snapshot.data,
+        //           onChanged: (bool value) {
+        //             print("Current value" + " " + value.toString());
+        //             setState(() {
+        //               _showPrices = value;
+        //               putShared(_showPricesKey, _showPrices);
+        //             });
+        //           },
+        //         );
+        //       },
+        //     ),
+        //   ),
+        // ),
         Divider(),
       ],
     );

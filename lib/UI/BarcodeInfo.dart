@@ -47,12 +47,10 @@ class _BarcodeInfoState extends State<BarcodeInfo> {
   bool qr_request = true;
   bool qr_complete = false;
 
-
   var isEditable = false;
   FocusNode _focusNode = new FocusNode();
-
-
-
+  String _barcodeInfoActivationKey = "barcodeInfoActivationKey";
+  bool isbarcodeActive = false;
 
   //Barcode scan implement
   ScanResult barcode;
@@ -77,10 +75,32 @@ class _BarcodeInfoState extends State<BarcodeInfo> {
     });
   }
 
+  void getBarcodeinfoActiveState() async {
+    Future<bool> barcodeInfoActive =
+        prefs.getBoolData(_barcodeInfoActivationKey);
+    barcodeInfoActive.then((data) async {
+      print("barcode status " + data.toString());
+
+      setState(() {
+        isbarcodeActive = data;
+      });
+      print(isbarcodeActive.toString());
+
+//      Future.delayed(const Duration(milliseconds: 1000), () {
+//
+//      });
+    }, onError: (e) {
+      print(e);
+    });
+  }
+
   initState() {
     //getCamera();
     masterdata_bloc.fetchAllMasterdatafromDBV2();
     super.initState();
+    Timer(Duration(milliseconds: 100), () {
+      getBarcodeinfoActiveState();
+    });
   }
 
   @override
@@ -124,11 +144,16 @@ class _BarcodeInfoState extends State<BarcodeInfo> {
           centerTitle: true,
           actions: <Widget>[
             IconButton(
-              onPressed: (){
+              onPressed: () {
                 Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => BarcodeinfoSystemSettings()));
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => BarcodeinfoSystemSettings()));
               },
-              icon: Icon(Icons.settings,color: Colors.black54,),
+              icon: Icon(
+                Icons.settings,
+                color: Colors.black54,
+              ),
             )
           ],
         ),
@@ -165,12 +190,10 @@ class _BarcodeInfoState extends State<BarcodeInfo> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-
                         StreamBuilder<List<MasterDataModelV2>>(
                           stream: masterdata_bloc.allMasterDataV2,
                           builder: (context,
-                              AsyncSnapshot<List<MasterDataModelV2>>
-                              snapshot) {
+                              AsyncSnapshot<List<MasterDataModelV2>> snapshot) {
                             if (snapshot.hasData) {
                               _fetcheddata = snapshot.data;
                               //_newData = fetcheddata;
@@ -219,7 +242,8 @@ class _BarcodeInfoState extends State<BarcodeInfo> {
                         height: hp(10),
                         width: wp(95),
                         alignment: Alignment.center,
-                        margin: EdgeInsets.only(top: 0, left: hp(1.5), right: 0,bottom: hp(1)),
+                        margin: EdgeInsets.only(
+                            top: 0, left: hp(1.5), right: 0, bottom: hp(1)),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -235,61 +259,77 @@ class _BarcodeInfoState extends State<BarcodeInfo> {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 8.0),
                           child: TextField(
-                              controller: _searchQueryController,
-                              onChanged: onSearchTextChanged,
-                              // onTap: () {
-                              //   setState(() {
-                              //     qr_request = false;
-                              //   });
-                              // },
-                              keyboardType: TextInputType.number,
-                              style: GoogleFonts.exo2(
+                            readOnly: isbarcodeActive == false ||
+                                    isbarcodeActive == null
+                                ? true
+                                : false,
+                            controller: _searchQueryController,
+                            onChanged: onSearchTextChanged,
+                            // onTap: () {
+                            //   setState(() {
+                            //     qr_request = false;
+                            //   });
+                            // },
+                            keyboardType: TextInputType.text,
+                            style: GoogleFonts.exo2(
+                              textStyle: TextStyle(
+                                fontSize: 20,
+                              ),
+                            ),
+                            decoration: new InputDecoration(
+                              suffixIcon: isbarcodeActive == true
+                                  ? IconButton(
+                                      icon: Icon(
+                                        isEditable == false
+                                            ? MaterialIcons.touch_app
+                                            : AntDesign.barcode,
+                                        color: Colors.black54,
+                                      ),
+                                      onPressed: () {
+                                        if (isEditable) {
+                                          setState(() {
+                                            //during qr mode
+                                            isEditable = false;
+                                            _focusNode.unfocus();
+                                          });
+                                        } else {
+                                          setState(() {
+                                            //during keyboard mode
+                                            isEditable = true;
+                                            _focusNode.requestFocus();
+                                          });
+                                        }
+
+                                        print(isEditable.toString());
+                                      },
+                                    )
+                                  : IconButton(
+                                      icon: Icon(
+                                        isEditable == false
+                                            ? MaterialIcons.touch_app
+                                            : AntDesign.barcode,
+                                        color: Colors.black54,
+                                      ),
+                                      onPressed: () {
+                                        print("Nothing");
+                                      }),
+                              border: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              errorBorder: InputBorder.none,
+                              disabledBorder: InputBorder.none,
+                              hintStyle: GoogleFonts.exo2(
                                 textStyle: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 16,
                                 ),
                               ),
-                              decoration: new InputDecoration(
-                                suffixIcon: IconButton(
-                                  icon: Icon(isEditable == false ? MaterialIcons.touch_app : AntDesign.barcode,color: Colors.black54,),
-                                  onPressed: () {
-
-                                    if(isEditable){
-                                      setState(() {
-                                        //during qr mode
-                                        isEditable = false;
-                                        _focusNode.unfocus();
-                                      });
-                                    }
-
-                                    else{
-                                      setState(() {
-                                        //during keyboard mode
-                                        isEditable = true;
-                                        _focusNode.requestFocus();
-                                      });
-                                    }
-
-                                    print(isEditable.toString());
-
-                                  },
+                              labelStyle: GoogleFonts.exo2(
+                                textStyle: TextStyle(
+                                  fontSize: 16,
                                 ),
-                                border: InputBorder.none,
-                                focusedBorder: InputBorder.none,
-                                enabledBorder: InputBorder.none,
-                                errorBorder: InputBorder.none,
-                                disabledBorder: InputBorder.none,
-                                hintStyle: GoogleFonts.exo2(
-                                  textStyle: TextStyle(
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                labelStyle: GoogleFonts.exo2(
-                                  textStyle: TextStyle(
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                hintText: "Enter barcode to search",
                               ),
+                              hintText: "Enter barcode to search",
+                            ),
                             focusNode: _focusNode,
                           ),
                         ),
@@ -522,15 +562,16 @@ class _BarcodeInfoState extends State<BarcodeInfo> {
         _newData.add(userDetail);
     });
 
-    Timer(Duration(milliseconds: 100),(){
+    Timer(Duration(milliseconds: 500), () {
       checkData();
     });
 
     setState(() {});
   }
 
-  void checkData(){
-    if (_newData.isNotEmpty && _newData[0].gtin.toString() == _searchQueryController.text) {
+  void checkData() {
+    if (_newData.isNotEmpty &&
+        _newData[0].gtin.toString() == _searchQueryController.text) {
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => BarcodeInfoDetailsPage()));
       masterdata_bloc.getId(_newData[0].id.toString());
@@ -540,27 +581,26 @@ class _BarcodeInfoState extends State<BarcodeInfo> {
     }
 
     //print(_searchQueryController.text.toString());
-
   }
 
-  // void _onQRViewCreated(QRViewController controller) {
-  //   this.controller = controller;
-  //   controller.scannedDataStream.listen((scanData) {
-  //     setState(() {
-  //       qrText = scanData;
-  //       _searchQueryController.text = qrText;
-  //     });
-  //
-  //     print("Scanned DATA: " + qrText.toString());
-  //     setState(() {
-  //       qr_complete = true;
-  //     });
-  //
-  //     onSearchTextChanged(qrText.toString());
-  //     setState(() {
-  //       controller.dispose();
-  //       qr_request = false;
-  //     });
-  //   });
-  // }
+// void _onQRViewCreated(QRViewController controller) {
+//   this.controller = controller;
+//   controller.scannedDataStream.listen((scanData) {
+//     setState(() {
+//       qrText = scanData;
+//       _searchQueryController.text = qrText;
+//     });
+//
+//     print("Scanned DATA: " + qrText.toString());
+//     setState(() {
+//       qr_complete = true;
+//     });
+//
+//     onSearchTextChanged(qrText.toString());
+//     setState(() {
+//       controller.dispose();
+//       qr_request = false;
+//     });
+//   });
+// }
 }

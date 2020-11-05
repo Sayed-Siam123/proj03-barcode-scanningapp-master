@@ -123,6 +123,12 @@ class _AddProductPageState extends State<AddProductPage> with WidgetsBindingObse
     honeywellScanner.setScannerCallBack(this);
     updateScanProperties();
     //barcodeScanning2();
+
+    Timer(Duration(milliseconds: 500),(){
+      honeywellScanner.startScanner();
+      scannerEnabled = true;
+    });
+
   }
 
 
@@ -159,6 +165,11 @@ class _AddProductPageState extends State<AddProductPage> with WidgetsBindingObse
   void onDecoded(String result) {
     setState(() {
       scannedCode = result;
+      gtin.text = scannedCode;
+    });
+    honeywellScanner.stopScanner();
+    setState(() {
+      scannerEnabled = false;
     });
   }
 
@@ -653,9 +664,10 @@ class _AddProductPageState extends State<AddProductPage> with WidgetsBindingObse
                                 child: Padding(
                                   padding: const EdgeInsets.only(left: 8.0, top: 3),
                                   child: TextField(
+
                                       keyboardType: TextInputType.text,
                                       controller: gtin,
-                                      autocorrect: true,
+                                      autofocus: true,
                                       focusNode: _focusNode,
                                       style: GoogleFonts.exo2(
                                         textStyle: TextStyle(
@@ -676,12 +688,14 @@ class _AddProductPageState extends State<AddProductPage> with WidgetsBindingObse
                                                 //during qr mode
                                                 isEditable = false;
                                                 _focusNode.unfocus();
+                                                honeywellScanner.startScanner();
                                               });
                                             } else {
                                               setState(() {
                                                 //during keyboard mode
                                                 isEditable = true;
                                                 _focusNode.requestFocus();
+                                                honeywellScanner.stopScanner();
                                               });
                                             }
 

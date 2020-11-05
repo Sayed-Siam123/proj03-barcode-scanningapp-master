@@ -205,7 +205,7 @@ class _BarcodeComparisonWidgetState extends State<BarcodeComparisonWidget> {
                                 readOnly: activation == "true" ? false : true,
                                 controller: masterBarcode,
                                 focusNode: _focusNode,
-                                autocorrect: true,
+                                autofocus: true,
                                 style: GoogleFonts.exo2(
                                   textStyle: TextStyle(
                                     fontSize: 14,
