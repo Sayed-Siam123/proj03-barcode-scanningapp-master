@@ -19,6 +19,7 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_translate/global.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:honeywell_scanner/honeywell_scanner.dart';
+import 'package:path_provider_ex/path_provider_ex.dart';
 import 'package:responsive_screen/responsive_screen.dart';
 
 import 'Home.dart';
@@ -94,6 +95,8 @@ class _BarcodeInfoDetailsPageState extends State<BarcodeInfoDetailsPage>
   bool scan1DFormats = true;
   bool scan2DFormats = true;
 
+  var root;
+
   @override
   void initState() {
     getCamera();
@@ -103,6 +106,7 @@ class _BarcodeInfoDetailsPageState extends State<BarcodeInfoDetailsPage>
     honeywellScanner.setScannerCallBack(this);
     updateScanProperties();
     super.initState();
+    source();
     Timer(Duration(milliseconds: 300), () {
       getName();
       getDesc();
@@ -189,6 +193,20 @@ class _BarcodeInfoDetailsPageState extends State<BarcodeInfoDetailsPage>
   void onError(Exception error) {
     setState(() {
       scannedCode = error.toString();
+    });
+  }
+
+
+  void source() async{
+    Timer(Duration(milliseconds: 50),() async{
+      List<StorageInfo> storageInfo = await PathProviderEx.getStorageInfo();
+
+      setState(() {
+        root = storageInfo[0].appFilesDir+"/Indentit/Photos/"; //storageInfo[1] for SD card, getting the root directory
+      });
+      // print(root.toString());
+      // print(root.toString()+"/"+widget.productPicture);
+
     });
   }
 
@@ -545,7 +563,7 @@ class _BarcodeInfoDetailsPageState extends State<BarcodeInfoDetailsPage>
                                 margin: EdgeInsets.only(top: hp(3)),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(wp(2)),
-                                  child: Image.file(File("/storage/emulated/0/Indentit/Photos/"+proPic.toString()), width: wp(45),
+                                  child: Image.file(File(root+proPic.toString()), width: wp(45),
                                     height: hp(25),
                                     fit: BoxFit.fill,
                                   ),

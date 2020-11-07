@@ -24,6 +24,7 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_translate/global.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path_provider_ex/path_provider_ex.dart';
@@ -99,6 +100,8 @@ class _ProductEditPageState extends State<ProductEditPage> {
   bool _hasValidMime = false;
   FileType _pickingType;
 
+  File _image;
+
   var isEditable = false;
   FocusNode _focusNode = new FocusNode();
 
@@ -131,12 +134,11 @@ class _ProductEditPageState extends State<ProductEditPage> {
   void getImagefromStorage(String path, String fileName) async {
     print("path is " + path);
     List<StorageInfo> storageInfo = await PathProviderEx.getStorageInfo();
-    var root = storageInfo[0].rootDir +
-        "/Indentit/Photos"; //storageInfo[1] for SD card, getting the root directory
+    var root = storageInfo[0].appFilesDir + "/Indentit/Photos/"; //storageInfo[1] for SD card, getting the root directory
 
     print(root.toString());
 
-    moveFile(File(path), root + "/" + '$id.png', root);
+    moveFile(File(path), root + '$id.png', root);
   }
 
   Future<File> moveFile(File sourceFile, String newPath, String root) async {
@@ -156,10 +158,45 @@ class _ProductEditPageState extends State<ProductEditPage> {
     }
   }
 
+  _imgFromCamera(BuildContext context) async {
+    // ignore: deprecated_member_use
+    File image = await ImagePicker.pickImage(
+        source: ImageSource.camera, imageQuality: 50);
+
+    if (image != null) {
+      setState(() {
+        _image = image;
+        print(_image.toString());
+        getImagefromStorage('${_image.path}', 'fileName');
+        showCapturedPhoto = true;
+      });
+      print(_image.path.toString());
+      //getImagefromStorage(_image.path.toString(),widget.id.toString());
+
+    }
+  }
+
+  _imgFromGallery(BuildContext context) async {
+    // ignore: deprecated_member_use
+    File image = await ImagePicker.pickImage(
+        source: ImageSource.gallery, imageQuality: 50);
+
+    if (image != null) {
+      setState(() {
+        _image = image;
+        print(_image.toString());
+        getImagefromStorage('${_image.toString()}', 'fileName');
+        showCapturedPhoto = true;
+      });
+      print("picked " + _image.path.toString());
+      //getImagefromStorage(_image.path.toString(),widget.id.toString());
+    }
+  }
+
+
   void imagePath() async {
     List<StorageInfo> storageInfo = await PathProviderEx.getStorageInfo();
-    var root = storageInfo[0].rootDir +
-        "/Indentit/Photos"; //storageInfo[1] for SD card, getting the root directory
+    var root = storageInfo[0].appFilesDir + "/Indentit/Photos/"; //storageInfo[1] for SD card, getting the root directory
 
     setState(() {
       ImagePath = root;
@@ -185,30 +222,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    _controller?.dispose();
     sublist_bloc.dispose();
-  }
-
-  Future<void> _initializeCamera() async {
-    final cameras = await availableCameras();
-    final firstCamera = cameras.first;
-    _controller = CameraController(firstCamera, ResolutionPreset.ultraHigh);
-    _initializeControllerFuture = _controller.initialize();
-    if (!mounted) {
-      return;
-    }
-    setState(() {
-      isCameraReady = true;
-    });
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) {
-      _controller != null
-          ? _initializeControllerFuture = _controller.initialize()
-          : null; //on pause camera is disposed, so we need to call again "issue is only for android"
-    }
   }
 
   @override
@@ -693,7 +707,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
                                                               showCapturedPhoto =
                                                                   false;
                                                             });
-                                                            _initializeCamera();
+                                                            _imgFromCamera(context);
                                                           },
                                                           icon: Icon(Icons
                                                               .camera_alt)),
@@ -702,8 +716,12 @@ class _ProductEditPageState extends State<ProductEditPage> {
                                                       ),
                                                       IconButton(
                                                           onPressed: () {
-                                                            _openFileExplorer();
-                                                          },
+                                                            setState(() {
+                                                              showCapturedPhoto =
+                                                              false;
+                                                            });
+                                                            _imgFromGallery(context);
+                                                            },
                                                           icon: Icon(Icons
                                                               .attach_file)),
                                                     ],
@@ -715,78 +733,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
                                     ),
                                   ),
 
-                                  showCapturedPhoto == false
-                                      ? Padding(
-                                          padding: EdgeInsets.only(
-                                              top: hp(1), bottom: hp(2)),
-                                          child: Align(
-                                            alignment: Alignment.topCenter,
-                                            child: FutureBuilder<void>(
-                                              future:
-                                                  _initializeControllerFuture,
-                                              builder: (context, snapshot) {
-                                                if (snapshot.connectionState ==
-                                                    ConnectionState.done) {
-                                                  // If the Future is complete, display the preview.
-                                                  return Transform.scale(
-                                                      scale: _controller.value
-                                                              .aspectRatio /
-                                                          deviceRatio,
-                                                      child: Stack(
-                                                        children: <Widget>[
-                                                          Align(
-                                                            child: AspectRatio(
-                                                              aspectRatio:
-                                                                  _controller
-                                                                      .value
-                                                                      .aspectRatio,
-                                                              child: CameraPreview(
-                                                                  _controller), //cameraPreview
-                                                            ),
-                                                            alignment: Alignment
-                                                                .topCenter,
-                                                          ),
-                                                          Padding(
-                                                            padding:
-                                                                EdgeInsets.only(
-                                                                    top: hp(70),
-                                                                    bottom:
-                                                                        hp(2),
-                                                                    right:
-                                                                        wp(7)),
-                                                            child: Align(
-                                                              child: IconButton(
-                                                                icon: Icon(
-                                                                  Icons.camera,
-                                                                  color: Colors
-                                                                      .white,
-                                                                  size: hp(7),
-                                                                ),
-                                                                onPressed: () {
-                                                                  onCaptureButtonPressed();
-                                                                  print(
-                                                                      "Captured");
-                                                                },
-                                                              ),
-                                                              alignment:
-                                                                  Alignment
-                                                                      .topCenter,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ));
-                                                } else {
-                                                  return Center(
-                                                      child: Container(
-                                                    height: 0,
-                                                    width: 0,
-                                                  )); // Otherwise, display a loading indicator.
-                                                }
-                                              },
-                                            ),
-                                          ),
-                                        )
-                                      : showCapturedPhoto == true
+                                 showCapturedPhoto == true
                                           ? Padding(
                                               padding: EdgeInsets.only(
                                                   top: hp(42), bottom: hp(2)),
@@ -801,10 +748,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
                                                           top: hp(5)),
                                                       child: Align(
                                                         child: Image.file(
-                                                          File(ImagePath +
-                                                              "/" +
-                                                              id.toString() +
-                                                              ".png"),
+                                                          File(ImagePath + id.toString() + ".png"),
                                                           fit: BoxFit.fill,
                                                           width: wp(80),
                                                           height: hp(40),
@@ -821,17 +765,11 @@ class _ProductEditPageState extends State<ProductEditPage> {
                                                             Alignment.topCenter,
                                                         child: IconButton(
                                                           onPressed: () {
-                                                            print(ImagePath
-                                                                .toString());
+                                                            print(ImagePath.toString());
                                                             setState(() {
-                                                              showCapturedPhoto =
-                                                                  null;
-                                                              deleteFile(ImagePath +
-                                                                  "/" +
-                                                                  id.toString() +
-                                                                  ".png");
-                                                              imageCache
-                                                                  .clear();
+                                                              showCapturedPhoto = null;
+                                                              deleteFile(ImagePath + id.toString() + ".png");
+                                                              imageCache.clear();
                                                             });
                                                           },
                                                           icon: Icon(
